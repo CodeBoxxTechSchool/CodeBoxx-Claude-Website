@@ -1,0 +1,19 @@
+$breakpoint-md: 1000px;
+
+.wrap {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.sect { padding: 96px 0; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+@media (max-width: $breakpoint-md) {
+  .wrap { padding: 0 24px; }
+  .grid2, .grid3, .grid4 { grid-template-columns: 1fr; }
+  .sect { padding: 64px 0; }
+}

@@ -1,0 +1,11 @@
+/* Elevation & border treatments. The file draws borders as inset rings, not CSS borders. */
+:root {
+  --ring-default: inset 0 0 0 1px var(--color-border-default);
+  --ring-strong: inset 0 0 0 1px var(--color-border-strong);
+  --ring-brand: inset 0 0 0 1px var(--color-border-brand);
+  --ring-brand-2: inset 0 0 0 2px var(--color-border-brand);
+  --ring-error: inset 0 0 0 1px var(--color-status-error);
+
+  --shadow-card: 0 1px 2px 0 rgba(0, 0, 0, 0.0392);
+  --shadow-none: none;
+}

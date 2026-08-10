@@ -1,0 +1,19 @@
+@use 'layout';
+@use 'typography';
+@use 'components';
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--ui-slate-50);
+  font-family: var(--font-sans);
+  color: var(--ui-slate-900);
+}
+
+a {
+  color: var(--blue-500);
+  text-decoration: none;
+
+  &:hover { color: var(--blue-600); }
+}

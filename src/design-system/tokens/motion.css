@@ -1,0 +1,9 @@
+/* Motion. The Figma file specifies no prototype transitions; these are the house
+ * defaults the design system uses so interactive recreations stay consistent. */
+:root {
+  --duration-fast: 120ms;  /* @kind other */
+  --duration-base: 180ms;  /* @kind other */
+  --duration-slow: 280ms;  /* @kind other */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1); /* @kind other */
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);      /* @kind other */
+}

@@ -1,0 +1,26 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--ui-slate-200);
+}
+
+.rule { height: 1px; background: var(--ui-slate-200); }
+
+.noscroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.nav a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ui-slate-500);
+
+  &:hover { color: var(--blue-500); }
+}
