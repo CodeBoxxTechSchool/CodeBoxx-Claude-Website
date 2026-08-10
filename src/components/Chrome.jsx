@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Logo } from '../design-system';
 
-const Button = DSButton, Logo = DSLogo;
 const hrefFor = t => (t.charAt(0) === '#' ? (window.location.pathname === '/' ? t : '/' + t) : t);
 
 const NAV = [
