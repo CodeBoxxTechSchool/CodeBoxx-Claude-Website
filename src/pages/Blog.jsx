@@ -1,14 +1,14 @@
 import React from 'react';
 import { Button, Badge, Input } from '../design-system';
 import { TopBar, Footer } from '../components/Chrome';
-import { useEmdashPosts } from '../lib/emdash';
+import { useSanityPosts } from '../lib/sanity';
 import '../lib/image-slot.js';
 
 const PILL = { width: 'fit-content', borderRadius: 9999, boxShadow: 'inset 0 0 0 1.5px var(--blue-500)', padding: '8px 16px', display: 'inline-flex', fontWeight: 700, fontSize: 12, lineHeight: '100%', letterSpacing: '0.5px', textTransform: 'uppercase', color: 'var(--neutral-0)', whiteSpace: 'nowrap', marginBottom: 10 };
 
 const CATEGORIES = ['All Posts', 'CodeBoxx for Life', 'CodeBoxx Curriculums', 'Technology News', 'Workshop'];
 
-// Sourced from the current CodeBlog. Replaced by the EmDash `post` collection at build time.
+// Sourced from the current CodeBlog. Replaced by the Sanity `post` document type at runtime.
 const SEED_POSTS = [
   {
     title: 'Best Corporate AI Bootcamps',
@@ -52,7 +52,7 @@ function Band() {
       <div className="wrap" style={{ display: 'flex', flexDirection: 'column', gap: 20, alignItems: 'flex-start' }}>
         <span style={PILL}>CodeBlog</span>
         <h1 style={{ margin: 0, fontSize: 48, fontWeight: 900, lineHeight: '100%', color: 'var(--neutral-0)', maxWidth: 780, textWrap: 'pretty' }}>Fresh news from the studio, the platform and the school.</h1>
-        <p style={{ fontSize: 14, lineHeight: '20px', color: 'rgba(255,255,255,0.72)', margin: 0, maxWidth: 560 }}>Curriculum notes, technology news, workshops and graduate stories. Every post is written and published in EmDash.</p>
+        <p style={{ fontSize: 14, lineHeight: '20px', color: 'rgba(255,255,255,0.72)', margin: 0, maxWidth: 560 }}>Curriculum notes, technology news, workshops and graduate stories. Every post is written and published in Sanity.</p>
       </div>
     </section>
   );
@@ -61,7 +61,7 @@ function Band() {
 const PAGE_SIZE = 2;
 
 function Posts() {
-  const POSTS = useEmdashPosts(SEED_POSTS);
+  const POSTS = useSanityPosts(SEED_POSTS);
   const [cat, setCat] = React.useState('All Posts');
   const [shown, setShown] = React.useState(PAGE_SIZE);
   const all = cat === 'All Posts' ? POSTS : POSTS.filter(p => p.category === cat);

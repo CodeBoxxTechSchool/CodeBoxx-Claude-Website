@@ -506,7 +506,7 @@ function IntakeCalendar() {
           <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase', color: 'var(--blue-500)' }}>Intake Calendar</span>
           <span style={{ fontSize: 28, fontWeight: 700, lineHeight: '100%', color: 'var(--neutral-0)' }}>Two programs. Eight cohorts.</span>
         </div>
-        <Badge variant="brand">Editable in EmDash</Badge>
+        <Badge variant="brand">Editable in Sanity</Badge>
       </div>
       <div className="grid2" style={{ gap: 64 }}>
         <CalendarColumn title="AI-Native FSD" meta="12 weeks, full time" rows={INTAKES.fsd} />
@@ -850,7 +850,7 @@ function WSJTeaser() {
   );
 }
 
-// Latest three from the CodeBlog. Same source as blog.jsx — replaced by the EmDash `post` collection at build time.
+// Latest three from the CodeBlog. Same source as blog.jsx — replaced by the Sanity `post` document type at runtime.
 const LATEST_POSTS = [
   { title: 'Best Corporate AI Bootcamps', category: 'Technology News', date: '2026-01-14', excerpt: 'Corporate AI training has become one of the fastest-growing investments in workforce development. Most organizations still struggle to find programs that go beyond awareness.', url: 'https://academy.codeboxx.com/post/best-corporate-ai-bootcamps' },
   { title: 'Unlock your own Future: Join CodeBoxx\u2019s 4-Day Vibe Coding and Agentic AI Workshop', category: 'Workshop', date: '2025-12-01', excerpt: 'Four days, virtual or in the St. Petersburg classroom, ending with a product of yours in production or in your portfolio.', url: 'https://academy.codeboxx.com/post/unlock-your-own-future-join-codeboxx-s-4-day-vibe-coding-and-agentic-ai-workshop' },
