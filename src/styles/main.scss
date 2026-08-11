@@ -2,7 +2,9 @@
 @use 'typography';
 @use 'components';
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
@@ -15,5 +17,7 @@ a {
   color: var(--blue-500);
   text-decoration: none;
 
-  &:hover { color: var(--blue-600); }
+  &:hover {
+    color: var(--blue-600);
+  }
 }

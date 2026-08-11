@@ -25,12 +25,12 @@ npm run dev
 
 ## Routes
 
-| Route | Component | Notes |
-| --- | --- | --- |
-| `/` | `src/pages/Home.jsx` | Sections 01–07, WSJ and Forge 20 bands, Codi drawer, enroll drawer |
-| `/blog` | `src/pages/Blog.jsx` | CodeBlog index, Sanity-backed |
-| `/financing` | `src/pages/Financing.jsx` | Academy financing options |
-| `/ventures` | `src/pages/Ventures.jsx` | CodeBoxx Ventures |
+| Route        | Component                 | Notes                                                              |
+| ------------ | ------------------------- | ------------------------------------------------------------------ |
+| `/`          | `src/pages/Home.jsx`      | Sections 01–07, WSJ and Forge 20 bands, Codi drawer, enroll drawer |
+| `/blog`      | `src/pages/Blog.jsx`      | CodeBlog index, Sanity-backed                                      |
+| `/financing` | `src/pages/Financing.jsx` | Academy financing options                                          |
+| `/ventures`  | `src/pages/Ventures.jsx`  | CodeBoxx Ventures                                                  |
 
 ## Sanity
 
