@@ -389,7 +389,7 @@ function Studio() {
       const el = document.getElementById('codeboxx');
       if (el)
         window.scrollTo({
-          top: el.getBoundingClientRect().top + window.pageYOffset - 80,
+          top: el.getBoundingClientRect().top + window.pageYOffset - 70,
           behavior: 'smooth',
         });
     };

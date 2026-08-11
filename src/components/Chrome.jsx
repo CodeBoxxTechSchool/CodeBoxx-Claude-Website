@@ -36,21 +36,54 @@ const NAV = [
   { label: 'Contact', href: '#contact' },
 ];
 
-function NavItem({ item }) {
+function NavItem({ item, onNavigate }) {
   const [open, setOpen] = React.useState(false);
+  const hasDropdown = Boolean(item.items);
+  // Hover still opens it on desktop (mouseenter fires before any click there, so the
+  // click branch below just navigates). On touch, there's no hover — the first tap
+  // opens the dropdown instead of navigating; a second tap follows the link.
+  const handleLinkClick = (e) => {
+    if (hasDropdown && !open) {
+      e.preventDefault();
+      setOpen(true);
+      return;
+    }
+    setOpen(false);
+    onNavigate?.();
+  };
+  const handleSubLinkClick = () => {
+    setOpen(false);
+    onNavigate?.();
+  };
   return (
     <div
       className={'nav-item' + (open ? ' open' : '')}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={() => hasDropdown && setOpen(true)}
+      onMouseLeave={() => hasDropdown && setOpen(false)}
     >
-      <Nav.Link as="a" href={hrefFor(item.href)}>
+      <Nav.Link as="a" href={hrefFor(item.href)} onClick={handleLinkClick}>
         {item.label}
+        {hasDropdown ? (
+          <svg
+            className="nav-caret"
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        ) : null}
       </Nav.Link>
-      {item.items && open ? (
+      {hasDropdown && open ? (
         <div className="nav-dropdown">
           {item.items.map(([l, hr]) => (
-            <a key={l} href={hrefFor(hr)} onClick={() => setOpen(false)}>
+            <a key={l} href={hrefFor(hr)} onClick={handleSubLinkClick}>
               {l}
             </a>
           ))}
@@ -61,37 +94,43 @@ function NavItem({ item }) {
 }
 
 function TopBar({ onCodi, onEnroll }) {
+  const [expanded, setExpanded] = React.useState(false);
+  const enroll = () =>
+    onEnroll ? onEnroll('AI Native Full-Stack Developer') : (window.location.href = '/#contact');
   return (
-    <header className="site-header">
-      <Navbar expand="lg">
-        <Container fluid className="wrap">
-          <Navbar.Brand href={hrefFor('#top')} className="p-0">
-            <Logo width={168} />
-          </Navbar.Brand>
-          <Nav className="flex-row flex-wrap gap-4 mx-auto">
-            {NAV.map((n) => (
-              <NavItem key={n.label} item={n} />
-            ))}
-          </Nav>
-          <div className="d-flex align-items-center gap-3 flex-shrink-0">
-            <Button
-              size="sm"
-              variant="outline-primary"
-              onClick={() =>
-                onEnroll
-                  ? onEnroll('AI Native Full-Stack Developer')
-                  : (window.location.href = '/#contact')
-              }
-            >
-              Enroll Now
-            </Button>
-            <Button size="sm" onClick={onCodi}>
-              Talk With Codi
-            </Button>
-          </div>
-        </Container>
-      </Navbar>
-    </header>
+    <React.Fragment>
+      <header className="site-header">
+        <Navbar expand="lg" expanded={expanded} onToggle={setExpanded}>
+          <Container fluid className="wrap">
+            <Navbar.Brand href={hrefFor('#top')} className="p-0">
+              <Logo width={168} />
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="main-nav" />
+            <Navbar.Collapse id="main-nav">
+              <Nav className="flex-wrap gap-4 mx-lg-auto">
+                {NAV.map((n) => (
+                  <NavItem key={n.label} item={n} onNavigate={() => setExpanded(false)} />
+                ))}
+              </Nav>
+            </Navbar.Collapse>
+            <div className="d-none d-lg-flex align-items-center gap-3 flex-shrink-0">
+              <Button size="sm" variant="outline-primary" onClick={enroll}>
+                Enroll Now
+              </Button>
+              <Button size="sm" onClick={onCodi}>
+                Talk With Codi
+              </Button>
+            </div>
+          </Container>
+        </Navbar>
+      </header>
+      <div className="mobile-cta-bar d-lg-none">
+        <Button variant="outline-primary" onClick={enroll}>
+          Enroll Now
+        </Button>
+        <Button onClick={onCodi}>Talk With Codi</Button>
+      </div>
+    </React.Fragment>
   );
 }
 

@@ -67,6 +67,9 @@
   background: transparent;
   border-color: transparent;
   color: v.$blue-500;
+  position: fixed;
+  top: 14px;
+  right: 14px;
 
   &:hover,
   &:focus {
@@ -225,7 +228,7 @@
   padding: 64px 48px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 96px;
   background-image:
     linear-gradient(rgba(0, 47, 67, 0.82), rgba(0, 47, 67, 0.82)), url('/assets/hero-bg.png');
