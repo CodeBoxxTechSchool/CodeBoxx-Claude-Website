@@ -57,6 +57,42 @@
   color: v.$ui-slate-500;
 }
 
+// Standalone post page (BlogPost.jsx) — Portable Text content rendered via
+// @portabletext/react, mapped onto these classes and the shared pbody/h2/ptitle ones.
+.post-article {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  ul.post-list,
+  ol.post-list {
+    margin: 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: v.$text-body;
+    line-height: v.$leading-body;
+    color: v.$color-text-secondary;
+  }
+}
+.post-blockquote {
+  margin: 0;
+  padding-left: 16px;
+  box-shadow: inset 2px 0 0 0 v.$blue-500;
+  font-size: v.$text-body;
+  line-height: v.$leading-body;
+  color: v.$ui-slate-900;
+}
+.post-external-ref {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
 .load-more {
   display: flex;
   flex-direction: column;
