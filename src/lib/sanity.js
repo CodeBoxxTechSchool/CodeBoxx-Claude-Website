@@ -7,7 +7,9 @@ const TOKEN = import.meta.env.VITE_SANITY_TOKEN;
 
 export async function fetchCollection(type, groqTail = '') {
   if (!PROJECT_ID) throw new Error('VITE_SANITY_PROJECT_ID is not set.');
-  const url = new URL('https://' + PROJECT_ID + '.apicdn.sanity.io/v' + API_VERSION + '/data/query/' + DATASET);
+  const url = new URL(
+    'https://' + PROJECT_ID + '.apicdn.sanity.io/v' + API_VERSION + '/data/query/' + DATASET
+  );
   url.searchParams.set('query', '*[_type == "' + type + '"]' + groqTail);
   const res = await fetch(url, {
     headers: TOKEN ? { Authorization: 'Bearer ' + TOKEN } : {},
@@ -35,9 +37,13 @@ export function useSanityPosts(seed = []) {
     let live = true;
     if (!PROJECT_ID) return undefined;
     fetchCollection('post', ' | order(publishedAt desc) [0...50]')
-      .then(rows => { if (live && rows.length) setPosts(rows.map(toPost)); })
-      .catch(err => console.warn('[sanity]', err.message));
-    return () => { live = false; };
+      .then((rows) => {
+        if (live && rows.length) setPosts(rows.map(toPost));
+      })
+      .catch((err) => console.warn('[sanity]', err.message));
+    return () => {
+      live = false;
+    };
   }, []);
   return posts;
 }
