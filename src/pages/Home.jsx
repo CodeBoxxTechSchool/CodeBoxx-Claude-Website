@@ -1603,6 +1603,16 @@ function ForgeTeaser() {
 function App() {
   const [codi, setCodi] = React.useState(false);
   const [enroll, setEnroll] = React.useState(null);
+  React.useEffect(() => {
+    // Arriving here from another page (e.g. clicking "Contact" on /blog) lands on
+    // "/#contact" via a full page load. The browser's own anchor-scroll fires before
+    // React has rendered the target section, so it silently does nothing — this is
+    // the one-time catch-up scroll that makes it land the same place a same-page
+    // click already does (same-page clicks keep working via native anchor scrolling,
+    // unaffected by this effect).
+    if (!location.hash) return;
+    document.getElementById(location.hash.slice(1))?.scrollIntoView();
+  }, []);
   return (
     <div id="top">
       <TopBar onCodi={() => setCodi(true)} onEnroll={setEnroll} />
