@@ -563,6 +563,15 @@ const LOGO_LINKS = {
   Soumigo: 'https://soumigo.com/',
 };
 
+// Static files in public/assets/ are referenced by URL path, not imported as JS
+// modules — Vite only bundles imports from src/, public/ is served as-is.
+const LOGO_IMAGES = {
+  Crewkit: '/assets/crewkit.png',
+  Optigo: '/assets/optigo.png',
+  'Catalog Crafter': '/assets/catalog-crafter.png',
+  Soumigo: '/assets/soumigo.png',
+};
+
 function ServiceDetail({ s }) {
   return (
     <div className="panel panel-sticky">
@@ -642,11 +651,12 @@ function ServiceDetail({ s }) {
               <div key={n} className="d-flex flex-column gap-2 align-items-center">
                 <image-slot
                   id={'logo-' + n.toLowerCase().replace(/\s+/g, '-')}
+                  src={LOGO_IMAGES[n]}
                   shape="rounded"
                   radius="8"
                   fit="contain"
                   placeholder={n}
-                  style={{ width: '100%', height: 64, '--slot-frame-bg': 'transparent' }}
+                  style={{ width: '90%', height: 64, '--slot-frame-bg': 'transparent' }}
                 ></image-slot>
                 <span className="link-tag link-tag-muted">
                   <a href={LOGO_LINKS[n]} target="_blank" rel="noopener noreferrer">
@@ -1626,13 +1636,12 @@ function ForgeTeaser() {
   return (
     <section className="band-dark">
       <div className="wrap band-dark-inner">
-        <image-slot
-          id="forge20-product"
-          shape="rect"
-          fit="contain"
-          placeholder="CodeBoxx w/ CrewKit Forge 20 appliance"
-          style={{ width: 210, height: 100, '--slot-frame-bg': 'transparent', color: '#fff' }}
-        ></image-slot>
+        <img
+          src="/assets/crewkit_wh.png"
+          alt="CodeBoxx w/ CrewKit Forge 20 appliance"
+          width={210}
+          className="forge-logo"
+        />
         <span className="band-superhead">Lead. Think. Write. Run.</span>
         <h2 className="band-heading">CodeBoxx w/ CrewKit Forge 20</h2>
         <p className="band-body">
