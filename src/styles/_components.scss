@@ -1,16 +1,18 @@
+@use 'variables' as v;
+
 .panel {
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 24px;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: inset 0 0 0 1px var(--ui-slate-200);
+  border-radius: v.$radius-lg;
+  background: v.$neutral-0;
+  box-shadow: inset 0 0 0 1px v.$ui-slate-200;
 }
 
 .rule {
   height: 1px;
-  background: var(--ui-slate-200);
+  background: v.$ui-slate-200;
 }
 
 .noscroll {
@@ -23,11 +25,230 @@
 }
 
 .nav a {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ui-slate-500);
+  font-size: v.$text-body;
+  font-weight: v.$weight-medium;
+  color: v.$ui-slate-500;
 
   &:hover {
-    color: var(--blue-500);
+    color: v.$blue-500;
   }
+}
+
+// Ground truth from the retired Button.jsx: fully pill-shaped, fixed heights per
+// size (32/40/48), horizontal-only padding, no vertical padding.
+.btn {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: v.$radius-full;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: v.$text-body;
+  font-weight: v.$weight-medium;
+  line-height: 1;
+  white-space: nowrap;
+
+  &.btn-sm {
+    height: 32px;
+    padding: 0 16px;
+  }
+  &.btn-lg {
+    height: 48px;
+    padding: 0 16px;
+    font-size: v.$text-h3;
+    font-weight: v.$weight-semibold;
+  }
+}
+
+// Bootstrap's Button has no "ghost" variant — ground truth from the retired
+// Button.jsx: transparent bg, blue-500 text, blue-50 hover fill, no border.
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: v.$blue-500;
+
+  &:hover,
+  &:focus {
+    background: v.$blue-50;
+    border-color: transparent;
+    color: v.$blue-500;
+  }
+}
+
+.sect-contact {
+  background: v.$neutral-0;
+  box-shadow: inset 0 1px 0 0 v.$ui-slate-200;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.form-actions-note {
+  font-size: v.$text-caption;
+  font-weight: v.$weight-medium;
+  color: v.$ui-slate-400;
+
+  &.sent {
+    color: v.$green-600;
+  }
+}
+
+// Reusable 2-up form field row (name/name, city/region, etc).
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: v.$breakpoint-md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-check-input {
+  width: 20px;
+  height: 20px;
+  margin-top: 0;
+}
+.form-check {
+  padding-left: 30px;
+}
+.form-check-label {
+  font-size: v.$text-body;
+  font-weight: v.$weight-medium;
+}
+
+// Bootstrap's Badge renders a solid fill; the original Figma badges are a subtle
+// tint (pale bg, saturated fg) — restyle by bg variant instead.
+.badge {
+  &.bg-default {
+    background-color: v.$badge-default-bg !important;
+    color: v.$badge-default-fg !important;
+  }
+  &.bg-brand {
+    background-color: v.$badge-brand-bg !important;
+    color: v.$badge-brand-fg !important;
+  }
+  &.bg-success {
+    background-color: v.$badge-success-bg !important;
+    color: v.$badge-success-fg !important;
+  }
+  &.bg-warning {
+    background-color: v.$badge-warning-bg !important;
+    color: v.$badge-warning-fg !important;
+  }
+  &.bg-danger {
+    background-color: v.$badge-error-bg !important;
+    color: v.$badge-error-fg !important;
+  }
+}
+
+// Small filled dot used ahead of bullet list items (Financing/Ventures/Home paths).
+.bullet-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .bullet {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+
+    &::before {
+      content: '';
+      flex: 0 0 auto;
+      width: 4px;
+      height: 4px;
+      margin-top: 8px;
+      border-radius: v.$radius-full;
+      background: v.$blue-500;
+    }
+
+    span {
+      font-size: v.$text-body;
+      line-height: v.$leading-body;
+      color: v.$color-text-secondary;
+    }
+  }
+}
+
+// Circular placeholder avatar (chat drawer, testimonials).
+.avatar {
+  flex: 0 0 auto;
+  overflow: hidden;
+  border-radius: v.$radius-full;
+  background: v.$navy-500;
+  color: v.$blue-500;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    width: 50%;
+    height: 50%;
+  }
+
+  &.avatar-sm {
+    width: 24px;
+    height: 24px;
+  }
+  &.avatar-md {
+    width: 32px;
+    height: 32px;
+  }
+  &.avatar-lg {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+// Mark + wordmark SVG used in the header (light) and footer (dark). The brand
+// circle is a fixed blue fill baked into the markup; `color` drives the
+// currentColor wordmark/glyph paths.
+.logo {
+  display: block;
+  color: v.$neutral-950;
+
+  &.logo-dark {
+    color: v.$neutral-0;
+  }
+}
+
+// Hero band on the homepage (background image + big heading over it).
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 560px;
+  padding: 64px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 96px;
+  background-image:
+    linear-gradient(rgba(0, 47, 67, 0.82), rgba(0, 47, 67, 0.82)), url('/assets/hero-bg.png');
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+
+  h1 {
+    margin: 0;
+    max-width: 900px;
+    font-size: v.$text-hero;
+    font-weight: v.$weight-black;
+    line-height: v.$leading-hero;
+    color: v.$neutral-0;
+  }
+}
+
+.hero-logo {
+  width: 280px;
+  height: 54px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
 }

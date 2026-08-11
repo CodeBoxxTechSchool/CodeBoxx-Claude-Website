@@ -1,13 +1,15 @@
 # CodeBoxx Website
 
 React + SCSS front end for the CodeBoxx corporate site (Studio, Solutions, Academy, Ventures),
-built with Vite and the CodeBoxx design system. Blog content is fetched at runtime from Sanity.
+built with Vite, react-bootstrap and a brand-themed SCSS system. Blog content is fetched at
+runtime from Sanity.
 
 ## Stack
 
 - **Vite 5** + **React 18** (JSX, no TypeScript in the ported pages)
-- **SCSS** for global layout and type utilities (`src/styles/`)
-- **CodeBoxx Design System** — compiled bundle + token stylesheets in `src/design-system/`
+- **react-bootstrap** + **Bootstrap 5** for every component (buttons, forms, badges, the Codi
+  and Enroll drawers), themed via Sass variable overrides — no vendored component bundle
+- **SCSS** for all styling, no inline styles (`src/styles/`)
 - **react-router-dom** for the four routes
 - **Sanity** CMS, fetched at runtime (`src/lib/sanity.js`)
 
@@ -42,28 +44,44 @@ still builds and runs with no CMS connection.
 Entry mapping lives in `toPost()` — adjust the field names there if the Sanity `post`
 document type uses a different schema.
 
-## Design system
+## Styling
 
-`src/design-system/` is a vendored copy of the CodeBoxx design system: token stylesheets
-under `tokens/`, `styles.css`, and `_ds_bundle.js`. `index.js` sets `window.React` before
-loading the bundle (it is compiled to call `React.createElement`) and re-exports the
-components. Because it uses top-level await, the build target is ES2022.
+Everything routes through `src/styles/`, orchestrated by `main.scss` (`@use`, in order):
 
-Do not restyle raw HTML to imitate these components — import them.
+```
+_variables.scss     brand color ramps, semantic aliases, typography/radius scale, then the
+                     Bootstrap scalar + $theme-colors overrides, then `@import 'bootstrap/scss/bootstrap'`
+_base.scss           html/body resets
+_typography.scss     .eyebrow/.h2/.lede/.ptitle/.pbody + band/pill/hero text styles
+_layout.scss         .wrap/.sect/.grid2/.grid3/.grid4 — the site's own layout primitives
+_components.scss     .panel/.rule/.btn-ghost/badge tint overrides/forms — shared across pages
+_chrome.scss         header nav dropdown + footer
+_home.scss           Home-only sections (hero, tabs, metrics, calendar, Codi/Enroll drawers)
+_blog.scss           Blog-only (post cards, category pills)
+_static-pages.scss   shared by Financing.jsx + Ventures.jsx
+```
+
+`_variables.scss` has a header comment explaining why it mixes `@import`/`@use` and why
+overrides must precede `bootstrap/scss/variables` — read it before touching Bootstrap theming.
+
+Brand components with no Bootstrap equivalent (`Logo`, `Avatar`) are tiny hand-written
+components in `src/components/`, not a vendored bundle. Everything else — buttons, badges,
+forms, the Codi/Enroll drawers — is react-bootstrap, restyled via the SCSS above.
 
 ## Structure
 
 ```
 src/
-  App.jsx              routes
-  main.jsx             entry, stylesheet imports
-  components/Chrome.jsx  TopBar, NavItem, Footer
-  design-system/       vendored CodeBoxx design system
-  lib/sanity.js        CMS client
-  lib/image-slot.js    <image-slot> web component
-  pages/               Home, Blog, Financing, Ventures
-  styles/              main.scss + partials
-public/assets/         images referenced by the pages
+  App.jsx                 routes
+  main.jsx                entry, stylesheet import
+  components/
+    Chrome.jsx             TopBar, NavItem, Footer (react-bootstrap Navbar)
+    Logo.jsx, Avatar.jsx    brand components with no Bootstrap equivalent
+  lib/sanity.js            CMS client
+  lib/image-slot.js        <image-slot> web component
+  pages/                   Home, Blog, Financing, Ventures
+  styles/                  main.scss + partials (see Styling above)
+public/assets/              images referenced by the pages
 ```
 
 ## Replacing the repo contents

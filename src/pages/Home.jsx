@@ -1,18 +1,8 @@
 import React from 'react';
-import {
-  Button,
-  Hero,
-  Logo,
-  TopTitle,
-  Badge,
-  Card,
-  Input,
-  Checkbox,
-  Toggle,
-  Avatar,
-  Icon,
-} from '../design-system';
+import { Button, Badge, Form, Offcanvas } from 'react-bootstrap';
 import { TopBar, Footer } from '../components/Chrome';
+import Avatar from '../components/Avatar';
+import Logo from '../components/Logo';
 import '../lib/image-slot.js';
 
 const DIVISIONS = [
@@ -60,136 +50,61 @@ function Codi({ open, onClose }) {
     setLog((l) => [...l, ['user', draft], ['codi', reply]]);
     setDraft('');
   };
-  if (!open) return null;
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 100,
-        display: 'flex',
-        justifyContent: 'flex-end',
-        background: 'rgba(0,47,67,0.32)',
-      }}
-      onClick={onClose}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width: 420,
-          maxWidth: '100%',
-          height: '100%',
-          background: 'var(--neutral-0)',
-          display: 'flex',
-          flexDirection: 'column',
-          boxShadow: 'inset 1px 0 0 0 var(--ui-slate-200)',
-        }}
-      >
-        <div
-          style={{
-            padding: 24,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 12,
-            boxShadow: 'inset 0 -1px 0 0 var(--ui-slate-200)',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <Avatar size="md" />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <span style={{ fontSize: 16, fontWeight: 700 }}>Codi</span>
-              <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--ui-slate-400)' }}>
-                CodeBoxx AI Agent
-              </span>
-            </div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <Badge variant="success">Active</Badge>
-            <Button size="sm" variant="ghost" onClick={onClose}>
-              Close
-            </Button>
+    <Offcanvas show={open} onHide={onClose} placement="end" className="codi-offcanvas">
+      <Offcanvas.Header className="site-header">
+        <div className="d-flex align-items-center gap-3">
+          <Avatar size="md" />
+          <div className="d-flex flex-column gap-1">
+            <span className="codi-name">Codi</span>
+            <span className="codi-role">CodeBoxx AI Agent</span>
           </div>
         </div>
-        <div
-          style={{
-            flex: 1,
-            overflowY: 'auto',
-            padding: 24,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 16,
-            background: 'var(--ui-slate-50)',
-          }}
-        >
+        <div className="d-flex align-items-center gap-3">
+          <Badge bg="success">Active</Badge>
+          <Button size="sm" variant="ghost" onClick={onClose}>
+            Close
+          </Button>
+        </div>
+      </Offcanvas.Header>
+      <Offcanvas.Body className="d-flex flex-column p-0">
+        <div className="codi-log">
           {log.map(([who, text], i) => (
-            <div
-              key={i}
-              style={{
-                alignSelf: who === 'user' ? 'flex-end' : 'flex-start',
-                maxWidth: '86%',
-                borderRadius: 12,
-                padding: '12px 16px',
-                fontSize: 14,
-                lineHeight: '20px',
-                background: who === 'user' ? 'var(--blue-500)' : 'var(--neutral-0)',
-                color: who === 'user' ? 'var(--neutral-0)' : 'var(--ui-slate-900)',
-                boxShadow: who === 'user' ? 'none' : 'inset 0 0 0 1px var(--ui-slate-200)',
-              }}
-            >
+            <div key={i} className={'codi-bubble' + (who === 'user' ? ' codi-bubble-user' : '')}>
               {text}
             </div>
           ))}
         </div>
-        <div
-          style={{
-            padding: 24,
-            display: 'flex',
-            gap: 12,
-            alignItems: 'flex-end',
-            boxShadow: 'inset 0 1px 0 0 var(--ui-slate-200)',
-          }}
-        >
-          <Input
+        <div className="codi-input-row">
+          <Form.Control
             id="codi-input"
-            label={null}
+            className="flex-grow-1"
             placeholder="Ask Codi"
-            style={{ width: 'auto', flex: 1 }}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
           />
           <Button onClick={send}>Send</Button>
         </div>
-      </div>
-    </div>
+      </Offcanvas.Body>
+    </Offcanvas>
   );
 }
 
 function Testimonials({ eyebrow, items }) {
   return (
-    <div style={{ marginTop: 48, display: 'flex', flexDirection: 'column', gap: 24 }}>
+    <div className="testimonials">
       <p className="eyebrow">{eyebrow}</p>
       <div className="grid3">
         {items.map((t) => (
-          <figure
-            key={t.name}
-            className="panel"
-            style={{ margin: 0, justifyContent: 'space-between', gap: 24 }}
-          >
-            <blockquote
-              style={{ margin: 0, fontSize: 14, lineHeight: '20px', color: 'var(--ui-slate-900)' }}
-            >
-              {t.quote}
-            </blockquote>
-            <figcaption style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <figure key={t.name} className="panel testimonial">
+            <blockquote className="testimonial-quote">{t.quote}</blockquote>
+            <figcaption className="testimonial-byline">
               <div className="rule" />
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div className="testimonial-person">
                 <Avatar size="md" />
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <span style={{ fontSize: 12, fontWeight: 600 }}>{t.name}</span>
-                  <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--ui-slate-400)' }}>
-                    {t.role}
-                  </span>
+                <div className="d-flex flex-column gap-1">
+                  <span className="testimonial-name">{t.name}</span>
+                  <span className="testimonial-role">{t.role}</span>
                 </div>
               </div>
             </figcaption>
@@ -231,43 +146,24 @@ function ClientSlider() {
   }, [paused]);
   return (
     <div
-      style={{ marginTop: 64, display: 'flex', flexDirection: 'column', gap: 24 }}
+      className="client-slider"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div
-        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 24 }}
-      >
+      <div className="client-slider-head">
         <p className="eyebrow">Trusted By</p>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <Button size="sm" variant="secondary" onClick={() => nudge(-1)}>
+        <div className="d-flex gap-2">
+          <Button size="sm" variant="outline-primary" onClick={() => nudge(-1)}>
             &lt;
           </Button>
-          <Button size="sm" variant="secondary" onClick={() => nudge(1)}>
+          <Button size="sm" variant="outline-primary" onClick={() => nudge(1)}>
             &gt;
           </Button>
         </div>
       </div>
-      <div
-        ref={ref}
-        className="noscroll"
-        style={{ display: 'flex', gap: 24, overflowX: 'auto', scrollSnapType: 'x mandatory' }}
-      >
+      <div ref={ref} className="noscroll client-track">
         {CLIENT_LOGOS.map((n, i) => (
-          <div
-            key={i}
-            style={{
-              flex: '0 0 auto',
-              width: 200,
-              height: 96,
-              scrollSnapAlign: 'start',
-              background: 'var(--neutral-0)',
-              borderRadius: 12,
-              boxShadow: 'inset 0 0 0 1px var(--ui-slate-200)',
-              padding: 16,
-              boxSizing: 'border-box',
-            }}
-          >
+          <div key={i} className="client-slide">
             <image-slot
               id={'client-logo-' + i}
               shape="rect"
@@ -284,28 +180,11 @@ function ClientSlider() {
 
 function ScriptTitle({ index, children, dark }) {
   return (
-    <span
-      style={{
-        width: 'fit-content',
-        borderRadius: 9999,
-        boxShadow: 'inset 0 0 0 1.5px var(--blue-500)',
-        padding: '8px 16px',
-        display: 'inline-flex',
-        fontFamily: 'var(--font-sans)',
-        fontWeight: 400,
-        fontSize: 12,
-        lineHeight: '100%',
-        letterSpacing: '0.5px',
-        textTransform: 'uppercase',
-        color: dark ? 'var(--neutral-0)' : 'var(--ui-slate-900)',
-        whiteSpace: 'nowrap',
-        marginBottom: 10,
-      }}
-    >
-      <span style={{ display: 'inline-flex', gap: 8 }}>
+    <span className={'script-title' + (dark ? ' script-title-dark' : '')}>
+      <span className="script-title-index">
         <span>{index}</span>
         <span>&mdash;</span>
-        <span style={{ fontWeight: 700 }}>{children}</span>
+        <span className="script-title-label">{children}</span>
       </span>
     </span>
   );
@@ -313,17 +192,8 @@ function ScriptTitle({ index, children, dark }) {
 
 function SectionHead({ eyebrow, index, title, lede, children }) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        gap: 48,
-        marginBottom: 40,
-        flexWrap: 'wrap',
-      }}
-    >
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div className="section-head">
+      <div className="d-flex flex-column gap-3">
         <ScriptTitle index={index}>{eyebrow}</ScriptTitle>
         <h2 className="h2">{title}</h2>
         {lede ? <p className="lede">{lede}</p> : null}
@@ -345,30 +215,16 @@ function Platform() {
         />
         <div className="grid3">
           {DIVISIONS.map((d) => (
-            <div
-              key={d.id}
-              className="panel"
-              style={{ justifyContent: 'space-between', minHeight: 240 }}
-            >
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <Badge variant="brand">{d.tag}</Badge>
+            <div key={d.id} className="panel panel-division">
+              <div className="d-flex flex-column gap-3">
+                <Badge bg="brand">{d.tag}</Badge>
                 <h3 className="ptitle">{d.name}</h3>
                 <p className="pbody">{d.blurb}</p>
                 {d.extra ? <p className="pbody">{d.extra}</p> : null}
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              <div className="d-flex flex-column gap-4">
                 <div className="rule" />
-                <a
-                  href={'#' + d.id}
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    letterSpacing: 1,
-                    textTransform: 'uppercase',
-                    color: 'var(--blue-500)',
-                    width: 'fit-content',
-                  }}
-                >
+                <a href={'#' + d.id} className="link-tag">
                   {d.role}
                 </a>
               </div>
@@ -395,31 +251,11 @@ function DivisionBand({
   aside,
 }) {
   return (
-    <section
-      id={id}
-      className="sect"
-      style={
-        alt
-          ? {
-              background: 'var(--neutral-0)',
-              boxShadow:
-                'inset 0 1px 0 0 var(--ui-slate-200), inset 0 -1px 0 0 var(--ui-slate-200)',
-            }
-          : undefined
-      }
-    >
+    <section id={id} className={'sect' + (alt ? ' sect-alt' : '')}>
       <div className="wrap">
         {aside ? (
-          <div
-            style={{
-              display: 'flex',
-              gap: 48,
-              alignItems: 'flex-start',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-            }}
-          >
-            <div style={{ flex: '1 1 560px', minWidth: 0 }}>
+          <div className="d-flex gap-5 align-items-start justify-content-between flex-wrap">
+            <div className="division-main">
               <SectionHead index={index} eyebrow={role} title={name} lede={lede} />
               {intro}
             </div>
@@ -431,24 +267,12 @@ function DivisionBand({
             {intro}
           </React.Fragment>
         )}
-        <div className="grid2" style={{ alignItems: 'start' }}>
+        <div className="grid2">
           {left || (
-            <div
-              className="panel"
-              style={{ gap: 0, padding: 0, boxShadow: 'none', background: 'transparent' }}
-            >
-              {points.map(([t, b], i) => (
-                <div
-                  key={t}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 8,
-                    padding: '20px 0',
-                    boxShadow: i === 0 ? 'none' : 'inset 0 1px 0 0 var(--ui-slate-200)',
-                  }}
-                >
-                  <span style={{ fontSize: 16, fontWeight: 700 }}>{t}</span>
+            <div className="stacked-list">
+              {points.map(([t, b]) => (
+                <div key={t} className="stacked-item">
+                  <span className="stacked-item-title">{t}</span>
                   <span className="pbody">{b}</span>
                 </div>
               ))}
@@ -534,6 +358,25 @@ const ABOUT = [
   },
 ];
 
+function ChevronButton({ active, onClick }) {
+  return (
+    <Button size="sm" variant={active ? 'primary' : 'outline-primary'} onClick={onClick}>
+      <svg
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <polyline points="9 6 15 12 9 18"></polyline>
+      </svg>
+    </Button>
+  );
+}
+
 function Studio() {
   const [active, setActive] = React.useState(ABOUT[0]);
   React.useEffect(() => {
@@ -563,49 +406,14 @@ function Studio() {
       name="CodeBoxx: Digital Transformation Has a Name"
       lede="Since 2018, CodeBoxx has been the guiding force helping companies adapt to an ever-evolving digital world. As experts in AI agent integration, we are committed to providing native AI solutions tailored to your needs."
       left={
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {ABOUT.map((a, i) => (
-            <div
-              key={a.id}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 10,
-                alignItems: 'flex-start',
-                padding: '20px 0',
-                boxShadow: i === 0 ? 'none' : 'inset 0 1px 0 0 var(--ui-slate-200)',
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 16,
-                  fontWeight: 700,
-                  letterSpacing: '0.5px',
-                  textTransform: 'uppercase',
-                  color: active.id === a.id ? 'var(--blue-500)' : 'var(--ui-slate-900)',
-                }}
-              >
+        <div className="stacked-list">
+          {ABOUT.map((a) => (
+            <div key={a.id} className="stacked-item">
+              <span className={'stacked-item-title' + (active.id === a.id ? ' active' : '')}>
                 {a.title}
               </span>
               <span className="pbody">{a.blurb}</span>
-              <Button
-                size="sm"
-                variant={active.id === a.id ? 'primary' : 'secondary'}
-                onClick={() => setActive(a)}
-              >
-                <svg
-                  width="28"
-                  height="28"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="9 6 15 12 9 18"></polyline>
-                </svg>
-              </Button>
+              <ChevronButton active={active.id === a.id} onClick={() => setActive(a)} />
             </div>
           ))}
         </div>
@@ -727,47 +535,11 @@ const LOGO_LINKS = {
 
 function ServiceDetail({ s }) {
   return (
-    <div className="panel" style={{ gap: 20, position: 'sticky', top: 104 }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start' }}>
-        <span
-          style={{
-            width: 'fit-content',
-            borderRadius: 9999,
-            background: 'var(--steel-500)',
-            marginBottom: 10,
-            padding: '6px 14px',
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: '0.5px',
-            textTransform: 'uppercase',
-            color: 'var(--neutral-0)',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {s.title}
-        </span>
-        <h3
-          style={{
-            margin: 0,
-            fontSize: 22,
-            fontWeight: 700,
-            lineHeight: '110%',
-            letterSpacing: '0.5px',
-          }}
-        >
-          {s.heading}
-        </h3>
-        <h4
-          style={{
-            margin: 0,
-            fontSize: 14,
-            fontWeight: 500,
-            lineHeight: '100%',
-            color: 'var(--ui-slate-500)',
-          }}
-        >
-          {s.sub}
-        </h4>
+    <div className="panel panel-sticky">
+      <div className="d-flex flex-column gap-3 align-items-start">
+        <span className="kicker">{s.title}</span>
+        <h3 className="service-heading">{s.heading}</h3>
+        <h4 className="service-sub">{s.sub}</h4>
       </div>
       <div className="rule" />
       {s.detail.split('\n\n').map((p, i) => (
@@ -776,18 +548,10 @@ function ServiceDetail({ s }) {
         </p>
       ))}
       {s.people ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+        <div className="people-grid">
           {s.people.map(([n, r, url], i) => (
-            <div
-              key={i}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 10,
-                alignItems: 'flex-start',
-              }}
-            >
-              <div style={{ width: '100%', aspectRatio: '3 / 4' }}>
+            <div key={i} className="person">
+              <div className="person-photo">
                 <image-slot
                   id={'team-' + i}
                   mask="polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%)"
@@ -796,20 +560,10 @@ function ServiceDetail({ s }) {
                   style={{ width: '100%', height: '100%' }}
                 ></image-slot>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <span style={{ fontSize: 13, fontWeight: 700 }}>{n}</span>
-                <span style={{ fontSize: 12, color: 'var(--ui-slate-500)' }}>{r}</span>
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    letterSpacing: 1,
-                    textTransform: 'uppercase',
-                  }}
-                >
+              <div className="d-flex flex-column gap-1">
+                <span className="person-name">{n}</span>
+                <span className="person-role">{r}</span>
+                <a href={url} target="_blank" rel="noopener noreferrer" className="link-tag">
                   LinkedIn
                 </a>
               </div>
@@ -820,9 +574,9 @@ function ServiceDetail({ s }) {
       {s.tags ? (
         <React.Fragment>
           <div className="rule" />
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          <div className="d-flex flex-wrap gap-2">
             {s.tags.map((t) => (
-              <Badge key={t} variant="default">
+              <Badge key={t} bg="default">
                 {t}
               </Badge>
             ))}
@@ -830,18 +584,14 @@ function ServiceDetail({ s }) {
         </React.Fragment>
       ) : null}
       <div className="rule" />
-      {s.subhead ? (
-        <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700, lineHeight: '100%' }}>
-          {s.subhead}
-        </h3>
-      ) : null}
+      {s.subhead ? <h3 className="service-subhead">{s.subhead}</h3> : null}
       {s.close.split('\n\n').map((p, i) => (
         <p key={i} className="pbody">
           {p}
         </p>
       ))}
       {s.reference ? (
-        <p className="pbody" style={{ fontSize: 12 }}>
+        <p className="pbody text-sm">
           &mdash;Reference{' '}
           <a href={s.reference} target="_blank" rel="noopener noreferrer">
             {s.reference}
@@ -849,16 +599,11 @@ function ServiceDetail({ s }) {
         </p>
       ) : null}
       {s.logos ? (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, lineHeight: '130%' }}>
-            {s.logosTitle}
-          </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+        <div className="d-flex flex-column gap-4">
+          <h3 className="service-logos-title">{s.logosTitle}</h3>
+          <div className="logo-grid-4">
             {s.logos.map((n) => (
-              <div
-                key={n}
-                style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}
-              >
+              <div key={n} className="d-flex flex-column gap-2 align-items-center">
                 <image-slot
                   id={'logo-' + n.toLowerCase().replace(/\s+/g, '-')}
                   shape="rounded"
@@ -867,15 +612,7 @@ function ServiceDetail({ s }) {
                   placeholder={n}
                   style={{ width: '100%', height: 64, '--slot-frame-bg': 'transparent' }}
                 ></image-slot>
-                <span
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    letterSpacing: 1,
-                    textTransform: 'uppercase',
-                    color: 'var(--ui-slate-400)',
-                  }}
-                >
+                <span className="link-tag link-tag-muted">
                   <a href={LOGO_LINKS[n]} target="_blank" rel="noopener noreferrer">
                     {n}
                   </a>
@@ -887,28 +624,12 @@ function ServiceDetail({ s }) {
       ) : null}
       {s.closeAfter ? <p className="pbody">{s.closeAfter}</p> : null}
       {s.steps ? (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 4 }}>
+        <div className="service-steps">
           {s.steps.map(([t, b], i) => (
-            <div key={t} style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-              <span
-                style={{
-                  flex: '0 0 auto',
-                  width: 28,
-                  height: 28,
-                  borderRadius: 9999,
-                  background: 'var(--blue-500)',
-                  color: 'var(--neutral-0)',
-                  fontSize: 12,
-                  fontWeight: 700,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {i + 1}
-              </span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <span style={{ fontSize: 14, fontWeight: 700 }}>{t}</span>
+            <div key={t} className="step">
+              <span className="step-num">{i + 1}</span>
+              <div className="d-flex flex-column gap-2">
+                <span className="step-title">{t}</span>
                 <span className="pbody">{b}</span>
               </div>
             </div>
@@ -928,31 +649,13 @@ function Solutions() {
       role="Innovate, Create, Adapt"
       name="The Age of Vibe Coding"
       aside={
-        <div
-          style={{
-            flex: '0 0 148px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 12,
-            alignItems: 'center',
-            marginBottom: 24,
-          }}
-        >
+        <div className="d-flex flex-column gap-3 align-items-center award-block">
           <img
             src="/assets/award-2025-retailtech.png"
             alt="RetailTech Breakthrough Award 2025 — CodeBoxx for GoodwillFinds' GEM Chatbot, Chatbot Solution of the Year"
-            style={{ width: 148, height: 'auto', display: 'block' }}
+            className="award-img"
           />
-          <span
-            style={{
-              fontSize: 11,
-              fontWeight: 600,
-              lineHeight: '16px',
-              textAlign: 'center',
-              color: 'var(--ui-slate-500)',
-              textWrap: 'pretty',
-            }}
-          >
+          <span className="award-caption">
             We were awarded Best AI Chatbot from over a 1000 entries
           </span>
         </div>
@@ -965,21 +668,12 @@ function Solutions() {
       }
       lede={null}
       intro={
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 16,
-            marginTop: -16,
-            marginBottom: 40,
-            maxWidth: 720,
-          }}
-        >
-          <p className="lede" style={{ maxWidth: 'none' }}>
+        <div className="d-flex flex-column gap-3 division-intro">
+          <p className="lede lede-wide">
             In the past, young people learned how to speak the language of computers by following
             strict rules and writing precise instructions. That era is fading.
           </p>
-          <p className="lede" style={{ maxWidth: 'none' }}>
+          <p className="lede lede-wide">
             With the rise of generative AI, technologists are no longer just coders—they design
             systems that can learn, adapt, and respond. This shift has given rise to vibe coding, a
             skill that blends clear intent, logic, creativity, and human intuition. As intelligent
@@ -989,49 +683,14 @@ function Solutions() {
         </div>
       }
       left={
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {SERVICES.map((s, i) => (
-            <div
-              key={s.id}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 10,
-                alignItems: 'flex-start',
-                padding: '20px 0',
-                boxShadow: i === 0 ? 'none' : 'inset 0 1px 0 0 var(--ui-slate-200)',
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 16,
-                  fontWeight: 700,
-                  letterSpacing: '0.5px',
-                  textTransform: 'uppercase',
-                  color: active.id === s.id ? 'var(--blue-500)' : 'var(--ui-slate-900)',
-                }}
-              >
+        <div className="stacked-list">
+          {SERVICES.map((s) => (
+            <div key={s.id} className="stacked-item">
+              <span className={'stacked-item-title' + (active.id === s.id ? ' active' : '')}>
                 {s.title}
               </span>
               <span className="pbody">{s.blurb}</span>
-              <Button
-                size="sm"
-                variant={active.id === s.id ? 'primary' : 'secondary'}
-                onClick={() => setActive(s)}
-              >
-                <svg
-                  width="28"
-                  height="28"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="9 6 15 12 9 18"></polyline>
-                </svg>
-              </Button>
+              <ChevronButton active={active.id === s.id} onClick={() => setActive(s)} />
             </div>
           ))}
         </div>
@@ -1093,68 +752,20 @@ const INTAKES = {
 };
 
 function CalendarColumn({ title, meta, rows }) {
-  const tone = {
-    Open: 'var(--blue-500)',
-    Waitlist: 'var(--yellow-500)',
-    Planned: 'rgba(255,255,255,0.4)',
-  };
+  const tone = { Open: 'status-open', Waitlist: 'status-waitlist', Planned: 'status-planned' };
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 8,
-          paddingBottom: 20,
-          boxShadow: 'inset 0 -1px 0 0 rgba(255,255,255,0.16)',
-        }}
-      >
-        <span
-          style={{
-            fontSize: 16,
-            fontWeight: 700,
-            letterSpacing: '0.5px',
-            textTransform: 'uppercase',
-            color: 'var(--neutral-0)',
-          }}
-        >
-          {title}
-        </span>
-        <span style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.56)' }}>
-          {meta}
-        </span>
+    <div className="calendar-col">
+      <div className="calendar-col-head">
+        <span className="calendar-col-title">{title}</span>
+        <span className="calendar-col-meta">{meta}</span>
       </div>
       {rows.map(([date, place, status]) => (
-        <div
-          key={date}
-          style={{
-            display: 'flex',
-            alignItems: 'baseline',
-            justifyContent: 'space-between',
-            gap: 16,
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
-            <span
-              style={{ fontSize: 16, fontWeight: 600, color: 'var(--neutral-0)', minWidth: 128 }}
-            >
-              {date}
-            </span>
-            <span style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.56)' }}>
-              {place}
-            </span>
+        <div key={date} className="calendar-row">
+          <div className="calendar-row-left">
+            <span className="calendar-date">{date}</span>
+            <span className="calendar-place">{place}</span>
           </div>
-          <span
-            style={{
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: 1,
-              textTransform: 'uppercase',
-              color: tone[status],
-            }}
-          >
-            {status}
-          </span>
+          <span className={'calendar-status ' + tone[status]}>{status}</span>
         </div>
       ))}
     </div>
@@ -1163,47 +774,15 @@ function CalendarColumn({ title, meta, rows }) {
 
 function IntakeCalendar() {
   return (
-    <div
-      id="intake"
-      style={{
-        scrollMarginTop: 96,
-        marginTop: 64,
-        background: 'var(--navy-500)',
-        borderRadius: 16,
-        padding: 48,
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-          gap: 32,
-          flexWrap: 'wrap',
-          marginBottom: 40,
-        }}
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <span
-            style={{
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: 1,
-              textTransform: 'uppercase',
-              color: 'var(--blue-500)',
-            }}
-          >
-            Intake Calendar
-          </span>
-          <span
-            style={{ fontSize: 28, fontWeight: 700, lineHeight: '100%', color: 'var(--neutral-0)' }}
-          >
-            Two programs. Eight cohorts.
-          </span>
+    <div id="intake" className="calendar-band">
+      <div className="calendar-head">
+        <div className="d-flex flex-column gap-3">
+          <span className="calendar-eyebrow">Intake Calendar</span>
+          <span className="calendar-title">Two programs. Eight cohorts.</span>
         </div>
-        <Badge variant="brand">Editable in Sanity</Badge>
+        <Badge bg="brand">Editable in Sanity</Badge>
       </div>
-      <div className="grid2" style={{ gap: 64 }}>
+      <div className="grid2 calendar-grid">
         <CalendarColumn title="AI-Native FSD" meta="12 weeks, full time" rows={INTAKES.fsd} />
         <CalendarColumn
           title="Advanced AI-Developer"
@@ -1250,7 +829,7 @@ const ACADEMY_TOPICS = [
   [
     'Meet Your Team',
     'Placement is the exit criterion, not a job board.',
-    'Your instructors at CodeBoxx are experienced, passionate professionals that are driven to teach and help you succeed. Beyond a textbook, they bring real-world experience and expertise to the classroom, providing you with valuable guidance and mentorship that\u2019s relevant to what hiring organizations are looking for in their software development and AI candidates.',
+    'Your instructors at CodeBoxx are experienced, passionate professionals that are driven to teach and help you succeed. Beyond a textbook, they bring real-world experience and expertise to the classroom, providing you with valuable guidance and mentorship that’s relevant to what hiring organizations are looking for in their software development and AI candidates.',
     null,
     'Academy Team',
     [
@@ -1287,17 +866,8 @@ function Academy({ onEnroll }) {
       }
       lede="A 12-week program that ends inside a real pod. Graduates carry the same tooling and the same review standard as the studio."
       intro={
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 16,
-            marginTop: -16,
-            marginBottom: 40,
-            maxWidth: 720,
-          }}
-        >
-          <p className="lede" style={{ maxWidth: 'none' }}>
+        <div className="d-flex flex-column gap-3 division-intro">
+          <p className="lede lede-wide">
             Wherever you come from, AI has the power to jumpstart your career as a developer. You
             need a fully committed partner moving at the speed of innovation. Find a partner for
             life with CodeBoxx.
@@ -1305,105 +875,41 @@ function Academy({ onEnroll }) {
         </div>
       }
       left={
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className="stacked-list">
           {ACADEMY_TOPICS.map(([t, b], i) => (
-            <div
-              key={t}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 10,
-                alignItems: 'flex-start',
-                padding: '20px 0',
-                boxShadow: i === 0 ? 'none' : 'inset 0 1px 0 0 var(--ui-slate-200)',
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 16,
-                  fontWeight: 700,
-                  color: active === i ? 'var(--blue-500)' : 'var(--ui-slate-900)',
-                }}
-              >
+            <div key={t} className="stacked-item">
+              <span className={'stacked-item-title' + (active === i ? ' active' : '')}>
                 {t.split('\n').map((l, k) => (
-                  <span key={k} style={{ display: 'block' }}>
+                  <span key={k} className="line-block">
                     {l}
                   </span>
                 ))}
               </span>
               <span className="pbody">
                 {b.split('\n\n').map((p, k) => (
-                  <span key={k} style={{ display: 'block', marginTop: k ? 12 : 0 }}>
+                  <span key={k} className="line-block">
                     {p}
                   </span>
                 ))}
               </span>
-              <Button
-                size="sm"
-                variant={active === i ? 'primary' : 'secondary'}
-                onClick={() => setActive(i)}
-              >
-                <svg
-                  width="28"
-                  height="28"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="9 6 15 12 9 18"></polyline>
-                </svg>
-              </Button>
+              <ChevronButton active={active === i} onClick={() => setActive(i)} />
             </div>
           ))}
         </div>
       }
     >
-      <div className="panel" style={{ gap: 20, position: 'sticky', top: 104 }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            gap: 12,
-          }}
-        >
-          <span
-            style={{
-              width: 'fit-content',
-              borderRadius: 9999,
-              background: 'var(--steel-500)',
-              marginBottom: 10,
-              padding: '6px 14px',
-              fontSize: 11,
-              fontWeight: 700,
-              letterSpacing: '0.5px',
-              textTransform: 'uppercase',
-              color: 'var(--neutral-0)',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {ACADEMY_TOPICS[active][4] || 'Cohort Structure'}
-          </span>
-          <Badge variant="brand">Next intake: Sept 2026</Badge>
+      <div className="panel panel-sticky">
+        <div className="d-flex justify-content-between align-items-center gap-3">
+          <span className="kicker">{ACADEMY_TOPICS[active][4] || 'Cohort Structure'}</span>
+          <Badge bg="brand">Next intake: Sept 2026</Badge>
         </div>
         <p className="pbody">{ACADEMY_TOPICS[active][2]}</p>
         <div className="rule" />
         {ACADEMY_TOPICS[active][5] ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+          <div className="people-grid people-grid-4">
             {ACADEMY_TOPICS[active][5].map(([n, r, url], i) => (
-              <div
-                key={i}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 10,
-                  alignItems: 'flex-start',
-                }}
-              >
-                <div style={{ width: '100%', aspectRatio: '3 / 4', filter: 'grayscale(1)' }}>
+              <div key={i} className="person">
+                <div className="person-photo person-photo-gray">
                   <image-slot
                     id={'academy-team-' + i}
                     mask="polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%)"
@@ -1412,20 +918,10 @@ function Academy({ onEnroll }) {
                     style={{ width: '100%', height: '100%' }}
                   ></image-slot>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <span style={{ fontSize: 13, fontWeight: 700 }}>{n}</span>
-                  <span style={{ fontSize: 12, color: 'var(--ui-slate-500)' }}>{r}</span>
-                  <a
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 600,
-                      letterSpacing: 1,
-                      textTransform: 'uppercase',
-                    }}
-                  >
+                <div className="d-flex flex-column gap-1">
+                  <span className="person-name">{n}</span>
+                  <span className="person-role">{r}</span>
+                  <a href={url} target="_blank" rel="noopener noreferrer" className="link-tag">
                     LinkedIn
                   </a>
                 </div>
@@ -1435,33 +931,23 @@ function Academy({ onEnroll }) {
         ) : null}
         {(ACADEMY_TOPICS[active][3] || (ACADEMY_TOPICS[active][5] ? [] : COHORT)).map(
           ([w, t, b, cta], i) => (
-            <div
-              key={i}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-                alignItems: 'flex-start',
-                paddingTop: i === 0 ? 0 : 20,
-                boxShadow: i === 0 ? 'none' : 'inset 0 1px 0 0 var(--ui-slate-200)',
-              }}
-            >
+            <div key={i} className="stacked-item">
               <span className="eyebrow">{w}</span>
-              <span style={{ fontSize: 16, fontWeight: 700 }}>{t}</span>
+              <span className="cohort-title">{t}</span>
               <span className="pbody">{b}</span>
               {cta === 'enroll' ? (
-                <Button size="sm" onClick={() => onEnroll(t)} style={{ marginTop: 4 }}>
+                <Button size="sm" className="mt-1" onClick={() => onEnroll(t)}>
                   Enroll Now
                 </Button>
               ) : null}
               {cta === 'contact' ? (
                 <Button
                   size="sm"
-                  variant="secondary"
+                  variant="outline-primary"
+                  className="mt-1"
                   onClick={() => {
                     location.hash = '#contact';
                   }}
-                  style={{ marginTop: 4 }}
                 >
                   Contact Us
                 </Button>
@@ -1538,42 +1024,22 @@ function CountUp({ value }) {
 
 function Metrics() {
   return (
-    <section style={{ background: 'var(--navy-500)' }} className="sect">
+    <section className="sect sect-navy">
       <div className="wrap">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 48 }}>
+        <div className="d-flex flex-column gap-3 mb-5">
           <ScriptTitle index="06" dark>
             The AI in 2026
           </ScriptTitle>
-          <h2 className="h2" style={{ color: 'var(--neutral-0)' }}>
-            Adoption is no longer the question. Pace is.
-          </h2>
+          <h2 className="h2 h2-inverse">Adoption is no longer the question. Pace is.</h2>
         </div>
         <div className="grid4">
           {METRICS.map(([n, t, l]) => (
-            <div key={t} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <span
-                style={{
-                  fontSize: 48,
-                  fontWeight: 900,
-                  lineHeight: '100%',
-                  color: 'var(--blue-500)',
-                }}
-              >
+            <div key={t} className="metric">
+              <span className="metric-value">
                 <CountUp value={n} />
               </span>
-              <span
-                style={{
-                  fontSize: 16,
-                  fontWeight: 700,
-                  lineHeight: '100%',
-                  color: 'var(--neutral-0)',
-                }}
-              >
-                {t}
-              </span>
-              <span style={{ fontSize: 14, lineHeight: '20px', color: 'rgba(255,255,255,0.72)' }}>
-                {l}
-              </span>
+              <span className="metric-label">{t}</span>
+              <span className="metric-desc">{l}</span>
             </div>
           ))}
         </div>
@@ -1593,13 +1059,9 @@ function Contact({ onEnroll }) {
   const invalid = f.email.length > 0 && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email);
   const ready = f.first && f.last && f.email && !invalid && f.country && f.phone && consent;
   return (
-    <section
-      id="contact"
-      style={{ background: 'var(--neutral-0)', boxShadow: 'inset 0 1px 0 0 var(--ui-slate-200)' }}
-      className="sect"
-    >
-      <div className="wrap grid2" style={{ alignItems: 'start' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <section id="contact" className="sect sect-contact">
+      <div className="wrap grid2">
+        <div className="d-flex flex-column gap-3">
           <ScriptTitle index="07">LEARN MORE</ScriptTitle>
           <h2 className="h2">One form for all three divisions.</h2>
           <p className="lede">
@@ -1611,108 +1073,107 @@ function Contact({ onEnroll }) {
             Would you like to learn more about the CodeBoxx Academy? Do you have a project and are
             looking for a venture-style partner? Contact us.
           </p>
-          <div className="rule" style={{ margin: '8px 0' }} />
+          <div className="rule rule-spaced" />
           <h2 className="h2">You want to Enroll the Academy?</h2>
           <p className="lede">
             Skip the form. Pick the program you want and apply directly. Applications are reviewed
             within one business day.
           </p>
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          <div className="d-flex gap-3 flex-wrap">
             <Button onClick={() => onEnroll('Advanced AI Developer')}>
               Enroll Now to AI Course
             </Button>
-            <Button variant="secondary" onClick={() => onEnroll('AI Native Full-Stack Developer')}>
+            <Button
+              variant="outline-primary"
+              onClick={() => onEnroll('AI Native Full-Stack Developer')}
+            >
               Enroll Now to FSD
             </Button>
           </div>
         </div>
         <div className="panel">
-          <h2 className="h2" style={{ marginBottom: 4 }}>
-            Need more info, contact us.
-          </h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <span style={{ fontSize: 13, fontWeight: 600 }}>
-              CodeBoxx's Division you want to reach
-            </span>
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          <h2 className="h2 h2-tight">Need more info, contact us.</h2>
+          <div className="d-flex flex-column gap-2">
+            <span className="field-label">CodeBoxx's Division you want to reach</span>
+            <div className="d-flex gap-2 flex-wrap">
               {DIVISIONS.map((d) => (
-                <Checkbox
+                <Form.Check
                   key={d.id}
+                  type="checkbox"
                   checked={division === d.id}
                   onChange={() => setDivision(d.id)}
                   label={d.name.replace('CodeBoxx ', '')}
                 />
               ))}
-              <Checkbox
+              <Form.Check
+                type="checkbox"
                 checked={division === 'ventures'}
                 onChange={() => setDivision('ventures')}
                 label="Ventures"
               />
             </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            <Input
-              id="first"
-              label="First Name"
-              placeholder="First"
-              style={{ width: '100%' }}
-              value={f.first}
-              onChange={set('first')}
-            />
-            <Input
-              id="last"
-              label="Last Name"
-              placeholder="Last"
-              style={{ width: '100%' }}
-              value={f.last}
-              onChange={set('last')}
-            />
+          <div className="form-row-2">
+            <Form.Control placeholder="First" value={f.first} onChange={set('first')} />
+            <Form.Control placeholder="Last" value={f.last} onChange={set('last')} />
           </div>
-          <Input
-            id="email"
-            label="Email"
-            placeholder="name@company.com"
-            style={{ width: '100%' }}
-            value={f.email}
-            state={invalid ? 'error' : 'default'}
-            helperText="Invalid address. Missing domain."
-            onChange={set('email')}
-          />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            <Input
-              id="country"
-              label="Country"
-              placeholder="Canada"
-              style={{ width: '100%' }}
-              value={f.country}
-              onChange={set('country')}
+          <Form.Group>
+            <Form.Control
+              placeholder="name@company.com"
+              value={f.email}
+              isInvalid={invalid}
+              onChange={set('email')}
             />
-            <Input
-              id="phone"
-              label="Phone"
-              placeholder="+1 555 000 0000"
-              style={{ width: '100%' }}
-              value={f.phone}
-              onChange={set('phone')}
-            />
+            <Form.Control.Feedback type="invalid">
+              Invalid address. Missing domain.
+            </Form.Control.Feedback>
+          </Form.Group>
+          <div className="form-row-2">
+            <Form.Control placeholder="Canada" value={f.country} onChange={set('country')} />
+            <Form.Control placeholder="+1 555 000 0000" value={f.phone} onChange={set('phone')} />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <span style={{ fontSize: 13, fontWeight: 600 }}>Is it a mobile phone?</span>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <Checkbox checked={mobile === 'yes'} onChange={() => setMobile('yes')} label="Yes" />
-              <Checkbox checked={mobile === 'no'} onChange={() => setMobile('no')} label="No" />
+          <div className="d-flex flex-column gap-2">
+            <span className="field-label">Is it a mobile phone?</span>
+            <div className="d-flex gap-2">
+              <Form.Check
+                type="checkbox"
+                checked={mobile === 'yes'}
+                onChange={() => setMobile('yes')}
+                label="Yes"
+              />
+              <Form.Check
+                type="checkbox"
+                checked={mobile === 'no'}
+                onChange={() => setMobile('no')}
+                label="No"
+              />
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <span style={{ fontSize: 13, fontWeight: 600 }}>Select your preferred language.</span>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <Checkbox checked={lang === 'en'} onChange={() => setLang('en')} label="English" />
-              <Checkbox checked={lang === 'fr'} onChange={() => setLang('fr')} label="French" />
+          <div className="d-flex flex-column gap-2">
+            <span className="field-label">Select your preferred language.</span>
+            <div className="d-flex gap-2">
+              <Form.Check
+                type="checkbox"
+                checked={lang === 'en'}
+                onChange={() => setLang('en')}
+                label="English"
+              />
+              <Form.Check
+                type="checkbox"
+                checked={lang === 'fr'}
+                onChange={() => setLang('fr')}
+                label="French"
+              />
             </div>
           </div>
-          <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-            <Checkbox checked={consent} onChange={setConsent} label="" />
-            <span style={{ fontSize: 11, lineHeight: '16px', color: 'var(--ui-slate-500)' }}>
+          <div className="d-flex gap-2 align-items-start">
+            <Form.Check
+              type="checkbox"
+              checked={consent}
+              onChange={(e) => setConsent(e.target.checked)}
+              label=""
+            />
+            <span className="consent-text">
               By submitting this form, you agree that we may call, text, and email you additional
               information on CodeBoxx programs. You understand that you can unsubscribe at any time
               including by emailing your request to{' '}
@@ -1721,21 +1182,8 @@ function Contact({ onEnroll }) {
             </span>
           </div>
           <div className="rule" />
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 16,
-            }}
-          >
-            <span
-              style={{
-                fontSize: 12,
-                fontWeight: 500,
-                color: sent ? 'var(--green-600)' : 'var(--ui-slate-400)',
-              }}
-            >
+          <div className="form-actions">
+            <span className={'form-actions-note' + (sent ? ' sent' : '')}>
               {sent
                 ? 'Brief received. Reply within 1 business day.'
                 : 'No sales sequence. One reply from a human.'}
@@ -1793,42 +1241,19 @@ const HEARD_ABOUT = [
 ];
 const ENROLL_TITLES = { fsd: 'AI Native Full-Stack Developer', ai: 'Advanced AI Developer' };
 
-const fieldLabel = {
-  fontSize: 13,
-  fontWeight: 600,
-  lineHeight: '100%',
-  color: 'var(--ui-slate-900)',
-};
-const selectStyle = {
-  width: '100%',
-  height: 40,
-  borderRadius: 8,
-  border: 'none',
-  boxShadow: 'inset 0 0 0 1px var(--ui-slate-300)',
-  background: 'var(--neutral-0)',
-  padding: '0 12px',
-  fontFamily: 'var(--font-sans)',
-  fontSize: 14,
-  color: 'var(--ui-slate-900)',
-  appearance: 'none',
-};
-
-function Field({ label, children }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-      <span style={fieldLabel}>{label}</span>
-      {children}
-    </div>
-  );
-}
-
 function RadioRow({ label, options, value, onChange }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <span style={fieldLabel}>{label}</span>
-      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+    <div className="d-flex flex-column gap-2">
+      <Form.Label className="mb-0">{label}</Form.Label>
+      <div className="d-flex gap-3 flex-wrap">
         {options.map((o) => (
-          <Checkbox key={o} checked={value === o} onChange={() => onChange(o)} label={o} />
+          <Form.Check
+            key={o}
+            type="checkbox"
+            checked={value === o}
+            onChange={() => onChange(o)}
+            label={o}
+          />
         ))}
       </div>
     </div>
@@ -1856,6 +1281,13 @@ function EnrollDrawer({ course, onClose }) {
   const [contactBy, setContactBy] = React.useState('Email');
   const [heard, setHeard] = React.useState('');
   const [sent, setSent] = React.useState(false);
+  const [renderCourse, setRenderCourse] = React.useState(course);
+  React.useEffect(() => {
+    if (course) {
+      setRenderCourse(course);
+      setSent(false);
+    }
+  }, [course]);
   const set = (k) => (e) => setForm((f) => Object.assign({}, f, { [k]: e.target.value }));
   const invalid = form.email.length > 0 && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email);
   const ready =
@@ -1870,329 +1302,153 @@ function EnrollDrawer({ course, onClose }) {
     form.region &&
     form.country &&
     form.postal;
-  const [render, setRender] = React.useState(course);
-  const [shown, setShown] = React.useState(false);
-  React.useEffect(() => {
-    if (course) {
-      setRender(course);
-      setSent(false);
-      const r = requestAnimationFrame(() => setShown(true));
-      return () => cancelAnimationFrame(r);
-    }
-    setShown(false);
-    const t = setTimeout(() => setRender(null), 880);
-    return () => clearTimeout(t);
-  }, [course]);
-  if (!render) return null;
-  const title = /full-?stack|fsd/i.test(render) ? ENROLL_TITLES.fsd : ENROLL_TITLES.ai;
+  const title =
+    renderCourse && /full-?stack|fsd/i.test(renderCourse) ? ENROLL_TITLES.fsd : ENROLL_TITLES.ai;
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 100,
-        display: 'flex',
-        justifyContent: 'flex-end',
-        background: shown ? 'rgba(0,47,67,0.32)' : 'rgba(0,47,67,0)',
-        transition: 'background 800ms cubic-bezier(0.16,1,0.3,1)',
-      }}
-      onClick={onClose}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width: 460,
-          maxWidth: '100%',
-          height: '100%',
-          background: 'var(--neutral-0)',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          transform: shown ? 'translateX(0)' : 'translateX(100%)',
-          transition: 'transform 860ms cubic-bezier(0.16,1,0.3,1)',
-        }}
-      >
-        <div
-          style={{
-            flex: '0 0 auto',
-            background: 'var(--neutral-0)',
-            padding: 24,
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
-            gap: 16,
-            boxShadow: 'inset 0 -1px 0 0 var(--ui-slate-200)',
-          }}
-        >
-          <div
-            style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start' }}
-          >
-            <span
-              style={{
-                borderRadius: 9999,
-                background: 'var(--steel-500)',
-                marginBottom: 10,
-                padding: '6px 14px',
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: '0.5px',
-                textTransform: 'uppercase',
-                color: 'var(--neutral-0)',
-              }}
-            >
-              Enroll
-            </span>
-            <h3 className="ptitle">{title}</h3>
-          </div>
-          <Button size="sm" variant="ghost" onClick={onClose}>
-            Close
-          </Button>
+    <Offcanvas show={!!course} onHide={onClose} placement="end" className="enroll-offcanvas">
+      <Offcanvas.Header className="site-header">
+        <div className="d-flex flex-column gap-3 align-items-start">
+          <span className="kicker">Enroll</span>
+          <h3 className="ptitle">{title}</h3>
         </div>
-        <div
-          style={{
-            flex: 1,
-            minHeight: 0,
-            overflowY: 'auto',
-            padding: 24,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 20,
-          }}
-        >
-          <h3 className="ptitle">Create Your Student Portal Account.</h3>
-          <p className="pbody">
-            If you already have a student portal account please{' '}
-            <a href="https://student.codeboxx.com/pages/login.php" target="_blank" rel="noopener">
-              log in
-            </a>{' '}
-            to make your course selection.
-          </p>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            <Input
-              id="enroll-first"
-              label="First Name"
-              placeholder="First"
-              style={{ width: '100%' }}
-              value={form.first}
-              onChange={set('first')}
-            />
-            <Input
-              id="enroll-last"
-              label="Last Name"
-              placeholder="Last"
-              style={{ width: '100%' }}
-              value={form.last}
-              onChange={set('last')}
-            />
-          </div>
-          <Field label="Birthdate">
-            <input
-              id="enroll-birth"
-              type="date"
-              aria-label="Birthdate"
-              style={selectStyle}
-              value={form.birth}
-              onChange={set('birth')}
-            />
-          </Field>
-          <Input
-            id="enroll-email"
-            label="Email"
+        <Button size="sm" variant="ghost" onClick={onClose}>
+          Close
+        </Button>
+      </Offcanvas.Header>
+      <Offcanvas.Body className="d-flex flex-column gap-4">
+        <h3 className="ptitle">Create Your Student Portal Account.</h3>
+        <p className="pbody">
+          If you already have a student portal account please{' '}
+          <a href="https://student.codeboxx.com/pages/login.php" target="_blank" rel="noopener">
+            log in
+          </a>{' '}
+          to make your course selection.
+        </p>
+        <div className="form-row-2">
+          <Form.Control placeholder="First" value={form.first} onChange={set('first')} />
+          <Form.Control placeholder="Last" value={form.last} onChange={set('last')} />
+        </div>
+        <Form.Group>
+          <Form.Label>Birthdate</Form.Label>
+          <Form.Control
+            type="date"
+            aria-label="Birthdate"
+            value={form.birth}
+            onChange={set('birth')}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
             placeholder="name@company.com"
-            style={{ width: '100%' }}
             value={form.email}
-            state={invalid ? 'error' : 'default'}
-            helperText="Invalid address. Missing domain."
+            isInvalid={invalid}
             onChange={set('email')}
           />
-          <Field label="Phone">
-            <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 8 }}>
-              <select
-                aria-label="Country code"
-                style={selectStyle}
-                value={form.dial}
-                onChange={set('dial')}
-              >
-                {DIAL_CODES.map(([c, n]) => (
-                  <option key={c} value={c}>
-                    {c} {n}
-                  </option>
-                ))}
-              </select>
-              <input
-                id="enroll-phone"
-                aria-label="Phone number"
-                placeholder="555 000 0000"
-                style={selectStyle}
-                value={form.phone}
-                onChange={set('phone')}
-              />
-            </div>
-          </Field>
-          <RadioRow
-            label="Is it a mobile phone?"
-            options={['Yes', 'No']}
-            value={mobile}
-            onChange={setMobile}
-          />
-          <RadioRow
-            label="Preferred Language"
-            options={['English', 'French']}
-            value={lang}
-            onChange={setLang}
-          />
-          <RadioRow
-            label="Preferred Communication Method"
-            options={['Phone', 'SMS', 'Email']}
-            value={contactBy}
-            onChange={setContactBy}
-          />
-          <Input
-            id="enroll-street"
-            label="Civic Number and Street"
-            placeholder="1200 Central Ave"
-            style={{ width: '100%' }}
-            value={form.street}
-            onChange={set('street')}
-          />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            <Input
-              id="enroll-city"
-              label="City"
-              placeholder="St. Petersburg"
-              style={{ width: '100%' }}
-              value={form.city}
-              onChange={set('city')}
-            />
-            <Input
-              id="enroll-region"
-              label="State / Province"
-              placeholder="Florida"
-              style={{ width: '100%' }}
-              value={form.region}
-              onChange={set('region')}
-            />
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            <Field label="Country">
-              <select
-                aria-label="Country"
-                style={selectStyle}
-                value={form.country}
-                onChange={set('country')}
-              >
-                <option value="">Select</option>
-                {COUNTRIES.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </Field>
-            <Input
-              id="enroll-postal"
-              label="Postal Code / Zip Code"
-              placeholder="33705"
-              style={{ width: '100%' }}
-              value={form.postal}
-              onChange={set('postal')}
-            />
-          </div>
-          <Field label="How did you hear about us?">
-            <select
-              aria-label="How did you hear about us?"
-              style={selectStyle}
-              value={heard}
-              onChange={(e) => setHeard(e.target.value)}
-            >
-              <option value="">Select</option>
-              {HEARD_ABOUT.map((o) => (
-                <option key={o} value={o}>
-                  {o}
+          <Form.Control.Feedback type="invalid">
+            Invalid address. Missing domain.
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Phone</Form.Label>
+          <div className="phone-row">
+            <Form.Select aria-label="Country code" value={form.dial} onChange={set('dial')}>
+              {DIAL_CODES.map(([c, n]) => (
+                <option key={c} value={c}>
+                  {c} {n}
                 </option>
               ))}
-            </select>
-          </Field>
-          <p className="pbody">
-            Applications are reviewed within one business day. The entrance assessment is scheduled
-            by email.
-          </p>
-          <div className="rule" />
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 16,
-            }}
-          >
-            <span
-              style={{
-                fontSize: 12,
-                fontWeight: 500,
-                color: sent ? 'var(--green-600)' : 'var(--ui-slate-400)',
-              }}
-            >
-              {sent ? 'Application received.' : 'Submits to the admissions API.'}
-            </span>
-            <Button size="lg" disabled={!ready} onClick={() => setSent(true)}>
-              Submit
-            </Button>
+            </Form.Select>
+            <Form.Control
+              aria-label="Phone number"
+              placeholder="555 000 0000"
+              value={form.phone}
+              onChange={set('phone')}
+            />
           </div>
+        </Form.Group>
+        <RadioRow
+          label="Is it a mobile phone?"
+          options={['Yes', 'No']}
+          value={mobile}
+          onChange={setMobile}
+        />
+        <RadioRow
+          label="Preferred Language"
+          options={['English', 'French']}
+          value={lang}
+          onChange={setLang}
+        />
+        <RadioRow
+          label="Preferred Communication Method"
+          options={['Phone', 'SMS', 'Email']}
+          value={contactBy}
+          onChange={setContactBy}
+        />
+        <Form.Control placeholder="1200 Central Ave" value={form.street} onChange={set('street')} />
+        <div className="form-row-2">
+          <Form.Control placeholder="St. Petersburg" value={form.city} onChange={set('city')} />
+          <Form.Control placeholder="Florida" value={form.region} onChange={set('region')} />
         </div>
-      </div>
-    </div>
+        <div className="form-row-2">
+          <Form.Group>
+            <Form.Label>Country</Form.Label>
+            <Form.Select aria-label="Country" value={form.country} onChange={set('country')}>
+              <option value="">Select</option>
+              {COUNTRIES.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+          <Form.Control placeholder="33705" value={form.postal} onChange={set('postal')} />
+        </div>
+        <Form.Group>
+          <Form.Label>How did you hear about us?</Form.Label>
+          <Form.Select
+            aria-label="How did you hear about us?"
+            value={heard}
+            onChange={(e) => setHeard(e.target.value)}
+          >
+            <option value="">Select</option>
+            {HEARD_ABOUT.map((o) => (
+              <option key={o} value={o}>
+                {o}
+              </option>
+            ))}
+          </Form.Select>
+        </Form.Group>
+        <p className="pbody">
+          Applications are reviewed within one business day. The entrance assessment is scheduled by
+          email.
+        </p>
+        <div className="rule" />
+        <div className="form-actions">
+          <span className={'form-actions-note' + (sent ? ' sent' : '')}>
+            {sent ? 'Application received.' : 'Submits to the admissions API.'}
+          </span>
+          <Button size="lg" disabled={!ready} onClick={() => setSent(true)}>
+            Submit
+          </Button>
+        </div>
+      </Offcanvas.Body>
+    </Offcanvas>
   );
 }
 
 function WSJTeaser() {
   return (
-    <section style={{ background: 'var(--navy-500)', padding: '80px 0' }}>
-      <div
-        className="wrap"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 24,
-          alignItems: 'center',
-          textAlign: 'center',
-          maxWidth: 900,
-          marginInline: 'auto',
-        }}
-      >
+    <section className="band-dark">
+      <div className="wrap band-dark-inner">
         <image-slot
           id="wsj-logo"
           shape="rect"
           fit="contain"
           placeholder="Wall Street Journal logo"
-          style={{
-            width: 320,
-            height: 88,
-            '--slot-frame-bg': 'transparent',
-            color: 'var(--neutral-0)',
-          }}
+          style={{ width: 320, height: 88, '--slot-frame-bg': 'transparent', color: '#fff' }}
         ></image-slot>
-        <h2
-          style={{
-            margin: 0,
-            fontSize: 32,
-            fontWeight: 700,
-            lineHeight: '110%',
-            color: 'var(--neutral-0)',
-            textWrap: 'pretty',
-          }}
-        >
-          How Five Americans Made It to the Middle Class
-        </h2>
-        <p
-          style={{
-            margin: 0,
-            fontSize: 14,
-            lineHeight: '20px',
-            color: 'rgba(255,255,255,0.72)',
-            maxWidth: 640,
-          }}
-        >
+        <h2 className="band-heading">How Five Americans Made It to the Middle Class</h2>
+        <p className="band-body">
           We are proud to be part of this success story, as featured in the Wall Street Journal. Tim
           Weaver is highlighted in this truly fascinating article. Congratulations,
           Tim&mdash;CodeBoxx for life.
@@ -2224,7 +1480,7 @@ const LATEST_POSTS = [
     url: 'https://academy.codeboxx.com/post/best-corporate-ai-bootcamps',
   },
   {
-    title: 'Unlock your own Future: Join CodeBoxx\u2019s 4-Day Vibe Coding and Agentic AI Workshop',
+    title: 'Unlock your own Future: Join CodeBoxx’s 4-Day Vibe Coding and Agentic AI Workshop',
     category: 'Workshop',
     date: '2025-12-01',
     excerpt:
@@ -2248,16 +1504,14 @@ function fmtPostDate(iso) {
 
 function CodeBlog() {
   return (
-    <section id="codeblog" className="sect" style={{ background: 'var(--steel-700)' }}>
+    <section id="codeblog" className="sect sect-steel">
       <div className="wrap">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 40 }}>
+        <div className="d-flex flex-column gap-3 mb-40">
           <ScriptTitle index="02" dark>
             CodeBlog
           </ScriptTitle>
-          <h2 className="h2" style={{ color: 'var(--neutral-0)' }}>
-            What we ship, we write down.
-          </h2>
-          <p className="lede" style={{ color: 'rgba(255,255,255,0.72)' }}>
+          <h2 className="h2 h2-inverse">What we ship, we write down.</h2>
+          <p className="lede lede-inverse">
             Field notes from the studio and the Academy: what the agents took over, what the
             engineers kept, and what the results were. Written by the people who did the work.
           </p>
@@ -2269,38 +1523,21 @@ function CodeBlog() {
               href={p.url}
               target="_blank"
               rel="noopener"
-              className="panel"
-              style={{
-                justifyContent: 'space-between',
-                minHeight: 260,
-                background: 'var(--neutral-0)',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
+              className="panel panel-link-card"
             >
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <Badge variant="brand">{p.category}</Badge>
+              <div className="d-flex flex-column gap-3">
+                <Badge bg="brand">{p.category}</Badge>
                 <h3 className="ptitle">{p.title}</h3>
                 <p className="pbody">{p.excerpt}</p>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              <div className="d-flex flex-column gap-4">
                 <div className="rule" />
-                <span
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 500,
-                    letterSpacing: 1,
-                    textTransform: 'uppercase',
-                    color: 'var(--ui-slate-400)',
-                  }}
-                >
-                  {fmtPostDate(p.date)}
-                </span>
+                <span className="card-date">{fmtPostDate(p.date)}</span>
               </div>
             </a>
           ))}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
+        <div className="d-flex justify-content-center mt-40">
           <Button
             onClick={() => {
               window.location.href = '/blog';
@@ -2316,125 +1553,43 @@ function CodeBlog() {
 
 function ForgeTeaser() {
   return (
-    <section style={{ background: 'var(--navy-500)', padding: '80px 0' }}>
-      <div
-        className="wrap"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 24,
-          alignItems: 'center',
-          textAlign: 'center',
-          maxWidth: 900,
-          marginInline: 'auto',
-        }}
-      >
+    <section className="band-dark">
+      <div className="wrap band-dark-inner">
         <image-slot
           id="forge20-product"
           shape="rect"
           fit="contain"
           placeholder="CodeBoxx w/ CrewKit Forge 20 appliance"
-          style={{
-            width: 210,
-            height: 100,
-            '--slot-frame-bg': 'transparent',
-            color: 'var(--neutral-0)',
-          }}
+          style={{ width: 210, height: 100, '--slot-frame-bg': 'transparent', color: '#fff' }}
         ></image-slot>
-        <span
-          style={{
-            fontSize: 20,
-            fontWeight: 700,
-            letterSpacing: 2,
-            textTransform: 'uppercase',
-            color: 'var(--blue-500)',
-          }}
-        >
-          Lead. Think. Write. Run.
-        </span>
-        <h2
-          style={{
-            margin: 0,
-            fontSize: 32,
-            fontWeight: 700,
-            lineHeight: '110%',
-            color: 'var(--neutral-0)',
-            textWrap: 'pretty',
-          }}
-        >
-          CodeBoxx w/ CrewKit Forge 20
-        </h2>
-        <p
-          style={{
-            margin: 0,
-            fontSize: 14,
-            lineHeight: '20px',
-            color: 'rgba(255,255,255,0.72)',
-            maxWidth: 640,
-          }}
-        >
+        <span className="band-superhead">Lead. Think. Write. Run.</span>
+        <h2 className="band-heading">CodeBoxx w/ CrewKit Forge 20</h2>
+        <p className="band-body">
           Plan, build and run your software in one shell, two deployment paths. One executive
           chassis, five integrated touch surfaces, low-cost local computing by default and cloud
           escalation when warranted. Up to 20 heavy software workstreams in parallel: a complete
           end-to-end software development team in one appliance.
         </p>
-        <div
-          style={{
-            display: 'flex',
-            gap: 32,
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            marginTop: 8,
-          }}
-        >
+        <div className="forge-features">
           {[
             ['Local Inference', 'Keep your foundational code, your software and your data close.'],
             ['Cost Control', 'Cut cloud dependency and unpredictable token-based pricing.'],
             ['Operator Model', 'CrewKit, operators and Academy training above the hardware.'],
           ].map(([t, d]) => (
-            <div
-              key={t}
-              style={{
-                flex: '1 1 220px',
-                maxWidth: 260,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-                textAlign: 'left',
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  lineHeight: '100%',
-                  color: 'var(--neutral-0)',
-                }}
-              >
-                {t}
-              </span>
-              <span style={{ fontSize: 14, lineHeight: '20px', color: 'rgba(255,255,255,0.6)' }}>
-                {d}
-              </span>
+            <div key={t} className="forge-feature">
+              <span className="forge-feature-title">{t}</span>
+              <span className="forge-feature-body">{d}</span>
             </div>
           ))}
         </div>
-        <div
-          style={{
-            display: 'flex',
-            gap: 12,
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            marginTop: 8,
-          }}
-        >
+        <div className="d-flex gap-3 flex-wrap justify-content-center mt-2">
           <Button
             onClick={() => window.open('https://buildorder.codeboxx.com/', '_blank', 'noopener')}
           >
             Build Your Own
           </Button>
           <Button
-            variant="secondary"
+            variant="outline-primary"
             onClick={() => window.open('http://crewkit.io', '_blank', 'noopener')}
           >
             Learn More
@@ -2451,20 +1606,20 @@ function App() {
   return (
     <div id="top">
       <TopBar onCodi={() => setCodi(true)} onEnroll={setEnroll} />
-      <Hero
-        backgroundImage="/assets/hero-bg.png"
-        style={{
-          width: '100%',
-          height: 'auto',
-          minHeight: 560,
-          padding: '64px 48px',
-          gap: 96,
-          backgroundPosition: 'center bottom',
-        }}
-      >
-        We build <span style={{ color: 'var(--blue-500)' }}>AI-Native</span> teams and software that
-        outwork the old way.
-      </Hero>
+      <div className="hero">
+        <div className="d-flex">
+          <span className="pill">AI-First, Human-Built</span>
+        </div>
+        <div className="d-flex justify-content-between align-items-end gap-5 flex-wrap">
+          <h1>
+            We build <span className="text-brand">AI-Native</span> teams and software that outwork
+            the old way.
+          </h1>
+          <div className="hero-logo">
+            <Logo theme="dark" width={280} />
+          </div>
+        </div>
+      </div>
       <Platform />
       <WSJTeaser />
       <CodeBlog />

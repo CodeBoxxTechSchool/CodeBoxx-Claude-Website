@@ -1,4 +1,4 @@
-$breakpoint-md: 1000px;
+@use 'variables' as v;
 
 .wrap {
   max-width: 1440px;
@@ -14,6 +14,7 @@ $breakpoint-md: 1000px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
+  align-items: start;
 }
 .grid3 {
   display: grid;
@@ -26,7 +27,7 @@ $breakpoint-md: 1000px;
   gap: 24px;
 }
 
-@media (max-width: $breakpoint-md) {
+@media (max-width: v.$breakpoint-md) {
   .wrap {
     padding: 0 24px;
   }

@@ -1,0 +1,29 @@
+@use 'variables' as v;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: v.$font-sans;
+  font-size: v.$text-body;
+  color: v.$color-text-primary;
+  background: v.$color-bg-page;
+  -webkit-font-smoothing: antialiased;
+  text-wrap: pretty;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: v.$blue-500;
+  text-decoration: none;
+
+  &:hover {
+    color: v.$blue-600;
+    text-decoration: underline;
+  }
+}

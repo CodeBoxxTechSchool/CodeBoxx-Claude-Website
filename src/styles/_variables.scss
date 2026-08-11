@@ -1,0 +1,248 @@
+// Brand tokens, mirrored as literal Sass values from the retired
+// src/design-system/tokens/*.css (Figma-generated custom properties). Literal values
+// are required (not var(--...)) so Bootstrap's Sass functions can use them at compile
+// time.
+//
+// Import order matters, twice over:
+// 1. Bootstrap's own bootstrap.scss is an @import chain, so overriding its scalar
+//    variables ($primary, etc) only works if they're assigned BEFORE
+//    `bootstrap/scss/variables` runs — that's the file that bakes $primary/$secondary
+//    into the $theme-colors map, and a later reassignment of the scalar doesn't
+//    retroactively update an already-built map. Hence: color ramps + $primary/
+//    $secondary/etc overrides first, THEN `@import 'bootstrap/scss/variables'`, THEN
+//    map-merge in any brand-only keys (which need $theme-colors to already exist).
+// 2. Because this file uses @import (not @use), its Bootstrap mixins/functions/maps
+//    (color-contrast(), breakpoint mixins, $theme-colors, etc) are only visible
+//    INSIDE this file. Other partials get the plain variables below via
+//    `@use 'variables'` (module-scoped), but cannot reach Bootstrap's own mixins/
+//    functions that way — reference Bootstrap's docs directly in a partial if one is
+//    ever needed outside this file.
+@import 'bootstrap/scss/functions';
+
+// ---- Color ramps ----
+$blue-50: #f0f9fe;
+$blue-100: #ddf2fc;
+$blue-200: #bde5fa;
+$blue-300: #98d6f7;
+$blue-400: #6cc5f3;
+$blue-500: #43b4f0;
+$blue-600: #3999cc;
+$blue-700: #2f7ea8;
+$blue-800: #215a78;
+$blue-900: #143648;
+
+$navy-50: #ebeef0;
+$navy-100: #d1dadd;
+$navy-200: #a6b6bd;
+$navy-300: #738d98;
+$navy-400: #385d6c;
+$navy-500: #002f43;
+$navy-600: #002839;
+$navy-700: #00212f;
+$navy-800: #001721;
+$navy-900: #000e14;
+
+$steel-50: #eef4f7;
+$steel-100: #d9e7ee;
+$steel-200: #b6d0de;
+$steel-300: #8cb5cb;
+$steel-400: #5b96b5;
+$steel-500: #2d78a0;
+$steel-600: #266688;
+$steel-700: #205470;
+$steel-800: #173c50;
+$steel-900: #0e2430;
+
+$yellow-50: #fefbec;
+$yellow-100: #fdf7d5;
+$yellow-200: #faefad;
+$yellow-300: #f8e67e;
+$yellow-400: #f5db47;
+$yellow-500: #f2d114;
+$yellow-600: #ceb111;
+$yellow-700: #a9920e;
+$yellow-800: #79680a;
+$yellow-900: #493f06;
+
+$red-50: #faedee;
+$red-100: #f3d7d8;
+$red-200: #e8b2b3;
+$red-300: #da8687;
+$red-400: #cb5355;
+$red-500: #bc2325;
+$red-600: #a01e20;
+$red-700: #84181a;
+$red-800: #5e1113;
+$red-900: #390a0b;
+
+$green-50: #edfaf0;
+$green-100: #d1f2d9;
+$green-400: #4ade80;
+$green-500: #21c45e;
+$green-600: #17a34a;
+$green-700: #0f8038;
+
+$neutral-0: #ffffff;
+$neutral-50: #f7fafa;
+$neutral-100: #f0f2f5;
+$neutral-200: #dee3e8;
+$neutral-300: #c2ccd4;
+$neutral-400: #919ea8;
+$neutral-500: #667380;
+$neutral-600: #47545e;
+$neutral-700: #33404d;
+$neutral-800: #1c2633;
+$neutral-900: #0d141f;
+$neutral-950: #03080d;
+
+// Raw UI colours used across component specs (a separate ramp from the semantic
+// neutral scale above — recorded verbatim from ui-scale.css).
+$ui-slate-900: #0f172a;
+$ui-slate-500: #64748b;
+$ui-slate-400: #94a3b8;
+$ui-slate-300: #cbd5e1;
+$ui-slate-200: #e2e8f0;
+$ui-slate-50: #f8fafc;
+
+// Badge tint pairs (subtle bg + saturated fg) — Bootstrap's Badge renders a solid
+// fill by default, so these are applied via override classes in _components.scss.
+$badge-default-bg: $ui-slate-200;
+$badge-default-fg: $ui-slate-900;
+$badge-brand-bg: #e0f2fe;
+$badge-brand-fg: $navy-500;
+$badge-success-bg: #dcfce7;
+$badge-success-fg: #15803d;
+$badge-warning-bg: #fef9c3;
+$badge-warning-fg: #a16207;
+$badge-error-bg: #fee2e2;
+$badge-error-fg: #991b1b;
+
+// ---- Semantic aliases ----
+$primary-color: $blue-500;
+$secondary-color: $navy-500;
+$tertiary-color: $steel-500;
+$accent-color: $yellow-500;
+
+$color-text-primary: $ui-slate-900;
+$color-text-secondary: $ui-slate-500;
+$color-text-tertiary: $ui-slate-400;
+$color-border-default: $ui-slate-200;
+$color-bg-primary: $neutral-0;
+$color-bg-page: $ui-slate-50;
+
+// ---- Typography ----
+$font-sans:
+  'Inter',
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  Roboto,
+  'Helvetica Neue',
+  Arial,
+  sans-serif;
+$font-script: 'Great Vibes', cursive;
+
+$weight-light: 300;
+$weight-regular: 400;
+$weight-medium: 500;
+$weight-semibold: 600;
+$weight-bold: 700;
+$weight-black: 900;
+
+// Sizes transcribed from the Figma file — do not round these.
+$text-hero: 64px;
+$text-display: 48px;
+$text-specimen: 39px;
+$text-section-title: 32px;
+$text-h1: 28px;
+$text-h2: 18px;
+$text-h3: 16px;
+$text-body: 14px;
+$text-label: 13px;
+$text-caption: 12px;
+$text-micro: 11px;
+$text-nano: 10px;
+
+$leading-tight: 100%;
+$leading-hero: 72px;
+$leading-body: 20px;
+
+$tracking-eyebrow: 1px;
+$tracking-hero-eyebrow: 0.5px;
+
+// ---- Breakpoints ----
+$breakpoint-md: 1000px;
+
+// ---- Radius scale ----
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-xl: 16px;
+$radius-2xl: 24px;
+$radius-full: 9999px;
+
+// ---- Elevation ----
+$shadow-card: 0 1px 2px 0 rgba(0, 0, 0, 0.0392);
+$ring-default: inset 0 0 0 1px $color-border-default;
+
+// ---- Bootstrap scalar overrides (MUST precede `@import 'bootstrap/scss/variables'`) ----
+$primary: $blue-500;
+$secondary: $navy-500;
+$success: $green-600;
+$warning: $yellow-600;
+$danger: $red-600;
+$light: $ui-slate-50;
+$dark: $ui-slate-900;
+
+$body-bg: $color-bg-page;
+$body-color: $color-text-primary;
+$font-family-sans-serif: $font-sans;
+$font-family-base: $font-family-sans-serif;
+
+$border-radius: $radius-md;
+$border-radius-sm: $radius-sm;
+$border-radius-lg: $radius-lg;
+$border-radius-xl: $radius-xl;
+$border-radius-2xl: $radius-2xl;
+
+$link-color: $blue-500;
+$link-hover-color: $blue-600;
+
+// Checkbox ground truth from the retired Checkbox.jsx: 20px box, 4px radius,
+// slate-300 ring unchecked, solid blue-500 fill+ring checked. Width is set via a
+// plain CSS override in _components.scss instead of a Sass variable — Bootstrap's
+// own $form-check-input-width default is in `em` and mixes badly with a `px`
+// override in its internal `add()` calculations.
+$form-check-input-border-radius: $radius-sm;
+$form-check-input-border: 1px solid $ui-slate-300;
+$form-check-input-checked-bg-color: $blue-500;
+$form-check-input-checked-border-color: $blue-500;
+$form-check-label-color: $ui-slate-900;
+
+// Input ground truth from the retired Input.jsx: 40px control height, 8px radius,
+// slate-300 ring default, blue-500 ring focused, red-500 ring error.
+$input-height: 40px;
+$input-border-radius: $radius-md;
+$input-border-color: $ui-slate-300;
+$input-focus-border-color: $blue-500;
+$input-focus-box-shadow: none;
+$input-color: $ui-slate-900;
+$form-label-font-weight: $weight-semibold;
+$form-label-font-size: $text-label;
+$form-label-color: $ui-slate-900;
+
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+
+// Brand-only keys, added now that $theme-colors exists (built above using OUR
+// $primary/$secondary/etc, not Bootstrap's stock ones).
+$theme-colors: map-merge(
+  $theme-colors,
+  (
+    'brand': $blue-500,
+    'steel': $steel-500,
+    'navy': $navy-500,
+  )
+);
+
+@import 'bootstrap/scss/bootstrap';

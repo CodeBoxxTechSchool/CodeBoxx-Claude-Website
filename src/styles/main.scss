@@ -1,23 +1,9 @@
-@use 'layout';
+@use 'variables';
+@use 'base';
 @use 'typography';
+@use 'layout';
 @use 'components';
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  background: var(--ui-slate-50);
-  font-family: var(--font-sans);
-  color: var(--ui-slate-900);
-}
-
-a {
-  color: var(--blue-500);
-  text-decoration: none;
-
-  &:hover {
-    color: var(--blue-600);
-  }
-}
+@use 'chrome';
+@use 'home';
+@use 'blog';
+@use 'static-pages';
