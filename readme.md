@@ -38,26 +38,23 @@ npm run dev
 
 `src/lib/sanity.js` exposes `fetchCollection(type, groqTail)` plus one hook per content
 type. All of them query the Sanity Content API directly over `fetch` (no SDK dependency)
-and fall back to a hardcoded seed array/object when `optL66ROM` isn't set, so
+and fall back to a hardcoded seed array/object when `VITE_SANITY_PROJECT_ID` isn't set, so
 the site always builds and runs with no CMS connection. Entry mapping lives in each `toX()`
 function — adjust field names there if a document type's schema differs.
 
+Project: `zagi8xr3` ("CodeBoxxWeb", dataset `production`). The dataset allows public reads,
+so `VITE_SANITY_TOKEN` can stay blank — only set it if the dataset is ever made private.
+
 ### Reaching the content dashboard
 
-This repo only consumes Sanity's API — the actual editing dashboard (Sanity Studio) is a
-separate app you run or deploy yourself, not something inside this repo:
+The editing dashboard (Sanity Studio) lives in its own project, not in this repo:
+`/Users/minuitcinq/projects/codeboxx-website-studio`, already attached to project `zagi8xr3`
+with the four schema types below.
 
-- **No Studio yet?** Scaffold one in its own folder, outside this repo:
-  `npm create sanity@latest`. Pick "Create new project" (or attach to the existing project
-  behind `optL66ROM`, if one already exists), then add the four document types
-  from the table below as schema files — a fresh Studio starts with a blank schema.
-- **Studio already exists?**
-  - Locally: `cd` into the Studio project, `npm run dev`, open `http://localhost:3333`.
-  - Deployed (the real day-to-day dashboard URL): `npx sanity deploy` from the Studio
-    project gives you a hosted dashboard at `https://CodeBoxx.sanity.studio`.
+- **Locally**: `cd` into that folder, `npm run dev`, open `http://localhost:3333`.
+- **Deployed** (the real day-to-day dashboard, reachable from anywhere): **https://codeboxxweb.sanity.studio/**
 - **Project settings, API tokens, dataset management** (not content editing):
-  https://www.sanity.io/manage — find the project by the same ID that's in
-  `optL66ROM`.
+  https://www.sanity.io/manage/project/zagi8xr3
 
 Document types expected in the Sanity Studio project (created separately — this repo only
 consumes the API, it doesn't scaffold a Studio):
