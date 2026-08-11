@@ -26,7 +26,7 @@ const NAV = [
     label: 'Academy',
     href: '#academy',
     items: [
-      ['Courses', '#academy'],
+      ['Courses', '#academy-courses'],
       ['Calendar', '#intake'],
       ['Financing Options', '/financing'],
     ],

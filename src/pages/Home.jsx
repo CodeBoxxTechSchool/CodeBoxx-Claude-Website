@@ -851,6 +851,21 @@ const ACADEMY_TOPICS = [
 
 function Academy({ onEnroll }) {
   const [active, setActive] = React.useState(0);
+  React.useEffect(() => {
+    const apply = () => {
+      if (location.hash === '#academy-courses') {
+        setActive(1);
+      } else if (location.hash === '#academy') {
+        setActive(0);
+      } else {
+        return;
+      }
+      document.getElementById('academy')?.scrollIntoView();
+    };
+    apply();
+    window.addEventListener('hashchange', apply);
+    return () => window.removeEventListener('hashchange', apply);
+  }, []);
   return (
     <DivisionBand
       alt
