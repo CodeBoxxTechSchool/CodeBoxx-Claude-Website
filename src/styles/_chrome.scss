@@ -9,7 +9,38 @@
 
   .navbar {
     min-height: 80px;
-    padding-block: 12px;
+    padding-block: 0;
+  }
+
+  @media (max-width: v.$breakpoint-md) {
+    .wrap {
+      padding: 24px;
+    }
+
+    .navbar {
+      .navbar-collapse {
+        height: 85vh;
+      }
+    }
+  }
+}
+
+.navbar-toggler.collapsed {
+  .navbar-toggler-icon {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease-in-out;
+  }
+}
+
+.navbar-toggler {
+  border: none;
+  box-shadow: none !important;
+  padding: 4px;
+
+  &-icon {
+    transform: rotate(90deg);
+    transition: transform 0.3s ease-in-out;
+    background-image: var(--bs-navbar-toggler-icon-bg);
   }
 }
 
@@ -20,6 +51,9 @@
   height: 80px;
 
   > a {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     font-size: v.$text-body;
     font-weight: v.$weight-medium;
     color: v.$ui-slate-500;
@@ -27,6 +61,35 @@
 
   &.open > a {
     color: v.$blue-500;
+  }
+}
+
+.nav-caret {
+  flex: 0 0 auto;
+  transition: transform 0.15s ease;
+}
+.nav-item.open .nav-caret {
+  transform: rotate(180deg);
+}
+
+// Sticky bottom CTA bar, mobile only (shown below the navbar's lg breakpoint via
+// the d-lg-none utility class on the element itself).
+.mobile-cta-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 55;
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  background: v.$neutral-0;
+  box-shadow:
+    inset 0 1px 0 0 v.$ui-slate-200,
+    0 -2px 8px rgba(0, 0, 0, 0.06);
+
+  .btn {
+    flex: 1 1 0;
   }
 }
 
@@ -56,6 +119,27 @@
       background: v.$blue-50;
       text-decoration: none;
     }
+  }
+}
+
+// Below the navbar's expand breakpoint (lg), the collapsed menu is a block-level
+// dropdown, not the 80px-tall hover row it is on desktop — let items size naturally
+// and stack, and let dropdown submenus sit inline (in flow) instead of floating
+// absolutely over the items below them. This must come AFTER the base .nav-item/
+// .nav-dropdown rules above — same specificity, so source order decides the winner
+// at narrow widths.
+@media (max-width: 991.98px) {
+  .nav-item {
+    height: auto;
+    width: 100%;
+    padding: 12px 0;
+  }
+
+  .nav-dropdown {
+    position: static;
+    margin: 8px 0 0;
+    box-shadow: none;
+    padding-left: 12px;
   }
 }
 

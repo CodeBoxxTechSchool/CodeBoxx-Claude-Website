@@ -5,6 +5,10 @@ const DATASET = import.meta.env.VITE_SANITY_DATASET || 'production';
 const API_VERSION = import.meta.env.VITE_SANITY_API_VERSION || '2024-01-01';
 const TOKEN = import.meta.env.VITE_SANITY_TOKEN;
 
+// Lets other modules (e.g. intakes.js) skip a doomed fetch quietly instead of
+// hitting the same "not configured" warning fetchCollection already throws.
+export const hasSanityProject = Boolean(PROJECT_ID);
+
 export async function fetchCollection(type, groqTail = '') {
   if (!PROJECT_ID) throw new Error('VITE_SANITY_PROJECT_ID is not set.');
   const url = new URL(
@@ -46,4 +50,66 @@ export function useSanityPosts(seed = []) {
     };
   }, []);
   return posts;
+}
+
+// Sanity 'teamMember' document (name, role, linkedin, photo image, group: "studio" |
+// "academy", order) -> the shape ServiceDetail's and Academy's people-grids render.
+// `id` carries the Sanity document _id — used as both the React key and the
+// <image-slot> id, so a stable identity survives reordering (see the seed shapes in
+// Home.jsx for why this matters: image-slot persists locally-dropped images keyed
+// by id, and a positional id would reattach a stale photo to the wrong person after
+// a reorder).
+function toTeamMember(entry) {
+  return {
+    id: entry._id,
+    name: entry.name,
+    role: entry.role,
+    linkedin: entry.linkedin,
+    photo: entry.photo,
+  };
+}
+
+export function useSanityTeam(group, seed = []) {
+  const [team, setTeam] = React.useState(seed);
+  React.useEffect(() => {
+    let live = true;
+    if (!PROJECT_ID) return undefined;
+    fetchCollection(
+      'teamMember',
+      '[group == "' +
+        group +
+        '"] | order(order asc) {_id, name, role, linkedin, "photo": photo.asset->url}'
+    )
+      .then((rows) => {
+        if (live && rows.length) setTeam(rows.map(toTeamMember));
+      })
+      .catch((err) => console.warn('[sanity]', err.message));
+    return () => {
+      live = false;
+    };
+  }, [group]);
+  return team;
+}
+
+// Sanity 'partnerLogo' document (name, logo image, order) -> the shape ClientSlider
+// renders. No fixed count — however many documents exist is however many slides show.
+function toLogo(entry) {
+  return { id: entry._id, name: entry.name, logo: entry.logo };
+}
+
+export function useSanityLogos(seed = []) {
+  const [logos, setLogos] = React.useState(seed);
+  React.useEffect(() => {
+    let live = true;
+    if (!PROJECT_ID) return undefined;
+    fetchCollection('partnerLogo', ' | order(order asc) {_id, name, "logo": logo.asset->url}')
+      .then((rows) => {
+        if (live && rows.length) setLogos(rows.map(toLogo));
+      })
+      .catch((err) => console.warn('[sanity]', err.message));
+    return () => {
+      live = false;
+    };
+  }, []);
+  return logos;
 }
