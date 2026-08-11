@@ -3,6 +3,8 @@ import { Button, Badge, Form, Offcanvas } from 'react-bootstrap';
 import { TopBar, Footer } from '../components/Chrome';
 import Avatar from '../components/Avatar';
 import Logo from '../components/Logo';
+import { useSanityTeam, useSanityLogos } from '../lib/sanity';
+import { useIntakes } from '../lib/intakes';
 import '../lib/image-slot.js';
 
 const DIVISIONS = [
@@ -116,17 +118,18 @@ function Testimonials({ eyebrow, items }) {
 }
 
 const CLIENT_LOGOS = [
-  'Client One',
-  'Client Two',
-  'Client Three',
-  'Client Four',
-  'Client Five',
-  'Client Six',
-  'Client Seven',
-  'Client Eight',
+  { id: 'client-1', name: 'Client One' },
+  { id: 'client-2', name: 'Client Two' },
+  { id: 'client-3', name: 'Client Three' },
+  { id: 'client-4', name: 'Client Four' },
+  { id: 'client-5', name: 'Client Five' },
+  { id: 'client-6', name: 'Client Six' },
+  { id: 'client-7', name: 'Client Seven' },
+  { id: 'client-8', name: 'Client Eight' },
 ];
 
 function ClientSlider() {
+  const logos = useSanityLogos(CLIENT_LOGOS);
   const ref = React.useRef(null);
   const [paused, setPaused] = React.useState(false);
   const nudge = (d) => {
@@ -162,13 +165,14 @@ function ClientSlider() {
         </div>
       </div>
       <div ref={ref} className="noscroll client-track">
-        {CLIENT_LOGOS.map((n, i) => (
-          <div key={i} className="client-slide">
+        {logos.map((logo) => (
+          <div key={logo.id} className="client-slide">
             <image-slot
-              id={'client-logo-' + i}
+              id={'client-logo-' + logo.id}
+              src={logo.logo}
               shape="rect"
               fit="contain"
-              placeholder={n}
+              placeholder={logo.name}
               style={{ width: '100%', height: '100%', '--slot-frame-bg': 'transparent' }}
             ></image-slot>
           </div>
@@ -298,35 +302,60 @@ const ABOUT = [
       "Our team is dedicated to helping your business enhance its performance through innovative AI-First solutions. We understand the unique challenges you face and are committed to providing tailored strategies that drive results. Let's work together to elevate your business to new heights!",
     tags: null,
     people: [
-      ['Nicolas Genest', 'CEO & Co-Founder', 'https://www.linkedin.com/in/ngenest/'],
-      ['Rémi Gagnon', 'CDO', 'https://www.linkedin.com/in/r%C3%A9mi-gagnon-7684092/'],
-      ['Félix-Antoine Paradis', 'CTO', 'https://www.linkedin.com/in/felixaparadis/'],
-      [
-        'Martin Chantal',
-        'General Manager',
-        'https://www.linkedin.com/in/martin-chantal-078832181/',
-      ],
-      [
-        'Marie-France Nolin',
-        'Administrative Assistant',
-        'https://www.linkedin.com/in/marie-france-nolin-1ab1b8154/',
-      ],
-      ['Brian Peret', 'Academy Director', 'https://www.linkedin.com/in/brian-peret-b62636101/'],
-      [
-        'Francis Patry-Jessop',
-        'Director of Coaching',
-        'https://www.linkedin.com/in/francis-patry-jessop-b1794b241/',
-      ],
-      [
-        'Cédéric Noël',
-        'Director of Delivery',
-        'https://www.linkedin.com/in/c%C3%A9d%C3%A9ric-no%C3%ABl-4145a5167/',
-      ],
-      [
-        'Dovév Weaver Sr.',
-        'Director of Communities & Outcomes',
-        'https://www.linkedin.com/in/coachdtalks/',
-      ],
+      {
+        id: 'nicolas-genest',
+        name: 'Nicolas Genest',
+        role: 'CEO & Co-Founder',
+        linkedin: 'https://www.linkedin.com/in/ngenest/',
+      },
+      {
+        id: 'remi-gagnon',
+        name: 'Rémi Gagnon',
+        role: 'CDO',
+        linkedin: 'https://www.linkedin.com/in/r%C3%A9mi-gagnon-7684092/',
+      },
+      {
+        id: 'felix-antoine-paradis',
+        name: 'Félix-Antoine Paradis',
+        role: 'CTO',
+        linkedin: 'https://www.linkedin.com/in/felixaparadis/',
+      },
+      {
+        id: 'martin-chantal',
+        name: 'Martin Chantal',
+        role: 'General Manager',
+        linkedin: 'https://www.linkedin.com/in/martin-chantal-078832181/',
+      },
+      {
+        id: 'marie-france-nolin',
+        name: 'Marie-France Nolin',
+        role: 'Administrative Assistant',
+        linkedin: 'https://www.linkedin.com/in/marie-france-nolin-1ab1b8154/',
+      },
+      {
+        id: 'brian-peret',
+        name: 'Brian Peret',
+        role: 'Academy Director',
+        linkedin: 'https://www.linkedin.com/in/brian-peret-b62636101/',
+      },
+      {
+        id: 'francis-patry-jessop',
+        name: 'Francis Patry-Jessop',
+        role: 'Director of Coaching',
+        linkedin: 'https://www.linkedin.com/in/francis-patry-jessop-b1794b241/',
+      },
+      {
+        id: 'cederic-noel',
+        name: 'Cédéric Noël',
+        role: 'Director of Delivery',
+        linkedin: 'https://www.linkedin.com/in/c%C3%A9d%C3%A9ric-no%C3%ABl-4145a5167/',
+      },
+      {
+        id: 'dovev-weaver-sr',
+        name: 'Dovév Weaver Sr.',
+        role: 'Director of Communities & Outcomes',
+        linkedin: 'https://www.linkedin.com/in/coachdtalks/',
+      },
     ],
     close:
       'You meet the people who will do the work in the first session, and they stay to the end of the engagement.',
@@ -379,6 +408,7 @@ function ChevronButton({ active, onClick }) {
 
 function Studio() {
   const [active, setActive] = React.useState(ABOUT[0]);
+  const studioTeam = useSanityTeam('studio', ABOUT[0].people);
   React.useEffect(() => {
     const apply = () => {
       const m = /^#about-(team|history|vision)$/.exec(location.hash);
@@ -419,7 +449,7 @@ function Studio() {
         </div>
       }
     >
-      <ServiceDetail s={active} />
+      <ServiceDetail s={active.id === 'team' ? { ...active, people: studioTeam } : active} />
     </DivisionBand>
   );
 }
@@ -549,11 +579,12 @@ function ServiceDetail({ s }) {
       ))}
       {s.people ? (
         <div className="people-grid">
-          {s.people.map(([n, r, url], i) => (
-            <div key={i} className="person">
+          {s.people.map((person) => (
+            <div key={person.id} className="person">
               <div className="person-photo">
                 <image-slot
-                  id={'team-' + i}
+                  id={'team-' + person.id}
+                  src={person.photo}
                   mask="polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%)"
                   fit="cover"
                   placeholder="Headshot"
@@ -561,9 +592,14 @@ function ServiceDetail({ s }) {
                 ></image-slot>
               </div>
               <div className="d-flex flex-column gap-1">
-                <span className="person-name">{n}</span>
-                <span className="person-role">{r}</span>
-                <a href={url} target="_blank" rel="noopener noreferrer" className="link-tag">
+                <span className="person-name">{person.name}</span>
+                <span className="person-role">{person.role}</span>
+                <a
+                  href={person.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-tag"
+                >
                   LinkedIn
                 </a>
               </div>
@@ -736,7 +772,7 @@ const GRAD_QUOTES = [
   },
 ];
 
-const INTAKES = {
+const SEED_INTAKES = {
   fsd: [
     ['Sep 14, 2026', 'Quebec City', 'Open'],
     ['Oct 26, 2026', 'Montreal', 'Open'],
@@ -773,6 +809,7 @@ function CalendarColumn({ title, meta, rows }) {
 }
 
 function IntakeCalendar() {
+  const intakes = useIntakes(SEED_INTAKES);
   return (
     <div id="intake" className="calendar-band">
       <div className="calendar-head">
@@ -783,11 +820,11 @@ function IntakeCalendar() {
         <Badge bg="brand">Editable in Sanity</Badge>
       </div>
       <div className="grid2 calendar-grid">
-        <CalendarColumn title="AI-Native FSD" meta="12 weeks, full time" rows={INTAKES.fsd} />
+        <CalendarColumn title="AI-Native FSD" meta="12 weeks, full time" rows={intakes.fsd} />
         <CalendarColumn
           title="Advanced AI-Developer"
           meta="8 weeks, part time"
-          rows={INTAKES.aidev}
+          rows={intakes.aidev}
         />
       </div>
     </div>
@@ -833,24 +870,37 @@ const ACADEMY_TOPICS = [
     null,
     'Academy Team',
     [
-      [
-        'Etienne Gonthier-Lapointe',
-        'Coach',
-        'https://www.linkedin.com/in/etienne-lapointe-b82b101bb/',
-      ],
-      ['Raina DeJute', 'Student Success Coordinator', 'https://www.linkedin.com/in/rainadejute/'],
-      ['Brian Peret', 'Academy Director', 'https://www.linkedin.com/in/brian-peret-b62636101/'],
-      [
-        'Francis Patry-Jessop',
-        'Director of Coaching',
-        'https://www.linkedin.com/in/francis-patry-jessop-b1794b241/',
-      ],
+      {
+        id: 'etienne-gonthier-lapointe',
+        name: 'Etienne Gonthier-Lapointe',
+        role: 'Coach',
+        linkedin: 'https://www.linkedin.com/in/etienne-lapointe-b82b101bb/',
+      },
+      {
+        id: 'raina-dejute',
+        name: 'Raina DeJute',
+        role: 'Student Success Coordinator',
+        linkedin: 'https://www.linkedin.com/in/rainadejute/',
+      },
+      {
+        id: 'brian-peret-academy',
+        name: 'Brian Peret',
+        role: 'Academy Director',
+        linkedin: 'https://www.linkedin.com/in/brian-peret-b62636101/',
+      },
+      {
+        id: 'francis-patry-jessop-academy',
+        name: 'Francis Patry-Jessop',
+        role: 'Director of Coaching',
+        linkedin: 'https://www.linkedin.com/in/francis-patry-jessop-b1794b241/',
+      },
     ],
   ],
 ];
 
 function Academy({ onEnroll }) {
   const [active, setActive] = React.useState(0);
+  const academyTeam = useSanityTeam('academy', ACADEMY_TOPICS[2][5]);
   React.useEffect(() => {
     const apply = () => {
       if (location.hash === '#academy-courses') {
@@ -922,11 +972,12 @@ function Academy({ onEnroll }) {
         <div className="rule" />
         {ACADEMY_TOPICS[active][5] ? (
           <div className="people-grid people-grid-4">
-            {ACADEMY_TOPICS[active][5].map(([n, r, url], i) => (
-              <div key={i} className="person">
+            {academyTeam.map((person) => (
+              <div key={person.id} className="person">
                 <div className="person-photo person-photo-gray">
                   <image-slot
-                    id={'academy-team-' + i}
+                    id={'academy-team-' + person.id}
+                    src={person.photo}
                     mask="polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%)"
                     fit="cover"
                     placeholder="Headshot"
@@ -934,9 +985,14 @@ function Academy({ onEnroll }) {
                   ></image-slot>
                 </div>
                 <div className="d-flex flex-column gap-1">
-                  <span className="person-name">{n}</span>
-                  <span className="person-role">{r}</span>
-                  <a href={url} target="_blank" rel="noopener noreferrer" className="link-tag">
+                  <span className="person-name">{person.name}</span>
+                  <span className="person-role">{person.role}</span>
+                  <a
+                    href={person.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link-tag"
+                  >
                     LinkedIn
                   </a>
                 </div>
