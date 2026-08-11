@@ -23,11 +23,20 @@ export async function fetchCollection(type, groqTail = '') {
   return body.result;
 }
 
+// Appends Sanity's image CDN resize/quality params to an asset URL, so callers
+// request only the pixel size they'll actually render (e.g. a small, low-quality
+// tile for a repeated background) instead of always paying for the full upload.
+export function sanityImageUrl(url, { w, q = 60 } = {}) {
+  if (!url) return null;
+  return url + '?w=' + w + '&q=' + q + '&auto=format';
+}
+
 // Sanity 'post' document -> the shape Blog.jsx's cards and BlogPost.jsx's page
-// render. No explicit GROQ projection is used for posts, so Sanity returns full raw
-// documents — `slug`/`content` are already present on `entry` with no query change.
-// `url` is an optional external reference now (not the content source), so it maps
-// to `null` when absent rather than a placeholder '#' href.
+// render. Both post queries below add a `{..., "featuredImageUrl": ...}` projection —
+// `...` keeps every raw field as-is (so `slug`/`content` need no query change) while
+// resolving the image asset reference to a plain URL. `url` is an optional external
+// reference now (not the content source), so it maps to `null` when absent rather
+// than a placeholder '#' href.
 function toPost(entry) {
   return {
     title: entry.title,
@@ -37,16 +46,22 @@ function toPost(entry) {
     date: (entry.publishedAt || entry.date || '').slice(0, 10),
     excerpt: entry.excerpt || entry.summary || '',
     content: entry.content || null,
+    featuredImage: entry.featuredImageUrl || null,
     url: entry.url || entry.canonicalUrl || null,
   };
 }
+
+const FEATURED_IMAGE_PROJECTION = '{..., "featuredImageUrl": featuredImage.asset->url}';
 
 export function useSanityPosts(seed = []) {
   const [posts, setPosts] = React.useState(seed);
   React.useEffect(() => {
     let live = true;
     if (!PROJECT_ID) return undefined;
-    fetchCollection('post', ' | order(publishedAt desc) [0...50]')
+    fetchCollection(
+      'post',
+      ' | order(publishedAt desc) [0...50]' + FEATURED_IMAGE_PROJECTION
+    )
       .then((rows) => {
         if (live && rows && rows.length) setPosts(rows.map(toPost));
       })
@@ -67,7 +82,7 @@ export function useSanityPost(slug, seed = null) {
     let live = true;
     const safeSlug = (slug || '').replace(/[^a-z0-9-]/g, '');
     if (!PROJECT_ID || !safeSlug) return undefined;
-    fetchCollection('post', '[slug.current == "' + safeSlug + '"][0]')
+    fetchCollection('post', '[slug.current == "' + safeSlug + '"][0]' + FEATURED_IMAGE_PROJECTION)
       .then((entry) => {
         if (live && entry) setPost(toPost(entry));
       })

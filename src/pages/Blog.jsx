@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Badge, Form } from 'react-bootstrap';
 import { TopBar, Footer } from '../components/Chrome';
-import { useSanityPosts } from '../lib/sanity';
+import { useSanityPosts, sanityImageUrl } from '../lib/sanity';
 import '../lib/image-slot.js';
 
 const CATEGORIES = [
@@ -173,6 +173,7 @@ function Posts() {
             <article key={p.slug} className="panel post-card">
               <image-slot
                 id={'post-' + p.slug}
+                src={sanityImageUrl(p.featuredImage, { w: 500 })}
                 shape="rect"
                 fit="cover"
                 placeholder="Cover image"

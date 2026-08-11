@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { PortableText } from '@portabletext/react';
 import { Badge } from 'react-bootstrap';
 import { TopBar, Footer } from '../components/Chrome';
-import { useSanityPost } from '../lib/sanity';
+import { useSanityPost, sanityImageUrl } from '../lib/sanity';
 import { SEED_POSTS } from './Blog';
 
 const fmt = (d) =>
@@ -67,6 +67,21 @@ function BlogPost() {
 
   if (!post) return <NotFound />;
 
+  // Reuses `.hero`'s scrim-over-photo technique (_components.scss) via inline
+  // `background-image`, since the URL is per-post data rather than a static asset.
+  // `null` when there's no featuredImage, so seed/dev posts render unchanged.
+  const heroStyle = post.featuredImage
+    ? {
+        backgroundImage:
+          'linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url(' +
+          sanityImageUrl(post.featuredImage, { w: 1600 }) +
+          ')',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }
+    : undefined;
+
   return (
     <div id="top">
       <TopBar
@@ -74,7 +89,7 @@ function BlogPost() {
           window.location.href = '/#contact';
         }}
       />
-      <section className="band-dark">
+      <section className="band-dark" style={heroStyle}>
         <div className="wrap d-flex flex-column gap-4 align-items-start">
           {post.category ? <Badge bg="brand">{post.category}</Badge> : null}
           <h1 className="band-title">{post.title}</h1>
@@ -84,7 +99,7 @@ function BlogPost() {
           </div>
         </div>
       </section>
-      <section className="sect">
+      <section className="sect post-content-band">
         <div className="wrap post-article">
           {post.content ? (
             <PortableText value={post.content} components={portableTextComponents} />
