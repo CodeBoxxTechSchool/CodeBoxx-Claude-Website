@@ -20,29 +20,50 @@ export async function fetchCollection(type, groqTail = '') {
   });
   if (!res.ok) throw new Error('Sanity ' + res.status + ' on ' + type);
   const body = await res.json();
-  return body.result || [];
+  return body.result;
 }
 
-// Sanity 'post' document -> the shape the Blog page renders.
+// Appends Sanity's image CDN resize/quality params to an asset URL, so callers
+// request only the pixel size they'll actually render (e.g. a small, low-quality
+// tile for a repeated background) instead of always paying for the full upload.
+export function sanityImageUrl(url, { w, q = 60 } = {}) {
+  if (!url) return null;
+  return url + '?w=' + w + '&q=' + q + '&auto=format';
+}
+
+// Sanity 'post' document -> the shape Blog.jsx's cards and BlogPost.jsx's page
+// render. Both post queries below add a `{..., "featuredImageUrl": ...}` projection —
+// `...` keeps every raw field as-is (so `slug`/`content` need no query change) while
+// resolving the image asset reference to a plain URL. `url` is an optional external
+// reference now (not the content source), so it maps to `null` when absent rather
+// than a placeholder '#' href.
 function toPost(entry) {
   return {
     title: entry.title,
+    slug: entry.slug?.current || entry.slug || '',
     category: entry.category,
     author: entry.author,
     date: (entry.publishedAt || entry.date || '').slice(0, 10),
     excerpt: entry.excerpt || entry.summary || '',
-    url: entry.url || entry.canonicalUrl || '#',
+    content: entry.content || null,
+    featuredImage: entry.featuredImageUrl || null,
+    url: entry.url || entry.canonicalUrl || null,
   };
 }
+
+const FEATURED_IMAGE_PROJECTION = '{..., "featuredImageUrl": featuredImage.asset->url}';
 
 export function useSanityPosts(seed = []) {
   const [posts, setPosts] = React.useState(seed);
   React.useEffect(() => {
     let live = true;
     if (!PROJECT_ID) return undefined;
-    fetchCollection('post', ' | order(publishedAt desc) [0...50]')
+    fetchCollection(
+      'post',
+      ' | order(publishedAt desc) [0...50]' + FEATURED_IMAGE_PROJECTION
+    )
       .then((rows) => {
-        if (live && rows.length) setPosts(rows.map(toPost));
+        if (live && rows && rows.length) setPosts(rows.map(toPost));
       })
       .catch((err) => console.warn('[sanity]', err.message));
     return () => {
@@ -50,6 +71,27 @@ export function useSanityPosts(seed = []) {
     };
   }, []);
   return posts;
+}
+
+// Fetches one post by slug for BlogPost.jsx (route: /blog/:slug). The slug comes
+// from a route param, so it's the first user-facing value in this codebase to feed
+// directly into a hand-built GROQ string — sanitized to [a-z0-9-] before use.
+export function useSanityPost(slug, seed = null) {
+  const [post, setPost] = React.useState(seed);
+  React.useEffect(() => {
+    let live = true;
+    const safeSlug = (slug || '').replace(/[^a-z0-9-]/g, '');
+    if (!PROJECT_ID || !safeSlug) return undefined;
+    fetchCollection('post', '[slug.current == "' + safeSlug + '"][0]' + FEATURED_IMAGE_PROJECTION)
+      .then((entry) => {
+        if (live && entry) setPost(toPost(entry));
+      })
+      .catch((err) => console.warn('[sanity]', err.message));
+    return () => {
+      live = false;
+    };
+  }, [slug]);
+  return post;
 }
 
 // Sanity 'teamMember' document (name, role, linkedin, photo image, group: "studio" |
@@ -81,7 +123,7 @@ export function useSanityTeam(group, seed = []) {
         '"] | order(order asc) {_id, name, role, linkedin, "photo": photo.asset->url}'
     )
       .then((rows) => {
-        if (live && rows.length) setTeam(rows.map(toTeamMember));
+        if (live && rows && rows.length) setTeam(rows.map(toTeamMember));
       })
       .catch((err) => console.warn('[sanity]', err.message));
     return () => {
@@ -104,7 +146,7 @@ export function useSanityLogos(seed = []) {
     if (!PROJECT_ID) return undefined;
     fetchCollection('partnerLogo', ' | order(order asc) {_id, name, "logo": logo.asset->url}')
       .then((rows) => {
-        if (live && rows.length) setLogos(rows.map(toLogo));
+        if (live && rows && rows.length) setLogos(rows.map(toLogo));
       })
       .catch((err) => console.warn('[sanity]', err.message));
     return () => {

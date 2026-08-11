@@ -31,6 +31,7 @@ npm run dev
 | ------------ | ------------------------- | ------------------------------------------------------------------ |
 | `/`          | `src/pages/Home.jsx`      | Sections 01–07, WSJ and Forge 20 bands, Codi drawer, enroll drawer |
 | `/blog`      | `src/pages/Blog.jsx`      | CodeBlog index, Sanity-backed                                      |
+| `/blog/:slug` | `src/pages/BlogPost.jsx` | Standalone post page, renders the post's own content               |
 | `/financing` | `src/pages/Financing.jsx` | Academy financing options                                          |
 | `/ventures`  | `src/pages/Ventures.jsx`  | CodeBoxx Ventures                                                  |
 
@@ -61,7 +62,7 @@ consumes the API, it doesn't scaffold a Studio):
 
 | Document type  | Fields                                                                                                   | Consumed by                                                                                                                           |
 | -------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `post`         | `title`, `category`, `author`, `publishedAt`, `excerpt`, `url`                                           | `useSanityPosts` — Blog page                                                                                                          |
+| `post`         | `title`, `slug`, `category`, `author`, `publishedAt`, `excerpt`, `content` (Portable Text/rich text), `featuredImage` (optional), `url` (optional external reference — not the content source) | `useSanityPosts` — Blog page; `useSanityPost(slug, seed)` — the post's own page at `/blog/:slug` |
 | `teamMember`   | `name`, `role`, `linkedin` (url), `photo` (image), `group` (`"studio"` \| `"academy"`), `order` (number) | `useSanityTeam(group, seed)` — Studio team (`#codeboxx .person`) and Academy team (`#academy .person`), same type filtered by `group` |
 | `partnerLogo`  | `name`, `logo` (image), `order` (number)                                                                 | `useSanityLogos(seed)` — the `.client-slider` partner logos; however many documents exist is however many slides show                 |
 | `cohortIntake` | `program` (`"fsd"` \| `"aidev"`), `date`, `location`, `status` (`"Open"` \| `"Waitlist"` \| `"Planned"`) | `useIntakes(seed)` in `src/lib/intakes.js` — the `#intake` calendar rows                                                              |
@@ -70,6 +71,28 @@ consumes the API, it doesn't scaffold a Studio):
 placeholder for a real admissions API later, and `IntakeCalendar` only ever imports
 `useIntakes` and expects a `{ fsd: [...], aidev: [...] }` return shape — swapping the data
 source later means rewriting `src/lib/intakes.js` only, with no changes to `Home.jsx`.
+
+Each post's `content` field is Sanity's standard Portable Text (rich text) — currently
+text-only in the schema (headings, bold/italic, links, lists, quotes), no inline images
+yet; that's a deliberate, easy-to-extend-later scope call, not a limitation of the
+approach. It renders via `@portabletext/react` (the one dependency this project adds
+beyond a plain `fetch` — a small, official rendering library, not an API client, so it
+doesn't conflict with the rest of `sanity.js` staying SDK-free) with `components`
+overrides in `src/pages/BlogPost.jsx` mapping block/list/mark types onto this site's
+existing typography classes (`pbody`, `h2`, `ptitle`, etc.) instead of unstyled defaults.
+
+`featuredImage` (optional) is the post page's hero background, via inline `style`
+since the URL is per-post data — stacking a `linear-gradient(rgba(0,0,0,.6), ...)`
+scrim with `url(...)` in one `background-image`, reusing the scrim-over-photo
+technique already used by the homepage `.hero` (`_components.scss`). It also backs
+the `/blog` listing card's cover (`Blog.jsx`, via the same `<image-slot src>` prop
+already used for team photos/logos). `sanityImageUrl(url, { w, q })` in `sanity.js`
+appends Sanity's CDN resize/quality query params so each use requests only the pixel
+size it renders (large for the hero, small for the card thumbnail) — no
+`@sanity/image-url` package needed. Posts without a `featuredImage` keep the plain
+navy hero, unchanged. The article section below the hero (`.post-content-band` in
+`_blog.scss`) has its own subtle top-fade gradient, independent of `featuredImage` —
+plain CSS, not photo-based.
 
 Team member and partner logo entries carry a stable `id` (the Sanity document `_id`) that's
 used as both the React list key and the `<image-slot>` element's `id` attribute. Don't

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Badge, Form, Offcanvas } from 'react-bootstrap';
 import { TopBar, Footer } from '../components/Chrome';
 import Avatar from '../components/Avatar';
@@ -979,7 +980,7 @@ function Academy({ onEnroll }) {
           <Badge bg="brand">Next intake: Sept 2026</Badge>
         </div>
         <p className="pbody">{ACADEMY_TOPICS[active][2]}</p>
-        <div className="rule" />
+        {/* <div className="rule" /> */}
         {ACADEMY_TOPICS[active][5] ? (
           <div className="people-grid people-grid-4">
             {academyTeam.map((person) => (
@@ -1551,30 +1552,33 @@ function WSJTeaser() {
 }
 
 // Latest three from the CodeBlog. Same source as blog.jsx — replaced by the Sanity `post` document type at runtime.
+// Same 3 posts (and same seed slugs) as SEED_POSTS in Blog.jsx — this teaser stays
+// hardcoded rather than Sanity-backed (a separate, pre-existing gap unrelated to
+// giving posts their own pages), but its links now point at those pages too.
 const LATEST_POSTS = [
   {
     title: 'Best Corporate AI Bootcamps',
+    slug: 'best-corporate-ai-bootcamps',
     category: 'Technology News',
     date: '2026-01-14',
     excerpt:
       'Corporate AI training has become one of the fastest-growing investments in workforce development. Most organizations still struggle to find programs that go beyond awareness.',
-    url: 'https://academy.codeboxx.com/post/best-corporate-ai-bootcamps',
   },
   {
     title: 'Unlock your own Future: Join CodeBoxx’s 4-Day Vibe Coding and Agentic AI Workshop',
+    slug: 'unlock-your-own-future-join-codeboxx-s-4-day-vibe-coding-and-agentic-ai-workshop',
     category: 'Workshop',
     date: '2025-12-01',
     excerpt:
       'Four days, virtual or in the St. Petersburg classroom, ending with a product of yours in production or in your portfolio.',
-    url: 'https://academy.codeboxx.com/post/unlock-your-own-future-join-codeboxx-s-4-day-vibe-coding-and-agentic-ai-workshop',
   },
   {
     title: 'CodeBoxx Academy Expands Pathways to Prosperity Through New Community Referral Program',
+    slug: 'codeboxx-academy-expands-pathways-to-prosperity-through-new-community-referral-program',
     category: 'CodeBoxx for Life',
     date: '2025-11-18',
     excerpt:
       'A referral partner program that lets individuals, businesses and organizations across Tampa Bay connect motivated learners to the Academy.',
-    url: 'https://academy.codeboxx.com/post/codeboxx-academy-expands-pathways-to-prosperity-through-new-community-referral-program',
   },
 ];
 
@@ -1599,13 +1603,7 @@ function CodeBlog() {
         </div>
         <div className="grid3">
           {LATEST_POSTS.map((p) => (
-            <a
-              key={p.url}
-              href={p.url}
-              target="_blank"
-              rel="noopener"
-              className="panel panel-link-card"
-            >
+            <Link key={p.slug} to={'/blog/' + p.slug} className="panel panel-link-card">
               <div className="d-flex flex-column gap-3">
                 <Badge bg="brand">{p.category}</Badge>
                 <h3 className="ptitle">{p.title}</h3>
@@ -1615,7 +1613,7 @@ function CodeBlog() {
                 <div className="rule" />
                 <span className="card-date">{fmtPostDate(p.date)}</span>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
         <div className="d-flex justify-content-center mt-40">

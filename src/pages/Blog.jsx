@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Badge, Form } from 'react-bootstrap';
 import { TopBar, Footer } from '../components/Chrome';
-import { useSanityPosts } from '../lib/sanity';
+import { useSanityPosts, sanityImageUrl } from '../lib/sanity';
 import '../lib/image-slot.js';
 
 const CATEGORIES = [
@@ -12,42 +13,97 @@ const CATEGORIES = [
   'Workshop',
 ];
 
-// Sourced from the current CodeBlog. Replaced by the Sanity `post` document type at runtime.
-const SEED_POSTS = [
+// Sourced from the current CodeBlog. Replaced by the Sanity `post` document type at
+// runtime. `slug` here just reuses each seed post's old external URL's trailing path
+// segment for a stable seed-only identity — real Sanity posts get their slug from the
+// `slug` field's own `source: 'title'`, with no reason to match these.
+export const SEED_POSTS = [
   {
     title: 'Best Corporate AI Bootcamps',
+    slug: 'best-corporate-ai-bootcamps',
     category: 'Technology News',
     author: 'Codeboxx Technology',
     date: '2026-01-14',
     excerpt:
       'Corporate AI training has become one of the fastest-growing investments in workforce development. Most organizations still struggle to find programs that go beyond awareness and actually change how teams work.',
+    content: [
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Corporate AI training has become one of the fastest-growing investments in workforce development. Most organizations still struggle to find programs that go beyond awareness and actually change how teams work.',
+          },
+        ],
+      },
+    ],
     url: 'https://academy.codeboxx.com/post/best-corporate-ai-bootcamps',
   },
   {
     title: 'Unlock your own Future: Join CodeBoxx’s 4-Day Vibe Coding and Agentic AI Workshop',
+    slug: 'unlock-your-own-future-join-codeboxx-s-4-day-vibe-coding-and-agentic-ai-workshop',
     category: 'Workshop',
     author: 'Codeboxx Technology',
     date: '2025-12-01',
     excerpt:
       'Four days, virtual or in the St. Petersburg classroom, ending with a product of yours in production or in your portfolio.',
+    content: [
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Four days, virtual or in the St. Petersburg classroom, ending with a product of yours in production or in your portfolio.',
+          },
+        ],
+      },
+    ],
     url: 'https://academy.codeboxx.com/post/unlock-your-own-future-join-codeboxx-s-4-day-vibe-coding-and-agentic-ai-workshop',
   },
   {
     title: 'CodeBoxx Academy Expands Pathways to Prosperity Through New Community Referral Program',
+    slug: 'codeboxx-academy-expands-pathways-to-prosperity-through-new-community-referral-program',
     category: 'CodeBoxx for Life',
     author: 'Codeboxx Technology',
     date: '2025-11-18',
     excerpt:
       'A referral partner program that lets individuals, businesses and organizations across Tampa Bay connect motivated learners to the Academy.',
+    content: [
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'A referral partner program that lets individuals, businesses and organizations across Tampa Bay connect motivated learners to the Academy.',
+          },
+        ],
+      },
+    ],
     url: 'https://academy.codeboxx.com/post/codeboxx-academy-expands-pathways-to-prosperity-through-new-community-referral-program',
   },
   {
     title: 'CodeBoxx Celebrates New Learning Opportunities with USF CTPE!',
+    slug: 'codeboxx-celebrates-new-learning-opportunities-with-usf-ctpe',
     category: 'CodeBoxx Curriculums',
     author: 'Marc Litalien',
     date: '2025-10-22',
     excerpt:
       'The University of South Florida Office of Corporate Training and Professional Education launches a new course offering for professionals investing in their growth.',
+    content: [
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'The University of South Florida Office of Corporate Training and Professional Education launches a new course offering for professionals investing in their growth.',
+          },
+        ],
+      },
+    ],
     url: 'https://academy.codeboxx.com/post/codeboxx-celebrates-new-learning-opportunities-with-usf-ctpe',
   },
 ];
@@ -114,15 +170,10 @@ function Posts() {
         </div>
         <div className="grid2">
           {list.map((p) => (
-            <article key={p.title} className="panel post-card">
+            <article key={p.slug} className="panel post-card">
               <image-slot
-                id={
-                  'post-' +
-                  p.title
-                    .toLowerCase()
-                    .replace(/[^a-z0-9]+/g, '-')
-                    .slice(0, 40)
-                }
+                id={'post-' + p.slug}
+                src={sanityImageUrl(p.featuredImage, { w: 500 })}
                 shape="rect"
                 fit="cover"
                 placeholder="Cover image"
@@ -138,9 +189,9 @@ function Posts() {
                 <div className="rule" />
                 <div className="post-meta-row">
                   <span className="post-author">{p.author}</span>
-                  <a href={p.url} target="_blank" rel="noopener noreferrer" className="link-tag">
+                  <Link to={'/blog/' + p.slug} className="link-tag">
                     Read Post
-                  </a>
+                  </Link>
                 </div>
               </div>
             </article>
