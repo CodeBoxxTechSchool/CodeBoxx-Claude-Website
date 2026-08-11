@@ -1,8 +1,0 @@
-/* CodeBoxx webfonts.
- * The .fig references Inter (Light 300 / Regular 400 / Medium 500 / SemiBold 600 /
- * Bold 700 / Black 900) and Great Vibes (Regular 400). No font binaries ship inside
- * the Figma file, so both families are loaded from Google Fonts — the same families
- * and weights, not substitutes. Swap in self-hosted @font-face rules here if the
- * team has licensed binaries.
- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Great+Vibes&display=swap');

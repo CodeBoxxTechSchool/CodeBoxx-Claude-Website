@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Logo, TopTitle, Badge, Input, Checkbox } from '../design-system';
+import { Button, Badge, Form } from 'react-bootstrap';
 import { TopBar, Footer } from '../components/Chrome';
 import '../lib/image-slot.js';
 
@@ -49,55 +49,14 @@ const STEPS = [
 
 function Band() {
   return (
-    <section style={{ background: 'var(--navy-500)', padding: '80px 0' }}>
-      <div
-        className="wrap"
-        style={{ display: 'flex', flexDirection: 'column', gap: 20, alignItems: 'flex-start' }}
-      >
-        <span
-          style={{
-            width: 'fit-content',
-            borderRadius: 9999,
-            boxShadow: 'inset 0 0 0 1.5px var(--blue-500)',
-            padding: '8px 16px',
-            display: 'inline-flex',
-            fontWeight: 700,
-            fontSize: 12,
-            lineHeight: '100%',
-            letterSpacing: '0.5px',
-            textTransform: 'uppercase',
-            color: 'var(--neutral-0)',
-            whiteSpace: 'nowrap',
-            marginBottom: 10,
-          }}
-        >
-          Financing Options
-        </span>
-        <h1
-          style={{
-            margin: 0,
-            fontSize: 48,
-            fontWeight: 900,
-            lineHeight: '100%',
-            color: 'var(--neutral-0)',
-            maxWidth: 780,
-            textWrap: 'pretty',
-          }}
-        >
-          Coding School Financing Options
-        </h1>
-        <p
-          style={{
-            fontSize: 14,
-            lineHeight: '20px',
-            color: 'rgba(255,255,255,0.72)',
-            margin: 0,
-            maxWidth: 560,
-          }}
-        >
+    <section className="band-dark">
+      <div className="wrap d-flex flex-column gap-4 align-items-start">
+        <span className="pill">Financing Options</span>
+        <h1 className="band-title">Coding School Financing Options</h1>
+        <p className="band-lede">
           At CodeBoxx Academy coding school, we believe education should be accessible to everyone
-          regardless of financial circumstances. That\u2019s why we offer multiple financing options
-          to help you turn your passion for technology into a successful career.
+          regardless of financial circumstances. That’s why we offer multiple financing options to
+          help you turn your passion for technology into a successful career.
         </p>
       </div>
     </section>
@@ -107,11 +66,11 @@ function Band() {
 function Paths() {
   return (
     <section className="sect">
-      <div className="wrap" style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div className="wrap d-flex flex-column gap-5">
+        <div className="d-flex flex-column gap-3">
           <p className="eyebrow">THE PATHS</p>
           <h2 className="h2">Multiple Payment Options to Help You Invest in Your Future</h2>
-          <p className="lede" style={{ maxWidth: 640 }}>
+          <p className="lede lede-640">
             All payment plans require a deposit, which is fully refundable if you change your mind
             during our risk-free period. Tuition costs and cohort start dates are located on the
             program page.
@@ -120,37 +79,16 @@ function Paths() {
         <div className="grid2">
           {PATHS.map(([t, d, bullets]) => (
             <div key={t} className="panel">
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start',
-                  gap: 16,
-                }}
-              >
+              <div className="panel-header-row">
                 <h3 className="ptitle">{t}</h3>
-                <Badge variant="brand">Academy</Badge>
+                <Badge bg="brand">Academy</Badge>
               </div>
               <p className="pbody">{d}</p>
               <div className="rule" />
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div className="bullet-list">
                 {bullets.map((b) => (
-                  <div key={b} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                    <span
-                      style={{
-                        width: 4,
-                        height: 4,
-                        borderRadius: 9999,
-                        background: 'var(--blue-500)',
-                        marginTop: 8,
-                        flex: '0 0 auto',
-                      }}
-                    />
-                    <span
-                      style={{ fontSize: 14, lineHeight: '20px', color: 'var(--ui-slate-500)' }}
-                    >
-                      {b}
-                    </span>
+                  <div key={b} className="bullet">
+                    <span>{b}</span>
                   </div>
                 ))}
               </div>
@@ -164,28 +102,16 @@ function Paths() {
 
 function Process() {
   return (
-    <section
-      className="sect"
-      style={{ background: 'var(--neutral-0)', boxShadow: 'inset 0 1px 0 0 var(--ui-slate-200)' }}
-    >
-      <div className="wrap" style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <section className="sect sect-contact">
+      <div className="wrap d-flex flex-column gap-5">
+        <div className="d-flex flex-column gap-3">
           <p className="eyebrow">HOW IT WORKS</p>
           <h2 className="h2">Three steps to a confirmed seat</h2>
         </div>
         <div className="grid3">
           {STEPS.map(([t, d], i) => (
-            <div key={t} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <span
-                style={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  letterSpacing: 1,
-                  color: 'var(--blue-500)',
-                }}
-              >
-                {'0' + (i + 1)}
-              </span>
+            <div key={t} className="numbered-step">
+              <span className="numbered-step-index">{'0' + (i + 1)}</span>
               <h3 className="ptitle">{t}</h3>
               <p className="pbody">{d}</p>
             </div>
@@ -198,23 +124,16 @@ function Process() {
 
 function RiskFree() {
   return (
-    <section style={{ background: 'var(--navy-500)' }} className="sect">
-      <div
-        className="wrap"
-        style={{ display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 780 }}
-      >
-        <p className="eyebrow" style={{ color: 'var(--blue-500)' }}>
-          RISK-FREE PERIOD
-        </p>
-        <h2 className="h2" style={{ color: 'var(--neutral-0)' }}>
-          Jump into tech for a few weeks. No strings attached.
-        </h2>
-        <p style={{ margin: 0, fontSize: 14, lineHeight: '20px', color: 'rgba(255,255,255,0.72)' }}>
+    <section className="sect sect-navy">
+      <div className="wrap band-dark-left">
+        <p className="eyebrow eyebrow-brand">RISK-FREE PERIOD</p>
+        <h2 className="h2 h2-inverse">Jump into tech for a few weeks. No strings attached.</h2>
+        <p className="band-body">
           We get it, learning to code is a huge commitment. That&rsquo;s why we are the only coding
           academy to provide the initial 12% of our program risk-free. Our risk-free period spans
           the initial 2 weeks of the 16-week program or the initial 4 weeks of our 32-week program.
         </p>
-        <p style={{ margin: 0, fontSize: 14, lineHeight: '20px', color: 'rgba(255,255,255,0.72)' }}>
+        <p className="band-body">
           If you choose not to continue after the risk-free period, you can drop out without
           consequences. We&rsquo;ll fully refund your deposit and you can walk away with a
           fundamental understanding of modern technology that you can take with you for the rest of
@@ -228,8 +147,8 @@ function RiskFree() {
 function Ask() {
   return (
     <section className="sect">
-      <div className="wrap grid2" style={{ alignItems: 'start' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div className="wrap grid2">
+        <div className="d-flex flex-column gap-3">
           <p className="eyebrow">QUESTIONS ON TUITION</p>
           <h2 className="h2">Let&rsquo;s explore your funding options together.</h2>
           <p className="lede">
@@ -237,7 +156,7 @@ function Ask() {
             Education is an investment in your future career, financial stability, and peace of
             mind. Contact us today to navigate your financing options and career goals.
           </p>
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          <div className="d-flex gap-3 flex-wrap">
             <Button
               onClick={() => {
                 location.href = 'CodeBoxx.html#academy';
@@ -246,7 +165,7 @@ function Ask() {
               See the Programs
             </Button>
             <Button
-              variant="secondary"
+              variant="outline-primary"
               onClick={() => {
                 location.href = '/#contact';
               }}
@@ -257,36 +176,21 @@ function Ask() {
         </div>
         <div className="panel">
           <h3 className="ptitle">Request the tuition sheet</h3>
-          <Input
-            id="fin-name"
-            label="Full Name"
-            placeholder="First Last"
-            style={{ width: '100%' }}
-          />
-          <Input
-            id="fin-email"
-            label="Email"
-            placeholder="name@company.com"
-            style={{ width: '100%' }}
-          />
-          <Input
-            id="fin-program"
-            label="Program of Interest"
-            placeholder="AI Native Full-Stack Developer"
-            style={{ width: '100%' }}
-          />
+          <Form.Group>
+            <Form.Label>Full Name</Form.Label>
+            <Form.Control id="fin-name" placeholder="First Last" />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Email</Form.Label>
+            <Form.Control id="fin-email" placeholder="name@company.com" />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Program of Interest</Form.Label>
+            <Form.Control id="fin-program" placeholder="AI Native Full-Stack Developer" />
+          </Form.Group>
           <div className="rule" />
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 16,
-            }}
-          >
-            <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--ui-slate-400)' }}>
-              Answered within one business day.
-            </span>
+          <div className="form-actions">
+            <span className="form-actions-note">Answered within one business day.</span>
             <Button size="lg">Send</Button>
           </div>
         </div>

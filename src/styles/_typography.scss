@@ -1,37 +1,86 @@
+@use 'variables' as v;
+
 .eyebrow {
   margin: 0;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 1px;
+  font-size: v.$text-micro;
+  font-weight: v.$weight-semibold;
+  letter-spacing: v.$tracking-eyebrow;
   text-transform: uppercase;
-  color: var(--ui-slate-400);
+  color: v.$color-text-tertiary;
 }
 
 .h2 {
   margin: 0;
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 100%;
-  color: var(--ui-slate-900);
+  font-size: v.$text-h1;
+  font-weight: v.$weight-bold;
+  line-height: v.$leading-tight;
+  color: v.$ui-slate-900;
 }
 
 .lede {
   margin: 0;
   max-width: 520px;
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--ui-slate-500);
+  font-size: v.$text-body;
+  line-height: v.$leading-body;
+  color: v.$color-text-secondary;
 }
 
 .ptitle {
   margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 100%;
+  font-size: v.$text-h2;
+  font-weight: v.$weight-bold;
+  line-height: v.$leading-tight;
 }
+
 .pbody {
   margin: 0;
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--ui-slate-500);
+  font-size: v.$text-body;
+  line-height: v.$leading-body;
+  color: v.$color-text-secondary;
+}
+
+// Band eyebrow pill — a rounded outline tag used above hero/band headings
+// (Home, Financing, Ventures).
+.pill {
+  width: fit-content;
+  display: inline-flex;
+  gap: 8px;
+  border-radius: v.$radius-full;
+  box-shadow: inset 0 0 0 1.5px v.$blue-500;
+  padding: 8px 16px;
+  margin-bottom: 10px;
+  font-weight: v.$weight-bold;
+  font-size: v.$text-caption;
+  line-height: v.$leading-tight;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: v.$neutral-0;
+  white-space: nowrap;
+}
+
+// Large heading used inside a dark section band (Financing/Ventures/Home bands).
+.band-title {
+  margin: 0;
+  font-size: v.$text-display;
+  font-weight: v.$weight-black;
+  line-height: v.$leading-tight;
+  color: v.$neutral-0;
+  max-width: 780px;
+  text-wrap: pretty;
+}
+
+.lede-640 {
+  max-width: 640px;
+}
+
+.text-brand {
+  color: v.$blue-500;
+}
+
+.band-lede {
+  margin: 0;
+  font-size: v.$text-body;
+  line-height: v.$leading-body;
+  color: rgba(255, 255, 255, 0.72);
+  max-width: 560px;
 }

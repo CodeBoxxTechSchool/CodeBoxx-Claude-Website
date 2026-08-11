@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Logo } from '../design-system';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import Logo from './Logo';
 
 const hrefFor = (t) => (t.charAt(0) === '#' ? (window.location.pathname === '/' ? t : '/' + t) : t);
 
@@ -39,55 +40,17 @@ function NavItem({ item }) {
   const [open, setOpen] = React.useState(false);
   return (
     <div
-      style={{ position: 'relative', display: 'flex', alignItems: 'center', height: 80 }}
+      className={'nav-item' + (open ? ' open' : '')}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <a
-        href={hrefFor(item.href)}
-        style={{
-          fontSize: 14,
-          fontWeight: 500,
-          color: open ? 'var(--blue-500)' : 'var(--ui-slate-500)',
-        }}
-      >
+      <Nav.Link as="a" href={hrefFor(item.href)}>
         {item.label}
-      </a>
+      </Nav.Link>
       {item.items && open ? (
-        <div
-          style={{
-            position: 'absolute',
-            top: 68,
-            left: -16,
-            minWidth: 200,
-            zIndex: 20,
-            background: 'var(--neutral-0)',
-            borderRadius: 12,
-            padding: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            boxShadow: 'inset 0 0 0 1px var(--ui-slate-200), 0 1px 2px 0 rgba(0,0,0,0.0392)',
-          }}
-        >
+        <div className="nav-dropdown">
           {item.items.map(([l, hr]) => (
-            <a
-              key={l}
-              href={hrefFor(hr)}
-              onClick={() => setOpen(false)}
-              style={{
-                fontSize: 14,
-                fontWeight: 500,
-                color: 'var(--ui-slate-900)',
-                padding: '10px 12px',
-                borderRadius: 8,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'var(--blue-50)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent';
-              }}
-            >
+            <a key={l} href={hrefFor(hr)} onClick={() => setOpen(false)}>
               {l}
             </a>
           ))}
@@ -99,63 +62,35 @@ function NavItem({ item }) {
 
 function TopBar({ onCodi, onEnroll }) {
   return (
-    <header
-      style={{
-        background: 'var(--neutral-0)',
-        boxShadow: 'inset 0 -1px 0 0 var(--ui-slate-200)',
-        position: 'sticky',
-        top: 0,
-        zIndex: 50,
-      }}
-    >
-      <div
-        className="wrap"
-        style={{
-          minHeight: 80,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 20,
-          flexWrap: 'wrap',
-          paddingBlock: 12,
-        }}
-      >
-        <a href={hrefFor('#top')} style={{ display: 'flex' }}>
-          <Logo width={168} />
-        </a>
-        <nav
-          className="nav"
-          style={{
-            display: 'flex',
-            gap: 20,
-            alignItems: 'center',
-            flex: '1 1 auto',
-            minWidth: 0,
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-          }}
-        >
-          {NAV.map((n) => (
-            <NavItem key={n.label} item={n} />
-          ))}
-        </nav>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: '0 0 auto' }}>
-          <Button
-            size="sm"
-            variant="secondary"
-            onClick={() =>
-              onEnroll
-                ? onEnroll('AI Native Full-Stack Developer')
-                : (window.location.href = '/#contact')
-            }
-          >
-            Enroll Now
-          </Button>
-          <Button size="sm" onClick={onCodi}>
-            Talk With Codi
-          </Button>
-        </div>
-      </div>
+    <header className="site-header">
+      <Navbar expand="lg">
+        <Container fluid className="wrap">
+          <Navbar.Brand href={hrefFor('#top')} className="p-0">
+            <Logo width={168} />
+          </Navbar.Brand>
+          <Nav className="flex-row flex-wrap gap-4 mx-auto">
+            {NAV.map((n) => (
+              <NavItem key={n.label} item={n} />
+            ))}
+          </Nav>
+          <div className="d-flex align-items-center gap-3 flex-shrink-0">
+            <Button
+              size="sm"
+              variant="outline-primary"
+              onClick={() =>
+                onEnroll
+                  ? onEnroll('AI Native Full-Stack Developer')
+                  : (window.location.href = '/#contact')
+              }
+            >
+              Enroll Now
+            </Button>
+            <Button size="sm" onClick={onCodi}>
+              Talk With Codi
+            </Button>
+          </div>
+        </Container>
+      </Navbar>
     </header>
   );
 }
@@ -167,50 +102,21 @@ function Footer() {
     ['Academy', ['Curriculum', 'Admissions', 'Cohort Dates']],
   ];
   return (
-    <footer style={{ background: 'var(--navy-500)', padding: '64px 0 48px' }}>
-      <div className="wrap" style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            gap: 48,
-            flexWrap: 'wrap',
-          }}
-        >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <footer className="site-footer">
+      <div className="wrap d-flex flex-column gap-5">
+        <div className="d-flex justify-content-between align-items-start gap-5 flex-wrap">
+          <div className="d-flex flex-column gap-3">
             <Logo theme="dark" width={200} />
-            <span
-              style={{
-                fontSize: 14,
-                lineHeight: '20px',
-                color: 'rgba(255,255,255,0.72)',
-                maxWidth: 280,
-              }}
-            >
+            <span className="footer-tagline">
               One platform for the studio, the deployment operation and the academy.
             </span>
           </div>
-          <div style={{ display: 'flex', gap: 64, flexWrap: 'wrap' }}>
+          <div className="d-flex gap-5 flex-wrap">
             {cols.map(([h, items]) => (
-              <div key={h} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <span
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    letterSpacing: 1,
-                    textTransform: 'uppercase',
-                    color: 'var(--blue-500)',
-                  }}
-                >
-                  {h}
-                </span>
+              <div key={h} className="footer-col d-flex flex-column gap-3">
+                <span className="footer-col-title">{h}</span>
                 {items.map((i) => (
-                  <a
-                    key={i}
-                    href={hrefFor('#top')}
-                    style={{ fontSize: 14, color: 'rgba(255,255,255,0.72)' }}
-                  >
+                  <a key={i} href={hrefFor('#top')}>
                     {i}
                   </a>
                 ))}
@@ -218,17 +124,8 @@ function Footer() {
             ))}
           </div>
         </div>
-        <div style={{ height: 1, background: 'rgba(255,255,255,0.16)' }} />
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            gap: 24,
-            fontSize: 11,
-            fontWeight: 500,
-            color: 'rgba(255,255,255,0.56)',
-          }}
-        >
+        <div className="footer-rule" />
+        <div className="d-flex justify-content-between gap-4 footer-meta">
           <span>© 2026 CodeBoxx</span>
           <span>v1.0.0 Stable · SHA: 7be1af8</span>
         </div>

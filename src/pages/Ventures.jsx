@@ -1,23 +1,7 @@
 import React from 'react';
-import { Button, Logo, Badge, Input } from '../design-system';
+import { Button, Badge, Form } from 'react-bootstrap';
 import { TopBar, Footer } from '../components/Chrome';
 import '../lib/image-slot.js';
-
-const PILL = {
-  width: 'fit-content',
-  borderRadius: 9999,
-  boxShadow: 'inset 0 0 0 1.5px var(--blue-500)',
-  padding: '8px 16px',
-  display: 'inline-flex',
-  fontWeight: 700,
-  fontSize: 12,
-  lineHeight: '100%',
-  letterSpacing: '0.5px',
-  textTransform: 'uppercase',
-  color: 'var(--neutral-0)',
-  whiteSpace: 'nowrap',
-  marginBottom: 10,
-};
 
 const MODELS = [
   [
@@ -66,34 +50,11 @@ const CRITERIA = [
 
 function Band() {
   return (
-    <section style={{ background: 'var(--navy-500)', padding: '80px 0' }}>
-      <div
-        className="wrap"
-        style={{ display: 'flex', flexDirection: 'column', gap: 20, alignItems: 'flex-start' }}
-      >
-        <span style={PILL}>Ventures</span>
-        <h1
-          style={{
-            margin: 0,
-            fontSize: 48,
-            fontWeight: 900,
-            lineHeight: '100%',
-            color: 'var(--neutral-0)',
-            maxWidth: 780,
-            textWrap: 'pretty',
-          }}
-        >
-          We build with founders, not just for them.
-        </h1>
-        <p
-          style={{
-            fontSize: 14,
-            lineHeight: '20px',
-            color: 'rgba(255,255,255,0.72)',
-            margin: 0,
-            maxWidth: 560,
-          }}
-        >
+    <section className="band-dark">
+      <div className="wrap d-flex flex-column gap-4 align-items-start">
+        <span className="pill">Ventures</span>
+        <h1 className="band-title">We build with founders, not just for them.</h1>
+        <p className="band-lede">
           CodeBoxx Ventures puts the studio&rsquo;s delivery capacity behind products we believe in.
           Cash, equity, or both &mdash; the structure follows the stage you are at.
         </p>
@@ -112,11 +73,11 @@ function Band() {
 function Models() {
   return (
     <section className="sect">
-      <div className="wrap" style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div className="wrap d-flex flex-column gap-5">
+        <div className="d-flex flex-column gap-3">
           <p className="eyebrow">ENGAGEMENT MODELS</p>
           <h2 className="h2">Four ways we partner</h2>
-          <p className="lede" style={{ maxWidth: 640 }}>
+          <p className="lede lede-640">
             Every engagement starts with the same scoping call and ends with a signed structure. The
             difference is how the build gets paid for.
           </p>
@@ -124,37 +85,16 @@ function Models() {
         <div className="grid2">
           {MODELS.map(([t, d, bullets]) => (
             <div key={t} className="panel">
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start',
-                  gap: 16,
-                }}
-              >
+              <div className="panel-header-row">
                 <h3 className="ptitle">{t}</h3>
-                <Badge variant="brand">Ventures</Badge>
+                <Badge bg="brand">Ventures</Badge>
               </div>
               <p className="pbody">{d}</p>
               <div className="rule" />
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div className="bullet-list">
                 {bullets.map((b) => (
-                  <div key={b} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                    <span
-                      style={{
-                        width: 4,
-                        height: 4,
-                        borderRadius: 9999,
-                        background: 'var(--blue-500)',
-                        marginTop: 8,
-                        flex: '0 0 auto',
-                      }}
-                    />
-                    <span
-                      style={{ fontSize: 14, lineHeight: '20px', color: 'var(--ui-slate-500)' }}
-                    >
-                      {b}
-                    </span>
+                  <div key={b} className="bullet">
+                    <span>{b}</span>
                   </div>
                 ))}
               </div>
@@ -168,28 +108,16 @@ function Models() {
 
 function Criteria() {
   return (
-    <section
-      className="sect"
-      style={{ background: 'var(--neutral-0)', boxShadow: 'inset 0 1px 0 0 var(--ui-slate-200)' }}
-    >
-      <div className="wrap" style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <section className="sect sect-contact">
+      <div className="wrap d-flex flex-column gap-5">
+        <div className="d-flex flex-column gap-3">
           <p className="eyebrow">WHAT WE LOOK FOR</p>
           <h2 className="h2">Three things before we commit</h2>
         </div>
         <div className="grid3">
           {CRITERIA.map(([t, d], i) => (
-            <div key={t} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <span
-                style={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  letterSpacing: 1,
-                  color: 'var(--blue-500)',
-                }}
-              >
-                {'0' + (i + 1)}
-              </span>
+            <div key={t} className="numbered-step">
+              <span className="numbered-step-index">{'0' + (i + 1)}</span>
               <h3 className="ptitle">{t}</h3>
               <p className="pbody">{d}</p>
             </div>
@@ -203,17 +131,17 @@ function Criteria() {
 function Pitch() {
   return (
     <section className="sect">
-      <div className="wrap grid2" style={{ alignItems: 'start' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div className="wrap grid2">
+        <div className="d-flex flex-column gap-3">
           <p className="eyebrow">START THE CONVERSATION</p>
           <h2 className="h2">Have a project and looking for a venture-style partner?</h2>
           <p className="lede">
             Send the product, the stage you are at and what you need built. A delivery lead and a
             partner review it together and answer with a proposed structure.
           </p>
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          <div className="d-flex gap-3 flex-wrap">
             <Button
-              variant="secondary"
+              variant="outline-primary"
               onClick={() => {
                 location.href = 'CodeBoxx.html#solutions';
               }}
@@ -224,37 +152,25 @@ function Pitch() {
         </div>
         <div className="panel">
           <h3 className="ptitle">Submit your project</h3>
-          <Input id="v-name" label="Full Name" placeholder="First Last" style={{ width: '100%' }} />
-          <Input
-            id="v-email"
-            label="Email"
-            placeholder="name@company.com"
-            style={{ width: '100%' }}
-          />
-          <Input
-            id="v-company"
-            label="Company or Product"
-            placeholder="codeboxx-enterprise-primary"
-            style={{ width: '100%' }}
-          />
-          <Input
-            id="v-stage"
-            label="Stage"
-            placeholder="Idea, prototype, or in market"
-            style={{ width: '100%' }}
-          />
+          <Form.Group>
+            <Form.Label>Full Name</Form.Label>
+            <Form.Control id="v-name" placeholder="First Last" />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Email</Form.Label>
+            <Form.Control id="v-email" placeholder="name@company.com" />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Company or Product</Form.Label>
+            <Form.Control id="v-company" placeholder="codeboxx-enterprise-primary" />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Stage</Form.Label>
+            <Form.Control id="v-stage" placeholder="Idea, prototype, or in market" />
+          </Form.Group>
           <div className="rule" />
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 16,
-            }}
-          >
-            <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--ui-slate-400)' }}>
-              Reviewed within one business day.
-            </span>
+          <div className="form-actions">
+            <span className="form-actions-note">Reviewed within one business day.</span>
             <Button size="lg">Send</Button>
           </div>
         </div>

@@ -1,24 +1,8 @@
 import React from 'react';
-import { Button, Badge, Input } from '../design-system';
+import { Button, Badge, Form } from 'react-bootstrap';
 import { TopBar, Footer } from '../components/Chrome';
 import { useSanityPosts } from '../lib/sanity';
 import '../lib/image-slot.js';
-
-const PILL = {
-  width: 'fit-content',
-  borderRadius: 9999,
-  boxShadow: 'inset 0 0 0 1.5px var(--blue-500)',
-  padding: '8px 16px',
-  display: 'inline-flex',
-  fontWeight: 700,
-  fontSize: 12,
-  lineHeight: '100%',
-  letterSpacing: '0.5px',
-  textTransform: 'uppercase',
-  color: 'var(--neutral-0)',
-  whiteSpace: 'nowrap',
-  marginBottom: 10,
-};
 
 const CATEGORIES = [
   'All Posts',
@@ -40,7 +24,7 @@ const SEED_POSTS = [
     url: 'https://academy.codeboxx.com/post/best-corporate-ai-bootcamps',
   },
   {
-    title: 'Unlock your own Future: Join CodeBoxx\u2019s 4-Day Vibe Coding and Agentic AI Workshop',
+    title: 'Unlock your own Future: Join CodeBoxx’s 4-Day Vibe Coding and Agentic AI Workshop',
     category: 'Workshop',
     author: 'Codeboxx Technology',
     date: '2025-12-01',
@@ -77,34 +61,11 @@ const fmt = (d) =>
 
 function Band() {
   return (
-    <section style={{ background: 'var(--navy-500)', padding: '80px 0' }}>
-      <div
-        className="wrap"
-        style={{ display: 'flex', flexDirection: 'column', gap: 20, alignItems: 'flex-start' }}
-      >
-        <span style={PILL}>CodeBlog</span>
-        <h1
-          style={{
-            margin: 0,
-            fontSize: 48,
-            fontWeight: 900,
-            lineHeight: '100%',
-            color: 'var(--neutral-0)',
-            maxWidth: 780,
-            textWrap: 'pretty',
-          }}
-        >
-          Fresh news from the studio, the platform and the school.
-        </h1>
-        <p
-          style={{
-            fontSize: 14,
-            lineHeight: '20px',
-            color: 'rgba(255,255,255,0.72)',
-            margin: 0,
-            maxWidth: 560,
-          }}
-        >
+    <section className="band-dark">
+      <div className="wrap d-flex flex-column gap-4 align-items-start">
+        <span className="pill">CodeBlog</span>
+        <h1 className="band-title">Fresh news from the studio, the platform and the school.</h1>
+        <p className="band-lede">
           Curriculum notes, technology news, workshops and graduate stories. Every post is written
           and published in Sanity.
         </p>
@@ -139,27 +100,13 @@ function Posts() {
   }, [more, cat]);
   return (
     <section className="sect">
-      <div className="wrap" style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+      <div className="wrap d-flex flex-column gap-5">
+        <div className="d-flex gap-2 flex-wrap">
           {CATEGORIES.map((c) => (
             <button
               key={c}
               onClick={() => setCat(c)}
-              style={{
-                appearance: 'none',
-                cursor: 'pointer',
-                border: 0,
-                borderRadius: 9999,
-                padding: '8px 16px',
-                fontFamily: 'inherit',
-                fontSize: 12,
-                fontWeight: 600,
-                letterSpacing: '0.5px',
-                textTransform: 'uppercase',
-                background: cat === c ? 'var(--blue-500)' : 'transparent',
-                color: cat === c ? 'var(--neutral-0)' : 'var(--ui-slate-500)',
-                boxShadow: cat === c ? 'none' : 'inset 0 0 0 1px var(--ui-slate-200)',
-              }}
+              className={'category-pill' + (cat === c ? ' active' : '')}
             >
               {c}
             </button>
@@ -167,11 +114,7 @@ function Posts() {
         </div>
         <div className="grid2">
           {list.map((p) => (
-            <article
-              key={p.title}
-              className="panel"
-              style={{ gap: 16, padding: 0, overflow: 'hidden' }}
-            >
+            <article key={p.title} className="panel post-card">
               <image-slot
                 id={
                   'post-' +
@@ -185,62 +128,17 @@ function Posts() {
                 placeholder="Cover image"
                 style={{ width: '100%', height: 200 }}
               ></image-slot>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 12,
-                  padding: '0 24px 24px',
-                }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    gap: 16,
-                  }}
-                >
-                  <Badge variant="brand">{p.category}</Badge>
-                  <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--ui-slate-400)' }}>
-                    {fmt(p.date)}
-                  </span>
+              <div className="post-card-body">
+                <div className="post-meta-row">
+                  <Badge bg="brand">{p.category}</Badge>
+                  <span className="post-date">{fmt(p.date)}</span>
                 </div>
-                <h2
-                  style={{
-                    margin: 0,
-                    fontSize: 18,
-                    fontWeight: 700,
-                    lineHeight: '124%',
-                    textWrap: 'pretty',
-                  }}
-                >
-                  {p.title}
-                </h2>
+                <h2 className="post-title">{p.title}</h2>
                 <p className="pbody">{p.excerpt}</p>
                 <div className="rule" />
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    gap: 16,
-                  }}
-                >
-                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ui-slate-500)' }}>
-                    {p.author}
-                  </span>
-                  <a
-                    href={p.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 600,
-                      letterSpacing: 1,
-                      textTransform: 'uppercase',
-                    }}
-                  >
+                <div className="post-meta-row">
+                  <span className="post-author">{p.author}</span>
+                  <a href={p.url} target="_blank" rel="noopener noreferrer" className="link-tag">
                     Read Post
                   </a>
                 </div>
@@ -249,14 +147,15 @@ function Posts() {
           ))}
         </div>
         {more ? (
-          <div
-            ref={sentinel}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}
-          >
-            <Button variant="secondary" size="lg" onClick={() => setShown((s) => s + PAGE_SIZE)}>
+          <div ref={sentinel} className="load-more">
+            <Button
+              variant="outline-primary"
+              size="lg"
+              onClick={() => setShown((s) => s + PAGE_SIZE)}
+            >
               Load More
             </Button>
-            <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--ui-slate-400)' }}>
+            <span className="load-more-count">
               {'Showing ' + list.length + ' of ' + all.length}
             </span>
           </div>
@@ -268,12 +167,9 @@ function Posts() {
 
 function Subscribe() {
   return (
-    <section
-      className="sect"
-      style={{ background: 'var(--neutral-0)', boxShadow: 'inset 0 1px 0 0 var(--ui-slate-200)' }}
-    >
-      <div className="wrap grid2" style={{ alignItems: 'start' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <section className="sect sect-contact">
+      <div className="wrap grid2">
+        <div className="d-flex flex-column gap-3">
           <p className="eyebrow">SUBSCRIBE</p>
           <h2 className="h2">New posts, straight to your inbox.</h2>
           <p className="lede">
@@ -281,24 +177,13 @@ function Subscribe() {
           </p>
         </div>
         <div className="panel">
-          <Input
-            id="blog-email"
-            label="Email"
-            placeholder="name@company.com"
-            style={{ width: '100%' }}
-          />
+          <Form.Group>
+            <Form.Label>Email</Form.Label>
+            <Form.Control id="blog-email" placeholder="name@company.com" />
+          </Form.Group>
           <div className="rule" />
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 16,
-            }}
-          >
-            <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--ui-slate-400)' }}>
-              Unsubscribe from any email.
-            </span>
+          <div className="form-actions">
+            <span className="form-actions-note">Unsubscribe from any email.</span>
             <Button size="lg">Subscribe</Button>
           </div>
         </div>

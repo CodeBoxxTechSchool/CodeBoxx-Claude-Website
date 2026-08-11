@@ -1,0 +1,34 @@
+@use 'variables' as v;
+
+// Shared between Financing.jsx and Ventures.jsx — both are hero band + 2-col
+// bullet-list panels + 3-col numbered steps + closing CTA/form panel.
+
+.panel-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.numbered-step {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.numbered-step-index {
+  font-size: v.$text-micro;
+  font-weight: v.$weight-semibold;
+  letter-spacing: 1px;
+  color: v.$blue-500;
+}
+
+.eyebrow-brand {
+  color: v.$blue-500;
+}
+
+.band-dark-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 780px;
+}
