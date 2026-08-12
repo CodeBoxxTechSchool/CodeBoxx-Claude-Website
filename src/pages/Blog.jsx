@@ -1,11 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Badge, Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { TopBar, Footer } from '../components/Chrome';
 import { useSanityPosts, sanityImageUrl } from '../lib/sanity';
 import '../lib/image-slot.js';
 
-const CATEGORIES = [
+// Canonical English values stored on Sanity `post.category` — filtering (`cat`
+// state, `p.category === cat`) always compares against these; only the button's
+// displayed label is translated (via blog.categories), so a language switch can't
+// break matching against live (English) Sanity data.
+const CATEGORY_KEYS = [
   'All Posts',
   'CodeBoxx for Life',
   'CodeBoxx Curriculums',
@@ -116,15 +121,13 @@ const fmt = (d) =>
   });
 
 function Band() {
+  const { t } = useTranslation();
   return (
     <section className="band-dark">
       <div className="wrap d-flex flex-column gap-4 align-items-start">
-        <span className="pill">CodeBlog</span>
-        <h1 className="band-title">Fresh news from the studio, the platform and the school.</h1>
-        <p className="band-lede">
-          Curriculum notes, technology news, workshops and graduate stories. Every post is written
-          and published in Sanity.
-        </p>
+        <span className="pill">{t('blog.band.pill')}</span>
+        <h1 className="band-title">{t('blog.band.title')}</h1>
+        <p className="band-lede">{t('blog.band.lede')}</p>
       </div>
     </section>
   );
@@ -133,6 +136,8 @@ function Band() {
 const PAGE_SIZE = 2;
 
 function Posts() {
+  const { t } = useTranslation();
+  const categoryLabels = t('blog.categories', { returnObjects: true });
   const POSTS = useSanityPosts(SEED_POSTS);
   const [cat, setCat] = React.useState('All Posts');
   const [shown, setShown] = React.useState(PAGE_SIZE);
@@ -158,13 +163,13 @@ function Posts() {
     <section className="sect">
       <div className="wrap d-flex flex-column gap-5">
         <div className="d-flex gap-2 flex-wrap">
-          {CATEGORIES.map((c) => (
+          {CATEGORY_KEYS.map((c) => (
             <button
               key={c}
               onClick={() => setCat(c)}
               className={'category-pill' + (cat === c ? ' active' : '')}
             >
-              {c}
+              {categoryLabels[c]}
             </button>
           ))}
         </div>
@@ -176,7 +181,7 @@ function Posts() {
                 src={sanityImageUrl(p.featuredImage, { w: 500 })}
                 shape="rect"
                 fit="cover"
-                placeholder="Cover image"
+                placeholder={t('blog.coverImage')}
                 style={{ width: '100%', height: 200 }}
               ></image-slot>
               <div className="post-card-body">
@@ -190,7 +195,7 @@ function Posts() {
                 <div className="post-meta-row">
                   <span className="post-author">{p.author}</span>
                   <Link to={'/blog/' + p.slug} className="link-tag">
-                    Read Post
+                    {t('blog.readPost')}
                   </Link>
                 </div>
               </div>
@@ -204,10 +209,10 @@ function Posts() {
               size="lg"
               onClick={() => setShown((s) => s + PAGE_SIZE)}
             >
-              Load More
+              {t('blog.loadMore')}
             </Button>
             <span className="load-more-count">
-              {'Showing ' + list.length + ' of ' + all.length}
+              {t('blog.showingOf', { shown: list.length, total: all.length })}
             </span>
           </div>
         ) : null}
@@ -217,25 +222,24 @@ function Posts() {
 }
 
 function Subscribe() {
+  const { t } = useTranslation();
   return (
     <section className="sect sect-contact">
       <div className="wrap grid2">
         <div className="d-flex flex-column gap-3">
-          <p className="eyebrow">SUBSCRIBE</p>
-          <h2 className="h2">New posts, straight to your inbox.</h2>
-          <p className="lede">
-            Curriculum updates, workshop dates and technology notes. One email per post, no digests.
-          </p>
+          <p className="eyebrow">{t('blog.subscribe.eyebrow')}</p>
+          <h2 className="h2">{t('blog.subscribe.title')}</h2>
+          <p className="lede">{t('blog.subscribe.lede')}</p>
         </div>
         <div className="panel">
           <Form.Group>
-            <Form.Label>Email</Form.Label>
-            <Form.Control id="blog-email" placeholder="name@company.com" />
+            <Form.Label>{t('blog.subscribe.emailLabel')}</Form.Label>
+            <Form.Control id="blog-email" placeholder={t('blog.subscribe.emailPlaceholder')} />
           </Form.Group>
           <div className="rule" />
           <div className="form-actions">
-            <span className="form-actions-note">Unsubscribe from any email.</span>
-            <Button size="lg">Subscribe</Button>
+            <span className="form-actions-note">{t('blog.subscribe.unsubscribeNote')}</span>
+            <Button size="lg">{t('blog.subscribe.submit')}</Button>
           </div>
         </div>
       </div>

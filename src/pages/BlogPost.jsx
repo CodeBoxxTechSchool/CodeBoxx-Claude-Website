@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { PortableText } from '@portabletext/react';
 import { Badge } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { TopBar, Footer } from '../components/Chrome';
 import { useSanityPost, sanityImageUrl } from '../lib/sanity';
 import { SEED_POSTS } from './Blog';
@@ -39,6 +40,7 @@ const portableTextComponents = {
 };
 
 function NotFound() {
+  const { t } = useTranslation();
   return (
     <div id="top">
       <TopBar
@@ -48,10 +50,10 @@ function NotFound() {
       />
       <section className="sect">
         <div className="wrap d-flex flex-column gap-3 align-items-start">
-          <h1 className="h2">Post not found</h1>
-          <p className="pbody">This post may have been moved or removed.</p>
+          <h1 className="h2">{t('blog.post.notFoundTitle')}</h1>
+          <p className="pbody">{t('blog.post.notFoundBody')}</p>
           <Link to="/blog" className="link-tag">
-            Back to CodeBlog
+            {t('blog.post.backToCodeBlog')}
           </Link>
         </div>
       </section>
@@ -61,6 +63,7 @@ function NotFound() {
 }
 
 function BlogPost() {
+  const { t } = useTranslation();
   const { slug } = useParams();
   const seedMatch = SEED_POSTS.find((p) => p.slug === slug) || null;
   const post = useSanityPost(slug, seedMatch);
@@ -110,12 +113,12 @@ function BlogPost() {
             <div className="post-external-ref">
               <div className="rule" />
               <a href={post.url} target="_blank" rel="noopener noreferrer" className="link-tag">
-                External Reference
+                {t('blog.post.externalReference')}
               </a>
             </div>
           ) : null}
           <Link to="/blog" className="link-tag mt-40">
-            Back to CodeBlog
+            {t('blog.post.backToCodeBlog')}
           </Link>
         </div>
       </section>

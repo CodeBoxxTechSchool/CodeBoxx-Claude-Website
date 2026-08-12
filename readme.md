@@ -49,7 +49,7 @@ so `VITE_SANITY_TOKEN` can stay blank — only set it if the dataset is ever mad
 ### Reaching the content dashboard
 
 The editing dashboard (Sanity Studio) lives in its own project, not in this repo:
-`/Users/minuitcinq/projects/codeboxx-website-studio`, already attached to project `zagi8xr3`
+`/projects/codeboxx-website-studio`, already attached to project `zagi8xr3`
 with the four schema types below.
 
 - **Locally**: `cd` into that folder, `npm run dev`, open `http://localhost:3333`.

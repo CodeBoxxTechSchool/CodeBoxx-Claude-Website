@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Badge, Form, Offcanvas } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { TopBar, Footer } from '../components/Chrome';
 import Avatar from '../components/Avatar';
 import Logo from '../components/Logo';
@@ -8,48 +9,29 @@ import { useSanityTeam, useSanityLogos, useSanityPosts, sanityImageUrl } from '.
 import { useIntakes } from '../lib/intakes';
 import '../lib/image-slot.js';
 
-const DIVISIONS = [
-  {
-    id: 'codeboxx',
-    name: 'CodeBoxx',
-    role: 'About Us',
-    tag: 'We Are CodeBoxx',
-    blurb:
-      'AI-native delivery pods that scope, build and ship product with the client in the room.',
-    extra: 'We transform businesses, individuals, and communities through technology.',
-  },
-  {
-    id: 'solutions',
-    name: 'CodeBoxx Solutions',
-    role: 'Discover Your Solutions',
-    tag: 'Your Solutions',
-    blurb:
-      'We specialize in strategy, intricate design solutions, and top-tier software engineering services. Our expertise in the latest software development tools and technologies empowers our clients to innovate better and execute faster.',
-  },
-  {
-    id: 'academy',
-    name: 'CodeBoxx Academy',
-    role: 'The Talent Pipeline',
-    tag: 'The Next Generation',
-    blurb:
-      'CodeBoxx Academy is a workforce development solution committed to closing the opportunity gap and addressing the talent shortage in the tech industry. We believe that everyone has the potential to be a great developer, and we are dedicated to molding potential into proficiency and shaping novices into nimble developers.',
-  },
-];
+// Only the id (used for anchors/routing) lives here — every text field is pulled
+// from home.divisions.<id> via useDivisions() so it stays in sync with the toggle.
+const DIVISIONS_META = [{ id: 'codeboxx' }, { id: 'solutions' }, { id: 'academy' }];
 
-const CODI_REPLIES = [
-  'Routing to CodeBoxx Solutions. Median deploy time on managed clusters is 2.4s, 0 errors on the last 40 releases. Want the runbook sample?',
-  'Academy intake opens September 2026. Cohorts run 12 weeks, full time, ending inside a client pod.',
-  'A delivery lead and an engineer join the first call. Send the deadline and the system, and I will book it.',
-];
+function useDivisions() {
+  const { t } = useTranslation();
+  return DIVISIONS_META.map((d) => ({
+    id: d.id,
+    ...t('home.divisions.' + d.id, { returnObjects: true }),
+  }));
+}
 
 function Codi({ open, onClose }) {
+  const { t } = useTranslation();
+  const replies = t('home.codi.replies', { returnObjects: true });
   const [draft, setDraft] = React.useState('');
-  const [log, setLog] = React.useState([
-    ['codi', 'Codi here, the CodeBoxx agent. Ask about the studio, the platform or the academy.'],
-  ]);
+  // Greeting is NOT the first `log` entry — it's rendered separately below, always
+  // from the current language, since a useState initializer only runs once and
+  // would otherwise freeze the greeting in whatever language was active on mount.
+  const [log, setLog] = React.useState([]);
   const send = () => {
     if (!draft.trim()) return;
-    const reply = CODI_REPLIES[log.filter((l) => l[0] === 'user').length % CODI_REPLIES.length];
+    const reply = replies[log.filter((l) => l[0] === 'user').length % replies.length];
     setLog((l) => [...l, ['user', draft], ['codi', reply]]);
     setDraft('');
   };
@@ -59,19 +41,20 @@ function Codi({ open, onClose }) {
         <div className="d-flex align-items-center gap-3">
           <Avatar size="md" />
           <div className="d-flex flex-column gap-1">
-            <span className="codi-name">Codi</span>
-            <span className="codi-role">CodeBoxx AI Agent</span>
+            <span className="codi-name">{t('home.codi.name')}</span>
+            <span className="codi-role">{t('home.codi.role')}</span>
           </div>
         </div>
         <div className="d-flex align-items-center gap-3">
-          <Badge bg="success">Active</Badge>
+          <Badge bg="success">{t('home.codi.active')}</Badge>
           <Button size="sm" variant="ghost" onClick={onClose}>
-            Close
+            {t('actions.close')}
           </Button>
         </div>
       </Offcanvas.Header>
       <Offcanvas.Body className="d-flex flex-column p-0">
         <div className="codi-log">
+          <div className="codi-bubble">{t('home.codi.greeting')}</div>
           {log.map(([who, text], i) => (
             <div key={i} className={'codi-bubble' + (who === 'user' ? ' codi-bubble-user' : '')}>
               {text}
@@ -82,11 +65,11 @@ function Codi({ open, onClose }) {
           <Form.Control
             id="codi-input"
             className="flex-grow-1"
-            placeholder="Ask Codi"
+            placeholder={t('home.codi.placeholder')}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
           />
-          <Button onClick={send}>Send</Button>
+          <Button onClick={send}>{t('home.codi.send')}</Button>
         </div>
       </Offcanvas.Body>
     </Offcanvas>
@@ -130,6 +113,7 @@ const CLIENT_LOGOS = [
 ];
 
 function ClientSlider() {
+  const { t } = useTranslation();
   const logos = useSanityLogos(CLIENT_LOGOS);
   const ref = React.useRef(null);
   const [paused, setPaused] = React.useState(false);
@@ -155,7 +139,7 @@ function ClientSlider() {
       onMouseLeave={() => setPaused(false)}
     >
       <div className="client-slider-head">
-        <p className="eyebrow">Trusted By</p>
+        <p className="eyebrow">{t('home.clientSlider.trustedBy')}</p>
         <div className="d-flex gap-2">
           <Button size="sm" variant="outline-primary" onClick={() => nudge(-1)}>
             &lt;
@@ -209,17 +193,19 @@ function SectionHead({ eyebrow, index, title, lede, children }) {
 }
 
 function Platform() {
+  const { t } = useTranslation();
+  const divisions = useDivisions();
   return (
     <section id="platform" className="sect">
       <div className="wrap">
         <SectionHead
           index="01"
-          eyebrow="The Pipeline"
-          title="Three divisions. One pipeline."
-          lede="One AI-first entity covering the full need: the build, the platform that runs it and the talent that staffs it. Fewer vendors, faster delivery, lower cost per outcome."
+          eyebrow={t('home.platform.eyebrow')}
+          title={t('home.platform.title')}
+          lede={t('home.platform.lede')}
         />
         <div className="grid3">
-          {DIVISIONS.map((d) => (
+          {divisions.map((d) => (
             <div key={d.id} className="panel panel-division">
               <div className="d-flex flex-column gap-3">
                 <Badge bg="brand">{d.tag}</Badge>
@@ -291,102 +277,63 @@ function DivisionBand({
   );
 }
 
-const ABOUT = [
+// Structural-only: id (routing/anchors), people id/name/linkedin (proper nouns and
+// links, not translated), subhead/reference (brand name + URL). Every text field
+// comes from home.about.<id> via useAbout().
+const ABOUT_META = [
   {
     id: 'team',
-    title: 'The Team',
-    blurb:
-      'A team devoted to the craft, passionate about delivering quality, and committed to innovating on every build.',
-    heading: 'PEOPLE, PODS, PAIRING',
-    sub: 'The team that scopes it is the team that ships it',
-    detail:
-      "Our team is dedicated to helping your business enhance its performance through innovative AI-First solutions. We understand the unique challenges you face and are committed to providing tailored strategies that drive results. Let's work together to elevate your business to new heights!",
-    tags: null,
     people: [
-      {
-        id: 'nicolas-genest',
-        name: 'Nicolas Genest',
-        role: 'CEO & Co-Founder',
-        linkedin: 'https://www.linkedin.com/in/ngenest/',
-      },
+      { id: 'nicolas-genest', name: 'Nicolas Genest', linkedin: 'https://www.linkedin.com/in/ngenest/' },
       {
         id: 'remi-gagnon',
         name: 'Rémi Gagnon',
-        role: 'CDO',
         linkedin: 'https://www.linkedin.com/in/r%C3%A9mi-gagnon-7684092/',
       },
       {
         id: 'felix-antoine-paradis',
         name: 'Félix-Antoine Paradis',
-        role: 'CTO',
         linkedin: 'https://www.linkedin.com/in/felixaparadis/',
       },
       {
         id: 'martin-chantal',
         name: 'Martin Chantal',
-        role: 'General Manager',
         linkedin: 'https://www.linkedin.com/in/martin-chantal-078832181/',
       },
       {
         id: 'marie-france-nolin',
         name: 'Marie-France Nolin',
-        role: 'Administrative Assistant',
         linkedin: 'https://www.linkedin.com/in/marie-france-nolin-1ab1b8154/',
       },
-      {
-        id: 'brian-peret',
-        name: 'Brian Peret',
-        role: 'Academy Director',
-        linkedin: 'https://www.linkedin.com/in/brian-peret-b62636101/',
-      },
+      { id: 'brian-peret', name: 'Brian Peret', linkedin: 'https://www.linkedin.com/in/brian-peret-b62636101/' },
       {
         id: 'francis-patry-jessop',
         name: 'Francis Patry-Jessop',
-        role: 'Director of Coaching',
         linkedin: 'https://www.linkedin.com/in/francis-patry-jessop-b1794b241/',
       },
       {
         id: 'cederic-noel',
         name: 'Cédéric Noël',
-        role: 'Director of Delivery',
         linkedin: 'https://www.linkedin.com/in/c%C3%A9d%C3%A9ric-no%C3%ABl-4145a5167/',
       },
-      {
-        id: 'dovev-weaver-sr',
-        name: 'Dovév Weaver Sr.',
-        role: 'Director of Communities & Outcomes',
-        linkedin: 'https://www.linkedin.com/in/coachdtalks/',
-      },
+      { id: 'dovev-weaver-sr', name: 'Dovév Weaver Sr.', linkedin: 'https://www.linkedin.com/in/coachdtalks/' },
     ],
-    close:
-      'You meet the people who will do the work in the first session, and they stay to the end of the engagement.',
   },
-  {
-    id: 'history',
-    title: 'History',
-    blurb: 'A studio, a platform practice and a school, built one after the other.',
-    heading: 'BUILT, PROVEN, REPEATED',
-    sub: 'Three divisions grown from one practice',
-    detail:
-      'Nicolas Genest is a technology executive, serial founder, and former multi-exit CTO who has built and led companies generating over $1 billion in annual revenue. He is the founder and CEO of CodeBoxx Technology, an AI-first education and software company that trains and employs technologists from all walks of life.\n\nPreviously, Nicolas Genest served as CTO at The RealReal, ModCloth, and Full Harvest, and led digital transformations at Walmart, Microsoft, and Pfizer. An early adopter of applied AI, machine learning, and automation, he’s known for his focus on “AI Done Right”—building human-centered, high-quality technology. Nicolas holds degrees in Business Analytics from Harvard University and in Business and Public Administration from the University of Phoenix, and is recognized as a U.S. EB-1A Extraordinary Ability Permanent Resident.',
-    tags: null,
-    subhead: 'CodeBoxx',
-    close:
-      'CodeBoxx goes beyond technical skills to enhance your employability. Their proprietary ProDev modules and career services help you cultivate the essential qualities that tech employers consistently tell them what they value most – such as communication, creative problem-solving, collaboration, resiliency, and a “lead from your seat” mentality.\n\nWith a complete skill set under your belt, you’ll position yourself as a versatile and highly sought-after candidate. And with personalized guidance every step of the way, you’ll gain practical skills and build your coding portfolio alongside a cohort of supportive peers.',
-    reference: 'https://coruzant.com/profiles/nicolas-genest/',
-  },
-  {
-    id: 'vision',
-    title: 'Vision & Mission',
-    blurb: 'AI-first delivery, human accountability on every release.',
-    heading: 'AI-FIRST, HUMAN-BUILT',
-    sub: 'Outwork the old way, and show the receipts',
-    detail:
-      'The mission is to put applied AI to work inside real delivery: agents carrying the repetitive load, engineers carrying the judgment, and attribution on every action either way. Innovation only counts here once it ships and holds in production.\n\nThe vision sits one step ahead of that. We build the practice before the market asks for it, so that when a technology becomes unavoidable our clients are already running it — not evaluating it.',
-    tags: ['Applied AI', 'Agentic Delivery', 'Human Judgment', 'Attribution', 'Production-Proven'],
-    close: 'We build AI-Native teams and software that outworks the old way.',
-  },
+  { id: 'history', subhead: 'CodeBoxx', reference: 'https://coruzant.com/profiles/nicolas-genest/' },
+  { id: 'vision' },
 ];
+
+function useAbout() {
+  const { t } = useTranslation();
+  return ABOUT_META.map((a) => {
+    const copy = t('home.about.' + a.id, { returnObjects: true });
+    return {
+      ...a,
+      ...copy,
+      people: a.people?.map((p) => ({ ...p, role: copy.people?.[p.id]?.role })),
+    };
+  });
+}
 
 function ChevronButton({ active, onClick }) {
   return (
@@ -408,15 +355,18 @@ function ChevronButton({ active, onClick }) {
 }
 
 function Studio() {
-  const [active, setActive] = React.useState(ABOUT[0]);
-  const studioTeam = useSanityTeam('studio', ABOUT[0].people);
+  const { t } = useTranslation();
+  const about = useAbout();
+  // Stores just the id, not the translated object — so a language switch can't
+  // leave `active` pointing at a stale-language copy of the previously-active item.
+  const [activeId, setActiveId] = React.useState('team');
+  const active = about.find((a) => a.id === activeId) || about[0];
+  const studioTeam = useSanityTeam('studio', about[0].people);
   React.useEffect(() => {
     const apply = () => {
       const m = /^#about-(team|history|vision)$/.exec(location.hash);
       if (!m) return;
-      const found = ABOUT.filter((a) => a.id === m[1])[0];
-      if (!found) return;
-      setActive(found);
+      setActiveId(m[1]);
       const el = document.getElementById('codeboxx');
       if (el)
         window.scrollTo({
@@ -433,18 +383,18 @@ function Studio() {
       alt
       id="codeboxx"
       index="03"
-      role="About Us"
-      name="CodeBoxx: Digital Transformation Has a Name"
-      lede="Since 2018, CodeBoxx has been the guiding force helping companies adapt to an ever-evolving digital world. As experts in AI agent integration, we are committed to providing native AI solutions tailored to your needs."
+      role={t('home.studio.role')}
+      name={t('home.studio.name')}
+      lede={t('home.studio.lede')}
       left={
         <div className="stacked-list">
-          {ABOUT.map((a) => (
+          {about.map((a) => (
             <div key={a.id} className="stacked-item">
               <span className={'stacked-item-title' + (active.id === a.id ? ' active' : '')}>
                 {a.title}
               </span>
               <span className="pbody">{a.blurb}</span>
-              <ChevronButton active={active.id === a.id} onClick={() => setActive(a)} />
+              <ChevronButton active={active.id === a.id} onClick={() => setActiveId(a.id)} />
             </div>
           ))}
         </div>
@@ -455,107 +405,23 @@ function Studio() {
   );
 }
 
-const CLIENT_QUOTES = [
-  {
-    quote:
-      'Solutions took over our cluster mid-quarter. Deploys went from a Thursday-night ritual to a 2.4s canary promotion nobody has to watch.',
-    name: 'Marc Lavoie',
-    role: 'VP Engineering, Northline Freight',
-  },
-  {
-    quote:
-      'The console is the status report. Our board reads the same release log our engineers do, with the actor and SHA on every line.',
-    name: 'Priya Raman',
-    role: 'CTO, Meridian Health',
-  },
-  {
-    quote:
-      'Twelve weeks from signature to a production cut, then a clean handoff of the runbook to our internal team.',
-    name: 'Daniel Okafor',
-    role: 'Director of Platform, Cassel Bank',
-  },
+
+// Structural-only: id, and `custom`'s logos (image assets, not text). Every text
+// field comes from home.services.<id> via useServices().
+const SERVICES_META = [
+  { id: 'cto' },
+  { id: 'agentic' },
+  { id: 'custom', logos: ['Crewkit', 'Optigo', 'Catalog Crafter', 'Soumigo'] },
+  { id: 'daas' },
 ];
 
-const SERVICES = [
-  {
-    id: 'cto',
-    title: 'Fractional CTO',
-    blurb: 'Strategic technology leadership on demand to scale products and teams.',
-    detail:
-      'A digital transformation can seem daunting and costly for any company. A fractional CTO can be a trusted resource for a reassuring and well-orchestrated transition.\n\nCodeBoxx offers resources from experience in all markets that have faced the same challenges as you. Contact us and discover how CodeBoxx can support you at this pivotal moment.',
-    heading: 'TRUST, EXPERIENCE, COMMITMENT',
-    sub: 'The confidence of experience',
-    tags: [
-      'Digital Transformation',
-      'Technology Strategy',
-      'Team Structure',
-      'Vendor Selection',
-      'Executive Advisory',
-    ],
-    close:
-      'We understand the challenges of every digital transformation because we have been through it ourselves. Every scenario is different, but with our team, one thing is certain: success.\n\nIn a chain, each link must be stronger than the next one, and that is where our Fractional CTOs come into their own. Through your trust, our experience, and our commitment',
-  },
-  {
-    id: 'agentic',
-    title: 'Agentic AI',
-    blurb: 'Design and deploy autonomous AI agents to automate complex workflows.',
-    detail:
-      'Customer service and response speed are the Achilles heel of the customer experience. Like your competitors, you need to adapt at lightning speed.\n\nThe challenge for human resources is to find qualified and loyal employees, but not anymore. Train an AI agent tailored to your market and create a reliable ally, 24 hours a day.',
-    heading: 'KNOWLEDGE, RELIABILITY, STABILITY',
-    sub: 'Taking your service to the next level',
-    tags: null,
-    steps: [
-      [
-        'Audit Your Ecosystem',
-        'We map the tools, channels and conversations already in place: where requests arrive, how they are handled today, and what a resolution actually costs you in time.',
-      ],
-      [
-        'Give a Report of the Situation',
-        'You receive a plain reading of what we found. Volumes, response times, the requests worth automating and the ones that should stay with a human.',
-      ],
-      [
-        'Build a Plan and Stick to the Plan',
-        'A scoped rollout with dates and measures. The agent is trained on your market, evaluated before release, and adjusted against the numbers we agreed on.',
-      ],
-    ],
-    close:
-      "Three non-negotiable qualities for delivering a customer experience worthy of the name. We understand that such a change can be stressful. That's why we support you throughout the process.",
-  },
-  {
-    id: 'custom',
-    title: 'Tailor-Made Softwares',
-    blurb: 'Custom-built software designed to fit your workflows, goals, and growth.',
-    detail:
-      'There are many solutions on the market, each with its own strengths and weaknesses. However, the compromise is always on your side. Why not build THE solution as you see it in your ecosystem?',
-    heading: 'INNOVATE, CREATE, ADAPT',
-    sub: 'Building A Solution With You, Tailored to Your Needs',
-    tags: null,
-    logosTitle: 'Discover Our In-House Solutions Built to Facilitate Your Journeys',
-    logos: ['Crewkit', 'Optigo', 'Catalog Crafter', 'Soumigo'],
-    close:
-      "A company's journey is intertwined with crucial decisions such as digital transformation. There are two choices: follow the crowd or take the lead in your market.",
-    closeAfter:
-      'CodeBoxx is the ideal partner to support the second choice. Our AI-First approach offers velocity to the growth of your technological infrastructure.',
-  },
-  {
-    id: 'daas',
-    title: 'Developer as a Service',
-    blurb: 'On-demand developers to accelerate projects, scale teams, and deliver faster.',
-    detail:
-      "Hiring, onboarding, and managing in-house developers in today's competitive market can be time consuming and costly. Embrace the future with Development as a Service (DaaS) – the ultimate solution for businesses seeking seamless, tailor-made software solutions without the hassle and costs of managing internal resources.",
-    heading: 'SCALE, SHIFT, ADAPT',
-    sub: 'Scale Your Dev Team Up or Down with Ease.',
-    tags: [
-      'No Hiring Overhead',
-      'One Developer or a Full Team',
-      'Matched to Your Stack',
-      'Scale Up or Down',
-      'On Time, On Budget',
-    ],
-    close:
-      'Welcome to a world where seamless software development meets unparalleled convenience. Our Developer as a Service (DaaS) offering is designed to revolutionize the way you build and maintain software solutions. This hassle-free approach that allows you to focus on your core business operations while we expertly handle the intricacies of your software development needs.\n\nWhether you need a single developer resource or an entire development team, our diverse and highly skilled technologists are meticulously selected to match your needs and complement your existing resources, delivering top-notch software solutions on time and within budget.',
-  },
-];
+function useServices() {
+  const { t } = useTranslation();
+  return SERVICES_META.map((s) => ({
+    ...s,
+    ...t('home.services.' + s.id, { returnObjects: true }),
+  }));
+}
 
 const LOGO_LINKS = {
   Crewkit: 'https://crewkit.io/',
@@ -574,6 +440,7 @@ const LOGO_IMAGES = {
 };
 
 function ServiceDetail({ s }) {
+  const { t } = useTranslation();
   return (
     <div className="panel panel-sticky">
       <div className="d-flex flex-column gap-3 align-items-start">
@@ -597,7 +464,7 @@ function ServiceDetail({ s }) {
                   src={person.photo}
                   mask="polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%)"
                   fit="cover"
-                  placeholder="Headshot"
+                  placeholder={t('home.headshot')}
                   style={{ width: '100%', height: '100%' }}
                 ></image-slot>
               </div>
@@ -610,7 +477,7 @@ function ServiceDetail({ s }) {
                   rel="noopener noreferrer"
                   className="link-tag"
                 >
-                  LinkedIn
+                  {t('home.linkedIn')}
                 </a>
               </div>
             </div>
@@ -621,9 +488,9 @@ function ServiceDetail({ s }) {
         <React.Fragment>
           <div className="rule" />
           <div className="d-flex flex-wrap gap-2">
-            {s.tags.map((t) => (
-              <Badge key={t} bg="default">
-                {t}
+            {s.tags.map((tag) => (
+              <Badge key={tag} bg="default">
+                {tag}
               </Badge>
             ))}
           </div>
@@ -638,7 +505,7 @@ function ServiceDetail({ s }) {
       ))}
       {s.reference ? (
         <p className="pbody text-sm">
-          &mdash;Reference{' '}
+          &mdash;{t('home.referenceLabel')}{' '}
           <a href={s.reference} target="_blank" rel="noopener noreferrer">
             {s.reference}
           </a>
@@ -688,13 +555,16 @@ function ServiceDetail({ s }) {
 }
 
 function Solutions() {
-  const [active, setActive] = React.useState(SERVICES[0]);
+  const { t } = useTranslation();
+  const services = useServices();
+  const [activeId, setActiveId] = React.useState('cto');
+  const active = services.find((s) => s.id === activeId) || services[0];
   return (
     <DivisionBand
       id="solutions"
       index="04"
-      role="Innovate, Create, Adapt"
-      name="The Age of Vibe Coding"
+      role={t('home.solutions.role')}
+      name={t('home.solutions.name')}
       aside={
         <div className="d-flex flex-column gap-3 align-items-center award-block">
           <img
@@ -702,42 +572,34 @@ function Solutions() {
             alt="RetailTech Breakthrough Award 2025 — CodeBoxx for GoodwillFinds' GEM Chatbot, Chatbot Solution of the Year"
             className="award-img"
           />
-          <span className="award-caption">
-            We were awarded Best AI Chatbot from over a 1000 entries
-          </span>
+          <span className="award-caption">{t('home.solutions.award.caption')}</span>
         </div>
       }
       after={
         <React.Fragment>
           <ClientSlider />
-          <Testimonials eyebrow="Client Testimonials" items={CLIENT_QUOTES} />
+          <Testimonials
+            eyebrow={t('home.testimonials.clientEyebrow')}
+            items={t('home.clientQuotes', { returnObjects: true })}
+          />
         </React.Fragment>
       }
       lede={null}
       intro={
         <div className="d-flex flex-column gap-3 division-intro">
-          <p className="lede lede-wide">
-            In the past, young people learned how to speak the language of computers by following
-            strict rules and writing precise instructions. That era is fading.
-          </p>
-          <p className="lede lede-wide">
-            With the rise of generative AI, technologists are no longer just coders—they design
-            systems that can learn, adapt, and respond. This shift has given rise to vibe coding, a
-            skill that blends clear intent, logic, creativity, and human intuition. As intelligent
-            machines become more common, this way of working is becoming an essential skill for the
-            next generation.
-          </p>
+          <p className="lede lede-wide">{t('home.solutions.introPara1')}</p>
+          <p className="lede lede-wide">{t('home.solutions.introPara2')}</p>
         </div>
       }
       left={
         <div className="stacked-list">
-          {SERVICES.map((s) => (
+          {services.map((s) => (
             <div key={s.id} className="stacked-item">
               <span className={'stacked-item-title' + (active.id === s.id ? ' active' : '')}>
                 {s.title}
               </span>
               <span className="pbody">{s.blurb}</span>
-              <ChevronButton active={active.id === s.id} onClick={() => setActive(s)} />
+              <ChevronButton active={active.id === s.id} onClick={() => setActiveId(s.id)} />
             </div>
           ))}
         </div>
@@ -747,41 +609,6 @@ function Solutions() {
     </DivisionBand>
   );
 }
-
-const COHORT = [
-  [
-    'Weeks 1–4',
-    'Fundamentals',
-    'Typed languages, version control, testing. Assessed on merged pull requests.',
-  ],
-  ['Weeks 5–8', 'Systems', 'APIs, data stores, containers. First deploy to a shared cluster.'],
-  [
-    'Weeks 9–12',
-    'Live Build',
-    'Placement inside a client pod. Shipped work, reviewed by a delivery lead.',
-  ],
-];
-
-const GRAD_QUOTES = [
-  {
-    quote:
-      'I merged my first pull request in week two and deployed to a shared cluster in week six. Nothing was a simulation.',
-    name: 'Ariane Bouchard',
-    role: 'Cohort 21 — Junior Engineer, CodeBoxx',
-  },
-  {
-    quote:
-      'Weeks nine to twelve put me inside a client pod. The review standard was the same one the senior engineers were held to.',
-    name: 'Tomás Herrera',
-    role: 'Cohort 19 — Platform Engineer, Meridian Health',
-  },
-  {
-    quote:
-      'No degree, an entrance assessment and twelve weeks. I was hired into the pod I trained in.',
-    name: 'Naomi Fields',
-    role: 'Cohort 23 — Software Engineer, Northline Freight',
-  },
-];
 
 const SEED_INTAKES = {
   fsd: [
@@ -799,7 +626,9 @@ const SEED_INTAKES = {
 };
 
 function CalendarColumn({ title, meta, rows }) {
+  const { t } = useTranslation();
   const tone = { Open: 'status-open', Waitlist: 'status-waitlist', Planned: 'status-planned' };
+  const statusLabel = t('home.intake.status', { returnObjects: true });
   return (
     <div className="calendar-col">
       <div className="calendar-col-head">
@@ -812,7 +641,7 @@ function CalendarColumn({ title, meta, rows }) {
             <span className="calendar-date">{date}</span>
             <span className="calendar-place">{place}</span>
           </div>
-          <span className={'calendar-status ' + tone[status]}>{status}</span>
+          <span className={'calendar-status ' + tone[status]}>{statusLabel[status] || status}</span>
         </div>
       ))}
     </div>
@@ -820,21 +649,26 @@ function CalendarColumn({ title, meta, rows }) {
 }
 
 function IntakeCalendar() {
+  const { t } = useTranslation();
   const intakes = useIntakes(SEED_INTAKES);
   return (
     <div id="intake" className="calendar-band">
       <div className="calendar-head">
         <div className="d-flex flex-column gap-3">
-          <span className="calendar-eyebrow">Intake Calendar</span>
-          <span className="calendar-title">Two programs. Eight cohorts.</span>
+          <span className="calendar-eyebrow">{t('home.intake.eyebrow')}</span>
+          <span className="calendar-title">{t('home.intake.title')}</span>
         </div>
-        <Badge bg="brand">Editable in Sanity</Badge>
+        <Badge bg="brand">{t('home.intake.editable')}</Badge>
       </div>
       <div className="grid2 calendar-grid">
-        <CalendarColumn title="AI-Native FSD" meta="12 weeks, full time" rows={intakes.fsd} />
         <CalendarColumn
-          title="Advanced AI-Developer"
-          meta="8 weeks, part time"
+          title={t('home.intake.fsd.title')}
+          meta={t('home.intake.fsd.meta')}
+          rows={intakes.fsd}
+        />
+        <CalendarColumn
+          title={t('home.intake.aidev.title')}
+          meta={t('home.intake.aidev.meta')}
           rows={intakes.aidev}
         />
       </div>
@@ -842,76 +676,82 @@ function IntakeCalendar() {
   );
 }
 
-const ACADEMY_TOPICS = [
-  [
-    '12 weeks, full time',
-    'Cohorts start monthly. No prior degree required, entrance assessment only.',
-    'Twelve weeks, five days a week. The entrance assessment measures aptitude, not credentials, and the calendar below sets the intakes.',
-  ],
-  [
-    'Our Courses\nPrograms that fit your journey.',
-    'We know a thing or two about crazy schedules. That’s why we’ve designed our programs to fit various needs and commitment levels.\n\nWhether you want an immersive training experience from your couch or our classroom in St. Pete, Florida, you can transform your life from just about anywhere – without losing the community, collaboration, and personal support usually only available in a classroom.',
-    'No sandbox curriculum. Students work in the same repositories, clusters and consoles the delivery pods use, under the same review standard.',
-    [
-      [
-        'Online & On-site',
-        'AI Native Full-Stack Developer',
-        'Gaining the Skills to Break into Tech Has Never Been Easier.',
-        'enroll',
-      ],
-      [
-        'Online & On-site',
-        'Advanced AI Developer',
-        'Gaining the Skills to Break into Tech Has Never Been Easier.',
-        'enroll',
-      ],
-      [
-        'CodeBoxx for Businesses',
-        'Tailor-Made for Enterprises Training',
-        'Gaining the Skills to Break into Tech Has Never Been Easier.',
-        'contact',
-      ],
-    ],
-    'Courses',
-  ],
-  [
-    'Meet Your Team',
-    'Placement is the exit criterion, not a job board.',
-    'Your instructors at CodeBoxx are experienced, passionate professionals that are driven to teach and help you succeed. Beyond a textbook, they bring real-world experience and expertise to the classroom, providing you with valuable guidance and mentorship that’s relevant to what hiring organizations are looking for in their software development and AI candidates.',
-    null,
-    'Academy Team',
-    [
+// Structural-only: id, and `team`'s people id/name/linkedin. Text (titles, blurbs,
+// course items, roles) comes from home.academyTopics.<id> via useAcademyTopics(),
+// reshaped from tuples into named fields (titleLines/blurbParagraphs/items/kicker/
+// people) so Academy() below never does positional (`[2]`, `[5]`, ...) indexing.
+const ACADEMY_META = [
+  { id: 'program' },
+  { id: 'courses' },
+  {
+    id: 'team',
+    people: [
       {
         id: 'etienne-gonthier-lapointe',
         name: 'Etienne Gonthier-Lapointe',
-        role: 'Coach',
         linkedin: 'https://www.linkedin.com/in/etienne-lapointe-b82b101bb/',
       },
-      {
-        id: 'raina-dejute',
-        name: 'Raina DeJute',
-        role: 'Student Success Coordinator',
-        linkedin: 'https://www.linkedin.com/in/rainadejute/',
-      },
+      { id: 'raina-dejute', name: 'Raina DeJute', linkedin: 'https://www.linkedin.com/in/rainadejute/' },
       {
         id: 'brian-peret-academy',
         name: 'Brian Peret',
-        role: 'Academy Director',
         linkedin: 'https://www.linkedin.com/in/brian-peret-b62636101/',
       },
       {
         id: 'francis-patry-jessop-academy',
         name: 'Francis Patry-Jessop',
-        role: 'Director of Coaching',
         linkedin: 'https://www.linkedin.com/in/francis-patry-jessop-b1794b241/',
       },
     ],
-  ],
+  },
 ];
 
+function useAcademyTopics() {
+  const { t } = useTranslation();
+  const coursesLabel = t('home.academy.coursesLabel');
+  return ACADEMY_META.map((topic) => {
+    const copy = t('home.academyTopics.' + topic.id, { returnObjects: true });
+    if (topic.id === 'program') {
+      return {
+        id: topic.id,
+        titleLines: [copy.titleLine1],
+        blurbParagraphs: [copy.blurb],
+        detail: copy.detail,
+        items: null,
+        kicker: null,
+        people: null,
+      };
+    }
+    if (topic.id === 'courses') {
+      return {
+        id: topic.id,
+        titleLines: [copy.titleLine1, copy.titleLine2],
+        blurbParagraphs: [copy.blurbPara1, copy.blurbPara2],
+        detail: copy.detail,
+        // Tuple shape ([tag, title, body, cta]) matches the COHORT fallback tuples
+        // below, so Academy() renders both through the same .map(([w, t, b, cta]) ...).
+        items: copy.items.map((it) => [it.tag, it.title, it.body, it.cta]),
+        kicker: coursesLabel,
+        people: null,
+      };
+    }
+    return {
+      id: topic.id,
+      titleLines: [copy.titleLine1],
+      blurbParagraphs: [copy.blurb],
+      detail: copy.detail,
+      items: null,
+      kicker: copy.teamLabel,
+      people: topic.people.map((p) => ({ ...p, role: copy.people?.[p.id]?.role })),
+    };
+  });
+}
+
 function Academy({ onEnroll }) {
+  const { t } = useTranslation();
+  const topics = useAcademyTopics();
   const [active, setActive] = React.useState(0);
-  const academyTeam = useSanityTeam('academy', ACADEMY_TOPICS[2][5]);
+  const academyTeam = useSanityTeam('academy', topics[2].people);
   React.useEffect(() => {
     const apply = () => {
       if (location.hash === '#academy-courses') {
@@ -932,37 +772,36 @@ function Academy({ onEnroll }) {
       alt
       id="academy"
       index="05"
-      role="The Talent Pipeline"
-      name="AI-Enabled Coding Education for Next-Gen Technologists"
+      role={t('home.academy.role')}
+      name={t('home.academy.name')}
       after={
         <React.Fragment>
           <IntakeCalendar />
-          <Testimonials eyebrow="Graduate Testimonials" items={GRAD_QUOTES} />
+          <Testimonials
+            eyebrow={t('home.testimonials.gradEyebrow')}
+            items={t('home.gradQuotes', { returnObjects: true })}
+          />
         </React.Fragment>
       }
-      lede="A 12-week program that ends inside a real pod. Graduates carry the same tooling and the same review standard as the studio."
+      lede={t('home.academy.lede')}
       intro={
         <div className="d-flex flex-column gap-3 division-intro">
-          <p className="lede lede-wide">
-            Wherever you come from, AI has the power to jumpstart your career as a developer. You
-            need a fully committed partner moving at the speed of innovation. Find a partner for
-            life with CodeBoxx.
-          </p>
+          <p className="lede lede-wide">{t('home.academy.intro')}</p>
         </div>
       }
       left={
         <div className="stacked-list">
-          {ACADEMY_TOPICS.map(([t, b], i) => (
-            <div key={t} className="stacked-item">
+          {topics.map((topic, i) => (
+            <div key={topic.id} className="stacked-item">
               <span className={'stacked-item-title' + (active === i ? ' active' : '')}>
-                {t.split('\n').map((l, k) => (
+                {topic.titleLines.map((l, k) => (
                   <span key={k} className="line-block">
                     {l}
                   </span>
                 ))}
               </span>
               <span className="pbody">
-                {b.split('\n\n').map((p, k) => (
+                {topic.blurbParagraphs.map((p, k) => (
                   <span key={k} className="line-block">
                     {p}
                   </span>
@@ -976,12 +815,11 @@ function Academy({ onEnroll }) {
     >
       <div className="panel panel-sticky">
         <div className="d-flex justify-content-between align-items-center gap-3">
-          <span className="kicker">{ACADEMY_TOPICS[active][4] || 'Cohort Structure'}</span>
-          <Badge bg="brand">Next intake: Sept 2026</Badge>
+          <span className="kicker">{topics[active].kicker || t('home.academy.cohortStructureLabel')}</span>
+          <Badge bg="brand">{t('home.academy.nextIntake')}</Badge>
         </div>
-        <p className="pbody">{ACADEMY_TOPICS[active][2]}</p>
-        {/* <div className="rule" /> */}
-        {ACADEMY_TOPICS[active][5] ? (
+        <p className="pbody">{topics[active].detail}</p>
+        {topics[active].people ? (
           <div className="people-grid people-grid-4">
             {academyTeam.map((person) => (
               <div key={person.id} className="person">
@@ -991,7 +829,7 @@ function Academy({ onEnroll }) {
                     src={person.photo}
                     mask="polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%)"
                     fit="cover"
-                    placeholder="Headshot"
+                    placeholder={t('home.headshot')}
                     style={{ width: '100%', height: '100%' }}
                   ></image-slot>
                 </div>
@@ -1004,22 +842,22 @@ function Academy({ onEnroll }) {
                     rel="noopener noreferrer"
                     className="link-tag"
                   >
-                    LinkedIn
+                    {t('home.linkedIn')}
                   </a>
                 </div>
               </div>
             ))}
           </div>
         ) : null}
-        {(ACADEMY_TOPICS[active][3] || (ACADEMY_TOPICS[active][5] ? [] : COHORT)).map(
-          ([w, t, b, cta], i) => (
+        {(topics[active].items || (topics[active].people ? [] : t('home.cohort', { returnObjects: true }))).map(
+          ([w, tt, b, cta], i) => (
             <div key={i} className="stacked-item">
               <span className="eyebrow">{w}</span>
-              <span className="cohort-title">{t}</span>
+              <span className="cohort-title">{tt}</span>
               <span className="pbody">{b}</span>
               {cta === 'enroll' ? (
-                <Button size="sm" className="mt-1" onClick={() => onEnroll(t)}>
-                  Enroll Now
+                <Button size="sm" className="mt-1" onClick={() => onEnroll(tt)}>
+                  {t('home.academy.enrollNow')}
                 </Button>
               ) : null}
               {cta === 'contact' ? (
@@ -1031,7 +869,7 @@ function Academy({ onEnroll }) {
                     location.hash = '#contact';
                   }}
                 >
-                  Contact Us
+                  {t('home.academy.contactUs')}
                 </Button>
               ) : null}
             </div>
@@ -1041,29 +879,6 @@ function Academy({ onEnroll }) {
     </DivisionBand>
   );
 }
-
-const METRICS = [
-  [
-    '78%',
-    'Business Adoption',
-    'Nearly four out of five organizations now use AI in some capacity across their operations',
-  ],
-  [
-    '40%',
-    'Job Impact',
-    'International labor projections show AI will transform nearly two-fifths of jobs worldwide rather than just eliminate them',
-  ],
-  [
-    '86%',
-    'Budget Growth',
-    'The vast majority of corporate enterprises plan to spend more money on artificial intelligence development',
-  ],
-  [
-    '40%',
-    'Productivity Boost',
-    'Workers utilizing generative AI tools experience substantial jumps in daily efficiency',
-  ],
-];
 
 function CountUp({ value }) {
   const m = String(value).match(/^([\d.]+)(.*)$/);
@@ -1105,23 +920,25 @@ function CountUp({ value }) {
 }
 
 function Metrics() {
+  const { t } = useTranslation();
+  const metrics = t('home.metrics.items', { returnObjects: true });
   return (
     <section className="sect sect-navy">
       <div className="wrap">
         <div className="d-flex flex-column gap-3 mb-5">
           <ScriptTitle index="06" dark>
-            The AI in 2026
+            {t('home.metrics.eyebrow')}
           </ScriptTitle>
-          <h2 className="h2 h2-inverse">Adoption is no longer the question. Pace is.</h2>
+          <h2 className="h2 h2-inverse">{t('home.metrics.title')}</h2>
         </div>
         <div className="grid4">
-          {METRICS.map(([n, t, l]) => (
-            <div key={t} className="metric">
+          {metrics.map(([n, label, desc]) => (
+            <div key={label} className="metric">
               <span className="metric-value">
                 <CountUp value={n} />
               </span>
-              <span className="metric-label">{t}</span>
-              <span className="metric-desc">{l}</span>
+              <span className="metric-label">{label}</span>
+              <span className="metric-desc">{desc}</span>
             </div>
           ))}
         </div>
@@ -1131,6 +948,8 @@ function Metrics() {
 }
 
 function Contact({ onEnroll }) {
+  const { t } = useTranslation();
+  const divisions = useDivisions();
   const [f, setF] = React.useState({ first: '', last: '', email: '', country: '', phone: '' });
   const [division, setDivision] = React.useState('codeboxx');
   const [mobile, setMobile] = React.useState('yes');
@@ -1144,41 +963,31 @@ function Contact({ onEnroll }) {
     <section id="contact" className="sect sect-contact">
       <div className="wrap grid2">
         <div className="d-flex flex-column gap-3">
-          <ScriptTitle index="07">LEARN MORE</ScriptTitle>
-          <h2 className="h2">One form for all three divisions.</h2>
-          <p className="lede">
-            Please specify the department you would like to contact. We will respond as soon as
-            possible.
-          </p>
-          <p className="lede">
-            Do you need a team of developers to carry out a project or improve an existing one?
-            Would you like to learn more about the CodeBoxx Academy? Do you have a project and are
-            looking for a venture-style partner? Contact us.
-          </p>
+          <ScriptTitle index="07">{t('home.contact.learnMore')}</ScriptTitle>
+          <h2 className="h2">{t('home.contact.title')}</h2>
+          <p className="lede">{t('home.contact.lede1')}</p>
+          <p className="lede">{t('home.contact.lede2')}</p>
           <div className="rule rule-spaced" />
-          <h2 className="h2">You want to Enroll the Academy?</h2>
-          <p className="lede">
-            Skip the form. Pick the program you want and apply directly. Applications are reviewed
-            within one business day.
-          </p>
+          <h2 className="h2">{t('home.contact.enrollAcademyTitle')}</h2>
+          <p className="lede">{t('home.contact.enrollAcademyLede')}</p>
           <div className="d-flex gap-3 flex-wrap">
             <Button onClick={() => onEnroll('Advanced AI Developer')}>
-              Enroll Now to AI Course
+              {t('home.contact.enrollAiBtn')}
             </Button>
             <Button
               variant="outline-primary"
               onClick={() => onEnroll('AI Native Full-Stack Developer')}
             >
-              Enroll Now to FSD
+              {t('home.contact.enrollFsdBtn')}
             </Button>
           </div>
         </div>
         <div className="panel">
-          <h2 className="h2 h2-tight">Need more info, contact us.</h2>
+          <h2 className="h2 h2-tight">{t('home.contact.formTitle')}</h2>
           <div className="d-flex flex-column gap-2">
-            <span className="field-label">CodeBoxx's Division you want to reach</span>
+            <span className="field-label">{t('home.contact.divisionLabel')}</span>
             <div className="d-flex gap-2 flex-wrap">
-              {DIVISIONS.map((d) => (
+              {divisions.map((d) => (
                 <Form.Check
                   key={d.id}
                   type="checkbox"
@@ -1191,60 +1000,76 @@ function Contact({ onEnroll }) {
                 type="checkbox"
                 checked={division === 'ventures'}
                 onChange={() => setDivision('ventures')}
-                label="Ventures"
+                label={t('home.contact.venturesLabel')}
               />
             </div>
           </div>
           <div className="form-row-2">
-            <Form.Control placeholder="First" value={f.first} onChange={set('first')} />
-            <Form.Control placeholder="Last" value={f.last} onChange={set('last')} />
+            <Form.Control
+              placeholder={t('home.contact.firstPlaceholder')}
+              value={f.first}
+              onChange={set('first')}
+            />
+            <Form.Control
+              placeholder={t('home.contact.lastPlaceholder')}
+              value={f.last}
+              onChange={set('last')}
+            />
           </div>
           <Form.Group>
             <Form.Control
-              placeholder="name@company.com"
+              placeholder={t('home.contact.emailPlaceholder')}
               value={f.email}
               isInvalid={invalid}
               onChange={set('email')}
             />
             <Form.Control.Feedback type="invalid">
-              Invalid address. Missing domain.
+              {t('home.contact.invalidEmail')}
             </Form.Control.Feedback>
           </Form.Group>
           <div className="form-row-2">
-            <Form.Control placeholder="Canada" value={f.country} onChange={set('country')} />
-            <Form.Control placeholder="+1 555 000 0000" value={f.phone} onChange={set('phone')} />
+            <Form.Control
+              placeholder={t('home.contact.countryPlaceholder')}
+              value={f.country}
+              onChange={set('country')}
+            />
+            <Form.Control
+              placeholder={t('home.contact.phonePlaceholder')}
+              value={f.phone}
+              onChange={set('phone')}
+            />
           </div>
           <div className="d-flex flex-column gap-2">
-            <span className="field-label">Is it a mobile phone?</span>
+            <span className="field-label">{t('home.contact.mobileQ')}</span>
             <div className="d-flex gap-2">
               <Form.Check
                 type="checkbox"
                 checked={mobile === 'yes'}
                 onChange={() => setMobile('yes')}
-                label="Yes"
+                label={t('home.contact.yes')}
               />
               <Form.Check
                 type="checkbox"
                 checked={mobile === 'no'}
                 onChange={() => setMobile('no')}
-                label="No"
+                label={t('home.contact.no')}
               />
             </div>
           </div>
           <div className="d-flex flex-column gap-2">
-            <span className="field-label">Select your preferred language.</span>
+            <span className="field-label">{t('home.contact.languageQ')}</span>
             <div className="d-flex gap-2">
               <Form.Check
                 type="checkbox"
                 checked={lang === 'en'}
                 onChange={() => setLang('en')}
-                label="English"
+                label={t('home.contact.english')}
               />
               <Form.Check
                 type="checkbox"
                 checked={lang === 'fr'}
                 onChange={() => setLang('fr')}
-                label="French"
+                label={t('home.contact.french')}
               />
             </div>
           </div>
@@ -1256,22 +1081,20 @@ function Contact({ onEnroll }) {
               label=""
             />
             <span className="consent-text">
-              By submitting this form, you agree that we may call, text, and email you additional
-              information on CodeBoxx programs. You understand that you can unsubscribe at any time
-              including by emailing your request to{' '}
-              <a href="mailto:info@codeboxx.biz">info@codeboxx.biz</a>. Message and data rates may
-              apply. <a href="#contact">View our complete Privacy Policy</a> for further detail.
+              {t('home.contact.consentTextPart1')}
+              <a href="mailto:info@codeboxx.biz">info@codeboxx.biz</a>
+              {t('home.contact.consentTextPart2')}
+              <a href="#contact">{t('home.contact.consentLinkText')}</a>
+              {t('home.contact.consentTextPart3')}
             </span>
           </div>
           <div className="rule" />
           <div className="form-actions">
             <span className={'form-actions-note' + (sent ? ' sent' : '')}>
-              {sent
-                ? 'Brief received. Reply within 1 business day.'
-                : 'No sales sequence. One reply from a human.'}
+              {sent ? t('home.contact.sentNote') : t('home.contact.notSentNote')}
             </span>
             <Button size="lg" disabled={!ready} onClick={() => setSent(true)}>
-              Submit
+              {t('home.contact.submit')}
             </Button>
           </div>
         </div>
@@ -1280,6 +1103,7 @@ function Contact({ onEnroll }) {
   );
 }
 
+// Phone country codes/abbreviations — not translated (not prose).
 const DIAL_CODES = [
   ['+1', 'US/CA'],
   ['+33', 'FR'],
@@ -1290,39 +1114,11 @@ const DIAL_CODES = [
   ['+91', 'IN'],
   ['+234', 'NG'],
 ];
-const COUNTRIES = [
-  'United States',
-  'Canada',
-  'Mexico',
-  'France',
-  'United Kingdom',
-  'Belgium',
-  'Switzerland',
-  'Germany',
-  'Spain',
-  'Brazil',
-  'Nigeria',
-  'India',
-  'Australia',
-  'Other',
-];
-const HEARD_ABOUT = [
-  'Google / Search Engine',
-  'TV',
-  'Radio Ads',
-  'Spotify',
-  'SkillPointe',
-  'Facebook',
-  'Instagram',
-  'LinkedIn',
-  'Youtube',
-  'TikTok',
-  'Barbershop Book Club',
-  'Empact Solutions',
-  'Referred By a Friend',
-];
-const ENROLL_TITLES = { fsd: 'AI Native Full-Stack Developer', ai: 'Advanced AI Developer' };
 
+// options: [{ value, label }] — value is a stable, language-independent key so a
+// language switch mid-form can't leave `value` holding a now-nonexistent old-language
+// option string (which is what plain-string options did before, and which is why
+// EnrollDrawer's radios below pass value/label pairs instead of the display text).
 function RadioRow({ label, options, value, onChange }) {
   return (
     <div className="d-flex flex-column gap-2">
@@ -1330,11 +1126,11 @@ function RadioRow({ label, options, value, onChange }) {
       <div className="d-flex gap-3 flex-wrap">
         {options.map((o) => (
           <Form.Check
-            key={o}
+            key={o.value}
             type="checkbox"
-            checked={value === o}
-            onChange={() => onChange(o)}
-            label={o}
+            checked={value === o.value}
+            onChange={() => onChange(o.value)}
+            label={o.label}
           />
         ))}
       </div>
@@ -1357,10 +1153,11 @@ const ENROLL_BLANK = {
 };
 
 function EnrollDrawer({ course, onClose }) {
+  const { t } = useTranslation();
   const [form, setForm] = React.useState(ENROLL_BLANK);
-  const [mobile, setMobile] = React.useState('Yes');
-  const [lang, setLang] = React.useState('English');
-  const [contactBy, setContactBy] = React.useState('Email');
+  const [mobile, setMobile] = React.useState('yes');
+  const [lang, setLang] = React.useState('en');
+  const [contactBy, setContactBy] = React.useState('email');
   const [heard, setHeard] = React.useState('');
   const [sent, setSent] = React.useState(false);
   const [renderCourse, setRenderCourse] = React.useState(course);
@@ -1385,55 +1182,67 @@ function EnrollDrawer({ course, onClose }) {
     form.country &&
     form.postal;
   const title =
-    renderCourse && /full-?stack|fsd/i.test(renderCourse) ? ENROLL_TITLES.fsd : ENROLL_TITLES.ai;
+    renderCourse && /full-?stack|fsd/i.test(renderCourse)
+      ? t('home.enroll.titles.fsd')
+      : t('home.enroll.titles.ai');
+  const countries = t('home.countries', { returnObjects: true });
+  const heardAbout = t('home.heardAbout', { returnObjects: true });
   return (
     <Offcanvas show={!!course} onHide={onClose} placement="end" className="enroll-offcanvas">
       <Offcanvas.Header className="site-header">
         <div className="d-flex flex-column gap-3 align-items-start">
-          <span className="kicker">Enroll</span>
+          <span className="kicker">{t('home.enroll.kicker')}</span>
           <h3 className="ptitle">{title}</h3>
         </div>
         <Button size="sm" variant="ghost" onClick={onClose}>
-          Close
+          {t('actions.close')}
         </Button>
       </Offcanvas.Header>
       <Offcanvas.Body className="d-flex flex-column gap-4">
-        <h3 className="ptitle">Create Your Student Portal Account.</h3>
+        <h3 className="ptitle">{t('home.enroll.createAccount')}</h3>
         <p className="pbody">
-          If you already have a student portal account please{' '}
+          {t('home.enroll.alreadyHave')}
           <a href="https://student.codeboxx.com/pages/login.php" target="_blank" rel="noopener">
-            log in
-          </a>{' '}
-          to make your course selection.
+            {t('home.enroll.logIn')}
+          </a>
+          {t('home.enroll.toMakeSelection')}
         </p>
         <div className="form-row-2">
-          <Form.Control placeholder="First" value={form.first} onChange={set('first')} />
-          <Form.Control placeholder="Last" value={form.last} onChange={set('last')} />
+          <Form.Control
+            placeholder={t('home.enroll.firstPlaceholder')}
+            value={form.first}
+            onChange={set('first')}
+          />
+          <Form.Control
+            placeholder={t('home.enroll.lastPlaceholder')}
+            value={form.last}
+            onChange={set('last')}
+          />
         </div>
         <Form.Group>
-          <Form.Label>Birthdate</Form.Label>
+          <Form.Label>{t('home.enroll.birthdate')}</Form.Label>
           <Form.Control
             type="date"
-            aria-label="Birthdate"
+            aria-label={t('home.enroll.birthdate')}
             value={form.birth}
             onChange={set('birth')}
           />
         </Form.Group>
         <Form.Group>
           <Form.Control
-            placeholder="name@company.com"
+            placeholder={t('home.enroll.emailPlaceholder')}
             value={form.email}
             isInvalid={invalid}
             onChange={set('email')}
           />
           <Form.Control.Feedback type="invalid">
-            Invalid address. Missing domain.
+            {t('home.enroll.invalidEmail')}
           </Form.Control.Feedback>
         </Form.Group>
         <Form.Group>
-          <Form.Label>Phone</Form.Label>
+          <Form.Label>{t('home.enroll.phoneNumberLabel')}</Form.Label>
           <div className="phone-row">
-            <Form.Select aria-label="Country code" value={form.dial} onChange={set('dial')}>
+            <Form.Select aria-label={t('home.enroll.countryCodeLabel')} value={form.dial} onChange={set('dial')}>
               {DIAL_CODES.map(([c, n]) => (
                 <option key={c} value={c}>
                   {c} {n}
@@ -1441,76 +1250,99 @@ function EnrollDrawer({ course, onClose }) {
               ))}
             </Form.Select>
             <Form.Control
-              aria-label="Phone number"
-              placeholder="555 000 0000"
+              aria-label={t('home.enroll.phoneNumberLabel')}
+              placeholder={t('home.enroll.phonePlaceholder')}
               value={form.phone}
               onChange={set('phone')}
             />
           </div>
         </Form.Group>
         <RadioRow
-          label="Is it a mobile phone?"
-          options={['Yes', 'No']}
+          label={t('home.enroll.mobileQ')}
+          options={[
+            { value: 'yes', label: t('home.enroll.yes') },
+            { value: 'no', label: t('home.enroll.no') },
+          ]}
           value={mobile}
           onChange={setMobile}
         />
         <RadioRow
-          label="Preferred Language"
-          options={['English', 'French']}
+          label={t('home.enroll.languageQ')}
+          options={[
+            { value: 'en', label: t('home.enroll.english') },
+            { value: 'fr', label: t('home.enroll.french') },
+          ]}
           value={lang}
           onChange={setLang}
         />
         <RadioRow
-          label="Preferred Communication Method"
-          options={['Phone', 'SMS', 'Email']}
+          label={t('home.enroll.contactMethodQ')}
+          options={[
+            { value: 'phone', label: t('home.enroll.phone') },
+            { value: 'sms', label: t('home.enroll.sms') },
+            { value: 'email', label: t('home.enroll.email') },
+          ]}
           value={contactBy}
           onChange={setContactBy}
         />
-        <Form.Control placeholder="1200 Central Ave" value={form.street} onChange={set('street')} />
+        <Form.Control
+          placeholder={t('home.enroll.streetPlaceholder')}
+          value={form.street}
+          onChange={set('street')}
+        />
         <div className="form-row-2">
-          <Form.Control placeholder="St. Petersburg" value={form.city} onChange={set('city')} />
-          <Form.Control placeholder="Florida" value={form.region} onChange={set('region')} />
+          <Form.Control
+            placeholder={t('home.enroll.cityPlaceholder')}
+            value={form.city}
+            onChange={set('city')}
+          />
+          <Form.Control
+            placeholder={t('home.enroll.regionPlaceholder')}
+            value={form.region}
+            onChange={set('region')}
+          />
         </div>
         <div className="form-row-2">
           <Form.Group>
-            <Form.Label>Country</Form.Label>
-            <Form.Select aria-label="Country" value={form.country} onChange={set('country')}>
-              <option value="">Select</option>
-              {COUNTRIES.map((c) => (
+            <Form.Label>{t('home.enroll.countryLabel')}</Form.Label>
+            <Form.Select aria-label={t('home.enroll.countryLabel')} value={form.country} onChange={set('country')}>
+              <option value="">{t('home.enroll.selectPlaceholder')}</option>
+              {countries.map((c) => (
                 <option key={c} value={c}>
                   {c}
                 </option>
               ))}
             </Form.Select>
           </Form.Group>
-          <Form.Control placeholder="33705" value={form.postal} onChange={set('postal')} />
+          <Form.Control
+            placeholder={t('home.enroll.postalPlaceholder')}
+            value={form.postal}
+            onChange={set('postal')}
+          />
         </div>
         <Form.Group>
-          <Form.Label>How did you hear about us?</Form.Label>
+          <Form.Label>{t('home.enroll.heardAboutQ')}</Form.Label>
           <Form.Select
-            aria-label="How did you hear about us?"
+            aria-label={t('home.enroll.heardAboutQ')}
             value={heard}
             onChange={(e) => setHeard(e.target.value)}
           >
-            <option value="">Select</option>
-            {HEARD_ABOUT.map((o) => (
+            <option value="">{t('home.enroll.selectPlaceholder')}</option>
+            {heardAbout.map((o) => (
               <option key={o} value={o}>
                 {o}
               </option>
             ))}
           </Form.Select>
         </Form.Group>
-        <p className="pbody">
-          Applications are reviewed within one business day. The entrance assessment is scheduled by
-          email.
-        </p>
+        <p className="pbody">{t('home.enroll.reviewNote')}</p>
         <div className="rule" />
         <div className="form-actions">
           <span className={'form-actions-note' + (sent ? ' sent' : '')}>
-            {sent ? 'Application received.' : 'Submits to the admissions API.'}
+            {sent ? t('home.enroll.receivedNote') : t('home.enroll.submitsNote')}
           </span>
           <Button size="lg" disabled={!ready} onClick={() => setSent(true)}>
-            Submit
+            {t('home.enroll.submit')}
           </Button>
         </div>
       </Offcanvas.Body>
@@ -1519,6 +1351,7 @@ function EnrollDrawer({ course, onClose }) {
 }
 
 function WSJTeaser() {
+  const { t } = useTranslation();
   return (
     <section className="band-dark">
       <div className="wrap band-dark-inner">
@@ -1528,12 +1361,8 @@ function WSJTeaser() {
           src="/assets/the-wall-street-journal.png"
           style={{ width: 320, height: 'auto' }}
         />
-        <h2 className="band-heading">How Five Americans Made It to the Middle Class</h2>
-        <p className="band-body">
-          We are proud to be part of this success story, as featured in the Wall Street Journal. Tim
-          Weaver is highlighted in this truly fascinating article. Congratulations,
-          Tim&mdash;CodeBoxx for life.
-        </p>
+        <h2 className="band-heading">{t('home.wsj.heading')}</h2>
+        <p className="band-body">{t('home.wsj.body')}</p>
         <Button
           onClick={() =>
             window.open(
@@ -1543,7 +1372,7 @@ function WSJTeaser() {
             )
           }
         >
-          Read the Article
+          {t('home.wsj.cta')}
         </Button>
       </div>
     </section>
@@ -1587,6 +1416,7 @@ function fmtPostDate(iso) {
 }
 
 function CodeBlog() {
+  const { t } = useTranslation();
   const posts = useSanityPosts(LATEST_POSTS).slice(0, 3);
   return (
     <section id="codeblog" className="sect sect-steel">
@@ -1595,11 +1425,8 @@ function CodeBlog() {
           <ScriptTitle index="02" dark>
             CodeBlog
           </ScriptTitle>
-          <h2 className="h2 h2-inverse">What we ship, we write down.</h2>
-          <p className="lede lede-inverse">
-            Field notes from the studio and the Academy: what the agents took over, what the
-            engineers kept, and what the results were. Written by the people who did the work.
-          </p>
+          <h2 className="h2 h2-inverse">{t('home.codeBlog.title')}</h2>
+          <p className="lede lede-inverse">{t('home.codeBlog.lede')}</p>
         </div>
         <div className="grid3">
           {posts.map((p) => (
@@ -1609,7 +1436,7 @@ function CodeBlog() {
                 src={sanityImageUrl(p.featuredImage, { w: 500 })}
                 shape="rect"
                 fit="cover"
-                placeholder="Cover image"
+                placeholder={t('home.coverImage')}
                 style={{ width: '100%', height: 180 }}
               ></image-slot>
               <div className="panel-link-card-body">
@@ -1632,7 +1459,7 @@ function CodeBlog() {
               window.location.href = '/blog';
             }}
           >
-            See All Posts
+            {t('home.codeBlog.seeAllPosts')}
           </Button>
         </div>
       </div>
@@ -1641,6 +1468,8 @@ function CodeBlog() {
 }
 
 function ForgeTeaser() {
+  const { t } = useTranslation();
+  const features = t('home.forge.features', { returnObjects: true });
   return (
     <section className="band-dark">
       <div className="wrap band-dark-inner">
@@ -1650,22 +1479,13 @@ function ForgeTeaser() {
           width={210}
           className="forge-logo"
         />
-        <span className="band-superhead">Lead. Think. Write. Run.</span>
-        <h2 className="band-heading">CodeBoxx w/ CrewKit Forge 20</h2>
-        <p className="band-body">
-          Plan, build and run your software in one shell, two deployment paths. One executive
-          chassis, five integrated touch surfaces, low-cost local computing by default and cloud
-          escalation when warranted. Up to 20 heavy software workstreams in parallel: a complete
-          end-to-end software development team in one appliance.
-        </p>
+        <span className="band-superhead">{t('home.forge.superhead')}</span>
+        <h2 className="band-heading">{t('home.forge.heading')}</h2>
+        <p className="band-body">{t('home.forge.body')}</p>
         <div className="forge-features">
-          {[
-            ['Local Inference', 'Keep your foundational code, your software and your data close.'],
-            ['Cost Control', 'Cut cloud dependency and unpredictable token-based pricing.'],
-            ['Operator Model', 'CrewKit, operators and Academy training above the hardware.'],
-          ].map(([t, d]) => (
-            <div key={t} className="forge-feature">
-              <span className="forge-feature-title">{t}</span>
+          {features.map(([title, d]) => (
+            <div key={title} className="forge-feature">
+              <span className="forge-feature-title">{title}</span>
               <span className="forge-feature-body">{d}</span>
             </div>
           ))}
@@ -1674,13 +1494,13 @@ function ForgeTeaser() {
           <Button
             onClick={() => window.open('https://buildorder.codeboxx.com/', '_blank', 'noopener')}
           >
-            Build Your Own
+            {t('home.forge.buildYourOwn')}
           </Button>
           <Button
             variant="outline-primary"
             onClick={() => window.open('http://crewkit.io', '_blank', 'noopener')}
           >
-            Learn More
+            {t('home.forge.learnMore')}
           </Button>
         </div>
       </div>
@@ -1689,6 +1509,7 @@ function ForgeTeaser() {
 }
 
 function App() {
+  const { t } = useTranslation();
   const [codi, setCodi] = React.useState(false);
   const [enroll, setEnroll] = React.useState(null);
   React.useEffect(() => {
@@ -1706,12 +1527,13 @@ function App() {
       <TopBar onCodi={() => setCodi(true)} onEnroll={setEnroll} />
       <div className="hero">
         <div className="d-flex">
-          <span className="pill">AI-First, Human-Built</span>
+          <span className="pill">{t('home.hero.pill')}</span>
         </div>
         <div className="d-flex justify-content-between align-items-end gap-5 flex-wrap">
           <h1>
-            We build <span className="text-brand">AI-Native</span> teams and software that outwork
-            the old way.
+            {t('home.hero.titleBefore')}
+            <span className="text-brand">{t('home.hero.titleHighlight')}</span>
+            {t('home.hero.titleAfter')}
           </h1>
           <div className="hero-logo">
             <Logo theme="dark" width={280} />
