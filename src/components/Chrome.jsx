@@ -1,40 +1,70 @@
 import React from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
 
 const hrefFor = (t) => (t.charAt(0) === '#' ? (window.location.pathname === '/' ? t : '/' + t) : t);
 
-const NAV = [
+// Hrefs/nesting stay here; display labels come from common.nav via useNav() below,
+// so a French label swap never touches routing.
+const NAV_STRUCTURE = [
   {
-    label: 'About',
+    key: 'about',
     href: '#codeboxx',
     items: [
-      ['Team', '#about-team'],
-      ['History', '#about-history'],
-      ['Vision & Mission', '#about-vision'],
+      ['aboutTeam', '#about-team'],
+      ['aboutHistory', '#about-history'],
+      ['aboutVisionMission', '#about-vision'],
     ],
   },
   {
-    label: 'Solutions',
+    key: 'solutions',
     href: '#solutions',
     items: [
-      ['Services', '#solutions'],
-      ['Works', '#solutions'],
+      ['solutionsServices', '#solutions'],
+      ['solutionsWorks', '#solutions'],
     ],
   },
   {
-    label: 'Academy',
+    key: 'academy',
     href: '#academy',
     items: [
-      ['Courses', '#academy-courses'],
-      ['Calendar', '#intake'],
-      ['Financing Options', '/financing'],
+      ['academyCourses', '#academy-courses'],
+      ['academyCalendar', '#intake'],
+      ['academyFinancing', '/financing'],
     ],
   },
-  { label: 'Ventures', href: '/ventures' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Contact', href: '#contact' },
+  { key: 'ventures', href: '/ventures' },
+  { key: 'blog', href: '/blog' },
+  { key: 'contact', href: '#contact' },
 ];
+
+function useNav() {
+  const { t } = useTranslation();
+  return NAV_STRUCTURE.map((n) => ({
+    key: n.key,
+    label: t('nav.' + n.key),
+    href: n.href,
+    items: n.items?.map(([k, href]) => [t('nav.' + k), href]),
+  }));
+}
+
+// Shows only the language you'd switch TO (not the active one), as a real button —
+// clicking it toggles between the two.
+function LanguageToggle() {
+  const { i18n, t } = useTranslation();
+  const next = i18n.language === 'fr' ? 'en' : 'fr';
+  return (
+    <Button
+      size="sm"
+      variant="outline-primary"
+      onClick={() => i18n.changeLanguage(next)}
+      aria-label={t('actions.language')}
+    >
+      {next.toUpperCase()}
+    </Button>
+  );
+}
 
 function NavItem({ item, onNavigate }) {
   const [open, setOpen] = React.useState(false);
@@ -94,6 +124,8 @@ function NavItem({ item, onNavigate }) {
 }
 
 function TopBar({ onCodi, onEnroll }) {
+  const { t } = useTranslation();
+  const nav = useNav();
   const [expanded, setExpanded] = React.useState(false);
   const enroll = () =>
     onEnroll ? onEnroll('AI Native Full-Stack Developer') : (window.location.href = '/#contact');
@@ -108,17 +140,18 @@ function TopBar({ onCodi, onEnroll }) {
             <Navbar.Toggle aria-controls="main-nav" />
             <Navbar.Collapse id="main-nav">
               <Nav className="flex-wrap gap-4 mx-lg-auto">
-                {NAV.map((n) => (
-                  <NavItem key={n.label} item={n} onNavigate={() => setExpanded(false)} />
+                {nav.map((n) => (
+                  <NavItem key={n.key} item={n} onNavigate={() => setExpanded(false)} />
                 ))}
               </Nav>
             </Navbar.Collapse>
             <div className="d-none d-lg-flex align-items-center gap-3 flex-shrink-0">
+              <LanguageToggle />
               <Button size="sm" variant="outline-primary" onClick={enroll}>
-                Enroll Now
+                {t('actions.enrollNow')}
               </Button>
               <Button size="sm" onClick={onCodi}>
-                Talk With Codi
+                {t('actions.talkWithCodi')}
               </Button>
             </div>
           </Container>
@@ -126,46 +159,45 @@ function TopBar({ onCodi, onEnroll }) {
       </header>
       <div className="mobile-cta-bar d-lg-none">
         <Button variant="outline-primary" onClick={enroll}>
-          Enroll Now
+          {t('actions.enrollNow')}
         </Button>
-        <Button onClick={onCodi}>Talk With Codi</Button>
+        <Button onClick={onCodi}>{t('actions.talkWithCodi')}</Button>
       </div>
     </React.Fragment>
   );
 }
 
+const FOOTER_COLUMN_KEYS = ['codeboxx', 'solutions', 'academy'];
+
 function Footer() {
-  const cols = [
-    ['CodeBoxx', ['Delivery Pods', 'Engagement Model', 'Case Notes']],
-    ['Solutions', ['Deploy Console', 'Status', 'Documentation']],
-    ['Academy', ['Curriculum', 'Admissions', 'Cohort Dates']],
-  ];
+  const { t } = useTranslation();
   return (
     <footer className="site-footer">
       <div className="wrap d-flex flex-column gap-5">
         <div className="d-flex justify-content-between align-items-start gap-5 flex-wrap">
           <div className="d-flex flex-column gap-3">
             <Logo theme="dark" width={200} />
-            <span className="footer-tagline">
-              One platform for the studio, the deployment operation and the academy.
-            </span>
+            <span className="footer-tagline">{t('footer.tagline')}</span>
           </div>
           <div className="d-flex gap-5 flex-wrap">
-            {cols.map(([h, items]) => (
-              <div key={h} className="footer-col d-flex flex-column gap-3">
-                <span className="footer-col-title">{h}</span>
-                {items.map((i) => (
-                  <a key={i} href={hrefFor('#top')}>
-                    {i}
-                  </a>
-                ))}
-              </div>
-            ))}
+            {FOOTER_COLUMN_KEYS.map((key) => {
+              const col = t('footer.columns.' + key, { returnObjects: true });
+              return (
+                <div key={key} className="footer-col d-flex flex-column gap-3">
+                  <span className="footer-col-title">{col.title}</span>
+                  {col.items.map((i) => (
+                    <a key={i} href={hrefFor('#top')}>
+                      {i}
+                    </a>
+                  ))}
+                </div>
+              );
+            })}
           </div>
         </div>
         <div className="footer-rule" />
         <div className="d-flex justify-content-between gap-4 footer-meta">
-          <span>© 2026 CodeBoxx</span>
+          <span>{t('footer.copyright')}</span>
           <span>v1.0.0 Stable · SHA: 7be1af8</span>
         </div>
       </div>
@@ -173,4 +205,4 @@ function Footer() {
   );
 }
 
-export { NAV, NavItem, TopBar, Footer };
+export { NavItem, TopBar, Footer, LanguageToggle };
