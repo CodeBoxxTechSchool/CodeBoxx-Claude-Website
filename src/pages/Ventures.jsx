@@ -1,7 +1,10 @@
 import React from 'react';
-import { Button, Badge, Form } from 'react-bootstrap';
+import { Button, Badge, Form, Offcanvas } from 'react-bootstrap';
 import { TopBar, Footer } from '../components/Chrome';
 import '../lib/image-slot.js';
+
+const PITCH_BLANK = { first: '', last: '', email: '', phone: '', kind: '', details: '' };
+const PROJECT_KINDS = ['Native App', 'Web App', 'Web Base Project', 'Other'];
 
 const MODELS = [
   [
@@ -48,7 +51,7 @@ const CRITERIA = [
   ['A Path to Revenue', 'A named first customer or a market we can reach in the first year.'],
 ];
 
-function Band() {
+function Band({ onPitch }) {
   return (
     <section className="band-dark">
       <div className="wrap d-flex flex-column gap-4 align-items-start">
@@ -58,13 +61,7 @@ function Band() {
           CodeBoxx Ventures puts the studio&rsquo;s delivery capacity behind products we believe in.
           Cash, equity, or both &mdash; the structure follows the stage you are at.
         </p>
-        <Button
-          onClick={() => {
-            location.href = '/#contact';
-          }}
-        >
-          Pitch Your Project
-        </Button>
+        <Button onClick={onPitch}>Pitch Your Project</Button>
       </div>
     </section>
   );
@@ -128,58 +125,74 @@ function Criteria() {
   );
 }
 
-function Pitch() {
+function PitchDrawer({ open, onClose }) {
+  const [form, setForm] = React.useState(PITCH_BLANK);
+  const [sent, setSent] = React.useState(false);
+  React.useEffect(() => {
+    if (open) setSent(false);
+  }, [open]);
+  const set = (k) => (e) => setForm((f) => Object.assign({}, f, { [k]: e.target.value }));
+  const invalid = form.email.length > 0 && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email);
+  const ready = form.first && form.last && form.email && !invalid && form.phone;
   return (
-    <section className="sect">
-      <div className="wrap grid2">
-        <div className="d-flex flex-column gap-3">
-          <p className="eyebrow">START THE CONVERSATION</p>
-          <h2 className="h2">Have a project and looking for a venture-style partner?</h2>
-          <p className="lede">
-            Send the product, the stage you are at and what you need built. A delivery lead and a
-            partner review it together and answer with a proposed structure.
-          </p>
-          <div className="d-flex gap-3 flex-wrap">
-            <Button
-              variant="outline-primary"
-              onClick={() => {
-                location.href = 'CodeBoxx.html#solutions';
-              }}
-            >
-              See the Studio
-            </Button>
-          </div>
+    <Offcanvas show={open} onHide={onClose} placement="end" className="pitch-offcanvas">
+      <Offcanvas.Header className="site-header">
+        <div className="d-flex flex-column gap-3 align-items-start">
+          <span className="kicker">Ventures</span>
+          <h3 className="ptitle">Pitch Your Project</h3>
         </div>
-        <div className="panel">
-          <h3 className="ptitle">Submit your project</h3>
-          <Form.Group>
-            <Form.Label>Full Name</Form.Label>
-            <Form.Control id="v-name" placeholder="First Last" />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Email</Form.Label>
-            <Form.Control id="v-email" placeholder="name@company.com" />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Company or Product</Form.Label>
-            <Form.Control id="v-company" placeholder="codeboxx-enterprise-primary" />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Stage</Form.Label>
-            <Form.Control id="v-stage" placeholder="Idea, prototype, or in market" />
-          </Form.Group>
-          <div className="rule" />
-          <div className="form-actions">
-            <span className="form-actions-note">Reviewed within one business day.</span>
-            <Button size="lg">Send</Button>
-          </div>
+        <Button size="sm" variant="ghost" onClick={onClose}>
+          Close
+        </Button>
+      </Offcanvas.Header>
+      <Offcanvas.Body className="d-flex flex-column gap-4">
+        <div className="form-row-2">
+          <Form.Control placeholder="First Name" value={form.first} onChange={set('first')} />
+          <Form.Control placeholder="Last Name" value={form.last} onChange={set('last')} />
         </div>
-      </div>
-    </section>
+        <Form.Group>
+          <Form.Control
+            placeholder="Email"
+            value={form.email}
+            isInvalid={invalid}
+            onChange={set('email')}
+          />
+          <Form.Control.Feedback type="invalid">
+            Invalid address. Missing domain.
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Control placeholder="Phone" value={form.phone} onChange={set('phone')} />
+        <Form.Group>
+          <Form.Label>What kind of project</Form.Label>
+          <Form.Select aria-label="What kind of project" value={form.kind} onChange={set('kind')}>
+            <option value="">Select</option>
+            {PROJECT_KINDS.map((k) => (
+              <option key={k} value={k}>
+                {k}
+              </option>
+            ))}
+          </Form.Select>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Describe your project in a few words</Form.Label>
+          <Form.Control as="textarea" rows={4} value={form.details} onChange={set('details')} />
+        </Form.Group>
+        <div className="rule" />
+        <div className="form-actions">
+          <span className={'form-actions-note' + (sent ? ' sent' : '')}>
+            {sent ? 'Pitch received.' : 'Reviewed within one business day.'}
+          </span>
+          <Button size="lg" disabled={!ready} onClick={() => setSent(true)}>
+            Submit
+          </Button>
+        </div>
+      </Offcanvas.Body>
+    </Offcanvas>
   );
 }
 
 function VenturesPage() {
+  const [pitchOpen, setPitchOpen] = React.useState(false);
   return (
     <div id="top">
       <TopBar
@@ -187,11 +200,11 @@ function VenturesPage() {
           location.href = '/#contact';
         }}
       />
-      <Band />
+      <Band onPitch={() => setPitchOpen(true)} />
       <Models />
       <Criteria />
-      <Pitch />
       <Footer />
+      <PitchDrawer open={pitchOpen} onClose={() => setPitchOpen(false)} />
     </div>
   );
 }

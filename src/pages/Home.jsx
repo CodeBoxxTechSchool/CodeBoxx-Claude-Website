@@ -4,7 +4,7 @@ import { Button, Badge, Form, Offcanvas } from 'react-bootstrap';
 import { TopBar, Footer } from '../components/Chrome';
 import Avatar from '../components/Avatar';
 import Logo from '../components/Logo';
-import { useSanityTeam, useSanityLogos } from '../lib/sanity';
+import { useSanityTeam, useSanityLogos, useSanityPosts, sanityImageUrl } from '../lib/sanity';
 import { useIntakes } from '../lib/intakes';
 import '../lib/image-slot.js';
 
@@ -1522,13 +1522,12 @@ function WSJTeaser() {
   return (
     <section className="band-dark">
       <div className="wrap band-dark-inner">
-        <image-slot
+        <img
           id="wsj-logo"
-          shape="rect"
-          fit="contain"
-          placeholder="Wall Street Journal logo"
-          style={{ width: 320, height: 88, '--slot-frame-bg': 'transparent', color: '#fff' }}
-        ></image-slot>
+          alt="Wall Street Journal logo"
+          src="/assets/the-wall-street-journal.png"
+          style={{ width: 320, height: 'auto' }}
+        />
         <h2 className="band-heading">How Five Americans Made It to the Middle Class</h2>
         <p className="band-body">
           We are proud to be part of this success story, as featured in the Wall Street Journal. Tim
@@ -1551,10 +1550,10 @@ function WSJTeaser() {
   );
 }
 
-// Latest three from the CodeBlog. Same source as blog.jsx — replaced by the Sanity `post` document type at runtime.
-// Same 3 posts (and same seed slugs) as SEED_POSTS in Blog.jsx — this teaser stays
-// hardcoded rather than Sanity-backed (a separate, pre-existing gap unrelated to
-// giving posts their own pages), but its links now point at those pages too.
+// Latest three from the CodeBlog. Seed fallback only — same shape and seed slugs as
+// SEED_POSTS in Blog.jsx. CodeBlog() below fetches the real thing via useSanityPosts,
+// same as the /blog page, so this array only renders when there's no Sanity project
+// configured or no live posts yet.
 const LATEST_POSTS = [
   {
     title: 'Best Corporate AI Bootcamps',
@@ -1588,6 +1587,7 @@ function fmtPostDate(iso) {
 }
 
 function CodeBlog() {
+  const posts = useSanityPosts(LATEST_POSTS).slice(0, 3);
   return (
     <section id="codeblog" className="sect sect-steel">
       <div className="wrap">
@@ -1602,16 +1602,26 @@ function CodeBlog() {
           </p>
         </div>
         <div className="grid3">
-          {LATEST_POSTS.map((p) => (
+          {posts.map((p) => (
             <Link key={p.slug} to={'/blog/' + p.slug} className="panel panel-link-card">
-              <div className="d-flex flex-column gap-3">
-                <Badge bg="brand">{p.category}</Badge>
-                <h3 className="ptitle">{p.title}</h3>
-                <p className="pbody">{p.excerpt}</p>
-              </div>
-              <div className="d-flex flex-column gap-4">
-                <div className="rule" />
-                <span className="card-date">{fmtPostDate(p.date)}</span>
+              <image-slot
+                id={'codeblog-' + p.slug}
+                src={sanityImageUrl(p.featuredImage, { w: 500 })}
+                shape="rect"
+                fit="cover"
+                placeholder="Cover image"
+                style={{ width: '100%', height: 180 }}
+              ></image-slot>
+              <div className="panel-link-card-body">
+                <div className="d-flex flex-column gap-3">
+                  <Badge bg="brand">{p.category}</Badge>
+                  <h3 className="ptitle">{p.title}</h3>
+                  <p className="pbody">{p.excerpt}</p>
+                </div>
+                <div className="d-flex flex-column gap-4">
+                  <div className="rule" />
+                  <span className="card-date">{fmtPostDate(p.date)}</span>
+                </div>
               </div>
             </Link>
           ))}
