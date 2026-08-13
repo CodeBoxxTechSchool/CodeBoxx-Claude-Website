@@ -284,7 +284,11 @@ const ABOUT_META = [
   {
     id: 'team',
     people: [
-      { id: 'nicolas-genest', name: 'Nicolas Genest', linkedin: 'https://www.linkedin.com/in/ngenest/' },
+      {
+        id: 'nicolas-genest',
+        name: 'Nicolas Genest',
+        linkedin: 'https://www.linkedin.com/in/ngenest/',
+      },
       {
         id: 'remi-gagnon',
         name: 'Rémi Gagnon',
@@ -305,7 +309,11 @@ const ABOUT_META = [
         name: 'Marie-France Nolin',
         linkedin: 'https://www.linkedin.com/in/marie-france-nolin-1ab1b8154/',
       },
-      { id: 'brian-peret', name: 'Brian Peret', linkedin: 'https://www.linkedin.com/in/brian-peret-b62636101/' },
+      {
+        id: 'brian-peret',
+        name: 'Brian Peret',
+        linkedin: 'https://www.linkedin.com/in/brian-peret-b62636101/',
+      },
       {
         id: 'francis-patry-jessop',
         name: 'Francis Patry-Jessop',
@@ -316,10 +324,18 @@ const ABOUT_META = [
         name: 'Cédéric Noël',
         linkedin: 'https://www.linkedin.com/in/c%C3%A9d%C3%A9ric-no%C3%ABl-4145a5167/',
       },
-      { id: 'dovev-weaver-sr', name: 'Dovév Weaver Sr.', linkedin: 'https://www.linkedin.com/in/coachdtalks/' },
+      {
+        id: 'dovev-weaver-sr',
+        name: 'Dovév Weaver Sr.',
+        linkedin: 'https://www.linkedin.com/in/coachdtalks/',
+      },
     ],
   },
-  { id: 'history', subhead: 'CodeBoxx', reference: 'https://coruzant.com/profiles/nicolas-genest/' },
+  {
+    id: 'history',
+    subhead: 'CodeBoxx',
+    reference: 'https://coruzant.com/profiles/nicolas-genest/',
+  },
   { id: 'vision' },
 ];
 
@@ -404,7 +420,6 @@ function Studio() {
     </DivisionBand>
   );
 }
-
 
 // Structural-only: id, and `custom`'s logos (image assets, not text). Every text
 // field comes from home.services.<id> via useServices().
@@ -643,13 +658,13 @@ const SEED_INTAKES_META = [
   },
 ];
 
-function CalendarColumn({ title, rows }) {
+function CalendarColumn({ title, rows, onEnroll }) {
   const { t } = useTranslation();
   const tone = {
     Open: 'status-open',
     Waitlist: 'status-waitlist',
     Planned: 'status-planned',
-    Ongoing: 'status-ongoing',
+    InProgress: 'status-in-progress',
   };
   const statusLabel = t('home.intake.status', { returnObjects: true });
   return (
@@ -663,14 +678,23 @@ function CalendarColumn({ title, rows }) {
             <span className="calendar-date">{date || t('home.intake.onDemand')}</span>
             <span className="calendar-place">{place}</span>
           </div>
-          <span className={'calendar-status ' + tone[status]}>{statusLabel[status] || status}</span>
+          <div className="calendar-row-right">
+            <span className={'calendar-status ' + tone[status]}>
+              {statusLabel[status] || status}
+            </span>
+            {status === 'Open' ? (
+              <Button size="sm" variant="outline-primary" onClick={onEnroll}>
+                {t('home.intake.enroll')}
+              </Button>
+            ) : null}
+          </div>
         </div>
       ))}
     </div>
   );
 }
 
-function IntakeCalendar() {
+function IntakeCalendar({ onEnroll }) {
   const { t } = useTranslation();
   const seed = SEED_INTAKES_META.map((p) => ({
     id: p.id,
@@ -692,8 +716,16 @@ function IntakeCalendar() {
           <div key={p.id} className="calendar-program-row">
             <span className="calendar-col-title">{p.title}</span>
             <div className="calendar-cols calendar-grid">
-              <CalendarColumn title={t('home.intake.fullTime')} rows={p.paces['Full Time']} />
-              <CalendarColumn title={t('home.intake.partTime')} rows={p.paces['Part Time']} />
+              <CalendarColumn
+                title={t('home.intake.fullTime')}
+                rows={p.paces['Full Time']}
+                onEnroll={() => onEnroll(p.title)}
+              />
+              <CalendarColumn
+                title={t('home.intake.partTime')}
+                rows={p.paces['Part Time']}
+                onEnroll={() => onEnroll(p.title)}
+              />
             </div>
           </div>
         ))}
@@ -717,7 +749,11 @@ const ACADEMY_META = [
         name: 'Etienne Gonthier-Lapointe',
         linkedin: 'https://www.linkedin.com/in/etienne-lapointe-b82b101bb/',
       },
-      { id: 'raina-dejute', name: 'Raina DeJute', linkedin: 'https://www.linkedin.com/in/rainadejute/' },
+      {
+        id: 'raina-dejute',
+        name: 'Raina DeJute',
+        linkedin: 'https://www.linkedin.com/in/rainadejute/',
+      },
       {
         id: 'brian-peret-academy',
         name: 'Brian Peret',
@@ -802,7 +838,7 @@ function Academy({ onEnroll }) {
       name={t('home.academy.name')}
       after={
         <React.Fragment>
-          <IntakeCalendar />
+          <IntakeCalendar onEnroll={onEnroll} />
           <Testimonials
             eyebrow={t('home.testimonials.gradEyebrow')}
             items={t('home.gradQuotes', { returnObjects: true })}
@@ -841,7 +877,9 @@ function Academy({ onEnroll }) {
     >
       <div className="panel panel-sticky">
         <div className="d-flex justify-content-between align-items-center gap-3">
-          <span className="kicker">{topics[active].kicker || t('home.academy.cohortStructureLabel')}</span>
+          <span className="kicker">
+            {topics[active].kicker || t('home.academy.cohortStructureLabel')}
+          </span>
           <Badge bg="brand">{t('home.academy.nextIntake')}</Badge>
         </div>
         <p className="pbody">{topics[active].detail}</p>
@@ -875,32 +913,33 @@ function Academy({ onEnroll }) {
             ))}
           </div>
         ) : null}
-        {(topics[active].items || (topics[active].people ? [] : t('home.cohort', { returnObjects: true }))).map(
-          ([w, tt, b, cta], i) => (
-            <div key={i} className="stacked-item">
-              <span className="eyebrow">{w}</span>
-              <span className="cohort-title">{tt}</span>
-              <span className="pbody">{b}</span>
-              {cta === 'enroll' ? (
-                <Button size="sm" className="mt-1" onClick={() => onEnroll(tt)}>
-                  {t('home.academy.enrollNow')}
-                </Button>
-              ) : null}
-              {cta === 'contact' ? (
-                <Button
-                  size="sm"
-                  variant="outline-primary"
-                  className="mt-1"
-                  onClick={() => {
-                    location.hash = '#contact';
-                  }}
-                >
-                  {t('home.academy.contactUs')}
-                </Button>
-              ) : null}
-            </div>
-          )
-        )}
+        {(
+          topics[active].items ||
+          (topics[active].people ? [] : t('home.cohort', { returnObjects: true }))
+        ).map(([w, tt, b, cta], i) => (
+          <div key={i} className="stacked-item">
+            <span className="eyebrow">{w}</span>
+            <span className="cohort-title">{tt}</span>
+            <span className="pbody">{b}</span>
+            {cta === 'enroll' ? (
+              <Button size="sm" className="mt-1" onClick={() => onEnroll(tt)}>
+                {t('home.academy.enrollNow')}
+              </Button>
+            ) : null}
+            {cta === 'contact' ? (
+              <Button
+                size="sm"
+                variant="outline-primary"
+                className="mt-1"
+                onClick={() => {
+                  location.hash = '#contact';
+                }}
+              >
+                {t('home.academy.contactUs')}
+              </Button>
+            ) : null}
+          </div>
+        ))}
       </div>
     </DivisionBand>
   );
@@ -1208,7 +1247,11 @@ function EnrollDrawer({ course, onClose }) {
     form.country &&
     form.postal;
   const title =
-    renderCourse && /full-?stack|fsd/i.test(renderCourse)
+    // Matches both the legacy hyphenated "Full-Stack" and Sanity's real Program
+    // title "Full Stack" (space-separated) — a real cohort's title now comes
+    // straight from a live Program document, not just this file's own hardcoded
+    // strings, so the space form has to match too.
+    renderCourse && /full[\s-]?stack|fsd/i.test(renderCourse)
       ? t('home.enroll.titles.fsd')
       : t('home.enroll.titles.ai');
   const countries = t('home.countries', { returnObjects: true });
@@ -1268,7 +1311,11 @@ function EnrollDrawer({ course, onClose }) {
         <Form.Group>
           <Form.Label>{t('home.enroll.phoneNumberLabel')}</Form.Label>
           <div className="phone-row">
-            <Form.Select aria-label={t('home.enroll.countryCodeLabel')} value={form.dial} onChange={set('dial')}>
+            <Form.Select
+              aria-label={t('home.enroll.countryCodeLabel')}
+              value={form.dial}
+              onChange={set('dial')}
+            >
               {DIAL_CODES.map(([c, n]) => (
                 <option key={c} value={c}>
                   {c} {n}
@@ -1331,7 +1378,11 @@ function EnrollDrawer({ course, onClose }) {
         <div className="form-row-2">
           <Form.Group>
             <Form.Label>{t('home.enroll.countryLabel')}</Form.Label>
-            <Form.Select aria-label={t('home.enroll.countryLabel')} value={form.country} onChange={set('country')}>
+            <Form.Select
+              aria-label={t('home.enroll.countryLabel')}
+              value={form.country}
+              onChange={set('country')}
+            >
               <option value="">{t('home.enroll.selectPlaceholder')}</option>
               {countries.map((c) => (
                 <option key={c} value={c}>

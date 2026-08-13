@@ -310,7 +310,8 @@ export default {
     fullTime: 'Full Time',
     partTime: 'Part Time',
     onDemand: 'On Demand',
-    status: { Open: 'Open', Waitlist: 'Waitlist', Planned: 'Planned', Ongoing: 'Ongoing' },
+    enroll: 'Enroll',
+    status: { Open: 'Open', Waitlist: 'Waitlist', Planned: 'Planned', InProgress: 'In Progress' },
   },
   metrics: {
     eyebrow: 'The AI in 2026',

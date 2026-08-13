@@ -386,6 +386,11 @@
   align-items: baseline;
   gap: 16px;
 }
+.calendar-row-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 .calendar-date {
   font-size: v.$text-h3;
   font-weight: v.$weight-semibold;

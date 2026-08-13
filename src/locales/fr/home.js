@@ -310,7 +310,8 @@ export default {
     fullTime: 'Temps plein',
     partTime: 'Temps partiel',
     onDemand: 'Sur demande',
-    status: { Open: 'Ouvert', Waitlist: "Liste d'attente", Planned: 'Prévu', Ongoing: 'En cours' },
+    enroll: "S'inscrire",
+    status: { Open: 'Ouvert', Waitlist: "Liste d'attente", Planned: 'Prévu', InProgress: 'En cours' },
   },
   metrics: {
     eyebrow: "L'IA en 2026",
