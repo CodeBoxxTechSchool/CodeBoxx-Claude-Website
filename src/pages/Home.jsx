@@ -612,28 +612,38 @@ function Solutions() {
 
 // Raw seed rows only — title/meta come from home.intake.<id> via i18n (see
 // IntakeCalendar below), since these predate any Sanity 'program' documents.
+// Each program's seed dates split across both pace columns just to demonstrate the
+// 2-column-per-row layout — no scheduling meaning, same as the rest of this seed.
 const SEED_INTAKES_META = [
   {
     id: 'fsd',
-    rows: [
-      ['Sep 14, 2026', 'Quebec City', 'Open'],
-      ['Oct 26, 2026', 'Montreal', 'Open'],
-      ['Jan 11, 2027', 'Remote', 'Waitlist'],
-      ['Mar 22, 2027', 'Quebec City', 'Planned'],
-    ],
+    paces: {
+      'Full Time': [
+        ['Sep 14, 2026', 'Quebec City', 'Open'],
+        ['Jan 11, 2027', 'Remote', 'Waitlist'],
+      ],
+      'Part Time': [
+        ['Oct 26, 2026', 'Montreal', 'Open'],
+        ['Mar 22, 2027', 'Quebec City', 'Planned'],
+      ],
+    },
   },
   {
     id: 'aidev',
-    rows: [
-      ['Sep 28, 2026', 'Remote', 'Open'],
-      ['Nov 16, 2026', 'Montreal', 'Waitlist'],
-      ['Feb 08, 2027', 'Remote', 'Planned'],
-      ['Apr 19, 2027', 'Quebec City', 'Planned'],
-    ],
+    paces: {
+      'Full Time': [
+        ['Sep 28, 2026', 'Remote', 'Open'],
+        ['Feb 08, 2027', 'Remote', 'Planned'],
+      ],
+      'Part Time': [
+        ['Nov 16, 2026', 'Montreal', 'Waitlist'],
+        ['Apr 19, 2027', 'Quebec City', 'Planned'],
+      ],
+    },
   },
 ];
 
-function CalendarColumn({ title, meta, rows }) {
+function CalendarColumn({ title, rows }) {
   const { t } = useTranslation();
   const tone = {
     Open: 'status-open',
@@ -645,8 +655,7 @@ function CalendarColumn({ title, meta, rows }) {
   return (
     <div className="calendar-col">
       <div className="calendar-col-head">
-        <span className="calendar-col-title">{title}</span>
-        <span className="calendar-col-meta">{meta}</span>
+        <span className="calendar-col-title calendar-pace-title">{title}</span>
       </div>
       {rows.map(([date, place, status], i) => (
         <div key={i} className="calendar-row">
@@ -666,10 +675,9 @@ function IntakeCalendar() {
   const seed = SEED_INTAKES_META.map((p) => ({
     id: p.id,
     title: t('home.intake.' + p.id + '.title'),
-    meta: t('home.intake.' + p.id + '.meta'),
-    rows: p.rows,
+    paces: p.paces,
   }));
-  const programs = useIntakes(seed);
+  const programs = useIntakes() || seed;
   return (
     <div id="intake" className="calendar-band">
       <div className="calendar-head">
@@ -679,9 +687,15 @@ function IntakeCalendar() {
         </div>
         <Badge bg="brand">{t('home.intake.editable')}</Badge>
       </div>
-      <div className="calendar-cols calendar-grid">
+      <div className="calendar-rows">
         {programs.map((p) => (
-          <CalendarColumn key={p.id} title={p.title} meta={p.meta} rows={p.rows} />
+          <div key={p.id} className="calendar-program-row">
+            <span className="calendar-col-title">{p.title}</span>
+            <div className="calendar-cols calendar-grid">
+              <CalendarColumn title={t('home.intake.fullTime')} rows={p.paces['Full Time']} />
+              <CalendarColumn title={t('home.intake.partTime')} rows={p.paces['Part Time']} />
+            </div>
+          </div>
         ))}
       </div>
     </div>
