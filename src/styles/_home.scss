@@ -301,6 +301,12 @@
 .calendar-grid {
   gap: 64px;
 }
+// Column count is data-driven (one per Sanity `program` document with intake
+// rows), not fixed at 2 — auto-fit handles any count without a media query.
+.calendar-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
 .calendar-band {
   scroll-margin-top: 96px;
   margin-top: 64px;
@@ -389,6 +395,9 @@
   }
   &.status-planned {
     color: rgba(255, 255, 255, 0.4);
+  }
+  &.status-ongoing {
+    color: v.$green-500;
   }
 }
 

@@ -307,7 +307,8 @@ export default {
     editable: 'Modifiable dans Sanity',
     fsd: { title: 'FSD AI-Native', meta: '12 semaines, à temps plein' },
     aidev: { title: 'Développeur IA avancé', meta: '8 semaines, à temps partiel' },
-    status: { Open: 'Ouvert', Waitlist: "Liste d'attente", Planned: 'Prévu' },
+    onDemand: 'Sur demande',
+    status: { Open: 'Ouvert', Waitlist: "Liste d'attente", Planned: 'Prévu', Ongoing: 'En cours' },
   },
   metrics: {
     eyebrow: "L'IA en 2026",

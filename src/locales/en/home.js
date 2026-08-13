@@ -307,7 +307,8 @@ export default {
     editable: 'Editable in Sanity',
     fsd: { title: 'AI-Native FSD', meta: '12 weeks, full time' },
     aidev: { title: 'Advanced AI-Developer', meta: '8 weeks, part time' },
-    status: { Open: 'Open', Waitlist: 'Waitlist', Planned: 'Planned' },
+    onDemand: 'On Demand',
+    status: { Open: 'Open', Waitlist: 'Waitlist', Planned: 'Planned', Ongoing: 'Ongoing' },
   },
   metrics: {
     eyebrow: 'The AI in 2026',
