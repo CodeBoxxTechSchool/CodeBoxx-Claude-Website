@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Badge, Form, Offcanvas } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { TopBar, Footer } from '../components/Chrome';
+import { localizedHref } from '../lib/routes';
 import '../lib/image-slot.js';
 
 const PITCH_BLANK = { first: '', last: '', email: '', phone: '', kind: '', details: '' };
@@ -164,12 +165,13 @@ function PitchDrawer({ open, onClose }) {
 }
 
 function VenturesPage() {
+  const { i18n } = useTranslation();
   const [pitchOpen, setPitchOpen] = React.useState(false);
   return (
     <div id="top">
       <TopBar
         onCodi={() => {
-          location.href = '/#contact';
+          location.href = localizedHref('#contact', i18n.language);
         }}
       />
       <Band onPitch={() => setPitchOpen(true)} />

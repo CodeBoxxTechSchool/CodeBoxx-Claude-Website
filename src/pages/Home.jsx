@@ -7,6 +7,7 @@ import Avatar from '../components/Avatar';
 import Logo from '../components/Logo';
 import { useSanityTeam, useSanityLogos, useSanityPosts, sanityImageUrl } from '../lib/sanity';
 import { useIntakes } from '../lib/intakes';
+import { localizedHref, useLocalizedId } from '../lib/routes';
 import '../lib/image-slot.js';
 
 // Only the id (used for anchors/routing) lives here — every text field is pulled
@@ -193,7 +194,7 @@ function SectionHead({ eyebrow, index, title, lede, children }) {
 }
 
 function Platform() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const divisions = useDivisions();
   return (
     <section id="platform" className="sect">
@@ -215,7 +216,7 @@ function Platform() {
               </div>
               <div className="d-flex flex-column gap-4">
                 <div className="rule" />
-                <a href={'#' + d.id} className="link-tag">
+                <a href={localizedHref('#' + d.id, i18n.language)} className="link-tag">
                   {d.role}
                 </a>
               </div>
@@ -371,19 +372,24 @@ function ChevronButton({ active, onClick }) {
 }
 
 function Studio() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const about = useAbout();
   // Stores just the id, not the translated object — so a language switch can't
   // leave `active` pointing at a stale-language copy of the previously-active item.
   const [activeId, setActiveId] = React.useState('team');
   const active = about.find((a) => a.id === activeId) || about[0];
   const studioTeam = useSanityTeam('studio', about[0].people);
+  const codeboxxId = useLocalizedId('codeboxx');
+  const teamHash = '#' + useLocalizedId('about-team');
+  const historyHash = '#' + useLocalizedId('about-history');
+  const visionHash = '#' + useLocalizedId('about-vision');
   React.useEffect(() => {
+    const hashToId = { [teamHash]: 'team', [historyHash]: 'history', [visionHash]: 'vision' };
     const apply = () => {
-      const m = /^#about-(team|history|vision)$/.exec(location.hash);
-      if (!m) return;
-      setActiveId(m[1]);
-      const el = document.getElementById('codeboxx');
+      const found = hashToId[location.hash];
+      if (!found) return;
+      setActiveId(found);
+      const el = document.getElementById(codeboxxId);
       if (el)
         window.scrollTo({
           top: el.getBoundingClientRect().top + window.pageYOffset - 70,
@@ -393,11 +399,11 @@ function Studio() {
     apply();
     window.addEventListener('hashchange', apply);
     return () => window.removeEventListener('hashchange', apply);
-  }, []);
+  }, [codeboxxId, teamHash, historyHash, visionHash]);
   return (
     <DivisionBand
       alt
-      id="codeboxx"
+      id={codeboxxId}
       index="03"
       role={t('home.studio.role')}
       name={t('home.studio.name')}
@@ -572,11 +578,12 @@ function ServiceDetail({ s }) {
 function Solutions() {
   const { t } = useTranslation();
   const services = useServices();
+  const solutionsId = useLocalizedId('solutions');
   const [activeId, setActiveId] = React.useState('cto');
   const active = services.find((s) => s.id === activeId) || services[0];
   return (
     <DivisionBand
-      id="solutions"
+      id={solutionsId}
       index="04"
       role={t('home.solutions.role')}
       name={t('home.solutions.name')}
@@ -696,6 +703,7 @@ function CalendarColumn({ title, rows, onEnroll }) {
 
 function IntakeCalendar({ onEnroll }) {
   const { t } = useTranslation();
+  const intakeId = useLocalizedId('intake');
   const seed = SEED_INTAKES_META.map((p) => ({
     id: p.id,
     title: t('home.intake.' + p.id + '.title'),
@@ -703,7 +711,7 @@ function IntakeCalendar({ onEnroll }) {
   }));
   const programs = useIntakes() || seed;
   return (
-    <div id="intake" className="calendar-band">
+    <div id={intakeId} className="calendar-band">
       <div className="calendar-head">
         <div className="d-flex flex-column gap-3">
           <span className="calendar-eyebrow">{t('home.intake.eyebrow')}</span>
@@ -810,29 +818,32 @@ function useAcademyTopics() {
 }
 
 function Academy({ onEnroll }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const topics = useAcademyTopics();
   const [active, setActive] = React.useState(0);
   const academyTeam = useSanityTeam('academy', topics[2].people);
+  const academyId = useLocalizedId('academy');
+  const coursesHash = '#' + useLocalizedId('academy-courses');
+  const academyHash = '#' + useLocalizedId('academy');
   React.useEffect(() => {
     const apply = () => {
-      if (location.hash === '#academy-courses') {
+      if (location.hash === coursesHash) {
         setActive(1);
-      } else if (location.hash === '#academy') {
+      } else if (location.hash === academyHash) {
         setActive(0);
       } else {
         return;
       }
-      document.getElementById('academy')?.scrollIntoView();
+      document.getElementById(academyId)?.scrollIntoView();
     };
     apply();
     window.addEventListener('hashchange', apply);
     return () => window.removeEventListener('hashchange', apply);
-  }, []);
+  }, [academyId, coursesHash, academyHash]);
   return (
     <DivisionBand
       alt
-      id="academy"
+      id={academyId}
       index="05"
       role={t('home.academy.role')}
       name={t('home.academy.name')}
@@ -932,7 +943,7 @@ function Academy({ onEnroll }) {
                 variant="outline-primary"
                 className="mt-1"
                 onClick={() => {
-                  location.hash = '#contact';
+                  location.hash = localizedHref('#contact', i18n.language);
                 }}
               >
                 {t('home.academy.contactUs')}
@@ -1013,8 +1024,9 @@ function Metrics() {
 }
 
 function Contact({ onEnroll }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const divisions = useDivisions();
+  const contactId = useLocalizedId('contact');
   const [f, setF] = React.useState({ first: '', last: '', email: '', country: '', phone: '' });
   const [division, setDivision] = React.useState('codeboxx');
   const [mobile, setMobile] = React.useState('yes');
@@ -1025,7 +1037,7 @@ function Contact({ onEnroll }) {
   const invalid = f.email.length > 0 && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email);
   const ready = f.first && f.last && f.email && !invalid && f.country && f.phone && consent;
   return (
-    <section id="contact" className="sect sect-contact">
+    <section id={contactId} className="sect sect-contact">
       <div className="wrap grid2">
         <div className="d-flex flex-column gap-3">
           <ScriptTitle index="07">{t('home.contact.learnMore')}</ScriptTitle>
@@ -1149,7 +1161,7 @@ function Contact({ onEnroll }) {
               {t('home.contact.consentTextPart1')}
               <a href="mailto:info@codeboxx.biz">info@codeboxx.biz</a>
               {t('home.contact.consentTextPart2')}
-              <a href="#contact">{t('home.contact.consentLinkText')}</a>
+              <a href={localizedHref('#contact', i18n.language)}>{t('home.contact.consentLinkText')}</a>
               {t('home.contact.consentTextPart3')}
             </span>
           </div>
@@ -1493,7 +1505,7 @@ function fmtPostDate(iso) {
 }
 
 function CodeBlog() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const posts = useSanityPosts(LATEST_POSTS).slice(0, 3);
   return (
     <section id="codeblog" className="sect sect-steel">
@@ -1507,7 +1519,11 @@ function CodeBlog() {
         </div>
         <div className="grid3">
           {posts.map((p) => (
-            <Link key={p.slug} to={'/blog/' + p.slug} className="panel panel-link-card">
+            <Link
+              key={p.slug}
+              to={localizedHref('/blog/' + p.slug, i18n.language)}
+              className="panel panel-link-card"
+            >
               <image-slot
                 id={'codeblog-' + p.slug}
                 src={sanityImageUrl(p.featuredImage, { w: 500 })}
@@ -1533,7 +1549,7 @@ function CodeBlog() {
         <div className="d-flex justify-content-center mt-40">
           <Button
             onClick={() => {
-              window.location.href = '/blog';
+              window.location.href = localizedHref('/blog', i18n.language);
             }}
           >
             {t('home.codeBlog.seeAllPosts')}
