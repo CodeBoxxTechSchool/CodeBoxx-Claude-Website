@@ -6,6 +6,7 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Financing from './pages/Financing';
 import Ventures from './pages/Ventures';
+import LandingPage from './pages/LandingPage';
 import { isFrenchPath } from './lib/routes';
 
 // Makes the URL the source of truth for language: any navigation (a clicked link,
@@ -36,6 +37,8 @@ export default function App() {
         <Route path="/fr/financement" element={<Financing />} />
         <Route path="/ventures" element={<Ventures />} />
         <Route path="/fr/ventures" element={<Ventures />} />
+        <Route path="/lp/:slug" element={<LandingPage />} />
+        <Route path="/fr/lp/:slug" element={<LandingPage />} />
         <Route path="*" element={<Home />} />
       </Routes>
     </BrowserRouter>

@@ -155,3 +155,53 @@ export function useSanityLogos(seed = []) {
   }, []);
   return logos;
 }
+
+// Reads the current language out of a Sanity {en, fr} localized field, falling
+// back to English — used by every landing-page section renderer.
+export function pickLocale(field, lang) {
+  return (field && (field[lang] || field.en)) || '';
+}
+
+// Sanity 'landingPage' document -> the shape LandingPage.jsx renders. Sections
+// pass through as-is (their `_type` picks the renderer) since none of the
+// section schemas have image fields needing a projection.
+function toLandingPage(entry) {
+  return {
+    title: entry.title,
+    slug: entry.slug?.current || '',
+    slugFr: entry.slugFr?.current || '',
+    showTopBar: entry.showTopBar !== false,
+    showFooter: entry.showFooter !== false,
+    sections: entry.sections || [],
+  };
+}
+
+// Fetches one landing page by its per-language slug (route: /lp/:slug or
+// /fr/lp/:slug). No seed fallback — this is fully custom per-document content
+// with nothing sensible to hardcode. Returns `undefined` while loading, `null`
+// once loading has resolved with nothing found (no Sanity project configured,
+// bad slug, or no matching document).
+export function useSanityLandingPage(slug, lang) {
+  const [page, setPage] = React.useState(undefined);
+  React.useEffect(() => {
+    let live = true;
+    const safeSlug = (slug || '').replace(/[^a-z0-9-]/g, '');
+    if (!PROJECT_ID || !safeSlug) {
+      setPage(null);
+      return undefined;
+    }
+    const field = lang === 'fr' ? 'slugFr' : 'slug';
+    fetchCollection('landingPage', '[' + field + '.current == "' + safeSlug + '"][0]{...}')
+      .then((entry) => {
+        if (live) setPage(entry ? toLandingPage(entry) : null);
+      })
+      .catch((err) => {
+        console.warn('[sanity]', err.message);
+        if (live) setPage(null);
+      });
+    return () => {
+      live = false;
+    };
+  }, [slug, lang]);
+  return page;
+}

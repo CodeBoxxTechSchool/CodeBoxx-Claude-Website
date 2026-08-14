@@ -168,7 +168,7 @@ function ClientSlider() {
   );
 }
 
-function ScriptTitle({ index, children, dark }) {
+export function ScriptTitle({ index, children, dark }) {
   return (
     <span className={'script-title' + (dark ? ' script-title-dark' : '')}>
       <span className="script-title-index">
@@ -956,7 +956,7 @@ function Academy({ onEnroll }) {
   );
 }
 
-function CountUp({ value }) {
+export function CountUp({ value }) {
   const m = String(value).match(/^([\d.]+)(.*)$/);
   const target = m ? parseFloat(m[1]) : 0;
   const suffix = m ? m[2] : '';
