@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Badge, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { TopBar, Footer } from '../components/Chrome';
+import { localizedHref } from '../lib/routes';
 import '../lib/image-slot.js';
 
 function Band() {
@@ -91,7 +92,7 @@ function RiskFree() {
 }
 
 function Ask() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
     <section className="sect">
       <div className="wrap grid2">
@@ -110,7 +111,7 @@ function Ask() {
             <Button
               variant="outline-primary"
               onClick={() => {
-                location.href = '/#contact';
+                location.href = localizedHref('#contact', i18n.language);
               }}
             >
               {t('financing.ask.contactAdmissions')}
@@ -143,11 +144,12 @@ function Ask() {
 }
 
 function FinancingPage() {
+  const { i18n } = useTranslation();
   return (
     <div id="top">
       <TopBar
         onCodi={() => {
-          location.href = '/#contact';
+          location.href = localizedHref('#contact', i18n.language);
         }}
       />
       <Band />

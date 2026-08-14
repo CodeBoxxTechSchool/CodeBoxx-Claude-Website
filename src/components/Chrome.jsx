@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
-
-const hrefFor = (t) => (t.charAt(0) === '#' ? (window.location.pathname === '/' ? t : '/' + t) : t);
+import { localizedHref } from '../lib/routes';
 
 // Hrefs/nesting stay here; display labels come from common.nav via useNav() below,
 // so a French label swap never touches routing.
@@ -40,27 +40,30 @@ const NAV_STRUCTURE = [
 ];
 
 function useNav() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   return NAV_STRUCTURE.map((n) => ({
     key: n.key,
     label: t('nav.' + n.key),
-    href: n.href,
-    items: n.items?.map(([k, href]) => [t('nav.' + k), href]),
+    href: localizedHref(n.href, i18n.language),
+    items: n.items?.map(([k, href]) => [t('nav.' + k), localizedHref(href, i18n.language)]),
   }));
 }
 
 // Shows only the language you'd switch TO (not the active one), as a real button —
-// clicking it toggles between the two.
+// clicking it navigates to the translated URL for wherever you currently are; the
+// actual language flip happens via App.jsx's LocaleFromUrl reacting to that
+// navigation, so the URL stays the single source of truth rather than this button
+// and the URL both trying to drive language independently.
 function LanguageToggle() {
   const { i18n, t } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
   const next = i18n.language === 'fr' ? 'en' : 'fr';
+  const goToTranslated = () => {
+    navigate(localizedHref(location.pathname, next) + location.hash);
+  };
   return (
-    <Button
-      size="sm"
-      variant="outline-primary"
-      onClick={() => i18n.changeLanguage(next)}
-      aria-label={t('actions.language')}
-    >
+    <Button size="sm" variant="outline-primary" onClick={goToTranslated} aria-label={t('actions.language')}>
       {next.toUpperCase()}
     </Button>
   );
@@ -91,7 +94,7 @@ function NavItem({ item, onNavigate }) {
       onMouseEnter={() => hasDropdown && setOpen(true)}
       onMouseLeave={() => hasDropdown && setOpen(false)}
     >
-      <Nav.Link as="a" href={hrefFor(item.href)} onClick={handleLinkClick}>
+      <Nav.Link as="a" href={item.href} onClick={handleLinkClick}>
         {item.label}
         {hasDropdown ? (
           <svg
@@ -113,7 +116,7 @@ function NavItem({ item, onNavigate }) {
       {hasDropdown && open ? (
         <div className="nav-dropdown">
           {item.items.map(([l, hr]) => (
-            <a key={l} href={hrefFor(hr)} onClick={handleSubLinkClick}>
+            <a key={l} href={hr} onClick={handleSubLinkClick}>
               {l}
             </a>
           ))}
@@ -124,17 +127,19 @@ function NavItem({ item, onNavigate }) {
 }
 
 function TopBar({ onCodi, onEnroll }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const nav = useNav();
   const [expanded, setExpanded] = React.useState(false);
   const enroll = () =>
-    onEnroll ? onEnroll('AI Native Full-Stack Developer') : (window.location.href = '/#contact');
+    onEnroll
+      ? onEnroll('AI Native Full-Stack Developer')
+      : (window.location.href = localizedHref('#contact', i18n.language));
   return (
     <React.Fragment>
       <header className="site-header">
         <Navbar expand="lg" expanded={expanded} onToggle={setExpanded}>
           <Container fluid className="wrap">
-            <Navbar.Brand href={hrefFor('#top')} className="p-0">
+            <Navbar.Brand href={localizedHref('#top', i18n.language)} className="p-0">
               <Logo width={168} />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="main-nav" />
@@ -170,7 +175,7 @@ function TopBar({ onCodi, onEnroll }) {
 const FOOTER_COLUMN_KEYS = ['codeboxx', 'solutions', 'academy'];
 
 function Footer() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
     <footer className="site-footer">
       <div className="wrap d-flex flex-column gap-5">
@@ -186,7 +191,7 @@ function Footer() {
                 <div key={key} className="footer-col d-flex flex-column gap-3">
                   <span className="footer-col-title">{col.title}</span>
                   {col.items.map((i) => (
-                    <a key={i} href={hrefFor('#top')}>
+                    <a key={i} href={localizedHref('#top', i18n.language)}>
                       {i}
                     </a>
                   ))}

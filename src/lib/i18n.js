@@ -2,26 +2,24 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import en from '../locales/en';
 import fr from '../locales/fr';
+import { isFrenchPath } from './routes';
 
-const STORAGE_KEY = 'codeboxx-lang';
-const stored = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
+// The URL is the source of truth for language (see routes.js) — not a remembered
+// cross-visit preference, which would otherwise fight with it (a stale French
+// preference "winning" for a moment on a plain /blog load). Reading the path here,
+// synchronously before React mounts, means first paint already matches the URL
+// instead of flashing English and then correcting once App's LocaleFromUrl effect
+// runs.
+const initialPath = typeof window !== 'undefined' ? window.location.pathname : '/';
 
 i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
     fr: { translation: fr },
   },
-  lng: stored === 'fr' ? 'fr' : 'en',
+  lng: isFrenchPath(initialPath) ? 'fr' : 'en',
   fallbackLng: 'en',
   interpolation: { escapeValue: false },
-});
-
-i18n.on('languageChanged', (lng) => {
-  try {
-    localStorage.setItem(STORAGE_KEY, lng);
-  } catch {
-    // localStorage unavailable (private mode, disabled) — language just won't persist.
-  }
 });
 
 export default i18n;

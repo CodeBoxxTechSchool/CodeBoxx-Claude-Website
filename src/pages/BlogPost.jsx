@@ -5,6 +5,7 @@ import { Badge } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { TopBar, Footer } from '../components/Chrome';
 import { useSanityPost, sanityImageUrl } from '../lib/sanity';
+import { localizedHref } from '../lib/routes';
 import { SEED_POSTS } from './Blog';
 
 const fmt = (d) =>
@@ -40,19 +41,19 @@ const portableTextComponents = {
 };
 
 function NotFound() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
     <div id="top">
       <TopBar
         onCodi={() => {
-          window.location.href = '/#contact';
+          window.location.href = localizedHref('#contact', i18n.language);
         }}
       />
       <section className="sect">
         <div className="wrap d-flex flex-column gap-3 align-items-start">
           <h1 className="h2">{t('blog.post.notFoundTitle')}</h1>
           <p className="pbody">{t('blog.post.notFoundBody')}</p>
-          <Link to="/blog" className="link-tag">
+          <Link to={localizedHref('/blog', i18n.language)} className="link-tag">
             {t('blog.post.backToCodeBlog')}
           </Link>
         </div>
@@ -63,7 +64,7 @@ function NotFound() {
 }
 
 function BlogPost() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { slug } = useParams();
   const seedMatch = SEED_POSTS.find((p) => p.slug === slug) || null;
   const post = useSanityPost(slug, seedMatch);
@@ -89,7 +90,7 @@ function BlogPost() {
     <div id="top">
       <TopBar
         onCodi={() => {
-          window.location.href = '/#contact';
+          window.location.href = localizedHref('#contact', i18n.language);
         }}
       />
       <section className="band-dark" style={heroStyle}>
@@ -117,7 +118,7 @@ function BlogPost() {
               </a>
             </div>
           ) : null}
-          <Link to="/blog" className="link-tag mt-40">
+          <Link to={localizedHref('/blog', i18n.language)} className="link-tag mt-40">
             {t('blog.post.backToCodeBlog')}
           </Link>
         </div>

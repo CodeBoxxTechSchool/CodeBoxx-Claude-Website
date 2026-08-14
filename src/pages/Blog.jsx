@@ -4,6 +4,7 @@ import { Button, Badge, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { TopBar, Footer } from '../components/Chrome';
 import { useSanityPosts, sanityImageUrl } from '../lib/sanity';
+import { localizedHref } from '../lib/routes';
 import '../lib/image-slot.js';
 
 // Canonical English values stored on Sanity `post.category` — filtering (`cat`
@@ -136,7 +137,7 @@ function Band() {
 const PAGE_SIZE = 2;
 
 function Posts() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const categoryLabels = t('blog.categories', { returnObjects: true });
   const POSTS = useSanityPosts(SEED_POSTS);
   const [cat, setCat] = React.useState('All Posts');
@@ -194,7 +195,7 @@ function Posts() {
                 <div className="rule" />
                 <div className="post-meta-row">
                   <span className="post-author">{p.author}</span>
-                  <Link to={'/blog/' + p.slug} className="link-tag">
+                  <Link to={localizedHref('/blog/' + p.slug, i18n.language)} className="link-tag">
                     {t('blog.readPost')}
                   </Link>
                 </div>
@@ -248,11 +249,12 @@ function Subscribe() {
 }
 
 function BlogPage() {
+  const { i18n } = useTranslation();
   return (
     <div id="top">
       <TopBar
         onCodi={() => {
-          window.location.href = '/#contact';
+          window.location.href = localizedHref('#contact', i18n.language);
         }}
       />
       <Band />
