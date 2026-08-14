@@ -301,6 +301,24 @@
 .calendar-grid {
   gap: 64px;
 }
+// Two columns (Full Time / Part Time) within a program row — auto-fit needs no
+// media query to collapse to 1 column on narrow viewports.
+.calendar-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+// One row per Sanity `program` document that has intake rows — data-driven, not
+// fixed at 2, same spirit as `.calendar-cols`.
+.calendar-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.calendar-program-row {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 .calendar-band {
   scroll-margin-top: 96px;
   margin-top: 64px;
@@ -348,10 +366,14 @@
   text-transform: uppercase;
   color: v.$neutral-0;
 }
-.calendar-col-meta {
+// Pace column headers ("Full Time"/"Part Time") only — the program row title
+// above them keeps the full .calendar-col-title size/color. $text-caption (12px)
+// is exactly 75% of $text-h3 (16px), so this reuses the scale rather than a
+// one-off value; $blue-300 is the lighter step from the same blue used elsewhere
+// in this band (.calendar-eyebrow, status-open) at $blue-500.
+.calendar-pace-title {
   font-size: v.$text-caption;
-  font-weight: v.$weight-medium;
-  color: rgba(255, 255, 255, 0.56);
+  color: v.$blue-300;
 }
 .calendar-row {
   display: flex;
@@ -363,6 +385,11 @@
   display: flex;
   align-items: baseline;
   gap: 16px;
+}
+.calendar-row-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .calendar-date {
   font-size: v.$text-h3;
@@ -382,13 +409,16 @@
   text-transform: uppercase;
 
   &.status-open {
-    color: v.$blue-500;
+    color: v.$blue-300;
   }
   &.status-waitlist {
     color: v.$yellow-500;
   }
   &.status-planned {
     color: rgba(255, 255, 255, 0.4);
+  }
+  &.status-in-progress {
+    color: v.$green-500;
   }
 }
 
