@@ -303,7 +303,7 @@ export default {
   ],
   intake: {
     eyebrow: "Calendrier d'admission",
-    title: 'Deux programmes. Huit cohortes.',
+    title: 'Des programmes IA-first. Pour tous les niveaux.',
     editable: 'Modifiable dans Sanity',
     fsd: { title: 'FSD AI-Native' },
     aidev: { title: 'Développeur IA avancé' },

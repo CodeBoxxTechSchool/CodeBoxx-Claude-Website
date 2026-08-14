@@ -303,7 +303,7 @@ export default {
   ],
   intake: {
     eyebrow: 'Intake Calendar',
-    title: 'Two programs. Eight cohorts.',
+    title: 'AI-First programs. For all levels.',
     editable: 'Editable in Sanity',
     fsd: { title: 'AI-Native FSD' },
     aidev: { title: 'Advanced AI-Developer' },

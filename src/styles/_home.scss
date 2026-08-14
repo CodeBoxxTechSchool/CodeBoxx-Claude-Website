@@ -409,7 +409,7 @@
   text-transform: uppercase;
 
   &.status-open {
-    color: v.$blue-500;
+    color: v.$blue-300;
   }
   &.status-waitlist {
     color: v.$yellow-500;
@@ -417,7 +417,7 @@
   &.status-planned {
     color: rgba(255, 255, 255, 0.4);
   }
-  &.status-ongoing {
+  &.status-in-progress {
     color: v.$green-500;
   }
 }

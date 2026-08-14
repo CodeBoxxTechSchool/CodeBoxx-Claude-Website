@@ -26,10 +26,10 @@ function toRow(entry) {
       })
     : null; // null tells CalendarColumn to render the "On Demand" label instead.
   // A cohort whose start date has already passed (or starts today) reads as
-  // "Ongoing" regardless of whatever status was manually set — editors don't have
+  // "InProgress" regardless of whatever status was manually set — editors don't have
   // to remember to flip it. Compared as plain calendar-day strings (both are
   // "YYYY-MM-DD"), not Date objects, so there's no time-of-day/timezone edge case.
-  const status = hasDate && entry.date <= todayIso() ? 'Ongoing' : entry.status;
+  const status = hasDate && entry.date <= todayIso() ? 'InProgress' : entry.status;
   return [date, entry.location, status];
 }
 
