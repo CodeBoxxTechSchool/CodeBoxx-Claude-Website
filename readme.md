@@ -124,6 +124,41 @@ Brand components with no Bootstrap equivalent (`Logo`, `Avatar`) are tiny hand-w
 components in `src/components/`, not a vendored bundle. Everything else — buttons, badges,
 forms, the Codi/Enroll drawers — is react-bootstrap, restyled via the SCSS above.
 
+## Deployment
+
+`.github/workflows/deploy.yml` builds the site and rsyncs `dist/` to an existing
+DigitalOcean Droplet over SSH on every push to `main` (or manually via
+"Run workflow"). It does not provision anything — the Droplet, its web server, and
+the target directory must already exist.
+
+Required repo secrets (Settings → Secrets and variables → Actions):
+
+| Secret                    | Value                                                              |
+| ------------------------- | ------------------------------------------------------------------- |
+| `VITE_SANITY_PROJECT_ID`  | Same as `.env`'s `VITE_SANITY_PROJECT_ID`                          |
+| `VITE_SANITY_DATASET`     | Same as `.env`'s `VITE_SANITY_DATASET`                             |
+| `VITE_SANITY_API_VERSION` | Same as `.env`'s `VITE_SANITY_API_VERSION`                         |
+| `VITE_SANITY_TOKEN`       | Same as `.env`'s `VITE_SANITY_TOKEN` (blank is fine if unset there)|
+| `DROPLET_HOST`            | Droplet IP or domain                                               |
+| `DROPLET_USER`            | SSH user with write access to the target directory                |
+| `DROPLET_SSH_KEY`         | Private half of a dedicated deploy key (see below) — no passphrase|
+| `DROPLET_TARGET_PATH`     | Absolute path the web server serves from, e.g. `/var/www/codeboxx`|
+
+Setup, one time, on the Droplet:
+
+1. Generate a deploy-only SSH key pair (don't reuse a personal one):
+   `ssh-keygen -t ed25519 -f deploy_key -N ""`. Add `deploy_key.pub`'s contents to
+   `~/.ssh/authorized_keys` for `DROPLET_USER` on the Droplet; put `deploy_key`'s
+   contents (the private half) in the `DROPLET_SSH_KEY` secret.
+2. Confirm `DROPLET_TARGET_PATH` exists and `DROPLET_USER` can write to it.
+3. This is a client-side-routed SPA (`react-router` `BrowserRouter`) — confirm the
+   web server falls back to `index.html` for unknown paths (nginx:
+   `try_files $uri /index.html;` in the site's `location /` block), or deep links
+   like `/blog/some-post` will 404 on a hard refresh.
+
+The deploy step runs `rsync --delete`, so `DROPLET_TARGET_PATH` should be dedicated
+to this site — anything else living in that directory gets removed to match `dist/`.
+
 ## Structure
 
 ```
