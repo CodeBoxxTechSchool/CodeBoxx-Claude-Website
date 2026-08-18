@@ -124,6 +124,43 @@ Brand components with no Bootstrap equivalent (`Logo`, `Avatar`) are tiny hand-w
 components in `src/components/`, not a vendored bundle. Everything else — buttons, badges,
 forms, the Codi/Enroll drawers — is react-bootstrap, restyled via the SCSS above.
 
+## Deployment
+
+`.github/workflows/deploy.yml` builds the site and rsyncs `dist/` to the
+"CodeBoxx Web Claude" DigitalOcean Droplet over SSH on every push to `main` (or
+manually via "Run workflow"). It does not provision anything — the Droplet, nginx,
+the `deploy` user, and the target directory are already set up (see below).
+
+Required repo secrets (Settings → Secrets and variables → Actions):
+
+| Secret                    | Value                                                                |
+| ------------------------- | --------------------------------------------------------------------- |
+| `VITE_SANITY_PROJECT_ID`  | Same as `.env`'s `VITE_SANITY_PROJECT_ID`                            |
+| `VITE_SANITY_DATASET`     | Same as `.env`'s `VITE_SANITY_DATASET`                               |
+| `VITE_SANITY_API_VERSION` | Same as `.env`'s `VITE_SANITY_API_VERSION`                           |
+| `VITE_SANITY_TOKEN`       | Same as `.env`'s `VITE_SANITY_TOKEN` (blank is fine if unset there)  |
+| `DROPLET_HOST`            | `159.223.145.47`                                                     |
+| `DROPLET_USER`            | `deploy` — a dedicated, non-root, key-only user with no sudo         |
+| `DROPLET_SSH_KEY`         | Private half of the `deploy` user's dedicated deploy key (no passphrase) |
+| `DROPLET_TARGET_PATH`     | `/var/www/codeboxx`                                                  |
+
+On the Droplet (already done for "CodeBoxx Web Claude"):
+
+- nginx installed and enabled, serving `/var/www/codeboxx` with
+  `try_files $uri /index.html;` in its `location /` block — required because this
+  is a client-side-routed SPA (`react-router` `BrowserRouter`); without the
+  fallback, deep links like `/blog/some-post` 404 on a hard refresh.
+- A `deploy` system user owns `/var/www/codeboxx`, has no sudo access, and accepts
+  SSH only via the dedicated deploy key (password auth disabled). Its
+  `authorized_keys` holds only that key's public half.
+- No domain/TLS yet — nginx answers on port 80 for any `Host` (catch-all
+  `server_name _;`). Point a domain's A record at the Droplet and run `certbot
+  --nginx` later to add HTTPS; update `server_name` accordingly at that point.
+
+The deploy step runs `rsync --delete`, so `DROPLET_TARGET_PATH` should stay
+dedicated to this site — anything else living in that directory gets removed to
+match `dist/`.
+
 ## Structure
 
 ```
