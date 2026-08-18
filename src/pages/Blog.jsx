@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button, Badge, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { TopBar, Footer } from '../components/Chrome';
+import Seo from '../components/Seo';
 import { useSanityPosts, sanityImageUrl } from '../lib/sanity';
 import { localizedHref } from '../lib/routes';
 import '../lib/image-slot.js';
@@ -249,9 +250,10 @@ function Subscribe() {
 }
 
 function BlogPage() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
     <div id="top">
+      <Seo title={t('blog.seo.title')} description={t('blog.seo.description')} />
       <TopBar
         onCodi={() => {
           window.location.href = localizedHref('#contact', i18n.language);

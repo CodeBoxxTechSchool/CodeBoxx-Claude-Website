@@ -1,4 +1,9 @@
 export default {
+  seo: {
+    title: 'AI-First Software Studio, Academy & Ventures',
+    description:
+      'CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit — AI-first, human-built.',
+  },
   hero: {
     pill: 'AI-First, Human-Built',
     titleBefore: 'We build ',
@@ -15,7 +20,8 @@ export default {
       name: 'CodeBoxx',
       role: 'About Us',
       tag: 'We Are CodeBoxx',
-      blurb: 'AI-native delivery pods that scope, build and ship product with the client in the room.',
+      blurb:
+        'AI-native delivery pods that scope, build and ship product with the client in the room.',
       extra: 'We transform businesses, individuals, and communities through technology.',
     },
     solutions: {
@@ -92,7 +98,8 @@ export default {
       role: 'Cohort 19 — Platform Engineer, Meridian Health',
     },
     {
-      quote: 'No degree, an entrance assessment and twelve weeks. I was hired into the pod I trained in.',
+      quote:
+        'No degree, an entrance assessment and twelve weeks. I was hired into the pod I trained in.',
       name: 'Naomi Fields',
       role: 'Cohort 23 — Software Engineer, Northline Freight',
     },
@@ -143,7 +150,13 @@ export default {
       sub: 'Outwork the old way, and show the receipts',
       detail:
         'The mission is to put applied AI to work inside real delivery: agents carrying the repetitive load, engineers carrying the judgment, and attribution on every action either way. Innovation only counts here once it ships and holds in production.\n\nThe vision sits one step ahead of that. We build the practice before the market asks for it, so that when a technology becomes unavoidable our clients are already running it — not evaluating it.',
-      tags: ['Applied AI', 'Agentic Delivery', 'Human Judgment', 'Attribution', 'Production-Proven'],
+      tags: [
+        'Applied AI',
+        'Agentic Delivery',
+        'Human Judgment',
+        'Attribution',
+        'Production-Proven',
+      ],
       close: 'We build AI-Native teams and software that outworks the old way.',
     },
   },
@@ -164,7 +177,13 @@ export default {
         'A digital transformation can seem daunting and costly for any company. A fractional CTO can be a trusted resource for a reassuring and well-orchestrated transition.\n\nCodeBoxx offers resources from experience in all markets that have faced the same challenges as you. Contact us and discover how CodeBoxx can support you at this pivotal moment.',
       heading: 'TRUST, EXPERIENCE, COMMITMENT',
       sub: 'The confidence of experience',
-      tags: ['Digital Transformation', 'Technology Strategy', 'Team Structure', 'Vendor Selection', 'Executive Advisory'],
+      tags: [
+        'Digital Transformation',
+        'Technology Strategy',
+        'Team Structure',
+        'Vendor Selection',
+        'Executive Advisory',
+      ],
       close:
         'We understand the challenges of every digital transformation because we have been through it ourselves. Every scenario is different, but with our team, one thing is certain: success.\n\nIn a chain, each link must be stronger than the next one, and that is where our Fractional CTOs come into their own. Through your trust, our experience, and our commitment',
     },
@@ -212,7 +231,13 @@ export default {
         "Hiring, onboarding, and managing in-house developers in today's competitive market can be time consuming and costly. Embrace the future with Development as a Service (DaaS) – the ultimate solution for businesses seeking seamless, tailor-made software solutions without the hassle and costs of managing internal resources.",
       heading: 'SCALE, SHIFT, ADAPT',
       sub: 'Scale Your Dev Team Up or Down with Ease.',
-      tags: ['No Hiring Overhead', 'One Developer or a Full Team', 'Matched to Your Stack', 'Scale Up or Down', 'On Time, On Budget'],
+      tags: [
+        'No Hiring Overhead',
+        'One Developer or a Full Team',
+        'Matched to Your Stack',
+        'Scale Up or Down',
+        'On Time, On Budget',
+      ],
       close:
         'Welcome to a world where seamless software development meets unparalleled convenience. Our Developer as a Service (DaaS) offering is designed to revolutionize the way you build and maintain software solutions. This hassle-free approach that allows you to focus on your core business operations while we expertly handle the intricacies of your software development needs.\n\nWhether you need a single developer resource or an entire development team, our diverse and highly skilled technologists are meticulously selected to match your needs and complement your existing resources, delivering top-notch software solutions on time and within budget.',
     },
@@ -297,9 +322,17 @@ export default {
     },
   },
   cohort: [
-    ['Weeks 1–4', 'Fundamentals', 'Typed languages, version control, testing. Assessed on merged pull requests.'],
+    [
+      'Weeks 1–4',
+      'Fundamentals',
+      'Typed languages, version control, testing. Assessed on merged pull requests.',
+    ],
     ['Weeks 5–8', 'Systems', 'APIs, data stores, containers. First deploy to a shared cluster.'],
-    ['Weeks 9–12', 'Live Build', 'Placement inside a client pod. Shipped work, reviewed by a delivery lead.'],
+    [
+      'Weeks 9–12',
+      'Live Build',
+      'Placement inside a client pod. Shipped work, reviewed by a delivery lead.',
+    ],
   ],
   intake: {
     eyebrow: 'Intake Calendar',
@@ -317,20 +350,33 @@ export default {
     eyebrow: 'The AI in 2026',
     title: 'Adoption is no longer the question. Pace is.',
     items: [
-      ['78%', 'Business Adoption', 'Nearly four out of five organizations now use AI in some capacity across their operations'],
+      [
+        '78%',
+        'Business Adoption',
+        'Nearly four out of five organizations now use AI in some capacity across their operations',
+      ],
       [
         '40%',
         'Job Impact',
         'International labor projections show AI will transform nearly two-fifths of jobs worldwide rather than just eliminate them',
       ],
-      ['86%', 'Budget Growth', 'The vast majority of corporate enterprises plan to spend more money on artificial intelligence development'],
-      ['40%', 'Productivity Boost', 'Workers utilizing generative AI tools experience substantial jumps in daily efficiency'],
+      [
+        '86%',
+        'Budget Growth',
+        'The vast majority of corporate enterprises plan to spend more money on artificial intelligence development',
+      ],
+      [
+        '40%',
+        'Productivity Boost',
+        'Workers utilizing generative AI tools experience substantial jumps in daily efficiency',
+      ],
     ],
   },
   contact: {
     learnMore: 'LEARN MORE',
     title: 'One form for all three divisions.',
-    lede1: 'Please specify the department you would like to contact. We will respond as soon as possible.',
+    lede1:
+      'Please specify the department you would like to contact. We will respond as soon as possible.',
     lede2:
       'Do you need a team of developers to carry out a project or improve an existing one? Would you like to learn more about the CodeBoxx Academy? Do you have a project and are looking for a venture-style partner? Contact us.',
     enrollAcademyTitle: 'You want to Enroll the Academy?',
@@ -394,7 +440,8 @@ export default {
     countryLabel: 'Country',
     selectPlaceholder: 'Select',
     heardAboutQ: 'How did you hear about us?',
-    reviewNote: 'Applications are reviewed within one business day. The entrance assessment is scheduled by email.',
+    reviewNote:
+      'Applications are reviewed within one business day. The entrance assessment is scheduled by email.',
     submitsNote: 'Submits to the admissions API.',
     receivedNote: 'Application received.',
     submit: 'Submit',

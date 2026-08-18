@@ -1,4 +1,9 @@
 export default {
+  seo: {
+    title: 'Coding Bootcamp Financing Options & Payment Plans',
+    description:
+      'Explore CodeBoxx Academy financing: flexible payment plans and a risk-free deposit period to help you invest in a career in tech.',
+  },
   pill: 'Financing Options',
   band: {
     title: 'Coding School Financing Options',
@@ -23,7 +28,11 @@ export default {
       [
         'Pay in Full',
         'A single lump-sum payment: the deposit during enrollment, the remainder after the risk-free period.',
-        ['Deposit paid at enrollment', 'Balance due after the risk-free period', 'All tuition covered up front'],
+        [
+          'Deposit paid at enrollment',
+          'Balance due after the risk-free period',
+          'All tuition covered up front',
+        ],
       ],
       [
         'Desjardins (Canada)',
@@ -46,14 +55,19 @@ export default {
         'Pay the Deposit',
         'All payment plans require a deposit. It is fully refundable if you change your mind during the risk-free period.',
       ],
-      ['Confirm', 'Settle the balance after the risk-free period and your seat is locked for the cohort.'],
+      [
+        'Confirm',
+        'Settle the balance after the risk-free period and your seat is locked for the cohort.',
+      ],
     ],
   },
   riskFree: {
     eyebrow: 'RISK-FREE PERIOD',
     title: 'Jump into tech for a few weeks. No strings attached.',
-    body1: 'We get it, learning to code is a huge commitment. That’s why we are the only coding academy to provide the initial 12% of our program risk-free. Our risk-free period spans the initial 2 weeks of the 16-week program or the initial 4 weeks of our 32-week program.',
-    body2: 'If you choose not to continue after the risk-free period, you can drop out without consequences. We’ll fully refund your deposit and you can walk away with a fundamental understanding of modern technology that you can take with you for the rest of your life.',
+    body1:
+      'We get it, learning to code is a huge commitment. That’s why we are the only coding academy to provide the initial 12% of our program risk-free. Our risk-free period spans the initial 2 weeks of the 16-week program or the initial 4 weeks of our 32-week program.',
+    body2:
+      'If you choose not to continue after the risk-free period, you can drop out without consequences. We’ll fully refund your deposit and you can walk away with a fundamental understanding of modern technology that you can take with you for the rest of your life.',
   },
   ask: {
     eyebrow: 'QUESTIONS ON TUITION',

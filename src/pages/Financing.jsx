@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Badge, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { TopBar, Footer } from '../components/Chrome';
+import Seo from '../components/Seo';
 import { localizedHref } from '../lib/routes';
 import '../lib/image-slot.js';
 
@@ -144,9 +145,10 @@ function Ask() {
 }
 
 function FinancingPage() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
     <div id="top">
+      <Seo title={t('financing.seo.title')} description={t('financing.seo.description')} />
       <TopBar
         onCodi={() => {
           location.href = localizedHref('#contact', i18n.language);

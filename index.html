@@ -3,13 +3,73 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Fallback SEO/social tags for this document shell. Every tag here that
+    Seo.jsx (react-helmet-async) also renders carries data-rh="true" — that's the
+    attribute Helmet's client-side reconciliation looks for on first mount to know
+    "this tag is mine to replace", and without it Helmet has no way to tell these
+    apart from ordinary markup, so it just appends its own copy alongside instead of
+    overwriting it. The result would be two <link rel="canonical">/<meta
+    property="og:*"> etc. per page, with tools free to pick either. Tags Seo.jsx
+    never touches (icon, theme-color, the Organization JSON-LD) stay plain so they
+    persist across every route untouched. Keep this block in sync with Home's copy
+    in src/locales/*/home.js since it's effectively the homepage's static fallback —
+    and the one crawlers that don't run JS (social link-preview scrapers chief among
+    them) will actually see. -->
     <title>CodeBoxx — AI-First, Human-Built</title>
+    <meta
+      data-rh="true"
+      name="description"
+      content="CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit — AI-first, human-built."
+    />
+    <meta data-rh="true" name="robots" content="index, follow" />
+    <link data-rh="true" rel="canonical" href="https://codeboxx.com/" />
+    <link data-rh="true" rel="alternate" hreflang="en" href="https://codeboxx.com/" />
+    <link data-rh="true" rel="alternate" hreflang="fr" href="https://codeboxx.com/fr" />
+    <link data-rh="true" rel="alternate" hreflang="x-default" href="https://codeboxx.com/" />
+
+    <meta data-rh="true" property="og:site_name" content="CodeBoxx" />
+    <meta data-rh="true" property="og:type" content="website" />
+    <meta data-rh="true" property="og:url" content="https://codeboxx.com/" />
+    <meta data-rh="true" property="og:title" content="CodeBoxx — AI-First, Human-Built" />
+    <meta
+      data-rh="true"
+      property="og:description"
+      content="CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit — AI-first, human-built."
+    />
+    <meta data-rh="true" property="og:image" content="https://codeboxx.com/assets/hero-bg.png" />
+    <meta data-rh="true" property="og:locale" content="en_US" />
+    <meta data-rh="true" property="og:locale:alternate" content="fr_CA" />
+
+    <meta data-rh="true" name="twitter:card" content="summary_large_image" />
+    <meta data-rh="true" name="twitter:title" content="CodeBoxx — AI-First, Human-Built" />
+    <meta
+      data-rh="true"
+      name="twitter:description"
+      content="CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit — AI-first, human-built."
+    />
+    <meta data-rh="true" name="twitter:image" content="https://codeboxx.com/assets/hero-bg.png" />
+
+    <meta name="theme-color" content="#002f43" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Great+Vibes&display=swap"
       rel="stylesheet"
     />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "CodeBoxx",
+        "url": "https://codeboxx.com/",
+        "description": "CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit.",
+        "logo": "https://codeboxx.com/favicon.svg"
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

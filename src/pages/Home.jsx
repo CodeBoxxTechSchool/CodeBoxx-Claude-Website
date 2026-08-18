@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button, Badge, Form, Offcanvas } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { TopBar, Footer } from '../components/Chrome';
+import Seo from '../components/Seo';
 import Avatar from '../components/Avatar';
 import Logo from '../components/Logo';
 import { useSanityTeam, useSanityLogos, useSanityPosts, sanityImageUrl } from '../lib/sanity';
@@ -1161,7 +1162,9 @@ function Contact({ onEnroll }) {
               {t('home.contact.consentTextPart1')}
               <a href="mailto:info@codeboxx.biz">info@codeboxx.biz</a>
               {t('home.contact.consentTextPart2')}
-              <a href={localizedHref('#contact', i18n.language)}>{t('home.contact.consentLinkText')}</a>
+              <a href={localizedHref('#contact', i18n.language)}>
+                {t('home.contact.consentLinkText')}
+              </a>
               {t('home.contact.consentTextPart3')}
             </span>
           </div>
@@ -1617,6 +1620,7 @@ function App() {
   }, []);
   return (
     <div id="top">
+      <Seo title={t('home.seo.title')} description={t('home.seo.description')} />
       <TopBar onCodi={() => setCodi(true)} onEnroll={setEnroll} />
       <div className="hero">
         <div className="d-flex">

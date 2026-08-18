@@ -1,11 +1,13 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useLocation, Link } from 'react-router-dom';
 import { PortableText } from '@portabletext/react';
 import { Badge } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { TopBar, Footer } from '../components/Chrome';
+import Seo from '../components/Seo';
 import { useSanityPost, sanityImageUrl } from '../lib/sanity';
 import { localizedHref } from '../lib/routes';
+import { absoluteUrl, DEFAULT_OG_IMAGE } from '../lib/seo';
 import { SEED_POSTS } from './Blog';
 
 const fmt = (d) =>
@@ -44,6 +46,7 @@ function NotFound() {
   const { t, i18n } = useTranslation();
   return (
     <div id="top">
+      <Seo title={t('blog.post.notFoundTitle')} description={t('blog.post.notFoundBody')} noindex />
       <TopBar
         onCodi={() => {
           window.location.href = localizedHref('#contact', i18n.language);
@@ -66,10 +69,26 @@ function NotFound() {
 function BlogPost() {
   const { t, i18n } = useTranslation();
   const { slug } = useParams();
+  const location = useLocation();
   const seedMatch = SEED_POSTS.find((p) => p.slug === slug) || null;
   const post = useSanityPost(slug, seedMatch);
 
   if (!post) return <NotFound />;
+
+  const ogImage = post.featuredImage
+    ? sanityImageUrl(post.featuredImage, { w: 1200 })
+    : DEFAULT_OG_IMAGE;
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    image: [ogImage],
+    datePublished: post.date || undefined,
+    author: { '@type': 'Organization', name: post.author || 'CodeBoxx' },
+    publisher: { '@type': 'Organization', name: 'CodeBoxx' },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': absoluteUrl(location.pathname) },
+  };
 
   // Reuses `.hero`'s scrim-over-photo technique (_components.scss) via inline
   // `background-image`, since the URL is per-post data rather than a static asset.
@@ -88,6 +107,13 @@ function BlogPost() {
 
   return (
     <div id="top">
+      <Seo
+        title={post.title}
+        description={post.excerpt}
+        image={ogImage}
+        type="article"
+        structuredData={articleSchema}
+      />
       <TopBar
         onCodi={() => {
           window.location.href = localizedHref('#contact', i18n.language);

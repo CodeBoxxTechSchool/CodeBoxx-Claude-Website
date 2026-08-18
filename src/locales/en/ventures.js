@@ -1,4 +1,9 @@
 export default {
+  seo: {
+    title: 'Build With Founders — CodeBoxx Ventures',
+    description:
+      "CodeBoxx Ventures puts the studio's delivery capacity behind products we believe in, partnering with founders on cash, equity, or both.",
+  },
   pill: 'Ventures',
   band: {
     title: 'We build with founders, not just for them.',
@@ -31,7 +36,11 @@ export default {
       [
         'Venture Studio Services',
         'Cash engagements for funded startups that need to move now.',
-        ['Fixed-scope sprints', 'Same review standard as the studio', 'Handover to your own team on exit'],
+        [
+          'Fixed-scope sprints',
+          'Same review standard as the studio',
+          'Handover to your own team on exit',
+        ],
       ],
       [
         'Talent Placement',
