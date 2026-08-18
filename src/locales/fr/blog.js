@@ -1,8 +1,13 @@
 export default {
+  seo: {
+    title: 'CodeBlogue — Actualités, notes de curriculum et ateliers',
+    description:
+      "Notes de curriculum, actualités technologiques, ateliers et histoires de diplômés du studio, de la plateforme et de l'académie CodeBoxx.",
+  },
   band: {
     pill: 'CodeBlog',
     title: "Les dernières nouvelles du studio, de la plateforme et de l'école.",
-    lede: "Notes de curriculum, actualités technologiques, ateliers et histoires de diplômés. Chaque article est écrit et publié dans Sanity.",
+    lede: 'Notes de curriculum, actualités technologiques, ateliers et histoires de diplômés. Chaque article est écrit et publié dans Sanity.',
   },
   categories: {
     'All Posts': 'Tous les articles',
@@ -21,7 +26,7 @@ export default {
     lede: "Mises à jour de curriculum, dates d'ateliers et notes technologiques. Un courriel par article, sans condensé.",
     emailLabel: 'Courriel',
     emailPlaceholder: 'nom@entreprise.com',
-    unsubscribeNote: "Désabonnement possible à tout moment.",
+    unsubscribeNote: 'Désabonnement possible à tout moment.',
     submit: "S'abonner",
   },
   post: {

@@ -1,4 +1,9 @@
 export default {
+  seo: {
+    title: 'CodeBlog — News, Curriculum Notes & Workshops',
+    description:
+      'Curriculum notes, technology news, workshops and graduate stories from the CodeBoxx studio, platform and academy.',
+  },
   band: {
     pill: 'CodeBlog',
     title: 'Fresh news from the studio, the platform and the school.',

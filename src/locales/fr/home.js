@@ -1,13 +1,18 @@
 export default {
+  seo: {
+    title: 'Studio de logiciels IA, Académie et Ventures',
+    description:
+      "CodeBoxx bâtit des équipes et des logiciels AI-native, forme des développeurs à l'Académie CodeBoxx et lance des ventures avec CrewKit — l'IA d'abord, l'humain toujours.",
+  },
   hero: {
-    pill: 'IA en priorité, bâti par des humains',
-    titleBefore: 'Nous bâtissons des équipes ',
+    pill: 'L’IA d’abord. L’humain toujours',
+    titleBefore: 'On bâtit des équipes ',
     titleHighlight: 'AI-Native',
-    titleAfter: " et des logiciels qui surpassent l'ancienne façon de faire.",
+    titleAfter: ' et des logiciels qui vont plus loin que les anciennes façons de faire.',
   },
   platform: {
-    eyebrow: 'La filière',
-    title: 'Trois divisions. Une seule filière.',
+    eyebrow: 'Le Noyau. Le Workshop. L’Académie.',
+    title: 'Trois divisions. Une seule équipe.',
     lede: "Une entité IA-first qui couvre tout le besoin : la construction, la plateforme qui la fait tourner et le talent qui l'opère. Moins de fournisseurs, une livraison plus rapide, un coût par résultat plus bas.",
   },
   divisions: {
@@ -15,29 +20,32 @@ export default {
       name: 'CodeBoxx',
       role: 'À propos de nous',
       tag: 'Nous sommes CodeBoxx',
-      blurb: "Des pods de livraison AI-native qui cadrent, construisent et livrent le produit avec le client dans la salle.",
-      extra: 'Nous transformons les entreprises, les individus et les communautés grâce à la technologie.',
+      blurb:
+        'Des équipes AI-native qui définissent, bâtissent et livrent le produit avec le client, côte à côte.',
+      extra:
+        'On aide les entreprises, les gens et les communautés à aller plus loin grâce à la technologie.',
     },
     solutions: {
       name: 'CodeBoxx Solutions',
       role: 'Découvrez vos solutions',
       tag: 'Vos solutions',
       blurb:
-        "Nous nous spécialisons en stratégie, en solutions de design complexes et en services de génie logiciel de premier plan. Notre expertise des outils et technologies de développement les plus récents permet à nos clients d'innover mieux et d'exécuter plus vite.",
+        'On combine stratégie, design et génie logiciel pour s’attaquer aux défis complexes. Avec les meilleures technologies et les outils les plus récents, on aide nos clients à innover plus intelligemment et à passer de l’idée à l’action plus vite.',
     },
     academy: {
-      name: 'CodeBoxx Academy',
+      name: 'CodeBoxx Academie',
       role: 'La filière de talents',
-      tag: 'La prochaine génération',
+      tag: 'La génération future',
       blurb:
-        "CodeBoxx Academy est une solution de développement de la main-d'œuvre engagée à combler l'écart des opportunités et à répondre à la pénurie de talents dans l'industrie technologique. Nous croyons que tout le monde a le potentiel de devenir un excellent développeur, et nous nous consacrons à transformer ce potentiel en compétence, et les débutants en développeurs agiles.",
+        'CodeBoxx Académie aide les gens à faire leur place dans le monde de la tech. On forme une nouvelle génération de développeurs en donnant à chacun les outils, les compétences et la confiance pour réussir. Parce qu’on croit que le talent peut venir de partout — il suffit de lui donner une chance de se développer.',
     },
   },
   codi: {
     name: 'Codi',
     role: 'Agent IA de CodeBoxx',
     active: 'Actif',
-    greeting: "Ici Codi, l'agent de CodeBoxx. Posez vos questions sur le studio, la plateforme ou l'académie.",
+    greeting:
+      "Ici Codi, l'agent de CodeBoxx. Posez vos questions sur le studio, la plateforme ou l'académie.",
     placeholder: 'Demandez à Codi',
     send: 'Envoyer',
     replies: [
@@ -48,12 +56,12 @@ export default {
   },
   wsj: {
     heading: 'Comment cinq Américains ont accédé à la classe moyenne',
-    body: "Nous sommes fiers de faire partie de cette histoire de réussite, présentée dans le Wall Street Journal. Tim Weaver est mis en vedette dans cet article vraiment fascinant. Félicitations, Tim — CodeBoxx pour la vie.",
+    body: 'Nous sommes fiers de faire partie de cette histoire de réussite, présentée dans le Wall Street Journal. Tim Weaver est mis en vedette dans cet article vraiment fascinant. Félicitations, Tim — CodeBoxx pour la vie.',
     cta: "Lire l'article",
   },
   codeBlog: {
-    title: 'Ce que nous livrons, nous le mettons par écrit.',
-    lede: "Notes de terrain du studio et de l'Académie : ce que les agents ont pris en charge, ce que les ingénieurs ont conservé, et quels ont été les résultats. Écrit par les personnes qui ont fait le travail.",
+    title: 'Ce qui se passe dans la tech.',
+    lede: 'Des idées, des tendances et des leçons tirées du terrain sur l’IA, le logiciel et la transformation des entreprises. On parle de ce qui change pour vrai — et de ce qu’on devrait en faire.',
     seeAllPosts: 'Voir tous les articles',
   },
   clientSlider: { trustedBy: 'Ils nous font confiance' },
@@ -92,7 +100,8 @@ export default {
       role: 'Cohorte 19 — Ingénieur de plateforme, Meridian Health',
     },
     {
-      quote: "Pas de diplôme, un test d'admission et douze semaines. J'ai été embauché dans le pod où je me suis formé.",
+      quote:
+        "Pas de diplôme, un test d'admission et douze semaines. J'ai été embauché dans le pod où je me suis formé.",
       name: 'Naomi Fields',
       role: 'Cohorte 23 — Ingénieure logicielle, Northline Freight',
     },
@@ -106,11 +115,11 @@ export default {
     team: {
       title: "L'équipe",
       blurb:
-        "Une équipe dévouée à son art, passionnée par la qualité, et engagée à innover à chaque projet.",
+        'Une équipe dévouée à son art, passionnée par la qualité, et engagée à innover à chaque projet.',
       heading: 'PERSONNES, PODS, JUMELAGE',
       sub: "L'équipe qui cadre le projet est l'équipe qui le livre",
       detail:
-        "Notre équipe se consacre à aider votre entreprise à améliorer sa performance grâce à des solutions IA-First innovantes. Nous comprenons les défis uniques auxquels vous faites face et nous nous engageons à fournir des stratégies sur mesure qui produisent des résultats. Travaillons ensemble pour propulser votre entreprise vers de nouveaux sommets !",
+        'Notre équipe se consacre à aider votre entreprise à améliorer sa performance grâce à des solutions IA-First innovantes. Nous comprenons les défis uniques auxquels vous faites face et nous nous engageons à fournir des stratégies sur mesure qui produisent des résultats. Travaillons ensemble pour propulser votre entreprise vers de nouveaux sommets !',
       close:
         'Vous rencontrez, dès la première rencontre, les personnes qui feront le travail, et elles restent jusqu’à la fin du mandat.',
       people: {
@@ -127,9 +136,9 @@ export default {
     },
     history: {
       title: 'Historique',
-      blurb: "Un studio, une pratique de plateforme et une école, construits l'un après l'autre.",
+      blurb: 'Un studio, une équipe plateforme et une académie. Bâtis une brique à la fois.',
       heading: 'CONSTRUIT, PROUVÉ, RÉPÉTÉ',
-      sub: "Trois divisions issues d'une seule pratique",
+      sub: "Trois divisions issues d'une seule philosophie",
       detail:
         "Nicolas Genest est un dirigeant technologique, fondateur en série et ancien CTO ayant connu plusieurs sorties, qui a bâti et dirigé des entreprises générant plus d'un milliard de dollars de revenus annuels. Il est le fondateur et PDG de CodeBoxx Technology, une entreprise d'éducation et de logiciels IA-first qui forme et emploie des technologues de tous horizons.\n\nAuparavant, Nicolas Genest a été CTO chez The RealReal, ModCloth et Full Harvest, et a dirigé des transformations numériques chez Walmart, Microsoft et Pfizer. Adopteur précoce de l'IA appliquée, de l'apprentissage automatique et de l'automatisation, il est reconnu pour son approche « l'IA bien faite » — bâtir une technologie centrée sur l'humain et de haute qualité. Nicolas détient des diplômes en analytique d'affaires de l'Université Harvard et en administration des affaires et publique de l'Université de Phoenix, et est reconnu comme résident permanent américain à titre de capacité extraordinaire EB-1A.",
       subhead: 'CodeBoxx',
@@ -138,13 +147,20 @@ export default {
     },
     vision: {
       title: 'Vision et mission',
-      blurb: 'Livraison IA-first, responsabilité humaine sur chaque mise en production.',
-      heading: 'IA EN PRIORITÉ, BÂTI PAR DES HUMAINS',
-      sub: "Surpassez l'ancienne façon de faire, et montrez les preuves",
+      blurb: 'On code avec l’IA. On livre avec jugement.',
+      heading: 'L’IA d’abord. L’humain toujours.',
+      sub: 'Faites mieux. Prouvez-le.',
       detail:
-        "La mission est de mettre l'IA appliquée au travail à l'intérieur d'une livraison réelle : les agents portent la charge répétitive, les ingénieurs portent le jugement, et l'attribution est présente sur chaque action, dans les deux cas. L'innovation ne compte ici qu'une fois mise en production et maintenue.\n\nLa vision se situe une étape plus loin. Nous bâtissons la pratique avant que le marché ne la demande, afin que lorsqu'une technologie devient incontournable, nos clients l'utilisent déjà — ils ne sont pas encore en train de l'évaluer.",
-      tags: ['IA appliquée', 'Livraison agentique', 'Jugement humain', 'Attribution', 'Prouvé en production'],
-      close: 'Nous bâtissons des équipes et des logiciels AI-Native qui surpassent l’ancienne façon de faire.',
+        'Mettre l’IA au travail, pour vrai.\n\nOn intègre l’IA directement dans de vraies livraisons : les agents prennent en charge le travail répétitif, les ingénieurs gardent le jugement et la responsabilité, et chaque action reste traçable.\n\nPour nous, une innovation ne compte pas parce qu’elle est nouvelle. Elle compte quand elle est en production, qu’elle fonctionne et qu’elle tient la route dans le temps.',
+      tags: [
+        'IA appliquée',
+        'Livraison agentique',
+        'Jugement humain',
+        'Attribution',
+        'Prouvé en production',
+      ],
+      close:
+        'On veut avoir une longueur d’avance sur le marché.\n\nOn bâtit notre pratique avant que les nouvelles technologies deviennent incontournables. Comme ça, quand une technologie s’impose, nos clients ne sont pas encore en train de se demander s’ils devraient l’essayer. Ils l’utilisent déjà.',
     },
   },
   solutions: {
@@ -154,23 +170,33 @@ export default {
       "Autrefois, les jeunes apprenaient à parler le langage des ordinateurs en suivant des règles strictes et en écrivant des instructions précises. Cette époque s'efface.",
     introPara2:
       "Avec l'essor de l'IA générative, les technologues ne sont plus seulement des programmeurs — ils conçoivent des systèmes capables d'apprendre, de s'adapter et de réagir. Ce virage a donné naissance au vibe coding, une compétence qui mêle intention claire, logique, créativité et intuition humaine. À mesure que les machines intelligentes se généralisent, cette façon de travailler devient une compétence essentielle pour la prochaine génération.",
-    award: { caption: 'Nous avons reçu le prix du meilleur chatbot IA parmi plus de 1000 candidatures' },
+    award: {
+      caption: 'Nous avons reçu le prix du meilleur chatbot IA parmi plus de 1000 candidatures',
+    },
   },
   services: {
     cto: {
-      title: 'CTO fractionné',
-      blurb: 'Un leadership technologique stratégique à la demande pour faire croître produits et équipes.',
+      title: 'CTO à temps partagé',
+      blurb:
+        'Un leadership technologique stratégique à la demande pour faire croître produits et équipes.',
       detail:
         "Une transformation numérique peut sembler intimidante et coûteuse pour toute entreprise. Un CTO fractionné peut être une ressource de confiance pour une transition rassurante et bien orchestrée.\n\nCodeBoxx offre des ressources issues de l'expérience sur tous les marchés ayant fait face aux mêmes défis que vous. Contactez-nous et découvrez comment CodeBoxx peut vous accompagner à ce moment déterminant.",
       heading: 'CONFIANCE, EXPÉRIENCE, ENGAGEMENT',
       sub: "La confiance de l'expérience",
-      tags: ['Transformation numérique', 'Stratégie technologique', "Structure d'équipe", 'Sélection de fournisseurs', 'Conseil exécutif'],
+      tags: [
+        'Transformation numérique',
+        'Stratégie technologique',
+        "Structure d'équipe",
+        'Sélection de fournisseurs',
+        'Conseil exécutif',
+      ],
       close:
         "Nous comprenons les défis de chaque transformation numérique parce que nous les avons vécus nous-mêmes. Chaque scénario est différent, mais avec notre équipe, une chose est certaine : le succès.\n\nDans une chaîne, chaque maillon doit être plus fort que le suivant, et c'est là que nos CTO fractionnés excellent. Par votre confiance, notre expérience et notre engagement",
     },
     agentic: {
       title: 'IA agentique',
-      blurb: 'Concevez et déployez des agents IA autonomes pour automatiser des flux de travail complexes.',
+      blurb:
+        'Concevez et déployez des agents IA autonomes pour automatiser des flux de travail complexes.',
       detail:
         "Le service à la clientèle et la vitesse de réponse sont le talon d'Achille de l'expérience client. Comme vos concurrents, vous devez vous adapter à la vitesse de l'éclair.\n\nLe défi pour les ressources humaines est de trouver des employés qualifiés et fidèles — mais plus maintenant. Formez un agent IA adapté à votre marché et créez un allié fiable, 24 heures par jour.",
       heading: 'CONNAISSANCE, FIABILITÉ, STABILITÉ',
@@ -194,9 +220,10 @@ export default {
     },
     custom: {
       title: 'Logiciels sur mesure',
-      blurb: 'Des logiciels bâtis sur mesure pour s’adapter à vos façons de faire, vos objectifs et votre croissance.',
+      blurb:
+        'Des logiciels bâtis sur mesure pour s’adapter à vos façons de faire, vos objectifs et votre croissance.',
       detail:
-        "Il existe de nombreuses solutions sur le marché, chacune avec ses forces et ses faiblesses. Mais le compromis est toujours de votre côté. Pourquoi ne pas construire LA solution telle que vous la voyez dans votre écosystème ?",
+        'Il existe de nombreuses solutions sur le marché, chacune avec ses forces et ses faiblesses. Mais le compromis est toujours de votre côté. Pourquoi ne pas construire LA solution telle que vous la voyez dans votre écosystème ?',
       heading: 'INNOVER, CRÉER, ADAPTER',
       sub: 'Bâtir une solution avec vous, adaptée à vos besoins',
       logosTitle: 'Découvrez nos solutions internes conçues pour faciliter vos parcours',
@@ -206,13 +233,20 @@ export default {
         'CodeBoxx est le partenaire idéal pour soutenir le deuxième choix. Notre approche IA-First offre de la vitesse à la croissance de votre infrastructure technologique.',
     },
     daas: {
-      title: 'Développeur en tant que service',
-      blurb: 'Des développeurs à la demande pour accélérer les projets, faire évoluer les équipes et livrer plus vite.',
+      title: 'Le développement à la demande',
+      blurb:
+        'Des développeurs à la demande pour accélérer les projets, faire évoluer les équipes et livrer plus vite.',
       detail:
         "Embaucher, intégrer et gérer des développeurs internes dans le marché concurrentiel d'aujourd'hui peut être long et coûteux. Adoptez l'avenir avec le Développement en tant que service (DaaS) — la solution ultime pour les entreprises qui recherchent des solutions logicielles fluides et sur mesure, sans les tracas ni les coûts de gestion des ressources internes.",
       heading: 'ÉVOLUER, AJUSTER, ADAPTER',
       sub: 'Faites croître ou réduisez votre équipe de développement en toute facilité.',
-      tags: ["Aucun frais d'embauche", 'Un développeur ou une équipe complète', 'Adapté à votre pile technologique', 'Évoluer à la hausse ou à la baisse', 'À temps, selon le budget'],
+      tags: [
+        "Aucun frais d'embauche",
+        'Un développeur ou une équipe complète',
+        'Adapté à votre pile technologique',
+        'Évoluer à la hausse ou à la baisse',
+        'À temps, selon le budget',
+      ],
       close:
         "Bienvenue dans un monde où le développement logiciel fluide rencontre une commodité inégalée. Notre offre de Développeur en tant que service (DaaS) est conçue pour révolutionner la façon dont vous construisez et maintenez vos solutions logicielles. Cette approche sans tracas vous permet de vous concentrer sur vos opérations d'affaires principales pendant que nous gérons avec expertise les subtilités de vos besoins en développement logiciel.\n\nQue vous ayez besoin d'une seule ressource de développement ou d'une équipe complète, nos technologues variés et hautement qualifiés sont sélectionnés minutieusement pour répondre à vos besoins et compléter vos ressources existantes, livrant des solutions logicielles de premier ordre à temps et selon le budget.",
     },
@@ -223,12 +257,18 @@ export default {
   referenceLabel: 'Référence',
   forge: {
     superhead: 'Diriger. Réfléchir. Écrire. Exécuter.',
-    heading: 'CodeBoxx avec CrewKit Forge 20',
+    heading: 'CodeBoxx : CrewKit Forge 20',
     body: "Planifiez, construisez et exploitez votre logiciel dans une seule coque, deux voies de déploiement. Un châssis exécutif, cinq surfaces tactiles intégrées, un calcul local à faible coût par défaut et une escalade vers le nuage lorsque justifié. Jusqu'à 20 chantiers logiciels lourds en parallèle : une équipe complète de développement logiciel de bout en bout dans un seul appareil.",
     features: [
       ['Inférence locale', 'Gardez votre code de base, votre logiciel et vos données à proximité.'],
-      ['Contrôle des coûts', 'Réduisez la dépendance au nuage et les prix imprévisibles basés sur les jetons.'],
-      ["Modèle d'opérateurs", "CrewKit, les opérateurs et la formation de l'Académie, au-dessus du matériel."],
+      [
+        'Contrôle des coûts',
+        'Réduisez la dépendance au nuage et les prix imprévisibles basés sur les jetons.',
+      ],
+      [
+        "Modèle d'opérateurs",
+        "CrewKit, les opérateurs et la formation de l'Académie, au-dessus du matériel.",
+      ],
     ],
     buildYourOwn: 'Construisez le vôtre',
     learnMore: 'En savoir plus',
@@ -248,7 +288,8 @@ export default {
   academyTopics: {
     program: {
       titleLine1: '12 semaines, à temps plein',
-      blurb: "Les cohortes débutent chaque mois. Aucun diplôme préalable requis, seulement un test d'admission.",
+      blurb:
+        "Les cohortes débutent chaque mois. Aucun diplôme préalable requis, seulement un test d'admission.",
       detail:
         "Douze semaines, cinq jours par semaine. Le test d'admission mesure l'aptitude, pas les diplômes, et le calendrier ci-dessous fixe les admissions.",
     },
@@ -260,7 +301,7 @@ export default {
       blurbPara2:
         "Que vous souhaitiez une formation immersive depuis votre salon ou dans notre classe à St. Pete, en Floride, vous pouvez transformer votre vie à peu près n'importe où — sans perdre la communauté, la collaboration et le soutien personnel habituellement offerts uniquement en classe.",
       detail:
-        "Aucun curriculum en bac à sable. Les étudiants travaillent dans les mêmes dépôts, clusters et consoles que les pods de livraison, sous la même norme de révision.",
+        'Aucun curriculum en bac à sable. Les étudiants travaillent dans les mêmes dépôts, clusters et consoles que les pods de livraison, sous la même norme de révision.',
       items: [
         {
           tag: 'En ligne et en présentiel',
@@ -297,9 +338,21 @@ export default {
     },
   },
   cohort: [
-    ['Semaines 1 à 4', 'Fondamentaux', 'Langages typés, contrôle de version, tests. Évalué sur les pull requests fusionnées.'],
-    ['Semaines 5 à 8', 'Systèmes', 'API, bases de données, conteneurs. Premier déploiement sur un cluster partagé.'],
-    ['Semaines 9 à 12', 'Construction en direct', "Placement à l'intérieur d'un pod client. Travail livré, révisé par un chef de livraison."],
+    [
+      'Semaines 1 à 4',
+      'Fondamentaux',
+      'Langages typés, contrôle de version, tests. Évalué sur les pull requests fusionnées.',
+    ],
+    [
+      'Semaines 5 à 8',
+      'Systèmes',
+      'API, bases de données, conteneurs. Premier déploiement sur un cluster partagé.',
+    ],
+    [
+      'Semaines 9 à 12',
+      'Construction en direct',
+      "Placement à l'intérieur d'un pod client. Travail livré, révisé par un chef de livraison.",
+    ],
   ],
   intake: {
     eyebrow: "Calendrier d'admission",
@@ -311,26 +364,44 @@ export default {
     partTime: 'Temps partiel',
     onDemand: 'Sur demande',
     enroll: "S'inscrire",
-    status: { Open: 'Ouvert', Waitlist: "Liste d'attente", Planned: 'Prévu', InProgress: 'En cours' },
+    status: {
+      Open: 'Ouvert',
+      Waitlist: "Liste d'attente",
+      Planned: 'Prévu',
+      InProgress: 'En cours',
+    },
   },
   metrics: {
     eyebrow: "L'IA en 2026",
     title: "L'adoption n'est plus la question. C'est le rythme.",
     items: [
-      ['78%', 'Adoption par les entreprises', "Près de quatre organisations sur cinq utilisent maintenant l'IA sous une forme ou une autre dans leurs opérations"],
+      [
+        '78%',
+        'Adoption par les entreprises',
+        "Près de quatre organisations sur cinq utilisent maintenant l'IA sous une forme ou une autre dans leurs opérations",
+      ],
       [
         '40%',
         "Impact sur l'emploi",
         "Les projections internationales du marché du travail montrent que l'IA transformera près de deux emplois sur cinq dans le monde, plutôt que de simplement les éliminer",
       ],
-      ['86%', 'Croissance des budgets', "La grande majorité des entreprises prévoient dépenser davantage pour le développement de l'intelligence artificielle"],
-      ['40%', 'Gain de productivité', "Les travailleurs qui utilisent des outils d'IA générative connaissent des gains substantiels d'efficacité quotidienne"],
+      [
+        '86%',
+        'Croissance des budgets',
+        "La grande majorité des entreprises prévoient dépenser davantage pour le développement de l'intelligence artificielle",
+      ],
+      [
+        '40%',
+        'Gain de productivité',
+        "Les travailleurs qui utilisent des outils d'IA générative connaissent des gains substantiels d'efficacité quotidienne",
+      ],
     ],
   },
   contact: {
     learnMore: 'EN SAVOIR PLUS',
     title: 'Un seul formulaire pour les trois divisions.',
-    lede1: 'Veuillez préciser le service que vous souhaitez contacter. Nous répondrons dans les plus brefs délais.',
+    lede1:
+      'Veuillez préciser le service que vous souhaitez contacter. Nous répondrons dans les plus brefs délais.',
     lede2:
       "Avez-vous besoin d'une équipe de développeurs pour réaliser un projet ou en améliorer un existant ? Souhaitez-vous en savoir plus sur l'Académie CodeBoxx ? Avez-vous un projet et cherchez-vous un partenaire de type venture ? Contactez-nous.",
     enrollAcademyTitle: "Vous voulez vous inscrire à l'Académie ?",
@@ -347,18 +418,18 @@ export default {
     invalidEmail: 'Adresse invalide. Domaine manquant.',
     countryPlaceholder: 'Canada',
     phonePlaceholder: '+1 555 000 0000',
-    mobileQ: "Est-ce un téléphone mobile ?",
+    mobileQ: 'Est-ce un téléphone mobile ?',
     yes: 'Oui',
     no: 'Non',
     languageQ: 'Sélectionnez votre langue préférée.',
     english: 'Anglais',
     french: 'Français',
     consentTextPart1:
-      "En soumettant ce formulaire, vous acceptez que nous puissions vous appeler, vous texter et vous envoyer des courriels avec des informations additionnelles sur les programmes de CodeBoxx. Vous comprenez que vous pouvez vous désabonner à tout moment, notamment en envoyant votre demande à ",
+      'En soumettant ce formulaire, vous acceptez que nous puissions vous appeler, vous texter et vous envoyer des courriels avec des informations additionnelles sur les programmes de CodeBoxx. Vous comprenez que vous pouvez vous désabonner à tout moment, notamment en envoyant votre demande à ',
     consentTextPart2: '. Des frais de messagerie et de données peuvent s’appliquer. ',
     consentLinkText: 'Consultez notre politique de confidentialité complète',
     consentTextPart3: ' pour plus de détails.',
-    sentNote: "Résumé reçu. Réponse dans un jour ouvrable.",
+    sentNote: 'Résumé reçu. Réponse dans un jour ouvrable.',
     notSentNote: 'Aucune séquence de vente. Une seule réponse, par un humain.',
     submit: 'Envoyer',
   },
@@ -394,7 +465,8 @@ export default {
     countryLabel: 'Pays',
     selectPlaceholder: 'Sélectionner',
     heardAboutQ: 'Comment avez-vous entendu parler de nous ?',
-    reviewNote: "Les candidatures sont révisées dans un délai d'un jour ouvrable. Le test d'admission est planifié par courriel.",
+    reviewNote:
+      "Les candidatures sont révisées dans un délai d'un jour ouvrable. Le test d'admission est planifié par courriel.",
     submitsNote: "Sera envoyé à l'API des admissions.",
     receivedNote: 'Candidature reçue.',
     submit: 'Envoyer',

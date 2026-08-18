@@ -1,4 +1,9 @@
 export default {
+  seo: {
+    title: 'Bâtir avec des fondateurs — CodeBoxx Ventures',
+    description:
+      'CodeBoxx Ventures met la capacité de livraison du studio derrière des produits en lesquels nous croyons, en argent, en capital, ou les deux.',
+  },
   pill: 'Ventures',
   band: {
     title: 'Nous bâtissons avec des fondateurs, pas seulement pour eux.',
@@ -8,7 +13,7 @@ export default {
   models: {
     eyebrow: "MODÈLES D'ENGAGEMENT",
     title: 'Quatre façons de collaborer',
-    lede: "Chaque engagement commence par le même appel de cadrage et se termine par une structure signée. La différence est la façon dont la construction est payée.",
+    lede: 'Chaque engagement commence par le même appel de cadrage et se termine par une structure signée. La différence est la façon dont la construction est payée.',
     items: [
       [
         'Construire pour du capital',
@@ -23,15 +28,19 @@ export default {
         'Ventures cofondées',
         'Une idée validée avec nous devient une entreprise dans laquelle nous détenons une participation.',
         [
-          "Incorporation conjointe et table de capitalisation",
-          "CodeBoxx fournit le volet ingénierie",
+          'Incorporation conjointe et table de capitalisation',
+          'CodeBoxx fournit le volet ingénierie',
           'Partenaire opérationnel la première année',
         ],
       ],
       [
         'Services de studio de capital-risque',
         'Des engagements en argent pour les startups financées qui doivent avancer maintenant.',
-        ['Sprints à portée fixe', 'Même norme de révision que le studio', 'Transfert à votre propre équipe à la sortie'],
+        [
+          'Sprints à portée fixe',
+          'Même norme de révision que le studio',
+          'Transfert à votre propre équipe à la sortie',
+        ],
       ],
       [
         'Placement de talents',
@@ -39,18 +48,24 @@ export default {
         [
           "Sélectionnés via le test d'admission",
           "D'abord placés dans un pod de livraison",
-          "Embauchés directement après le mandat",
+          'Embauchés directement après le mandat',
         ],
       ],
     ],
   },
   criteria: {
     eyebrow: 'CE QUE NOUS RECHERCHONS',
-    title: "Trois choses avant de nous engager",
+    title: 'Trois choses avant de nous engager',
     items: [
       ['Le logiciel au cœur', "Le produit est l'entreprise, pas un canal secondaire."],
-      ['Un fondateur dans la salle', 'Quelqu’un avec une autorité sur le domaine reste sur le projet avec nous.'],
-      ['Une voie vers le revenu', 'Un premier client nommé ou un marché atteignable dans la première année.'],
+      [
+        'Un fondateur dans la salle',
+        'Quelqu’un avec une autorité sur le domaine reste sur le projet avec nous.',
+      ],
+      [
+        'Une voie vers le revenu',
+        'Un premier client nommé ou un marché atteignable dans la première année.',
+      ],
     ],
   },
   pitchDrawer: {
