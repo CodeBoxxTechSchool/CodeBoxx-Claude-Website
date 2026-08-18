@@ -1,13 +1,13 @@
 export default {
   hero: {
-    pill: 'IA en priorité, bâti par des humains',
-    titleBefore: 'Nous bâtissons des équipes ',
+    pill: 'L’IA d’abord. L’humain toujours',
+    titleBefore: 'On bâtit des équipes ',
     titleHighlight: 'AI-Native',
-    titleAfter: " et des logiciels qui surpassent l'ancienne façon de faire.",
+    titleAfter: " et des logiciels qui vont plus loin que les anciennes façons de faire.",
   },
   platform: {
-    eyebrow: 'La filière',
-    title: 'Trois divisions. Une seule filière.',
+    eyebrow: 'Le Noyau. Le Workshop. L’Académie.',
+    title: 'Trois divisions. Une seule équipe.',
     lede: "Une entité IA-first qui couvre tout le besoin : la construction, la plateforme qui la fait tourner et le talent qui l'opère. Moins de fournisseurs, une livraison plus rapide, un coût par résultat plus bas.",
   },
   divisions: {
@@ -15,22 +15,22 @@ export default {
       name: 'CodeBoxx',
       role: 'À propos de nous',
       tag: 'Nous sommes CodeBoxx',
-      blurb: "Des pods de livraison AI-native qui cadrent, construisent et livrent le produit avec le client dans la salle.",
-      extra: 'Nous transformons les entreprises, les individus et les communautés grâce à la technologie.',
+      blurb: "Des équipes AI-native qui définissent, bâtissent et livrent le produit avec le client, côte à côte.",
+      extra: 'On aide les entreprises, les gens et les communautés à aller plus loin grâce à la technologie.',
     },
     solutions: {
       name: 'CodeBoxx Solutions',
       role: 'Découvrez vos solutions',
       tag: 'Vos solutions',
       blurb:
-        "Nous nous spécialisons en stratégie, en solutions de design complexes et en services de génie logiciel de premier plan. Notre expertise des outils et technologies de développement les plus récents permet à nos clients d'innover mieux et d'exécuter plus vite.",
+        "On combine stratégie, design et génie logiciel pour s’attaquer aux défis complexes. Avec les meilleures technologies et les outils les plus récents, on aide nos clients à innover plus intelligemment et à passer de l’idée à l’action plus vite.",
     },
     academy: {
-      name: 'CodeBoxx Academy',
+      name: 'CodeBoxx Academie',
       role: 'La filière de talents',
-      tag: 'La prochaine génération',
+      tag: 'La génération future',
       blurb:
-        "CodeBoxx Academy est une solution de développement de la main-d'œuvre engagée à combler l'écart des opportunités et à répondre à la pénurie de talents dans l'industrie technologique. Nous croyons que tout le monde a le potentiel de devenir un excellent développeur, et nous nous consacrons à transformer ce potentiel en compétence, et les débutants en développeurs agiles.",
+        "CodeBoxx Académie aide les gens à faire leur place dans le monde de la tech. On forme une nouvelle génération de développeurs en donnant à chacun les outils, les compétences et la confiance pour réussir. Parce qu’on croit que le talent peut venir de partout — il suffit de lui donner une chance de se développer.",
     },
   },
   codi: {
@@ -52,8 +52,8 @@ export default {
     cta: "Lire l'article",
   },
   codeBlog: {
-    title: 'Ce que nous livrons, nous le mettons par écrit.',
-    lede: "Notes de terrain du studio et de l'Académie : ce que les agents ont pris en charge, ce que les ingénieurs ont conservé, et quels ont été les résultats. Écrit par les personnes qui ont fait le travail.",
+    title: 'Ce qui se passe dans la tech.',
+    lede: "Des idées, des tendances et des leçons tirées du terrain sur l’IA, le logiciel et la transformation des entreprises. On parle de ce qui change pour vrai — et de ce qu’on devrait en faire.",
     seeAllPosts: 'Voir tous les articles',
   },
   clientSlider: { trustedBy: 'Ils nous font confiance' },
@@ -127,9 +127,9 @@ export default {
     },
     history: {
       title: 'Historique',
-      blurb: "Un studio, une pratique de plateforme et une école, construits l'un après l'autre.",
+      blurb: "Un studio, une équipe plateforme et une académie. Bâtis une brique à la fois.",
       heading: 'CONSTRUIT, PROUVÉ, RÉPÉTÉ',
-      sub: "Trois divisions issues d'une seule pratique",
+      sub: "Trois divisions issues d'une seule philosophie",
       detail:
         "Nicolas Genest est un dirigeant technologique, fondateur en série et ancien CTO ayant connu plusieurs sorties, qui a bâti et dirigé des entreprises générant plus d'un milliard de dollars de revenus annuels. Il est le fondateur et PDG de CodeBoxx Technology, une entreprise d'éducation et de logiciels IA-first qui forme et emploie des technologues de tous horizons.\n\nAuparavant, Nicolas Genest a été CTO chez The RealReal, ModCloth et Full Harvest, et a dirigé des transformations numériques chez Walmart, Microsoft et Pfizer. Adopteur précoce de l'IA appliquée, de l'apprentissage automatique et de l'automatisation, il est reconnu pour son approche « l'IA bien faite » — bâtir une technologie centrée sur l'humain et de haute qualité. Nicolas détient des diplômes en analytique d'affaires de l'Université Harvard et en administration des affaires et publique de l'Université de Phoenix, et est reconnu comme résident permanent américain à titre de capacité extraordinaire EB-1A.",
       subhead: 'CodeBoxx',
@@ -138,13 +138,13 @@ export default {
     },
     vision: {
       title: 'Vision et mission',
-      blurb: 'Livraison IA-first, responsabilité humaine sur chaque mise en production.',
-      heading: 'IA EN PRIORITÉ, BÂTI PAR DES HUMAINS',
-      sub: "Surpassez l'ancienne façon de faire, et montrez les preuves",
+      blurb: 'On code avec l’IA. On livre avec jugement.',
+      heading: 'L’IA d’abord. L’humain toujours.',
+      sub: "Faites mieux. Prouvez-le.",
       detail:
-        "La mission est de mettre l'IA appliquée au travail à l'intérieur d'une livraison réelle : les agents portent la charge répétitive, les ingénieurs portent le jugement, et l'attribution est présente sur chaque action, dans les deux cas. L'innovation ne compte ici qu'une fois mise en production et maintenue.\n\nLa vision se situe une étape plus loin. Nous bâtissons la pratique avant que le marché ne la demande, afin que lorsqu'une technologie devient incontournable, nos clients l'utilisent déjà — ils ne sont pas encore en train de l'évaluer.",
+        "Mettre l’IA au travail, pour vrai.\n\nOn intègre l’IA directement dans de vraies livraisons : les agents prennent en charge le travail répétitif, les ingénieurs gardent le jugement et la responsabilité, et chaque action reste traçable.\n\nPour nous, une innovation ne compte pas parce qu’elle est nouvelle. Elle compte quand elle est en production, qu’elle fonctionne et qu’elle tient la route dans le temps.",
       tags: ['IA appliquée', 'Livraison agentique', 'Jugement humain', 'Attribution', 'Prouvé en production'],
-      close: 'Nous bâtissons des équipes et des logiciels AI-Native qui surpassent l’ancienne façon de faire.',
+      close: 'On veut avoir une longueur d’avance sur le marché.\n\nOn bâtit notre pratique avant que les nouvelles technologies deviennent incontournables. Comme ça, quand une technologie s’impose, nos clients ne sont pas encore en train de se demander s’ils devraient l’essayer. Ils l’utilisent déjà.',
     },
   },
   solutions: {
@@ -158,7 +158,7 @@ export default {
   },
   services: {
     cto: {
-      title: 'CTO fractionné',
+      title: 'CTO à temps partagé',
       blurb: 'Un leadership technologique stratégique à la demande pour faire croître produits et équipes.',
       detail:
         "Une transformation numérique peut sembler intimidante et coûteuse pour toute entreprise. Un CTO fractionné peut être une ressource de confiance pour une transition rassurante et bien orchestrée.\n\nCodeBoxx offre des ressources issues de l'expérience sur tous les marchés ayant fait face aux mêmes défis que vous. Contactez-nous et découvrez comment CodeBoxx peut vous accompagner à ce moment déterminant.",
@@ -206,7 +206,7 @@ export default {
         'CodeBoxx est le partenaire idéal pour soutenir le deuxième choix. Notre approche IA-First offre de la vitesse à la croissance de votre infrastructure technologique.',
     },
     daas: {
-      title: 'Développeur en tant que service',
+      title: 'Le développement à la demande',
       blurb: 'Des développeurs à la demande pour accélérer les projets, faire évoluer les équipes et livrer plus vite.',
       detail:
         "Embaucher, intégrer et gérer des développeurs internes dans le marché concurrentiel d'aujourd'hui peut être long et coûteux. Adoptez l'avenir avec le Développement en tant que service (DaaS) — la solution ultime pour les entreprises qui recherchent des solutions logicielles fluides et sur mesure, sans les tracas ni les coûts de gestion des ressources internes.",
@@ -223,7 +223,7 @@ export default {
   referenceLabel: 'Référence',
   forge: {
     superhead: 'Diriger. Réfléchir. Écrire. Exécuter.',
-    heading: 'CodeBoxx avec CrewKit Forge 20',
+    heading: 'CodeBoxx : CrewKit Forge 20',
     body: "Planifiez, construisez et exploitez votre logiciel dans une seule coque, deux voies de déploiement. Un châssis exécutif, cinq surfaces tactiles intégrées, un calcul local à faible coût par défaut et une escalade vers le nuage lorsque justifié. Jusqu'à 20 chantiers logiciels lourds en parallèle : une équipe complète de développement logiciel de bout en bout dans un seul appareil.",
     features: [
       ['Inférence locale', 'Gardez votre code de base, votre logiciel et vos données à proximité.'],
