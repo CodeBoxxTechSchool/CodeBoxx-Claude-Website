@@ -225,7 +225,7 @@
   position: relative;
   width: 100%;
   min-height: 560px;
-  padding: 64px 48px;
+  padding: 64px 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -239,10 +239,19 @@
   h1 {
     margin: 0;
     max-width: 900px;
-    font-size: v.$text-hero;
+    font-size: v.$text-specimen;
     font-weight: v.$weight-black;
-    line-height: v.$leading-hero;
+    line-height: v.$leading-mobile-hero;
     color: v.$neutral-0;
+  }
+
+  @media (min-width: 768px) {
+    padding: 64px 48px;
+
+    h1 {
+      font-size: v.$text-hero;
+      line-height: v.$leading-hero;
+    }
   }
 }
 

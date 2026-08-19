@@ -181,11 +181,12 @@ function ScriptTitle({ index, children, dark }) {
   );
 }
 
-function SectionHead({ eyebrow, index, title, lede, children }) {
+function SectionHead({ eyebrow, index, title, lede, children, badge }) {
   return (
     <div className="section-head">
       <div className="d-flex flex-column gap-3">
         <ScriptTitle index={index}>{eyebrow}</ScriptTitle>
+        {badge}
         <h2 className="h2">{title}</h2>
         {lede ? <p className="lede">{lede}</p> : null}
       </div>
@@ -242,6 +243,7 @@ function DivisionBand({
   intro,
   left,
   aside,
+  badge,
 }) {
   return (
     <section id={id} className={'sect' + (alt ? ' sect-alt' : '')}>
@@ -249,14 +251,14 @@ function DivisionBand({
         {aside ? (
           <div className="d-flex gap-5 align-items-start justify-content-between flex-wrap">
             <div className="division-main">
-              <SectionHead index={index} eyebrow={role} title={name} lede={lede} />
+              <SectionHead index={index} eyebrow={role} title={name} lede={lede} badge={badge} />
               {intro}
             </div>
             {aside}
           </div>
         ) : (
           <React.Fragment>
-            <SectionHead index={index} eyebrow={role} title={name} lede={lede} />
+            <SectionHead index={index} eyebrow={role} title={name} lede={lede} badge={badge} />
             {intro}
           </React.Fragment>
         )}
@@ -848,6 +850,7 @@ function Academy({ onEnroll }) {
       index="05"
       role={t('home.academy.role')}
       name={t('home.academy.name')}
+      badge={<Badge bg="brand">{t('home.academy.nextIntake')}</Badge>}
       after={
         <React.Fragment>
           <IntakeCalendar onEnroll={onEnroll} />
@@ -888,12 +891,9 @@ function Academy({ onEnroll }) {
       }
     >
       <div className="panel panel-sticky">
-        <div className="d-flex justify-content-between align-items-center gap-3">
-          <span className="kicker">
-            {topics[active].kicker || t('home.academy.cohortStructureLabel')}
-          </span>
-          <Badge bg="brand">{t('home.academy.nextIntake')}</Badge>
-        </div>
+        <span className="kicker">
+          {topics[active].kicker || t('home.academy.cohortStructureLabel')}
+        </span>
         <p className="pbody">{topics[active].detail}</p>
         {topics[active].people ? (
           <div className="people-grid people-grid-4">

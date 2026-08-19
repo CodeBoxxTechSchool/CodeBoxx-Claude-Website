@@ -72,6 +72,7 @@
   letter-spacing: 0.5px;
   text-transform: uppercase;
   color: v.$ui-slate-900;
+  overflow-wrap: break-word;
 
   &.active {
     color: v.$blue-500;
@@ -305,7 +306,7 @@
 // media query to collapse to 1 column on narrow viewports.
 .calendar-cols {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
 }
 // One row per Sanity `program` document that has intake rows — data-driven, not
 // fixed at 2, same spirit as `.calendar-cols`.
@@ -325,6 +326,10 @@
   background: v.$navy-500;
   border-radius: v.$radius-xl;
   padding: 48px;
+
+  @media (max-width: v.$breakpoint-md) {
+    padding: 24px;
+  }
 }
 .calendar-head {
   display: flex;
@@ -379,6 +384,7 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 16px;
 }
 .calendar-row-left {
@@ -390,6 +396,12 @@
   display: flex;
   align-items: center;
   gap: 12px;
+}
+@media (max-width: v.$breakpoint-md) {
+  .calendar-row-left,
+  .calendar-row-right {
+    flex: 1 1 100%;
+  }
 }
 .calendar-date {
   font-size: v.$text-h3;
