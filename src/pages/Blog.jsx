@@ -6,7 +6,6 @@ import { TopBar, Footer } from '../components/Chrome';
 import Seo from '../components/Seo';
 import { useSanityPosts, sanityImageUrl } from '../lib/sanity';
 import { localizedHref } from '../lib/routes';
-import '../lib/image-slot.js';
 
 // Canonical English values stored on Sanity `post.category` — filtering (`cat`
 // state, `p.category === cat`) always compares against these; only the button's
@@ -178,14 +177,12 @@ function Posts() {
         <div className="grid2">
           {list.map((p) => (
             <article key={p.slug} className="panel post-card">
-              <image-slot
-                id={'post-' + p.slug}
+              <img
                 src={sanityImageUrl(p.featuredImage, { w: 500 })}
-                shape="rect"
-                fit="cover"
-                placeholder={t('blog.coverImage')}
-                style={{ width: '100%', height: 200 }}
-              ></image-slot>
+                alt={p.title}
+                loading="lazy"
+                style={{ width: '100%', height: 200, objectFit: 'cover' }}
+              />
               <div className="post-card-body">
                 <div className="post-meta-row">
                   <Badge bg="brand">{p.category}</Badge>
@@ -259,9 +256,11 @@ function BlogPage() {
           window.location.href = localizedHref('#contact', i18n.language);
         }}
       />
-      <Band />
-      <Posts />
-      <Subscribe />
+      <main>
+        <Band />
+        <Posts />
+        <Subscribe />
+      </main>
       <Footer />
     </div>
   );

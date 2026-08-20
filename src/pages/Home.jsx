@@ -9,7 +9,6 @@ import Logo from '../components/Logo';
 import { useSanityTeam, useSanityLogos, useSanityPosts, sanityImageUrl } from '../lib/sanity';
 import { useIntakes } from '../lib/intakes';
 import { localizedHref, useLocalizedId } from '../lib/routes';
-import '../lib/image-slot.js';
 
 // Only the id (used for anchors/routing) lives here — every text field is pulled
 // from home.divisions.<id> via useDivisions() so it stays in sync with the toggle.
@@ -154,14 +153,12 @@ function ClientSlider() {
       <div ref={ref} className="noscroll client-track">
         {logos.map((logo) => (
           <div key={logo.id} className="client-slide">
-            <image-slot
-              id={'client-logo-' + logo.id}
-              src={logo.logo}
-              shape="rect"
-              fit="contain"
-              placeholder={logo.name}
-              style={{ width: '100%', height: '100%', '--slot-frame-bg': 'transparent' }}
-            ></image-slot>
+            <img
+              src={sanityImageUrl(logo.logo, { w: 400, q: 80 })}
+              alt={logo.name}
+              loading="lazy"
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            />
           </div>
         ))}
       </div>
@@ -355,9 +352,14 @@ function useAbout() {
   });
 }
 
-function ChevronButton({ active, onClick }) {
+function ChevronButton({ active, onClick, label }) {
   return (
-    <Button size="sm" variant={active ? 'primary' : 'outline-primary'} onClick={onClick}>
+    <Button
+      size="sm"
+      variant={active ? 'primary' : 'outline-primary'}
+      onClick={onClick}
+      aria-label={label}
+    >
       <svg
         width="28"
         height="28"
@@ -419,7 +421,11 @@ function Studio() {
                 {a.title}
               </span>
               <span className="pbody">{a.blurb}</span>
-              <ChevronButton active={active.id === a.id} onClick={() => setActiveId(a.id)} />
+              <ChevronButton
+                active={active.id === a.id}
+                onClick={() => setActiveId(a.id)}
+                label={a.title}
+              />
             </div>
           ))}
         </div>
@@ -457,10 +463,10 @@ const LOGO_LINKS = {
 // Static files in public/assets/ are referenced by URL path, not imported as JS
 // modules — Vite only bundles imports from src/, public/ is served as-is.
 const LOGO_IMAGES = {
-  Crewkit: '/assets/crewkit.png',
-  Optigo: '/assets/optigo.png',
-  'Catalog Crafter': '/assets/catalog-crafter.png',
-  Soumigo: '/assets/soumigo.png',
+  Crewkit: '/assets/crewkit.webp',
+  Optigo: '/assets/optigo.webp',
+  'Catalog Crafter': '/assets/catalog-crafter.webp',
+  Soumigo: '/assets/soumigo.webp',
 };
 
 function ServiceDetail({ s }) {
@@ -483,14 +489,17 @@ function ServiceDetail({ s }) {
           {s.people.map((person) => (
             <div key={person.id} className="person">
               <div className="person-photo">
-                <image-slot
-                  id={'team-' + person.id}
-                  src={person.photo}
-                  mask="polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%)"
-                  fit="cover"
-                  placeholder={t('home.headshot')}
-                  style={{ width: '100%', height: '100%' }}
-                ></image-slot>
+                <img
+                  src={sanityImageUrl(person.photo, { w: 480, q: 75 })}
+                  alt={person.name}
+                  loading="lazy"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    clipPath: 'polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%)',
+                  }}
+                />
               </div>
               <div className="d-flex flex-column gap-1">
                 <span className="person-name">{person.name}</span>
@@ -541,15 +550,12 @@ function ServiceDetail({ s }) {
           <div className="logo-grid-4">
             {s.logos.map((n) => (
               <div key={n} className="d-flex flex-column gap-2 align-items-center">
-                <image-slot
-                  id={'logo-' + n.toLowerCase().replace(/\s+/g, '-')}
+                <img
                   src={LOGO_IMAGES[n]}
-                  shape="rounded"
-                  radius="8"
-                  fit="contain"
-                  placeholder={n}
-                  style={{ width: '90%', height: 64, '--slot-frame-bg': 'transparent' }}
-                ></image-slot>
+                  alt={n}
+                  loading="lazy"
+                  style={{ width: '90%', height: 64, objectFit: 'contain', borderRadius: 8 }}
+                />
                 <span className="link-tag link-tag-muted">
                   <a href={LOGO_LINKS[n]} target="_blank" rel="noopener noreferrer">
                     {n}
@@ -593,9 +599,12 @@ function Solutions() {
       aside={
         <div className="d-flex flex-column gap-3 align-items-center award-block">
           <img
-            src="/assets/award-2025-retailtech.png"
+            src="/assets/award-2025-retailtech.webp"
             alt="RetailTech Breakthrough Award 2025 — CodeBoxx for GoodwillFinds' GEM Chatbot, Chatbot Solution of the Year"
             className="award-img"
+            width={148}
+            height={211}
+            loading="lazy"
           />
           <span className="award-caption">{t('home.solutions.award.caption')}</span>
         </div>
@@ -624,7 +633,11 @@ function Solutions() {
                 {s.title}
               </span>
               <span className="pbody">{s.blurb}</span>
-              <ChevronButton active={active.id === s.id} onClick={() => setActiveId(s.id)} />
+              <ChevronButton
+                active={active.id === s.id}
+                onClick={() => setActiveId(s.id)}
+                label={s.title}
+              />
             </div>
           ))}
         </div>
@@ -884,7 +897,11 @@ function Academy({ onEnroll }) {
                   </span>
                 ))}
               </span>
-              <ChevronButton active={active === i} onClick={() => setActive(i)} />
+              <ChevronButton
+                active={active === i}
+                onClick={() => setActive(i)}
+                label={topic.titleLines.join(' ')}
+              />
             </div>
           ))}
         </div>
@@ -900,14 +917,17 @@ function Academy({ onEnroll }) {
             {academyTeam.map((person) => (
               <div key={person.id} className="person">
                 <div className="person-photo person-photo-gray">
-                  <image-slot
-                    id={'academy-team-' + person.id}
-                    src={person.photo}
-                    mask="polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%)"
-                    fit="cover"
-                    placeholder={t('home.headshot')}
-                    style={{ width: '100%', height: '100%' }}
-                  ></image-slot>
+                  <img
+                    src={sanityImageUrl(person.photo, { w: 480, q: 75 })}
+                    alt={person.name}
+                    loading="lazy"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      clipPath: 'polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%)',
+                    }}
+                  />
                 </div>
                 <div className="d-flex flex-column gap-1">
                   <span className="person-name">{person.name}</span>
@@ -1068,6 +1088,7 @@ function Contact({ onEnroll }) {
               {divisions.map((d) => (
                 <Form.Check
                   key={d.id}
+                  id={'contact-division-' + d.id}
                   type="checkbox"
                   checked={division === d.id}
                   onChange={() => setDivision(d.id)}
@@ -1075,6 +1096,7 @@ function Contact({ onEnroll }) {
                 />
               ))}
               <Form.Check
+                id="contact-division-ventures"
                 type="checkbox"
                 checked={division === 'ventures'}
                 onChange={() => setDivision('ventures')}
@@ -1121,12 +1143,14 @@ function Contact({ onEnroll }) {
             <span className="field-label">{t('home.contact.mobileQ')}</span>
             <div className="d-flex gap-2">
               <Form.Check
+                id="contact-mobile-yes"
                 type="checkbox"
                 checked={mobile === 'yes'}
                 onChange={() => setMobile('yes')}
                 label={t('home.contact.yes')}
               />
               <Form.Check
+                id="contact-mobile-no"
                 type="checkbox"
                 checked={mobile === 'no'}
                 onChange={() => setMobile('no')}
@@ -1138,12 +1162,14 @@ function Contact({ onEnroll }) {
             <span className="field-label">{t('home.contact.languageQ')}</span>
             <div className="d-flex gap-2">
               <Form.Check
+                id="contact-lang-en"
                 type="checkbox"
                 checked={lang === 'en'}
                 onChange={() => setLang('en')}
                 label={t('home.contact.english')}
               />
               <Form.Check
+                id="contact-lang-fr"
                 type="checkbox"
                 checked={lang === 'fr'}
                 onChange={() => setLang('fr')}
@@ -1156,7 +1182,7 @@ function Contact({ onEnroll }) {
               type="checkbox"
               checked={consent}
               onChange={(e) => setConsent(e.target.checked)}
-              label=""
+              aria-label={t('home.contact.consentTextPart1')}
             />
             <span className="consent-text">
               {t('home.contact.consentTextPart1')}
@@ -1450,8 +1476,11 @@ function WSJTeaser() {
         <img
           id="wsj-logo"
           alt="Wall Street Journal logo"
-          src="/assets/the-wall-street-journal.png"
+          src="/assets/the-wall-street-journal.webp"
+          width={320}
+          height={132}
           style={{ width: 320, height: 'auto' }}
+          loading="lazy"
         />
         <h2 className="band-heading">{t('home.wsj.heading')}</h2>
         <p className="band-body">{t('home.wsj.body')}</p>
@@ -1527,14 +1556,12 @@ function CodeBlog() {
               to={localizedHref('/blog/' + p.slug, i18n.language)}
               className="panel panel-link-card"
             >
-              <image-slot
-                id={'codeblog-' + p.slug}
+              <img
                 src={sanityImageUrl(p.featuredImage, { w: 500 })}
-                shape="rect"
-                fit="cover"
-                placeholder={t('home.coverImage')}
-                style={{ width: '100%', height: 180 }}
-              ></image-slot>
+                alt={p.title}
+                loading="lazy"
+                style={{ width: '100%', height: 180, objectFit: 'cover' }}
+              />
               <div className="panel-link-card-body">
                 <div className="d-flex flex-column gap-3">
                   <Badge bg="brand">{p.category}</Badge>
@@ -1570,10 +1597,12 @@ function ForgeTeaser() {
     <section className="band-dark">
       <div className="wrap band-dark-inner">
         <img
-          src="/assets/crewkit_wh.png"
+          src="/assets/crewkit_wh.webp"
           alt="CodeBoxx w/ CrewKit Forge 20 appliance"
           width={210}
+          height={100}
           className="forge-logo"
+          loading="lazy"
         />
         <span className="band-superhead">{t('home.forge.superhead')}</span>
         <h2 className="band-heading">{t('home.forge.heading')}</h2>
@@ -1622,30 +1651,32 @@ function App() {
     <div id="top">
       <Seo title={t('home.seo.title')} description={t('home.seo.description')} />
       <TopBar onCodi={() => setCodi(true)} onEnroll={setEnroll} />
-      <div className="hero">
-        <div className="d-flex">
-          <span className="pill">{t('home.hero.pill')}</span>
-        </div>
-        <div className="d-flex justify-content-between align-items-end gap-5 flex-wrap">
-          <h1>
-            {t('home.hero.titleBefore')}
-            <span className="text-brand">{t('home.hero.titleHighlight')}</span>
-            {t('home.hero.titleAfter')}
-          </h1>
-          <div className="hero-logo">
-            <Logo theme="dark" width={280} />
+      <main>
+        <div className="hero">
+          <div className="d-flex">
+            <span className="pill">{t('home.hero.pill')}</span>
+          </div>
+          <div className="d-flex justify-content-between align-items-end gap-5 flex-wrap">
+            <h1>
+              {t('home.hero.titleBefore')}
+              <span className="text-brand">{t('home.hero.titleHighlight')}</span>
+              {t('home.hero.titleAfter')}
+            </h1>
+            <div className="hero-logo">
+              <Logo theme="dark" width={280} />
+            </div>
           </div>
         </div>
-      </div>
-      <Platform />
-      <WSJTeaser />
-      <CodeBlog />
-      <Studio />
-      <Solutions />
-      <ForgeTeaser />
-      <Academy onEnroll={setEnroll} />
-      <Metrics />
-      <Contact onEnroll={setEnroll} />
+        <Platform />
+        <WSJTeaser />
+        <CodeBlog />
+        <Studio />
+        <Solutions />
+        <ForgeTeaser />
+        <Academy onEnroll={setEnroll} />
+        <Metrics />
+        <Contact onEnroll={setEnroll} />
+      </main>
       <Footer />
       <Codi open={codi} onClose={() => setCodi(false)} />
       <EnrollDrawer course={enroll} onClose={() => setEnroll(null)} />

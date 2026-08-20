@@ -52,15 +52,17 @@ function NotFound() {
           window.location.href = localizedHref('#contact', i18n.language);
         }}
       />
-      <section className="sect">
-        <div className="wrap d-flex flex-column gap-3 align-items-start">
-          <h1 className="h2">{t('blog.post.notFoundTitle')}</h1>
-          <p className="pbody">{t('blog.post.notFoundBody')}</p>
-          <Link to={localizedHref('/blog', i18n.language)} className="link-tag">
-            {t('blog.post.backToCodeBlog')}
-          </Link>
-        </div>
-      </section>
+      <main>
+        <section className="sect">
+          <div className="wrap d-flex flex-column gap-3 align-items-start">
+            <h1 className="h2">{t('blog.post.notFoundTitle')}</h1>
+            <p className="pbody">{t('blog.post.notFoundBody')}</p>
+            <Link to={localizedHref('/blog', i18n.language)} className="link-tag">
+              {t('blog.post.backToCodeBlog')}
+            </Link>
+          </div>
+        </section>
+      </main>
       <Footer />
     </div>
   );
@@ -119,36 +121,38 @@ function BlogPost() {
           window.location.href = localizedHref('#contact', i18n.language);
         }}
       />
-      <section className="band-dark" style={heroStyle}>
-        <div className="wrap d-flex flex-column gap-4 align-items-start">
-          {post.category ? <Badge bg="brand">{post.category}</Badge> : null}
-          <h1 className="band-title">{post.title}</h1>
-          <div className="d-flex gap-3">
-            <span className="band-lede">{post.author}</span>
-            {post.date ? <span className="band-lede">{fmt(post.date)}</span> : null}
-          </div>
-        </div>
-      </section>
-      <section className="sect post-content-band">
-        <div className="wrap post-article">
-          {post.content ? (
-            <PortableText value={post.content} components={portableTextComponents} />
-          ) : (
-            <p className="pbody">{post.excerpt}</p>
-          )}
-          {post.url ? (
-            <div className="post-external-ref">
-              <div className="rule" />
-              <a href={post.url} target="_blank" rel="noopener noreferrer" className="link-tag">
-                {t('blog.post.externalReference')}
-              </a>
+      <main>
+        <section className="band-dark" style={heroStyle}>
+          <div className="wrap d-flex flex-column gap-4 align-items-start">
+            {post.category ? <Badge bg="brand">{post.category}</Badge> : null}
+            <h1 className="band-title">{post.title}</h1>
+            <div className="d-flex gap-3">
+              <span className="band-lede">{post.author}</span>
+              {post.date ? <span className="band-lede">{fmt(post.date)}</span> : null}
             </div>
-          ) : null}
-          <Link to={localizedHref('/blog', i18n.language)} className="link-tag mt-40">
-            {t('blog.post.backToCodeBlog')}
-          </Link>
-        </div>
-      </section>
+          </div>
+        </section>
+        <section className="sect post-content-band">
+          <div className="wrap post-article">
+            {post.content ? (
+              <PortableText value={post.content} components={portableTextComponents} />
+            ) : (
+              <p className="pbody">{post.excerpt}</p>
+            )}
+            {post.url ? (
+              <div className="post-external-ref">
+                <div className="rule" />
+                <a href={post.url} target="_blank" rel="noopener noreferrer" className="link-tag">
+                  {t('blog.post.externalReference')}
+                </a>
+              </div>
+            ) : null}
+            <Link to={localizedHref('/blog', i18n.language)} className="link-tag mt-40">
+              {t('blog.post.backToCodeBlog')}
+            </Link>
+          </div>
+        </section>
+      </main>
       <Footer />
     </div>
   );

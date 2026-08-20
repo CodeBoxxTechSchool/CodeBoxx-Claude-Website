@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { TopBar, Footer } from '../components/Chrome';
 import Seo from '../components/Seo';
 import { localizedHref } from '../lib/routes';
-import '../lib/image-slot.js';
 
 const PITCH_BLANK = { first: '', last: '', email: '', phone: '', kind: '', details: '' };
 
@@ -176,9 +175,11 @@ function VenturesPage() {
           location.href = localizedHref('#contact', i18n.language);
         }}
       />
-      <Band onPitch={() => setPitchOpen(true)} />
-      <Models />
-      <Criteria />
+      <main>
+        <Band onPitch={() => setPitchOpen(true)} />
+        <Models />
+        <Criteria />
+      </main>
       <Footer />
       <PitchDrawer open={pitchOpen} onClose={() => setPitchOpen(false)} />
     </div>

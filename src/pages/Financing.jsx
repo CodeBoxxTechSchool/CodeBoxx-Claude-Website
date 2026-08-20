@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { TopBar, Footer } from '../components/Chrome';
 import Seo from '../components/Seo';
 import { localizedHref } from '../lib/routes';
-import '../lib/image-slot.js';
 
 function Band() {
   const { t } = useTranslation();
@@ -154,11 +153,13 @@ function FinancingPage() {
           location.href = localizedHref('#contact', i18n.language);
         }}
       />
-      <Band />
-      <Paths />
-      <Process />
-      <RiskFree />
-      <Ask />
+      <main>
+        <Band />
+        <Paths />
+        <Process />
+        <RiskFree />
+        <Ask />
+      </main>
       <Footer />
     </div>
   );
