@@ -630,6 +630,10 @@
   font-size: v.$text-micro;
   line-height: 16px;
   color: v.$ui-slate-500;
+
+  a {
+    text-decoration: underline;
+  }
 }
 
 .panel-link-card {
