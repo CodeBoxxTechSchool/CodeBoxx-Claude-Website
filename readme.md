@@ -1,17 +1,50 @@
 # CodeBoxx Website
 
-React + SCSS front end for the CodeBoxx corporate site (Studio, Solutions, Academy, Ventures),
-built with Vite, react-bootstrap and a brand-themed SCSS system. Blog content is fetched at
-runtime from Sanity.
+React + SCSS front end for the CodeBoxx corporate site (Studio, Solutions, Academy, Ventures).
+**Mid-migration from a Vite/React SPA to Astro** (branch `ml/astrobuild_migration`) — see
+"Migration status" below before assuming a page works the way you'd expect from either
+world.
 
 ## Stack
 
-- **Vite 5** + **React 18** (JSX, no TypeScript in the ported pages)
-- **react-bootstrap** + **Bootstrap 5** for every component (buttons, forms, badges, the Codi
-  and Enroll drawers), themed via Sass variable overrides — no vendored component bundle
+- **Astro 5** (static output — `astro build` prerenders every route to real HTML in `dist/`,
+  no adapter/server) + **React 18** islands for interactive pieces, via `@astrojs/react`
+- **react-bootstrap** + **Bootstrap 5** for every interactive component (nav, forms, badges,
+  the Codi/Enroll drawers), themed via Sass variable overrides — no vendored component bundle
 - **SCSS** for all styling, no inline styles (`src/styles/`)
-- **react-router-dom** for the four routes
-- **Sanity** CMS, fetched at runtime (`src/lib/sanity.js`)
+- **Sanity** CMS — natively-migrated pages fetch it at build time (`src/lib/sanityContent.js`,
+  zero client JS for the content itself); not-yet-migrated pages still fetch it client-side,
+  same as before the migration (`src/lib/sanity.js`)
+- **@astrojs/sitemap** generates `sitemap-index.xml`/`sitemap-*.xml` from the actual
+  prerendered routes (including one entry per blog post) — replaces the old hand-rolled
+  `scripts/generate-sitemap.mjs`
+
+## Migration status
+
+This migration exists to fix a real bug, not just chase a framework trend: the old SPA's
+`Seo.jsx` (react-helmet-async) only ever wrote OG/Twitter/JSON-LD tags into the DOM
+client-side, so a shared blog link's social preview and hreflang alternates were invisible
+to anything that doesn't execute JS (most social link-unfurlers, many non-Google crawlers).
+Astro renders that straight into the HTML response instead.
+
+| Route(s)                                                                 | Status                | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ------------------------------------------------------------------------ | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/blog`, `/fr/blogue`                                                    | ✅ Native Astro       | `src/pages/blog/index.astro` + FR twin. Full post list fetched at build time, filter/pagination is a React island (`BlogPostsIsland.jsx`) hydrated over already-rendered markup.                                                                                                                                                                                                                                                                                                             |
+| `/blog/:slug`, `/fr/blogue/:slug`                                        | ✅ Native Astro       | `src/pages/blog/[slug].astro` + FR twin, via `getStaticPaths`. Post body renders through `src/lib/portableText.js` (a hand-written server-side Portable Text → HTML renderer) — **zero JS** for the article itself, not even a React island, since that would reintroduce the exact bug this migration fixes.                                                                                                                                                                                |
+| `/`, `/fr`, `/financing`, `/fr/financement`, `/ventures`, `/fr/ventures` | 🚧 Not yet migrated   | Each is a thin Astro page (`src/pages/index.astro` etc.) that mounts the **original, unmodified** React SPA (`src/App.jsx`, `src/components/Chrome.jsx`, `src/lib/routes.js`, `src/lib/i18n.js`) as one `client:only="react"` island via `src/layouts/LegacyShell.astro`/`LegacyAppIsland.jsx`. Behavior here is intentionally unchanged from before the migration — same CSR-only rendering, same client-side-only SEO tags — pending the next phase (Home first, then Financing/Ventures). |
+| unmatched paths                                                          | 🚧 Legacy passthrough | `src/pages/404.astro` also mounts the legacy app, so `App.jsx`'s own `*` → Home fallback still fires (pre-existing behavior, not something this migration changed).                                                                                                                                                                                                                                                                                                                          |
+
+Two parallel copies of some logic exist on purpose during this transition and are **not**
+duplication to clean up casually:
+
+- `src/lib/routes.js` (react-router/react-i18next-based, legacy pages only) vs.
+  `src/lib/i18nRoutes.js` (framework-agnostic, native Astro pages only)
+- `src/components/Chrome.jsx` (legacy) vs. `src/components/ChromeIsland.jsx` (Astro-native,
+  props-driven instead of reading a router/i18next context)
+- `src/lib/sanity.js` (client-side hooks, legacy) vs. `src/lib/sanityContent.js` (build-time
+  async functions, Astro-native)
+
+Each pair collapses to one file as its last remaining caller gets migrated.
 
 ## Getting started
 
@@ -23,25 +56,36 @@ cp .env.example .env   # fill in the Sanity values
 npm run dev
 ```
 
-`npm run build` writes the production bundle to `dist/`; `npm run preview` serves it.
+`npm run build` writes the static site to `dist/`; `npm run preview` serves it.
 
 ## Routes
 
-| Route        | Component                 | Notes                                                              |
-| ------------ | ------------------------- | ------------------------------------------------------------------ |
-| `/`          | `src/pages/Home.jsx`      | Sections 01–07, WSJ and Forge 20 bands, Codi drawer, enroll drawer |
-| `/blog`      | `src/pages/Blog.jsx`      | CodeBlog index, Sanity-backed                                      |
-| `/blog/:slug` | `src/pages/BlogPost.jsx` | Standalone post page, renders the post's own content               |
-| `/financing` | `src/pages/Financing.jsx` | Academy financing options                                          |
-| `/ventures`  | `src/pages/Ventures.jsx`  | CodeBoxx Ventures                                                  |
+| Route         | Source                                               | Notes                                                                                          |
+| ------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `/`           | `src/pages/index.astro` → legacy `Home.jsx`          | Sections 01–07, WSJ and Forge 20 bands, Codi drawer, enroll drawer — not yet natively migrated |
+| `/blog`       | `src/pages/blog/index.astro`                         | CodeBlog index — natively migrated, Sanity fetched at build time                               |
+| `/blog/:slug` | `src/pages/blog/[slug].astro`                        | Standalone post page — natively migrated, one prebuilt page per post                           |
+| `/financing`  | `src/pages/financing.astro` → legacy `Financing.jsx` | Academy financing options — not yet natively migrated                                          |
+| `/ventures`   | `src/pages/ventures.astro` → legacy `Ventures.jsx`   | CodeBoxx Ventures — not yet natively migrated                                                  |
+
+(Each has an `/fr/...` twin — `/fr`, `/fr/blogue`, `/fr/blogue/:slug`, `/fr/financement`,
+`/fr/ventures` — as its own separate page file, matching how `ROUTE_TABLE` already modeled
+EN/FR as distinct paths rather than one parameterized locale route.)
 
 ## Sanity
 
 `src/lib/sanity.js` exposes `fetchCollection(type, groqTail)` plus one hook per content
-type. All of them query the Sanity Content API directly over `fetch` (no SDK dependency)
-and fall back to a hardcoded seed array/object when `VITE_SANITY_PROJECT_ID` isn't set, so
-the site always builds and runs with no CMS connection. Entry mapping lives in each `toX()`
-function — adjust field names there if a document type's schema differs.
+type, for the not-yet-migrated legacy pages (see "Migration status" above) — fetched
+client-side in a `useEffect`, same as before this migration. `src/lib/sanityContent.js` is
+its build-time counterpart for the natively-migrated Blog/BlogPost pages: plain async
+functions (`fetchPostList`, `fetchPostBySlug`, `fetchAllPostSlugs`) called from Astro
+frontmatter/`getStaticPaths`, so post content is already resolved into the HTML by the time
+it ships — no hook, no loading state. Both query the Sanity Content API directly over
+`fetch` (no SDK dependency) and fall back to a hardcoded seed array/object
+(`src/lib/blogSeed.js`) when `VITE_SANITY_PROJECT_ID` isn't set, so the site always builds
+and runs with no CMS connection. Entry mapping lives in each file's own `toPost()`-shaped
+function — adjust field names there if the document type's schema differs (both files need
+the same edit until `sanity.js` is retired).
 
 Project: `zagi8xr3` ("CodeBoxxWeb", dataset `production`). The dataset allows public reads,
 so `VITE_SANITY_TOKEN` can stay blank — only set it if the dataset is ever made private.
@@ -60,12 +104,12 @@ with the four schema types below.
 Document types expected in the Sanity Studio project (created separately — this repo only
 consumes the API, it doesn't scaffold a Studio):
 
-| Document type  | Fields                                                                                                   | Consumed by                                                                                                                           |
-| -------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `post`         | `title`, `slug`, `category`, `author`, `publishedAt`, `excerpt`, `content` (Portable Text/rich text), `featuredImage` (optional), `url` (optional external reference — not the content source) | `useSanityPosts` — Blog page; `useSanityPost(slug, seed)` — the post's own page at `/blog/:slug` |
-| `teamMember`   | `name`, `role`, `linkedin` (url), `photo` (image), `group` (`"studio"` \| `"academy"`), `order` (number) | `useSanityTeam(group, seed)` — Studio team (`#codeboxx .person`) and Academy team (`#academy .person`), same type filtered by `group` |
-| `partnerLogo`  | `name`, `logo` (image), `order` (number)                                                                 | `useSanityLogos(seed)` — the `.client-slider` partner logos; however many documents exist is however many slides show                 |
-| `cohortIntake` | `program` (`"fsd"` \| `"aidev"`), `date`, `location`, `status` (`"Open"` \| `"Waitlist"` \| `"Planned"`) | `useIntakes(seed)` in `src/lib/intakes.js` — the `#intake` calendar rows                                                              |
+| Document type  | Fields                                                                                                                                                                                         | Consumed by                                                                                                                           |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `post`         | `title`, `slug`, `category`, `author`, `publishedAt`, `excerpt`, `content` (Portable Text/rich text), `featuredImage` (optional), `url` (optional external reference — not the content source) | `useSanityPosts` — Blog page; `useSanityPost(slug, seed)` — the post's own page at `/blog/:slug`                                      |
+| `teamMember`   | `name`, `role`, `linkedin` (url), `photo` (image), `group` (`"studio"` \| `"academy"`), `order` (number)                                                                                       | `useSanityTeam(group, seed)` — Studio team (`#codeboxx .person`) and Academy team (`#academy .person`), same type filtered by `group` |
+| `partnerLogo`  | `name`, `logo` (image), `order` (number)                                                                                                                                                       | `useSanityLogos(seed)` — the `.client-slider` partner logos; however many documents exist is however many slides show                 |
+| `cohortIntake` | `program` (`"fsd"` \| `"aidev"`), `date`, `location`, `status` (`"Open"` \| `"Waitlist"` \| `"Planned"`)                                                                                       | `useIntakes(seed)` in `src/lib/intakes.js` — the `#intake` calendar rows                                                              |
 
 `useIntakes` lives in its own file, not `sanity.js`, on purpose: the intake calendar is a
 placeholder for a real admissions API later, and `IntakeCalendar` only ever imports
@@ -133,29 +177,39 @@ the `deploy` user, and the target directory are already set up (see below).
 
 Required repo secrets (Settings → Secrets and variables → Actions):
 
-| Secret                    | Value                                                                |
-| ------------------------- | --------------------------------------------------------------------- |
-| `VITE_SANITY_PROJECT_ID`  | Same as `.env`'s `VITE_SANITY_PROJECT_ID`                            |
-| `VITE_SANITY_DATASET`     | Same as `.env`'s `VITE_SANITY_DATASET`                               |
-| `VITE_SANITY_API_VERSION` | Same as `.env`'s `VITE_SANITY_API_VERSION`                           |
-| `VITE_SANITY_TOKEN`       | Same as `.env`'s `VITE_SANITY_TOKEN` (blank is fine if unset there)  |
-| `DROPLET_HOST`            | `159.223.145.47`                                                     |
-| `DROPLET_USER`            | `deploy` — a dedicated, non-root, key-only user with no sudo         |
+| Secret                    | Value                                                                    |
+| ------------------------- | ------------------------------------------------------------------------ |
+| `VITE_SANITY_PROJECT_ID`  | Same as `.env`'s `VITE_SANITY_PROJECT_ID`                                |
+| `VITE_SANITY_DATASET`     | Same as `.env`'s `VITE_SANITY_DATASET`                                   |
+| `VITE_SANITY_API_VERSION` | Same as `.env`'s `VITE_SANITY_API_VERSION`                               |
+| `VITE_SANITY_TOKEN`       | Same as `.env`'s `VITE_SANITY_TOKEN` (blank is fine if unset there)      |
+| `DROPLET_HOST`            | `159.223.145.47`                                                         |
+| `DROPLET_USER`            | `deploy` — a dedicated, non-root, key-only user with no sudo             |
 | `DROPLET_SSH_KEY`         | Private half of the `deploy` user's dedicated deploy key (no passphrase) |
-| `DROPLET_TARGET_PATH`     | `/var/www/codeboxx`                                                  |
+| `DROPLET_TARGET_PATH`     | `/var/www/codeboxx`                                                      |
 
 On the Droplet (already done for "CodeBoxx Web Claude"):
 
 - nginx installed and enabled, serving `/var/www/codeboxx` with
-  `try_files $uri /index.html;` in its `location /` block — required because this
-  is a client-side-routed SPA (`react-router` `BrowserRouter`); without the
-  fallback, deep links like `/blog/some-post` 404 on a hard refresh.
+  `try_files $uri /index.html;` in its `location /` block.
+  **⚠️ This needs a one-line change before this branch is deployed.** That
+  fallback existed only because the old build was a pure CSR SPA with no real
+  per-route files — every URL needed to resolve to `index.html` and let
+  `react-router` sort it out client-side. Astro's static build produces a real
+  `dist/blog/index.html`, `dist/blog/some-post/index.html`, etc. for every route
+  (`build.format: 'directory'` in `astro.config.mjs`), so a request for `/blog`
+  needs to resolve to `dist/blog/index.html`, not fall through to the site root.
+  Change the directive to `try_files $uri $uri/index.html $uri/ =404;` (or point
+  nginx's `error_page 404` at `/404.html`, which this build also now produces —
+  see `src/pages/404.astro` for why that specific page still needs to exist).
+  Deploying this branch without that change will silently regress every route
+  except literal `/` back to serving the SPA shell.
 - A `deploy` system user owns `/var/www/codeboxx`, has no sudo access, and accepts
   SSH only via the dedicated deploy key (password auth disabled). Its
   `authorized_keys` holds only that key's public half.
 - No domain/TLS yet — nginx answers on port 80 for any `Host` (catch-all
   `server_name _;`). Point a domain's A record at the Droplet and run `certbot
-  --nginx` later to add HTTPS; update `server_name` accordingly at that point.
+--nginx` later to add HTTPS; update `server_name` accordingly at that point.
 
 The deploy step runs `rsync --delete`, so `DROPLET_TARGET_PATH` should stay
 dedicated to this site — anything else living in that directory gets removed to
@@ -164,17 +218,34 @@ match `dist/`.
 ## Structure
 
 ```
+astro.config.mjs           output: 'static', @astrojs/react + @astrojs/sitemap
+
 src/
-  App.jsx                 routes
-  main.jsx                entry, stylesheet import
+  pages/                    Astro file-based routes — see "Migration status" above
+    blog/, fr/blogue/        natively migrated (index.astro, [slug].astro)
+    index.astro, ventures.astro, financing.astro, fr/*, 404.astro
+                             thin wrappers mounting the legacy SPA (LegacyShell.astro)
+  layouts/
+    Layout.astro             shell for natively-migrated pages — real SEO tags, ChromeIsland
+    LegacyShell.astro        shell for not-yet-migrated pages — old index.html's head, LegacyAppIsland
+
+  App.jsx                   legacy SPA routes (react-router) — mounted client:only via LegacyAppIsland
   components/
-    Chrome.jsx             TopBar, NavItem, Footer (react-bootstrap Navbar)
-    Logo.jsx, Avatar.jsx    brand components with no Bootstrap equivalent
-  lib/sanity.js            CMS client
-  lib/intakes.js           intake calendar rows (temporary Sanity seam, see Sanity above)
-  lib/image-slot.js        <image-slot> web component
-  pages/                   Home, Blog, Financing, Ventures
-  styles/                  main.scss + partials (see Styling above)
+    ChromeIsland.jsx          Astro-native TopBar/Footer (props-driven, no router/i18next)
+    BlogPostsIsland.jsx       Astro-native filter/pagination island for /blog
+    LegacyAppIsland.jsx       mounts App.jsx as one client:only island, for the legacy pages
+    Chrome.jsx                legacy TopBar/NavItem/Footer (react-router/react-i18next-based)
+    Logo.jsx, Avatar.jsx      brand components with no Bootstrap equivalent, used by both
+  lib/
+    sanityContent.js          Astro-native, build-time Sanity fetch (blog pages)
+    sanity.js                 legacy, client-side Sanity fetch hooks (legacy pages)
+    blogSeed.js               shared fallback post data (both of the above)
+    portableText.js           server-side Portable Text → HTML, blog post pages only
+    i18nRoutes.js              Astro-native EN/FR path helper (no router dependency)
+    routes.js                 legacy EN/FR path helper (react-router-based)
+    intakes.js                intake calendar rows (temporary Sanity seam, see Sanity above)
+    image-slot.js             <image-slot> web component
+  styles/                   main.scss + partials (see Styling above)
 public/assets/              images referenced by the pages
 ```
 

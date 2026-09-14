@@ -1,0 +1,15 @@
+---
+// Astro's static build now produces real per-route files, so nginx's old
+// `try_files $uri /index.html` SPA-fallback trick is no longer needed for deep
+// links — but it IS still needed for one thing: the legacy App.jsx's own `*`
+// route renders Home instead of a real 404 (a pre-existing quirk, not something
+// this migration set out to change). Mounting the legacy app here reproduces
+// that exact behavior for any unmatched URL — its router still reads the real
+// browser location and falls through to Home — while Astro's build also emits
+// this as dist/404.html, so nginx can point its 404 handler at that file to keep
+// unmatched paths working the same way they do today. See the astrobuild-migration
+// PR description for the one-line nginx config change this needs.
+import LegacyShell from '../layouts/LegacyShell.astro';
+---
+
+<LegacyShell />

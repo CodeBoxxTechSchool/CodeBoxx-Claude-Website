@@ -1,0 +1,53 @@
+---
+// Natively-migrated /blog (EN). See src/pages/fr/blogue/index.astro for the FR
+// twin — kept as a separate file (Astro has no built-in param-based i18n routing
+// here) rather than one parameterized route, matching how routes.js already
+// modeled EN/FR as distinct paths.
+import Layout from '../../layouts/Layout.astro';
+import BlogPosts from '../../components/BlogPostsIsland';
+import { fetchPostList } from '../../lib/sanityContent';
+import { SEED_POSTS } from '../../lib/blogSeed';
+import common from '../../locales/en/common';
+import blog from '../../locales/en/blog';
+
+const posts = await fetchPostList(SEED_POSTS);
+---
+
+<Layout lang="en" title={blog.seo.title} description={blog.seo.description} strings={common}>
+  <section class="band-dark">
+    <div class="wrap d-flex flex-column gap-4 align-items-start">
+      <span class="pill">{blog.band.pill}</span>
+      <h1 class="band-title">{blog.band.title}</h1>
+      <p class="band-lede">{blog.band.lede}</p>
+    </div>
+  </section>
+
+  <BlogPosts client:visible posts={posts} lang="en" pathname="/blog" strings={blog} />
+
+  <section class="sect sect-contact">
+    <div class="wrap grid2">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{blog.subscribe.eyebrow}</p>
+        <h2 class="h2">{blog.subscribe.title}</h2>
+        <p class="lede">{blog.subscribe.lede}</p>
+      </div>
+      <div class="panel">
+        <div class="mb-3">
+          <label class="form-label" for="blog-email">
+            {blog.subscribe.emailLabel}
+          </label>
+          <input
+            class="form-control"
+            id="blog-email"
+            placeholder={blog.subscribe.emailPlaceholder}
+          />
+        </div>
+        <div class="rule" />
+        <div class="form-actions">
+          <span class="form-actions-note">{blog.subscribe.unsubscribeNote}</span>
+          <button class="btn btn-primary btn-lg">{blog.subscribe.submit}</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

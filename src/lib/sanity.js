@@ -58,10 +58,7 @@ export function useSanityPosts(seed = []) {
   React.useEffect(() => {
     let live = true;
     if (!PROJECT_ID) return undefined;
-    fetchCollection(
-      'post',
-      ' | order(publishedAt desc) [0...50]' + FEATURED_IMAGE_PROJECTION
-    )
+    fetchCollection('post', ' | order(publishedAt desc) [0...50]' + FEATURED_IMAGE_PROJECTION)
       .then((rows) => {
         if (live && rows && rows.length) setPosts(rows.map(toPost));
       })

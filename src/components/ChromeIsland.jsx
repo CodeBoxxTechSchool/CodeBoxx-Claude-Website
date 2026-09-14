@@ -1,12 +1,23 @@
 import React from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import Logo from './Logo';
-import { localizedHref } from '../lib/routes';
+import { localizedHref } from '../lib/i18nRoutes';
 
-// Hrefs/nesting stay here; display labels come from common.nav via useNav() below,
-// so a French label swap never touches routing.
+// Astro-native counterpart to Chrome.jsx (which stays react-router/react-i18next
+// based, for the legacy Home/Financing/Ventures island only). Same markup/classes/
+// behavior, but props-driven instead of reading a router context or i18next:
+// - `lang`/`pathname` replace useTranslation()/useLocation() — passed down from
+//   the Astro page that mounts this (Astro.currentLocale equivalent + Astro.url).
+// - plain <a href> navigation replaces useNavigate(), since Astro pages are real
+//   documents (a full navigation is correct here, not a client-side route change).
+// - `strings` is the current language's common.js content (nav/actions/footer) —
+//   resolved at build/request time by the page, not looked up at render time.
+//
+// Mounted with `client:load` from Layout.astro: Astro still server-renders this
+// component's initial HTML (nav links, footer, all real hrefs) into the page, so
+// none of it depends on JS to exist — only the mobile toggle and hover/tap
+// dropdowns are progressive-enhancement-only, matching what was already
+// JS-dependent in the original.
 const NAV_STRUCTURE = [
   {
     key: 'about',
@@ -39,47 +50,19 @@ const NAV_STRUCTURE = [
   { key: 'contact', href: '#contact' },
 ];
 
-function useNav() {
-  const { t, i18n } = useTranslation();
-  return NAV_STRUCTURE.map((n) => ({
-    key: n.key,
-    label: t('nav.' + n.key),
-    href: localizedHref(n.href, i18n.language),
-    items: n.items?.map(([k, href]) => [t('nav.' + k), localizedHref(href, i18n.language)]),
-  }));
-}
-
-// Shows only the language you'd switch TO (not the active one), as a real button —
-// clicking it navigates to the translated URL for wherever you currently are; the
-// actual language flip happens via App.jsx's LocaleFromUrl reacting to that
-// navigation, so the URL stays the single source of truth rather than this button
-// and the URL both trying to drive language independently.
-function LanguageToggle() {
-  const { i18n, t } = useTranslation();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const next = i18n.language === 'fr' ? 'en' : 'fr';
-  const goToTranslated = () => {
-    navigate(localizedHref(location.pathname, next) + location.hash);
-  };
+function LanguageToggle({ lang, pathname, label }) {
+  const next = lang === 'fr' ? 'en' : 'fr';
+  const href = localizedHref(pathname, next, pathname);
   return (
-    <Button
-      size="sm"
-      variant="outline-primary"
-      onClick={goToTranslated}
-      aria-label={t('actions.language')}
-    >
+    <a className="btn btn-sm btn-outline-primary" href={href} aria-label={label}>
       {next.toUpperCase()}
-    </Button>
+    </a>
   );
 }
 
 function NavItem({ item, onNavigate }) {
   const [open, setOpen] = React.useState(false);
   const hasDropdown = Boolean(item.items);
-  // Hover still opens it on desktop (mouseenter fires before any click there, so the
-  // click branch below just navigates). On touch, there's no hover — the first tap
-  // opens the dropdown instead of navigating; a second tap follows the link.
   const handleLinkClick = (e) => {
     if (hasDropdown && !open) {
       e.preventDefault();
@@ -131,20 +114,26 @@ function NavItem({ item, onNavigate }) {
   );
 }
 
-function TopBar({ onCodi, onEnroll }) {
-  const { t, i18n } = useTranslation();
-  const nav = useNav();
+export function TopBar({ lang, pathname, strings, onCodi, onEnroll }) {
   const [expanded, setExpanded] = React.useState(false);
-  const enroll = () =>
-    onEnroll
-      ? onEnroll('AI Native Full-Stack Developer')
-      : (window.location.href = localizedHref('#contact', i18n.language));
+  const nav = NAV_STRUCTURE.map((n) => ({
+    key: n.key,
+    label: strings.nav[n.key],
+    href: localizedHref(n.href, lang, pathname),
+    items: n.items?.map(([k, href]) => [strings.nav[k], localizedHref(href, lang, pathname)]),
+  }));
+  // Both pages that mount this today (Blog, BlogPost) have no on-page Codi/Enroll
+  // drawer — same as the original Chrome.jsx usage from those two pages, this just
+  // sends the visitor to the homepage's #contact section.
+  const contactHref = localizedHref('#contact', lang, pathname);
+  const handleCodi = onCodi || (() => (window.location.href = contactHref));
+  const handleEnroll = onEnroll || (() => (window.location.href = contactHref));
   return (
     <React.Fragment>
       <header className="site-header">
         <Navbar expand="lg" expanded={expanded} onToggle={setExpanded}>
           <Container fluid className="wrap">
-            <Navbar.Brand href={localizedHref('#top', i18n.language)} className="p-0">
+            <Navbar.Brand href={localizedHref('#top', lang, pathname)} className="p-0">
               <Logo width={168} />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="main-nav" />
@@ -156,22 +145,22 @@ function TopBar({ onCodi, onEnroll }) {
               </Nav>
             </Navbar.Collapse>
             <div className="d-none d-lg-flex align-items-center gap-3 flex-shrink-0">
-              <LanguageToggle />
-              <Button size="sm" variant="outline-primary" onClick={enroll}>
-                {t('actions.enrollNow')}
+              <LanguageToggle lang={lang} pathname={pathname} label={strings.actions.language} />
+              <Button size="sm" variant="outline-primary" onClick={handleEnroll}>
+                {strings.actions.enrollNow}
               </Button>
-              <Button size="sm" onClick={onCodi}>
-                {t('actions.talkWithCodi')}
+              <Button size="sm" onClick={handleCodi}>
+                {strings.actions.talkWithCodi}
               </Button>
             </div>
           </Container>
         </Navbar>
       </header>
       <div className="mobile-cta-bar d-lg-none">
-        <Button variant="outline-primary" onClick={enroll}>
-          {t('actions.enrollNow')}
+        <Button variant="outline-primary" onClick={handleEnroll}>
+          {strings.actions.enrollNow}
         </Button>
-        <Button onClick={onCodi}>{t('actions.talkWithCodi')}</Button>
+        <Button onClick={handleCodi}>{strings.actions.talkWithCodi}</Button>
       </div>
     </React.Fragment>
   );
@@ -179,24 +168,24 @@ function TopBar({ onCodi, onEnroll }) {
 
 const FOOTER_COLUMN_KEYS = ['codeboxx', 'solutions', 'academy'];
 
-function Footer() {
-  const { t, i18n } = useTranslation();
+export function Footer({ lang, pathname, strings }) {
+  const topHref = localizedHref('#top', lang, pathname);
   return (
     <footer className="site-footer">
       <div className="wrap d-flex flex-column gap-5">
         <div className="d-flex justify-content-between align-items-start gap-5 flex-wrap">
           <div className="d-flex flex-column gap-3">
             <Logo theme="dark" width={200} />
-            <span className="footer-tagline">{t('footer.tagline')}</span>
+            <span className="footer-tagline">{strings.footer.tagline}</span>
           </div>
           <div className="d-flex gap-5 flex-wrap">
             {FOOTER_COLUMN_KEYS.map((key) => {
-              const col = t('footer.columns.' + key, { returnObjects: true });
+              const col = strings.footer.columns[key];
               return (
                 <div key={key} className="footer-col d-flex flex-column gap-3">
                   <span className="footer-col-title">{col.title}</span>
                   {col.items.map((i) => (
-                    <a key={i} href={localizedHref('#top', i18n.language)}>
+                    <a key={i} href={topHref}>
                       {i}
                     </a>
                   ))}
@@ -207,12 +196,10 @@ function Footer() {
         </div>
         <div className="footer-rule" />
         <div className="d-flex justify-content-between gap-4 footer-meta">
-          <span>{t('footer.copyright')}</span>
+          <span>{strings.footer.copyright}</span>
           <span>v1.0.0 Stable · SHA: 7be1af8</span>
         </div>
       </div>
     </footer>
   );
 }
-
-export { NavItem, TopBar, Footer, LanguageToggle };

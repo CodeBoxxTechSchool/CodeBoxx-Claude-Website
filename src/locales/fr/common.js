@@ -24,8 +24,14 @@ export default {
   footer: {
     tagline: "Une seule plateforme pour le studio, l'exploitation du déploiement et l'académie.",
     columns: {
-      codeboxx: { title: 'CodeBoxx', items: ['Équipes de livraison', "Modèle d'engagement", 'Notes de cas'] },
-      solutions: { title: 'Solutions', items: ['Console de déploiement', 'Statut', 'Documentation'] },
+      codeboxx: {
+        title: 'CodeBoxx',
+        items: ['Équipes de livraison', "Modèle d'engagement", 'Notes de cas'],
+      },
+      solutions: {
+        title: 'Solutions',
+        items: ['Console de déploiement', 'Statut', 'Documentation'],
+      },
       academy: { title: 'Académie', items: ['Curriculum', 'Admissions', 'Dates des cohortes'] },
     },
     copyright: '© 2026 CodeBoxx',

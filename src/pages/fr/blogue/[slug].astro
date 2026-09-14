@@ -1,0 +1,92 @@
+---
+// FR twin of src/pages/blog/[slug].astro — see that file for the shared rationale.
+import Layout from '../../../layouts/Layout.astro';
+import { fetchPostList } from '../../../lib/sanityContent';
+import { SEED_POSTS } from '../../../lib/blogSeed';
+import { portableTextToHtml } from '../../../lib/portableText';
+import { localizedHref } from '../../../lib/i18nRoutes';
+import common from '../../../locales/fr/common';
+import blog from '../../../locales/fr/blog';
+
+export async function getStaticPaths() {
+  const posts = await fetchPostList(SEED_POSTS);
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const pathname = '/fr/blogue/' + post.slug;
+
+const fmt = (d) =>
+  new Date(d + 'T12:00:00').toLocaleDateString('fr-CA', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+function sanityImageUrl(url, { w, q = 60 } = {}) {
+  if (!url) return null;
+  return url + '?w=' + w + '&q=' + q + '&auto=format';
+}
+
+const DEFAULT_OG_IMAGE = 'https://codeboxx.com/assets/hero-bg.png';
+const ogImage = post.featuredImage
+  ? sanityImageUrl(post.featuredImage, { w: 1200 })
+  : DEFAULT_OG_IMAGE;
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  description: post.excerpt,
+  image: [ogImage],
+  datePublished: post.date || undefined,
+  author: { '@type': 'Organization', name: post.author || 'CodeBoxx' },
+  publisher: { '@type': 'Organization', name: 'CodeBoxx' },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://codeboxx.com' + pathname },
+};
+
+const heroStyle = post.featuredImage
+  ? 'background-image: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url(' +
+    sanityImageUrl(post.featuredImage, { w: 1600 }) +
+    '); background-size: cover; background-position: center; background-repeat: no-repeat;'
+  : undefined;
+
+const contentHtml = post.content ? portableTextToHtml(post.content) : '';
+---
+
+<Layout
+  lang="fr"
+  title={post.title}
+  description={post.excerpt}
+  image={ogImage}
+  type="article"
+  structuredData={articleSchema}
+  strings={common}
+>
+  <section class="band-dark" style={heroStyle}>
+    <div class="wrap d-flex flex-column gap-4 align-items-start">
+      {post.category ? <span class="badge bg-brand">{post.category}</span> : null}
+      <h1 class="band-title">{post.title}</h1>
+      <div class="d-flex gap-3">
+        <span class="band-lede">{post.author}</span>
+        {post.date ? <span class="band-lede">{fmt(post.date)}</span> : null}
+      </div>
+    </div>
+  </section>
+  <section class="sect post-content-band">
+    <div class="wrap post-article">
+      {contentHtml ? <Fragment set:html={contentHtml} /> : <p class="pbody">{post.excerpt}</p>}
+      {post.url ? (
+        <div class="post-external-ref">
+          <div class="rule" />
+          <a href={post.url} target="_blank" rel="noopener noreferrer" class="link-tag">
+            {blog.post.externalReference}
+          </a>
+        </div>
+      ) : null}
+      <a href={localizedHref('/blog', 'fr', pathname)} class="link-tag mt-40">
+        {blog.post.backToCodeBlog}
+      </a>
+    </div>
+  </section>
+</Layout>

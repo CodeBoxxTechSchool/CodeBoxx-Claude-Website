@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://codeboxx.com/sitemap.xml
+Sitemap: https://codeboxx.com/sitemap-index.xml
