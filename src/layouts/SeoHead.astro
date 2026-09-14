@@ -1,0 +1,90 @@
+---
+// Shared <head> contents for every natively-migrated page — extracted out of
+// Layout.astro so pages that can't use that layout's body structure (Home needs
+// TopBar/Footer in the *same* React tree as its content, to share the Codi/Enroll
+// drawer state — see HomeIsland.jsx) still get the exact same real, build-time SEO
+// tags Blog/BlogPost get. This is the actual fix for the "OG/Twitter/JSON-LD tags
+// are invisible without JS" problem described in the migration writeup — compare
+// src/components/Seo.jsx (react-helmet-async), still used by the not-yet-migrated
+// legacy pages via LegacyShell.astro.
+import { localizedHref } from '../lib/i18nRoutes';
+
+const {
+  lang,
+  title,
+  description,
+  image = 'https://codeboxx.com/assets/hero-bg.png',
+  type = 'website',
+  noindex = false,
+  structuredData = null,
+} = Astro.props;
+
+const pathname = Astro.url.pathname;
+const SITE_URL = 'https://codeboxx.com';
+const SITE_NAME = 'CodeBoxx';
+const canonical = SITE_URL + pathname;
+const enHref = SITE_URL + localizedHref(pathname, 'en', pathname);
+const frHref = SITE_URL + localizedHref(pathname, 'fr', pathname);
+const fullTitle = title.includes(SITE_NAME) ? title : title + ' | ' + SITE_NAME;
+const desc =
+  description && description.length > 160
+    ? description.slice(0, 159).replace(/\s+\S*$/, '') + '…'
+    : description || '';
+const schemas = Array.isArray(structuredData)
+  ? structuredData
+  : structuredData
+    ? [structuredData]
+    : [];
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>{fullTitle}</title>
+<meta name="description" content={desc} />
+<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+<link rel="canonical" href={canonical} />
+<link rel="alternate" hreflang="en" href={enHref} />
+<link rel="alternate" hreflang="fr" href={frHref} />
+<link rel="alternate" hreflang="x-default" href={enHref} />
+
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={desc} />
+<meta property="og:image" content={image} />
+<meta property="og:locale" content={lang === 'fr' ? 'fr_CA' : 'en_US'} />
+<meta property="og:locale:alternate" content={lang === 'fr' ? 'en_US' : 'fr_CA'} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={desc} />
+<meta name="twitter:image" content={image} />
+
+<meta name="theme-color" content="#002f43" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="preload"
+  as="style"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Great+Vibes&display=swap"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Great+Vibes&display=swap"
+  rel="stylesheet"
+  media="print"
+  onload="this.media='all'"
+/>
+<noscript>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Great+Vibes&display=swap"
+    rel="stylesheet"
+  />
+</noscript>
+
+{schemas.map((schema) => (
+  <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+))}

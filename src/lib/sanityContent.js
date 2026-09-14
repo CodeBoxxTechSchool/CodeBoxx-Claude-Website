@@ -99,3 +99,57 @@ export async function fetchAllPostSlugs(seed = []) {
     return seed.map((p) => p.slug);
   }
 }
+
+function toTeamMember(entry) {
+  return {
+    id: entry._id,
+    name: entry.name,
+    role: entry.role,
+    linkedin: entry.linkedin,
+    photo: entry.photo,
+  };
+}
+
+function toLogo(entry) {
+  return { id: entry._id, name: entry.name, logo: entry.logo };
+}
+
+// Returns live Sanity rows, or `null` if there's no project/no data/an error — the
+// null (not a seed array) is deliberate: unlike fetchPostList, the right fallback
+// here is locale-derived (a studio/academy person's `role` text comes from
+// home.about.<id>.people[id].role, translated per-language), which only
+// HomeIsland.jsx's own useAbout()/useAcademyTopics() can build — so it does the
+// `teamLive && teamLive.length ? teamLive : ownSeed` fallback itself, the same
+// shape useSanityTeam(group, seed) resolved to for the legacy CSR hook.
+export async function fetchTeam(group) {
+  if (!PROJECT_ID) return null;
+  try {
+    const rows = await fetchCollection(
+      'teamMember',
+      '[group == "' +
+        group +
+        '"] | order(order asc) {_id, name, role, linkedin, "photo": photo.asset->url}'
+    );
+    return rows && rows.length ? rows.map(toTeamMember) : null;
+  } catch (err) {
+    console.warn('[sanity]', err.message);
+    return null;
+  }
+}
+
+// Same null-or-live shape as fetchTeam, for the same reason (HomeIsland.jsx falls
+// back to its own CLIENT_LOGOS constant, which needs no translation but lives with
+// the rest of that component's static seed data).
+export async function fetchLogos() {
+  if (!PROJECT_ID) return null;
+  try {
+    const rows = await fetchCollection(
+      'partnerLogo',
+      ' | order(order asc) {_id, name, "logo": logo.asset->url}'
+    );
+    return rows && rows.length ? rows.map(toLogo) : null;
+  } catch (err) {
+    console.warn('[sanity]', err.message);
+    return null;
+  }
+}

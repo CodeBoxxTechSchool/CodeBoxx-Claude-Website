@@ -1,8 +1,41 @@
 ---
-// Not yet natively migrated — mounts the existing React SPA unchanged. See
-// src/layouts/LegacyShell.astro for why, and the astrobuild-migration PR
-// description for the planned follow-up (Home, then Financing/Ventures).
-import LegacyShell from '../layouts/LegacyShell.astro';
+// Natively-migrated / (EN). See src/pages/fr/index.astro for the FR twin, and
+// HomeIsland.jsx for why this mounts one big island instead of Blog's
+// many-small-islands approach. studioTeam/academyTeam/logos are fetched at build
+// time (like Blog's posts) and passed in already-resolved; the intake calendar is
+// the one exception — HomeIsland.jsx explains why it still fetches client-side.
+import SeoHead from '../layouts/SeoHead.astro';
+import HomeIsland from '../components/HomeIsland';
+import { fetchTeam, fetchLogos, fetchPostList } from '../lib/sanityContent';
+import { LATEST_POSTS } from '../lib/homeSeed';
+import '../styles/main.scss';
+import common from '../locales/en/common';
+import home from '../locales/en/home';
+
+const pathname = Astro.url.pathname;
+const [studioTeam, academyTeam, logos, latestPosts] = await Promise.all([
+  fetchTeam('studio'),
+  fetchTeam('academy'),
+  fetchLogos(),
+  fetchPostList(LATEST_POSTS),
+]);
 ---
 
-<LegacyShell />
+<html lang="en">
+  <head>
+    <SeoHead lang="en" title={home.seo.title} description={home.seo.description} />
+  </head>
+  <body>
+    <HomeIsland
+      client:load
+      lang="en"
+      pathname={pathname}
+      home={home}
+      common={common}
+      studioTeam={studioTeam}
+      academyTeam={academyTeam}
+      logos={logos}
+      latestPosts={latestPosts}
+    />
+  </body>
+</html>

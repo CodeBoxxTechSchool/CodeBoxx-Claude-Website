@@ -1,96 +1,38 @@
 ---
-// Shared shell for natively-migrated pages (currently: /blog and /blog/:slug, EN
-// and FR). This is the actual fix for the "SEO/OG tags are invisible without JS"
-// problem described in the migration writeup: every tag below is real HTML in the
-// response Astro sends, not something react-helmet-async patches in after the
-// client bundle runs (compare src/components/Seo.jsx, still used by the
-// not-yet-migrated legacy pages via LegacyShell.astro).
+// Shell for natively-migrated pages whose TopBar/Footer have no state to share
+// with the page content (currently: /blog and /blog/:slug, EN and FR) — mounted as
+// two independent islands. Home needs a different shell (see HomeIsland.jsx) since
+// its TopBar's Codi/Enroll buttons must share state with content deep in the page;
+// both shells render the same SeoHead.astro, so both get real, build-time SEO tags.
 import '../styles/main.scss';
+import SeoHead from './SeoHead.astro';
 import { TopBar, Footer } from '../components/ChromeIsland';
-import { localizedHref } from '../lib/i18nRoutes';
 
 const {
   lang,
   title,
   description,
-  image = 'https://codeboxx.com/assets/hero-bg.png',
-  type = 'website',
-  noindex = false,
-  structuredData = null,
+  image,
+  type,
+  noindex,
+  structuredData,
   strings, // current-language common.js content (nav/actions/footer), for ChromeIsland
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
-const SITE_URL = 'https://codeboxx.com';
-const SITE_NAME = 'CodeBoxx';
-const canonical = SITE_URL + pathname;
-const enHref = SITE_URL + localizedHref(pathname, 'en', pathname);
-const frHref = SITE_URL + localizedHref(pathname, 'fr', pathname);
-const fullTitle = title.includes(SITE_NAME) ? title : title + ' | ' + SITE_NAME;
-const desc =
-  description && description.length > 160
-    ? description.slice(0, 159).replace(/\s+\S*$/, '') + '…'
-    : description || '';
-const schemas = Array.isArray(structuredData)
-  ? structuredData
-  : structuredData
-    ? [structuredData]
-    : [];
 ---
 
 <html lang={lang}>
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>{fullTitle}</title>
-    <meta name="description" content={desc} />
-    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
-    <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="en" href={enHref} />
-    <link rel="alternate" hreflang="fr" href={frHref} />
-    <link rel="alternate" hreflang="x-default" href={enHref} />
-
-    <meta property="og:site_name" content={SITE_NAME} />
-    <meta property="og:type" content={type} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={desc} />
-    <meta property="og:image" content={image} />
-    <meta property="og:locale" content={lang === 'fr' ? 'fr_CA' : 'en_US'} />
-    <meta property="og:locale:alternate" content={lang === 'fr' ? 'en_US' : 'fr_CA'} />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={desc} />
-    <meta name="twitter:image" content={image} />
-
-    <meta name="theme-color" content="#002f43" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Great+Vibes&display=swap"
+    <SeoHead
+      lang={lang}
+      title={title}
+      description={description}
+      image={image}
+      type={type}
+      noindex={noindex}
+      structuredData={structuredData}
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Great+Vibes&display=swap"
-      rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Great+Vibes&display=swap"
-        rel="stylesheet"
-      />
-    </noscript>
-
-    {schemas.map((schema) => (
-      <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
-    ))}
   </head>
   <body>
     <div id="top">

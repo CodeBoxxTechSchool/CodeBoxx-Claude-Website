@@ -1,6 +1,37 @@
 ---
-// /fr — not yet natively migrated, see src/pages/index.astro.
-import LegacyShell from '../../layouts/LegacyShell.astro';
+// FR twin of src/pages/index.astro — see that file for the shared rationale.
+import SeoHead from '../../layouts/SeoHead.astro';
+import HomeIsland from '../../components/HomeIsland';
+import { fetchTeam, fetchLogos, fetchPostList } from '../../lib/sanityContent';
+import { LATEST_POSTS } from '../../lib/homeSeed';
+import '../../styles/main.scss';
+import common from '../../locales/fr/common';
+import home from '../../locales/fr/home';
+
+const pathname = Astro.url.pathname;
+const [studioTeam, academyTeam, logos, latestPosts] = await Promise.all([
+  fetchTeam('studio'),
+  fetchTeam('academy'),
+  fetchLogos(),
+  fetchPostList(LATEST_POSTS),
+]);
 ---
 
-<LegacyShell />
+<html lang="fr">
+  <head>
+    <SeoHead lang="fr" title={home.seo.title} description={home.seo.description} />
+  </head>
+  <body>
+    <HomeIsland
+      client:load
+      lang="fr"
+      pathname={pathname}
+      home={home}
+      common={common}
+      studioTeam={studioTeam}
+      academyTeam={academyTeam}
+      logos={logos}
+      latestPosts={latestPosts}
+    />
+  </body>
+</html>
