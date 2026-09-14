@@ -1,6 +1,132 @@
 ---
-// /fr/financement — not yet natively migrated, see src/pages/index.astro.
-import LegacyShell from '../../layouts/LegacyShell.astro';
+// FR twin of src/pages/financing.astro — see that file for the shared rationale.
+import Layout from '../../layouts/Layout.astro';
+import { localizedHref } from '../../lib/i18nRoutes';
+import common from '../../locales/fr/common';
+import financing from '../../locales/fr/financing';
+
+const pathname = Astro.url.pathname;
 ---
 
-<LegacyShell />
+<Layout
+  lang="fr"
+  title={financing.seo.title}
+  description={financing.seo.description}
+  strings={common}
+>
+  <section class="band-dark">
+    <div class="wrap d-flex flex-column gap-4 align-items-start">
+      <span class="pill">{financing.pill}</span>
+      <h1 class="band-title">{financing.band.title}</h1>
+      <p class="band-lede">{financing.band.lede}</p>
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="wrap d-flex flex-column gap-5">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{financing.paths.eyebrow}</p>
+        <h2 class="h2">{financing.paths.title}</h2>
+        <p class="lede lede-640">{financing.paths.lede}</p>
+      </div>
+      <div class="grid2">
+        {financing.paths.items.map(([title, d, bullets]) => (
+          <div class="panel">
+            <div class="panel-header-row">
+              <h3 class="ptitle">{title}</h3>
+              <span class="badge bg-brand">{financing.academyBadge}</span>
+            </div>
+            <p class="pbody">{d}</p>
+            <div class="rule" />
+            <div class="bullet-list">
+              {bullets.map((b) => (
+                <div class="bullet">
+                  <span>{b}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sect sect-contact">
+    <div class="wrap d-flex flex-column gap-5">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{financing.process.eyebrow}</p>
+        <h2 class="h2">{financing.process.title}</h2>
+      </div>
+      <div class="grid3">
+        {financing.process.steps.map(([title, d], i) => (
+          <div class="numbered-step">
+            <span class="numbered-step-index">{'0' + (i + 1)}</span>
+            <h3 class="ptitle">{title}</h3>
+            <p class="pbody">{d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sect sect-navy">
+    <div class="wrap band-dark-left">
+      <p class="eyebrow eyebrow-brand">{financing.riskFree.eyebrow}</p>
+      <h2 class="h2 h2-inverse">{financing.riskFree.title}</h2>
+      <p class="band-body">{financing.riskFree.body1}</p>
+      <p class="band-body">{financing.riskFree.body2}</p>
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="wrap grid2">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{financing.ask.eyebrow}</p>
+        <h2 class="h2">{financing.ask.title}</h2>
+        <p class="lede">{financing.ask.lede}</p>
+        <div class="d-flex gap-3 flex-wrap">
+          <a class="btn btn-primary" href="CodeBoxx.html#academy">
+            {financing.ask.seePrograms}
+          </a>
+          <a class="btn btn-outline-primary" href={localizedHref('#contact', 'fr', pathname)}>
+            {financing.ask.contactAdmissions}
+          </a>
+        </div>
+      </div>
+      <div class="panel">
+        <h3 class="ptitle">{financing.ask.formTitle}</h3>
+        <div class="mb-3">
+          <label class="form-label" for="fin-name">
+            {financing.ask.fullNameLabel}
+          </label>
+          <input
+            class="form-control"
+            id="fin-name"
+            placeholder={financing.ask.fullNamePlaceholder}
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="fin-email">
+            {financing.ask.emailLabel}
+          </label>
+          <input class="form-control" id="fin-email" placeholder={financing.ask.emailPlaceholder} />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="fin-program">
+            {financing.ask.programLabel}
+          </label>
+          <input
+            class="form-control"
+            id="fin-program"
+            placeholder={financing.ask.programPlaceholder}
+          />
+        </div>
+        <div class="rule" />
+        <div class="form-actions">
+          <span class="form-actions-note">{financing.ask.answeredNote}</span>
+          <button class="btn btn-primary btn-lg">{financing.ask.send}</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

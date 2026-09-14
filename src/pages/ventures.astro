@@ -1,6 +1,73 @@
 ---
-// /ventures — not yet natively migrated, see src/pages/index.astro.
-import LegacyShell from '../layouts/LegacyShell.astro';
+// Natively-migrated /ventures (EN). See src/pages/fr/ventures.astro for the FR
+// twin. Only the "Pitch us" button + its drawer need client state (see
+// PitchWidget.jsx) — everything else on this page is static, same TopBar/Footer
+// islands as Blog via Layout.astro.
+import Layout from '../layouts/Layout.astro';
+import PitchWidget from '../components/PitchWidget';
+import common from '../locales/en/common';
+import ventures from '../locales/en/ventures';
 ---
 
-<LegacyShell />
+<Layout
+  lang="en"
+  title={ventures.seo.title}
+  description={ventures.seo.description}
+  strings={common}
+>
+  <section class="band-dark">
+    <div class="wrap d-flex flex-column gap-4 align-items-start">
+      <span class="pill">{ventures.pill}</span>
+      <h1 class="band-title">{ventures.band.title}</h1>
+      <p class="band-lede">{ventures.band.lede}</p>
+      <PitchWidget client:load ventures={ventures} closeLabel={common.actions.close} />
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="wrap d-flex flex-column gap-5">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{ventures.models.eyebrow}</p>
+        <h2 class="h2">{ventures.models.title}</h2>
+        <p class="lede lede-640">{ventures.models.lede}</p>
+      </div>
+      <div class="grid2">
+        {ventures.models.items.map(([title, d, bullets]) => (
+          <div class="panel">
+            <div class="panel-header-row">
+              <h3 class="ptitle">{title}</h3>
+              <span class="badge bg-brand">{ventures.pill}</span>
+            </div>
+            <p class="pbody">{d}</p>
+            <div class="rule" />
+            <div class="bullet-list">
+              {bullets.map((b) => (
+                <div class="bullet">
+                  <span>{b}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sect sect-contact">
+    <div class="wrap d-flex flex-column gap-5">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{ventures.criteria.eyebrow}</p>
+        <h2 class="h2">{ventures.criteria.title}</h2>
+      </div>
+      <div class="grid3">
+        {ventures.criteria.items.map(([title, d], i) => (
+          <div class="numbered-step">
+            <span class="numbered-step-index">{'0' + (i + 1)}</span>
+            <h3 class="ptitle">{title}</h3>
+            <p class="pbody">{d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
