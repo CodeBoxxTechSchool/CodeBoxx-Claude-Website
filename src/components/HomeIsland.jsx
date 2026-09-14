@@ -1661,6 +1661,20 @@ export default function HomeIsland({
         />
         <main>
           <div className="hero">
+            <video
+              className="hero-video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="none"
+              poster="/assets/hero-video-poster.webp"
+              aria-hidden="true"
+            >
+              <source src="/assets/hero-video-bkg.webm" type="video/webm" />
+              <source src="/assets/hero-video-bkg.mp4" type="video/mp4" />
+            </video>
+            <div className="hero-video-scrim" aria-hidden="true" />
             <div className="d-flex">
               <span className="pill">{home.hero.pill}</span>
             </div>

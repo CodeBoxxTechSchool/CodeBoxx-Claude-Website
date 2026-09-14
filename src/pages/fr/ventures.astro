@@ -1,6 +1,7 @@
 ---
 // FR twin of src/pages/ventures.astro — see that file for the shared rationale.
 import Layout from '../../layouts/Layout.astro';
+import HeroVideo from '../../components/HeroVideo.astro';
 import PitchWidget from '../../components/PitchWidget';
 import common from '../../locales/fr/common';
 import ventures from '../../locales/fr/ventures';
@@ -13,6 +14,7 @@ import ventures from '../../locales/fr/ventures';
   strings={common}
 >
   <section class="band-dark">
+    <HeroVideo />
     <div class="wrap d-flex flex-column gap-4 align-items-start">
       <span class="pill">{ventures.pill}</span>
       <h1 class="band-title">{ventures.band.title}</h1>

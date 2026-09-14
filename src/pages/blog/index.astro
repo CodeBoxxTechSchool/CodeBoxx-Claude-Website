@@ -4,6 +4,7 @@
 // here) rather than one parameterized route, matching how routes.js already
 // modeled EN/FR as distinct paths.
 import Layout from '../../layouts/Layout.astro';
+import HeroVideo from '../../components/HeroVideo.astro';
 import BlogPosts from '../../components/BlogPostsIsland';
 import { fetchPostList } from '../../lib/sanityContent';
 import { SEED_POSTS } from '../../lib/blogSeed';
@@ -15,6 +16,7 @@ const posts = await fetchPostList(SEED_POSTS);
 
 <Layout lang="en" title={blog.seo.title} description={blog.seo.description} strings={common}>
   <section class="band-dark">
+    <HeroVideo />
     <div class="wrap d-flex flex-column gap-4 align-items-start">
       <span class="pill">{blog.band.pill}</span>
       <h1 class="band-title">{blog.band.title}</h1>

@@ -5,6 +5,7 @@
 // buttons just navigate) — so it needs no React island at all beyond the shared
 // TopBar/Footer from Layout.astro, same pattern as Blog's static sections.
 import Layout from '../layouts/Layout.astro';
+import HeroVideo from '../components/HeroVideo.astro';
 import { localizedHref } from '../lib/i18nRoutes';
 import common from '../locales/en/common';
 import financing from '../locales/en/financing';
@@ -19,6 +20,7 @@ const pathname = Astro.url.pathname;
   strings={common}
 >
   <section class="band-dark">
+    <HeroVideo />
     <div class="wrap d-flex flex-column gap-4 align-items-start">
       <span class="pill">{financing.pill}</span>
       <h1 class="band-title">{financing.band.title}</h1>

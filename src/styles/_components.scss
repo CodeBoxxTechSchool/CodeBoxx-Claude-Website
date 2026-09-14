@@ -220,7 +220,11 @@
   }
 }
 
-// Hero band on the homepage (background image + big heading over it).
+// Hero band on the homepage (background image + big heading over it). The
+// static background-image above stays as-is — it's the fallback for whenever
+// .hero-video isn't shown (below the tablet breakpoint, prefers-reduced-motion,
+// or a browser with JS/video disabled), not just a "loading" placeholder, so it
+// paints under the video rather than being replaced by it.
 .hero {
   position: relative;
   width: 100%;
@@ -230,11 +234,21 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 96px;
+  overflow: hidden;
   background-image:
     linear-gradient(rgba(0, 47, 67, 0.82), rgba(0, 47, 67, 0.82)), url('/assets/hero-bg.webp');
   background-size: cover;
   background-position: center bottom;
   background-repeat: no-repeat;
+
+  // .hero's own two content rows (the pill, and the h1+logo row) — raised above
+  // .hero-video/.hero-video-scrim via z-index rather than DOM order, since an
+  // absolutely-positioned sibling with z-index:auto would otherwise paint above
+  // static in-flow content, not below it.
+  > .d-flex {
+    position: relative;
+    z-index: 1;
+  }
 
   h1 {
     margin: 0;
@@ -263,4 +277,51 @@
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
+}
+
+// Looping background video for a page's hero/intro band — used inside .hero
+// (Home) and .band-dark (Blog/Financing/Ventures' intro band, and BlogPost's
+// hero when a post has no featuredImage of its own). Both classes' existing
+// background-image/background-color stay in place as the fallback shown
+// whenever the rules below hide the video (see the media queries at the
+// bottom): a phone-sized viewport, prefers-reduced-motion, or simply the video
+// tag not being supported/loaded.
+.hero-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-video-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  // Lighter than .hero's own baked-in scrim (rgba(0,47,67,.82)) — that one was
+  // tuned to sit over a static photo; this one only needs to hold text contrast
+  // over motion without hiding the video underneath it.
+  background: rgba(0, 47, 67, 0.55);
+}
+
+// Every .band-dark instance gets this rule (Blog/Financing/Ventures' Band, plus
+// Home's WSJTeaser/ForgeTeaser, which never render a .hero-video) — harmless
+// where there's no video layer to stack against, and it's what keeps a band's
+// actual content above the video+scrim on the ones that do have it.
+.band-dark {
+  > .wrap {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+// Below tablet width and under reduced-motion, skip the video: the section's
+// existing static background-image/color already covers the phone/no-motion
+// case, so there's nothing else these need to fall back to.
+@media (max-width: 767.98px), (prefers-reduced-motion: reduce) {
+  .hero-video,
+  .hero-video-scrim {
+    display: none;
+  }
 }

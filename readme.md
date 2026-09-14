@@ -204,6 +204,30 @@ Brand components with no Bootstrap equivalent (`Logo`, `Avatar`) are tiny hand-w
 components in `src/components/`, not a vendored bundle. Everything else — buttons, badges,
 forms, the Codi/Enroll drawers — is react-bootstrap, restyled via the SCSS above.
 
+### Hero background video
+
+Every hero/intro band — Home's `.hero`, and the `.band-dark` band on Blog/Financing/
+Ventures — plays a looping background video via `src/components/HeroVideo.astro`
+(dropped in as the first child of the section; `.hero`/`.band-dark` already carry the
+positioning/stacking CSS for it in `_components.scss`/`_home.scss`). BlogPost's hero
+gets it too, but only for a post with no `featuredImage` of its own — a post's specific
+photo is more relevant content than a generic loop, so it takes priority (see the
+`{!post.featuredImage && <HeroVideo />}` check in `src/pages/blog/[slug].astro`).
+
+Assets live in `public/assets/`: `hero-video-bkg.webm` (VP9, ~1.3 MB, tried first),
+`hero-video-bkg.mp4` (H.264, ~2 MB, fallback for browsers that can't decode WebM), and
+`hero-video-poster.webp` (a single frame, shown while the video loads and used by the
+`<video poster>` attribute). All three are re-encodes of an original 8.5 MB source clip —
+re-encoding cut it by 76-85% with no visible quality loss (it's a smooth, motion-blurred
+abstract loop, which compresses very well); re-run the same `ffmpeg` settings (see git
+history on these files) if the source clip is ever replaced.
+
+The video is intentionally **not** shown below the tablet breakpoint or under
+`prefers-reduced-motion` (see the `@media` rule at the bottom of the hero-video block in
+`_components.scss`) — phones fall back to each section's existing static
+background-image/color instead, to avoid the extra data/battery cost of an autoplaying
+video on mobile networks.
+
 ## Deployment
 
 `.github/workflows/deploy.yml` builds the site and rsyncs `dist/` to the

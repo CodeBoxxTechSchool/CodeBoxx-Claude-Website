@@ -5,6 +5,7 @@
 // the response, unlike the old BlogPost.jsx where all of that only existed after
 // the client bundle ran and fetched the post from Sanity.
 import Layout from '../../layouts/Layout.astro';
+import HeroVideo from '../../components/HeroVideo.astro';
 import { fetchPostList } from '../../lib/sanityContent';
 import { SEED_POSTS } from '../../lib/blogSeed';
 import { portableTextToHtml } from '../../lib/portableText';
@@ -68,6 +69,7 @@ const contentHtml = post.content ? portableTextToHtml(post.content) : '';
   strings={common}
 >
   <section class="band-dark" style={heroStyle}>
+    {!post.featuredImage && <HeroVideo />}
     <div class="wrap d-flex flex-column gap-4 align-items-start">
       {post.category ? <span class="badge bg-brand">{post.category}</span> : null}
       <h1 class="band-title">{post.title}</h1>
