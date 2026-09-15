@@ -1,12 +1,23 @@
 ---
 // Looping background video + scrim for a page's hero/intro band — drop as the
 // first two children of a `.hero` or `.band-dark` element (both already have
-// the CSS to position/stack these, see _components.scss). WebM first since it's
-// ~30% smaller than the H.264 fallback at comparable quality; browsers that
-// can't decode WebM skip to the .mp4 source automatically. Hidden below the
-// tablet breakpoint and under prefers-reduced-motion (see _components.scss) —
-// the parent's own static background-image/color covers that case, so there's
-// no separate <img> fallback needed here.
+// the CSS to position/stack these, see _components.scss). WebM first since
+// it's ~48% smaller than the H.264 fallback at comparable quality; browsers
+// that can't decode WebM skip to the .mp4 source automatically. Hidden below
+// the tablet breakpoint and under prefers-reduced-motion (see
+// _components.scss) — the parent's own static background-image/color covers
+// that case, so there's no separate <img> fallback needed here.
+//
+// Both files are a forward-then-reverse "boomerang" (~15.9s: the original 8s
+// clip followed by itself played backward, minus one frame at each end to avoid
+// a held-frame stutter at the two turnarounds) baked into the file itself, so
+// the plain `loop` attribute below just repeats that whole boomerang — no JS
+// needed to fake reverse playback (browsers don't support negative
+// playbackRate on <video>, and manually scrubbing currentTime to simulate it
+// stutters badly since video codecs aren't built for cheap backward seeking).
+// Re-run the same ffmpeg filter graph (see git history on these two files) if
+// the source clip is ever replaced: reverse only needs a straight loop, this
+// needs a re-encode.
 ---
 
 <video
