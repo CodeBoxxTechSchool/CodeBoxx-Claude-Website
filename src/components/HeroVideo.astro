@@ -1,23 +1,26 @@
 ---
-// Looping background video + scrim for a page's hero/intro band — drop as the
-// first two children of a `.hero` or `.band-dark` element (both already have
-// the CSS to position/stack these, see _components.scss). WebM first since
-// it's ~48% smaller than the H.264 fallback at comparable quality; browsers
-// that can't decode WebM skip to the .mp4 source automatically. Hidden below
-// the tablet breakpoint and under prefers-reduced-motion (see
-// _components.scss) — the parent's own static background-image/color covers
-// that case, so there's no separate <img> fallback needed here.
+// Looping background video + scrim for a dark section — drop as the first two
+// children of a `.hero` or `.band-dark` element (both already have the CSS to
+// position/stack these, see _components.scss). WebM first since it's usually
+// smaller than the H.264 fallback at comparable quality; browsers that can't
+// decode WebM skip to the .mp4 source automatically. Hidden below the tablet
+// breakpoint and under prefers-reduced-motion (see _components.scss) — the
+// parent's own static background-image/color covers that case, so there's no
+// separate <img> fallback needed here.
 //
-// Both files are a forward-then-reverse "boomerang" (~15.9s: the original 8s
-// clip followed by itself played backward, minus one frame at each end to avoid
-// a held-frame stutter at the two turnarounds) baked into the file itself, so
-// the plain `loop` attribute below just repeats that whole boomerang — no JS
-// needed to fake reverse playback (browsers don't support negative
-// playbackRate on <video>, and manually scrubbing currentTime to simulate it
-// stutters badly since video codecs aren't built for cheap backward seeking).
-// Re-run the same ffmpeg filter graph (see git history on these two files) if
-// the source clip is ever replaced: reverse only needs a straight loop, this
-// needs a re-encode.
+// Defaults to the site's original hero clip (the forward-then-reverse
+// "boomerang" used on Home/Blog/Financing/Ventures' intro bands — see git
+// history on hero-video-bkg.mp4/.webm for the ffmpeg filter graph that built
+// it), so every pre-existing call site needs no changes. Pass webm/mp4/poster
+// to use a different clip elsewhere (e.g. ForgeTeaser's crewkit-forge video),
+// and overlay to match that clip's own contrast needs instead of the navy tint
+// tuned for the default one.
+const {
+  webm = '/assets/hero-video-bkg.webm',
+  mp4 = '/assets/hero-video-bkg.mp4',
+  poster = '/assets/hero-video-poster.webp',
+  overlay = 'rgba(0, 47, 67, 0.55)',
+} = Astro.props;
 ---
 
 <video
@@ -27,10 +30,10 @@
   loop
   playsinline
   preload="none"
-  poster="/assets/hero-video-poster.webp"
+  poster={poster}
   aria-hidden="true"
 >
-  <source src="/assets/hero-video-bkg.webm" type="video/webm" />
-  <source src="/assets/hero-video-bkg.mp4" type="video/mp4" />
+  <source src={webm} type="video/webm" />
+  <source src={mp4} type="video/mp4" />
 </video>
-<div class="hero-video-scrim" aria-hidden="true"></div>
+<div class="hero-video-scrim" style={`background: ${overlay};`} aria-hidden="true"></div>

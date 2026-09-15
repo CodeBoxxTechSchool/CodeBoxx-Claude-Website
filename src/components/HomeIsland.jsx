@@ -1587,6 +1587,24 @@ function ForgeTeaser() {
   const features = home.forge.features;
   return (
     <section className="band-dark">
+      <video
+        className="hero-video"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="none"
+        poster="/assets/crewkit-forge-poster.webp"
+        aria-hidden="true"
+      >
+        <source src="/assets/crewkit-forge.webm" type="video/webm" />
+        <source src="/assets/crewkit-forge.mp4" type="video/mp4" />
+      </video>
+      <div
+        className="hero-video-scrim"
+        style={{ background: 'rgba(0, 0, 0, 0.6)' }}
+        aria-hidden="true"
+      />
       <div className="wrap band-dark-inner">
         <img
           src="/assets/crewkit_wh.webp"
