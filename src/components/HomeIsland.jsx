@@ -1602,7 +1602,7 @@ function ForgeTeaser() {
       </video>
       <div
         className="hero-video-scrim"
-        style={{ background: 'rgba(0, 0, 0, 0.6)' }}
+        style={{ background: 'rgba(0, 0, 0, 0.7)' }}
         aria-hidden="true"
       />
       <div className="wrap band-dark-inner">
