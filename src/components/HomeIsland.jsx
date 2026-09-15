@@ -1552,7 +1552,7 @@ function CodeBlog() {
                 src={sanityImageUrl(p.featuredImage, { w: 500 })}
                 alt={p.title}
                 loading="lazy"
-                style={{ width: '100%', height: 180, objectFit: 'cover' }}
+                style={{ width: '100%', height: 270, objectFit: 'cover' }}
               />
               <div className="panel-link-card-body">
                 <div className="d-flex flex-column gap-3">
