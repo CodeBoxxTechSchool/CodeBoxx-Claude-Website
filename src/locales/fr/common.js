@@ -22,17 +22,13 @@ export default {
     language: 'Langue',
   },
   footer: {
-    tagline: "Une seule plateforme pour le studio, l'exploitation du déploiement et l'académie.",
+    tagline:
+      'On bâtit des équipes AI-Native et des logiciels qui vont plus loin que les anciennes façons de faire.',
     columns: {
-      codeboxx: {
-        title: 'CodeBoxx',
-        items: ['Équipes de livraison', "Modèle d'engagement", 'Notes de cas'],
-      },
-      solutions: {
-        title: 'Solutions',
-        items: ['Console de déploiement', 'Statut', 'Documentation'],
-      },
-      academy: { title: 'Académie', items: ['Curriculum', 'Admissions', 'Dates des cohortes'] },
+      // See common.js (EN) for why these only carry titles.
+      codeboxx: { title: 'CodeBoxx' },
+      solutions: { title: 'Solutions' },
+      academy: { title: 'Académie' },
     },
     copyright: '© 2026 CodeBoxx',
   },

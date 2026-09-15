@@ -24,11 +24,14 @@ export default {
     language: 'Language',
   },
   footer: {
-    tagline: 'One platform for the studio, the deployment operation and the academy.',
+    tagline: 'We build AI-Native teams and software that outwork the old way.',
     columns: {
-      codeboxx: { title: 'CodeBoxx', items: ['Delivery Pods', 'Engagement Model', 'Case Notes'] },
-      solutions: { title: 'Solutions', items: ['Deploy Console', 'Status', 'Documentation'] },
-      academy: { title: 'Academy', items: ['Curriculum', 'Admissions', 'Cohort Dates'] },
+      // Only titles here — Chrome.jsx/ChromeIsland.jsx build every column's
+      // actual links straight from nav.* + the same hrefs the top menu uses,
+      // so the footer can't silently drift out of sync with it.
+      codeboxx: { title: 'CodeBoxx' },
+      solutions: { title: 'Solutions' },
+      academy: { title: 'Academy' },
     },
     copyright: '© 2026 CodeBoxx',
   },

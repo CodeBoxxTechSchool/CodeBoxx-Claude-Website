@@ -166,10 +166,47 @@ export function TopBar({ lang, pathname, strings, onCodi, onEnroll }) {
   );
 }
 
-const FOOTER_COLUMN_KEYS = ['codeboxx', 'solutions', 'academy'];
+// Footer columns' link data — separate from strings.footer.columns (which only
+// carries each column's title now; see common.js). Built entirely from nav.* +
+// the exact hrefs NAV_STRUCTURE's own menu/dropdowns use, so this can't drift
+// out of sync with the top menu the way a second, hand-copied list in
+// common.js could. Real hrefs (not the blanket "#top" every footer link used
+// before) since these now point at actual pages/sections, same as the top menu.
+function buildFooterColumns(lang, pathname, strings) {
+  const nav = strings.nav;
+  const href = (h) => localizedHref(h, lang, pathname);
+  return [
+    {
+      key: 'codeboxx',
+      title: strings.footer.columns.codeboxx.title,
+      items: [
+        { label: nav.ventures, href: href('/ventures') },
+        { label: nav.blog, href: href('/blog') },
+        { label: nav.about, href: href('#codeboxx') },
+      ],
+    },
+    {
+      key: 'solutions',
+      title: strings.footer.columns.solutions.title,
+      items: [
+        { label: nav.solutionsServices, href: href('#solutions') },
+        { label: nav.solutionsWorks, href: href('#solutions') },
+      ],
+    },
+    {
+      key: 'academy',
+      title: strings.footer.columns.academy.title,
+      items: [
+        { label: nav.academyCourses, href: href('#academy-courses') },
+        { label: nav.academyCalendar, href: href('#intake') },
+        { label: nav.academyFinancing, href: href('/financing') },
+      ],
+    },
+  ];
+}
 
 export function Footer({ lang, pathname, strings }) {
-  const topHref = localizedHref('#top', lang, pathname);
+  const footerColumns = buildFooterColumns(lang, pathname, strings);
   return (
     <footer className="site-footer">
       <div className="wrap d-flex flex-column gap-5">
@@ -179,19 +216,16 @@ export function Footer({ lang, pathname, strings }) {
             <span className="footer-tagline">{strings.footer.tagline}</span>
           </div>
           <div className="d-flex gap-5 flex-wrap">
-            {FOOTER_COLUMN_KEYS.map((key) => {
-              const col = strings.footer.columns[key];
-              return (
-                <div key={key} className="footer-col d-flex flex-column gap-3">
-                  <span className="footer-col-title">{col.title}</span>
-                  {col.items.map((i) => (
-                    <a key={i} href={topHref}>
-                      {i}
-                    </a>
-                  ))}
-                </div>
-              );
-            })}
+            {footerColumns.map((col) => (
+              <div key={col.key} className="footer-col d-flex flex-column gap-3">
+                <span className="footer-col-title">{col.title}</span>
+                {col.items.map((item, i) => (
+                  <a key={i} href={item.href}>
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
         <div className="footer-rule" />
