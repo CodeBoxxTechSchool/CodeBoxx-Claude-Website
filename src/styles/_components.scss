@@ -194,6 +194,14 @@
     height: 50%;
   }
 
+  // Graduate testimonials use a real photo here instead of the generic
+  // person-outline glyph above — fills the same circular frame.
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   &.avatar-sm {
     width: 24px;
     height: 24px;

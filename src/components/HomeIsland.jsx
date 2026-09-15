@@ -130,6 +130,86 @@ function Testimonials({ eyebrow, items }) {
   );
 }
 
+// Graduate testimonials get a different card from Testimonials above: a real
+// photo (not the placeholder Avatar glyph) and a two-part "Where I was" /
+// "Where I Am" quote instead of one flat blockquote. `before`/`after` may
+// each contain a blank-line-separated paragraph break (some of these run
+// long) — split the same way ServiceDetail's multi-paragraph fields already
+// do elsewhere in this file, rather than relying on CSS to preserve newlines.
+function GradCard({ t, labels }) {
+  return (
+    <figure className="panel testimonial grad-testimonial">
+      <blockquote className="testimonial-quote grad-testimonial-quote">
+        <div>
+          <span className="testimonial-label">{labels.whereIWas}</span>
+          {t.before.split('\n\n').map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+        </div>
+        <div>
+          <span className="testimonial-label">{labels.whereIAm}</span>
+          {t.after.split('\n\n').map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+        </div>
+      </blockquote>
+      <figcaption className="testimonial-byline">
+        <div className="rule" />
+        <div className="testimonial-person">
+          <span className="avatar avatar-md">
+            <img src={t.photo} alt={t.name} loading="lazy" />
+          </span>
+          <div className="d-flex flex-column gap-1">
+            <span className="testimonial-name">{t.name}</span>
+            <span className="testimonial-role">{t.role}</span>
+          </div>
+        </div>
+      </figcaption>
+    </figure>
+  );
+}
+
+// First 3 render as the always-visible .grid3 cards (same treatment as
+// Testimonials above); the rest cycle through a one-at-a-time slider below —
+// there are more of these than fit comfortably in a static row, and each has
+// enough text that ClientSlider's auto-advancing-strip approach would be
+// actively unhelpful (cuts a reader off mid-paragraph).
+function GraduateTestimonials({ eyebrow, items, labels }) {
+  const featured = items.slice(0, 3);
+  const rest = items.slice(3);
+  const [index, setIndex] = React.useState(0);
+  const prev = () => setIndex((i) => (i - 1 + rest.length) % rest.length);
+  const next = () => setIndex((i) => (i + 1) % rest.length);
+  return (
+    <div className="testimonials">
+      <p className="eyebrow">{eyebrow}</p>
+      <div className="grid3">
+        {featured.map((t) => (
+          <GradCard key={t.name} t={t} labels={labels} />
+        ))}
+      </div>
+      {rest.length ? (
+        <div className="grad-slider">
+          <GradCard t={rest[index]} labels={labels} />
+          {rest.length > 1 ? (
+            <div className="grad-slider-nav">
+              <Button size="sm" variant="outline-primary" onClick={prev}>
+                &lt;
+              </Button>
+              <span className="grad-slider-count">
+                {index + 1} / {rest.length}
+              </span>
+              <Button size="sm" variant="outline-primary" onClick={next}>
+                &gt;
+              </Button>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 const CLIENT_LOGOS = [
   { id: 'client-1', name: 'Client One' },
   { id: 'client-2', name: 'Client Two' },
@@ -902,7 +982,11 @@ function Academy({ onEnroll }) {
       after={
         <React.Fragment>
           <IntakeCalendar onEnroll={onEnroll} />
-          <Testimonials eyebrow={home.testimonials.gradEyebrow} items={home.gradQuotes} />
+          <GraduateTestimonials
+            eyebrow={home.testimonials.gradEyebrow}
+            items={home.gradQuotes}
+            labels={home.testimonials}
+          />
         </React.Fragment>
       }
       lede={home.academy.lede}
