@@ -325,3 +325,25 @@
     display: none;
   }
 }
+
+// Scroll-reveal fade-in for section h2 titles — see ScrollReveal.astro for the
+// IntersectionObserver that adds .is-inview the first time a title scrolls
+// into (roughly) view; it un-observes immediately after, so this only ever
+// plays once per title, not every time it re-enters the viewport. Scoped
+// entirely under prefers-reduced-motion: no-preference — a reduced-motion
+// visitor never has these hidden in the first place, so there's nothing to
+// reveal. ScrollReveal.astro's <noscript> block covers the other no-JS case.
+@media (prefers-reduced-motion: no-preference) {
+  h2 {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+
+    &.is-inview {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

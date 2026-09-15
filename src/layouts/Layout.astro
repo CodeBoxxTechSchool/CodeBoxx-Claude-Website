@@ -6,6 +6,7 @@
 // both shells render the same SeoHead.astro, so both get real, build-time SEO tags.
 import '../styles/main.scss';
 import SeoHead from './SeoHead.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
 import { TopBar, Footer } from '../components/ChromeIsland';
 
 const {
@@ -42,5 +43,6 @@ const pathname = Astro.url.pathname;
       </main>
       <Footer client:load lang={lang} pathname={pathname} strings={strings} />
     </div>
+    <ScrollReveal />
   </body>
 </html>

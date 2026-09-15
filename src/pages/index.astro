@@ -5,6 +5,7 @@
 // time (like Blog's posts) and passed in already-resolved; the intake calendar is
 // the one exception — HomeIsland.jsx explains why it still fetches client-side.
 import SeoHead from '../layouts/SeoHead.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
 import HomeIsland from '../components/HomeIsland';
 import { fetchTeam, fetchLogos, fetchPostList } from '../lib/sanityContent';
 import { LATEST_POSTS } from '../lib/homeSeed';
@@ -37,5 +38,6 @@ const [studioTeam, academyTeam, logos, latestPosts] = await Promise.all([
       logos={logos}
       latestPosts={latestPosts}
     />
+    <ScrollReveal />
   </body>
 </html>

@@ -1,6 +1,7 @@
 ---
 // FR twin of src/pages/index.astro — see that file for the shared rationale.
 import SeoHead from '../../layouts/SeoHead.astro';
+import ScrollReveal from '../../components/ScrollReveal.astro';
 import HomeIsland from '../../components/HomeIsland';
 import { fetchTeam, fetchLogos, fetchPostList } from '../../lib/sanityContent';
 import { LATEST_POSTS } from '../../lib/homeSeed';
@@ -33,5 +34,6 @@ const [studioTeam, academyTeam, logos, latestPosts] = await Promise.all([
       logos={logos}
       latestPosts={latestPosts}
     />
+    <ScrollReveal />
   </body>
 </html>
