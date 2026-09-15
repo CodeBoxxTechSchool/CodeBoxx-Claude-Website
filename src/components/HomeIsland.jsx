@@ -147,7 +147,8 @@ function sanityImageUrl(url, { w, q = 60 } = {}) {
 }
 
 function ClientSlider() {
-  const { home, logos: logosLive } = useHomeCtx();
+  const { home, lang, logos: logosLive } = useHomeCtx();
+  const worksId = localizedId('works', lang);
   const logos = logosLive && logosLive.length ? logosLive : CLIENT_LOGOS;
   const ref = React.useRef(null);
   const [paused, setPaused] = React.useState(false);
@@ -168,6 +169,7 @@ function ClientSlider() {
   }, [paused]);
   return (
     <div
+      id={worksId}
       className="client-slider"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}

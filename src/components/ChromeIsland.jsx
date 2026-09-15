@@ -33,7 +33,7 @@ const NAV_STRUCTURE = [
     href: '#solutions',
     items: [
       ['solutionsServices', '#solutions'],
-      ['solutionsWorks', '#solutions'],
+      ['solutionsWorks', '#works'],
     ],
   },
   {
@@ -190,7 +190,7 @@ function buildFooterColumns(lang, pathname, strings) {
       title: strings.footer.columns.solutions.title,
       items: [
         { label: nav.solutionsServices, href: href('#solutions') },
-        { label: nav.solutionsWorks, href: href('#solutions') },
+        { label: nav.solutionsWorks, href: href('#works') },
       ],
     },
     {
