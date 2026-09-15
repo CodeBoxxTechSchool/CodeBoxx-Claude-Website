@@ -67,21 +67,21 @@ export default {
   clientQuotes: [
     {
       quote:
-        'Solutions took over our cluster mid-quarter. Deploys went from a Thursday-night ritual to a 2.4s canary promotion nobody has to watch.',
-      name: 'Marc Lavoie',
-      role: 'VP Engineering, Northline Freight',
+        'CodeBoxx has been given almost impossible requests over the past several months. The velocity of change combined with the organizational impacts of executing a corporate merger and replacing an existing Accenture team (at considerable savings to Lucky) has been nothing short of astounding. The team stepped up and delivered every time, but they also outperformed the Accenture team in every way and exceeded my expectations across the board. I would recommend CodeBoxx for any critical initiative. They are far superior to any development team that I ever worked with.',
+      name: 'Lloyd White',
+      role: 'Head of IT Build Team at Lucky Brand',
     },
     {
       quote:
-        'The console is the status report. Our board reads the same release log our engineers do, with the actor and SHA on every line.',
-      name: 'Priya Raman',
-      role: 'CTO, Meridian Health',
+        "I learned about something interesting that reflects on the incredible work that you guys did at Suitely. Your hard work was recognized in an unexpected way: We were on IAB's list of '250 Brands to Watch: The Most Disruptive Consumer Brands in the US'. Other companies named include the likes of Stitch fix, Peloton, The Honest Company, and a number of other breakout brands. This is mostly a tech achievement and happened because of your ingenuity in technology, creative, and product development.",
+      name: 'Marina Glaxman',
+      role: 'CEO at Suitely',
     },
     {
       quote:
-        'Twelve weeks from signature to a production cut, then a clean handoff of the runbook to our internal team.',
-      name: 'Daniel Okafor',
-      role: 'Director of Platform, Cassel Bank',
+        'CodeBoxx became an extension of the Lucky Brands team. They bring highly capable, business-ready developers from senior to junior level. CodeBoxx is great to work with and because of them, we were able to get more out of our technology investment.',
+      name: 'Matt Kaness',
+      role: 'Former Executive Chairman of the Board & Interim CEO at Lucky Brand',
     },
   ],
   gradQuotes: [

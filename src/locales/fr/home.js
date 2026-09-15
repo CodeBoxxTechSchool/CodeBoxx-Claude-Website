@@ -66,24 +66,27 @@ export default {
   },
   clientSlider: { trustedBy: 'Ils nous font confiance' },
   testimonials: { clientEyebrow: 'Témoignages de clients', gradEyebrow: 'Témoignages de diplômés' },
+  // Kept in English, same as the EN locale — these are direct attributed
+  // quotes from named real clients, not marketing copy, so translating them
+  // would put words in their mouths they didn't actually say.
   clientQuotes: [
     {
       quote:
-        "Solutions a repris notre cluster en plein trimestre. Les déploiements sont passés d'un rituel du jeudi soir à une promotion canary de 2,4 s que personne n'a besoin de surveiller.",
-      name: 'Marc Lavoie',
-      role: 'VP Ingénierie, Northline Freight',
+        'CodeBoxx has been given almost impossible requests over the past several months. The velocity of change combined with the organizational impacts of executing a corporate merger and replacing an existing Accenture team (at considerable savings to Lucky) has been nothing short of astounding. The team stepped up and delivered every time, but they also outperformed the Accenture team in every way and exceeded my expectations across the board. I would recommend CodeBoxx for any critical initiative. They are far superior to any development team that I ever worked with.',
+      name: 'Lloyd White',
+      role: 'Head of IT Build Team at Lucky Brand',
     },
     {
       quote:
-        "La console, c'est le rapport de statut. Notre conseil lit le même journal de mise en production que nos ingénieurs, avec l'auteur et le SHA sur chaque ligne.",
-      name: 'Priya Raman',
-      role: 'CTO, Meridian Health',
+        "I learned about something interesting that reflects on the incredible work that you guys did at Suitely. Your hard work was recognized in an unexpected way: We were on IAB's list of '250 Brands to Watch: The Most Disruptive Consumer Brands in the US'. Other companies named include the likes of Stitch fix, Peloton, The Honest Company, and a number of other breakout brands. This is mostly a tech achievement and happened because of your ingenuity in technology, creative, and product development.",
+      name: 'Marina Glaxman',
+      role: 'CEO at Suitely',
     },
     {
       quote:
-        'Douze semaines entre la signature et une mise en production, suivies d’un transfert propre du runbook à notre équipe interne.',
-      name: 'Daniel Okafor',
-      role: 'Directeur de plateforme, Cassel Bank',
+        'CodeBoxx became an extension of the Lucky Brands team. They bring highly capable, business-ready developers from senior to junior level. CodeBoxx is great to work with and because of them, we were able to get more out of our technology investment.',
+      name: 'Matt Kaness',
+      role: 'Former Executive Chairman of the Board & Interim CEO at Lucky Brand',
     },
   ],
   gradQuotes: [
