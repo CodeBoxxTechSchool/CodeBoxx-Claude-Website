@@ -17,7 +17,7 @@ const CATEGORY_KEYS = [
   'Workshop',
 ];
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 3;
 
 const fmt = (d) =>
   new Date(d + 'T12:00:00').toLocaleDateString('en-US', {
@@ -70,14 +70,14 @@ export default function BlogPosts({ posts, lang, pathname, strings }) {
             </button>
           ))}
         </div>
-        <div className="grid2">
+        <div className="grid3">
           {list.map((p) => (
             <article key={p.slug} className="panel post-card">
               <img
                 src={sanityImageUrl(p.featuredImage, { w: 500 })}
                 alt={p.title}
                 loading="lazy"
-                style={{ width: '100%', height: 200, objectFit: 'cover' }}
+                style={{ width: '100%', height: 270, objectFit: 'cover' }}
               />
               <div className="post-card-body">
                 <div className="post-meta-row">
