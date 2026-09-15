@@ -25,11 +25,8 @@ export default {
     tagline:
       'On bâtit des équipes AI-Native et des logiciels qui vont plus loin que les anciennes façons de faire.',
     columns: {
-      // See common.js (EN) for why solutions/academy have no `items` here.
-      codeboxx: {
-        title: 'CodeBoxx',
-        items: ['Équipes de livraison', "Modèle d'engagement", 'Notes de cas'],
-      },
+      // See common.js (EN) for why these only carry titles.
+      codeboxx: { title: 'CodeBoxx' },
       solutions: { title: 'Solutions' },
       academy: { title: 'Académie' },
     },

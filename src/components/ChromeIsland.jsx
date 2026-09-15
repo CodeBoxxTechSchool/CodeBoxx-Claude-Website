@@ -167,12 +167,11 @@ export function TopBar({ lang, pathname, strings, onCodi, onEnroll }) {
 }
 
 // Footer columns' link data — separate from strings.footer.columns (which only
-// carries each column's title, plus codeboxx's three placeholder-bullet
-// labels; see common.js). solutions/academy are built entirely from nav.* +
-// the exact hrefs NAV_STRUCTURE's own dropdowns use, so this can't drift out
-// of sync with the top menu the way a second, hand-copied list in common.js
-// could. Real hrefs (not the blanket "#top" every footer link used before)
-// since these now point at actual pages/sections, same as the top menu.
+// carries each column's title now; see common.js). Built entirely from nav.* +
+// the exact hrefs NAV_STRUCTURE's own menu/dropdowns use, so this can't drift
+// out of sync with the top menu the way a second, hand-copied list in
+// common.js could. Real hrefs (not the blanket "#top" every footer link used
+// before) since these now point at actual pages/sections, same as the top menu.
 function buildFooterColumns(lang, pathname, strings) {
   const nav = strings.nav;
   const href = (h) => localizedHref(h, lang, pathname);
@@ -181,7 +180,6 @@ function buildFooterColumns(lang, pathname, strings) {
       key: 'codeboxx',
       title: strings.footer.columns.codeboxx.title,
       items: [
-        ...strings.footer.columns.codeboxx.items.map((label) => ({ label, href: href('#top') })),
         { label: nav.ventures, href: href('/ventures') },
         { label: nav.blog, href: href('/blog') },
         { label: nav.about, href: href('#codeboxx') },

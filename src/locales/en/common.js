@@ -26,13 +26,10 @@ export default {
   footer: {
     tagline: 'We build AI-Native teams and software that outwork the old way.',
     columns: {
-      // solutions/academy have no `items` here on purpose — Chrome.jsx/
-      // ChromeIsland.jsx build those columns straight from nav.* + the same
-      // hrefs the top menu's Solutions/Academy dropdowns use, so the footer
-      // can't silently drift out of sync with the top menu. `codeboxx` keeps
-      // its own placeholder bullets (no real destination) and Chrome*.jsx
-      // appends Ventures/Blog/About (real nav.* links) after them.
-      codeboxx: { title: 'CodeBoxx', items: ['Delivery Pods', 'Engagement Model', 'Case Notes'] },
+      // Only titles here — Chrome.jsx/ChromeIsland.jsx build every column's
+      // actual links straight from nav.* + the same hrefs the top menu uses,
+      // so the footer can't silently drift out of sync with it.
+      codeboxx: { title: 'CodeBoxx' },
       solutions: { title: 'Solutions' },
       academy: { title: 'Academy' },
     },
