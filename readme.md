@@ -228,6 +228,30 @@ The video is intentionally **not** shown below the tablet breakpoint or under
 background-image/color instead, to avoid the extra data/battery cost of an autoplaying
 video on mobile networks.
 
+### Section title fade-in
+
+Every `<h2>` on every native page fades/slides in the first time it scrolls into view,
+via `src/components/ScrollReveal.astro` — plain vanilla JS (an `IntersectionObserver`
+adding an `.is-inview` class), not a React island, specifically so it works identically
+on native Astro pages (no React at all) and on Home (one big React island) without
+caring which produced a given `<h2>`. It's included once per page shell: `Layout.astro`
+(Blog/BlogPost/Financing/Ventures) and directly in `src/pages/index.astro`/`fr/index.astro`
+(Home, which doesn't use `Layout.astro`) — not in `LegacyShell.astro`, since that's the
+404-only legacy SPA fallback.
+
+A `MutationObserver` in the same script also watches for `<h2>`s added after the fact —
+Blog's category filter and "load more"/infinite-scroll pagination
+(`BlogPostsIsland.jsx`) mount post-card titles well after the page first loads, and
+without this they'd never get observed at all and would stay invisible forever, not
+just unrevealed until scrolled to.
+
+The CSS (`_components.scss`, "Scroll-reveal fade-in for section h2 titles") only hides
+an `<h2>` under `prefers-reduced-motion: no-preference` — reduced-motion visitors see
+every title in place immediately, no animation, no JS dependency at all. The
+`<noscript>` block in `ScrollReveal.astro` covers the other no-JS case (disabled, or the
+script failing to load): without it, a hidden title with nothing left to add
+`.is-inview` would stay invisible forever too.
+
 ## Deployment
 
 `.github/workflows/deploy.yml` builds the site and rsyncs `dist/` to the

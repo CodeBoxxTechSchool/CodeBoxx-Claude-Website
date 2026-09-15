@@ -1,0 +1,63 @@
+---
+// Fade-in-on-scroll for every section <h2> — plain vanilla JS, not a React
+// island, on purpose: it has to work identically on native Astro pages
+// (Blog/Financing/Ventures/BlogPost, no React involved at all) and on Home
+// (one big React island). Querying the DOM directly after the page's initial
+// HTML has painted sidesteps that split entirely — it doesn't care whether a
+// given <h2> came from Astro's SSR output or HomeIsland's, and it doesn't wait
+// on React hydration to run (matching Astro's SSR promise: the content already
+// exists in the HTML either way, this is a purely presentational enhancement
+// layered on top).
+//
+// The CSS half (`_components.scss`, "Scroll-reveal fade-in for section h2
+// titles") only hides an <h2> under `prefers-reduced-motion: no-preference` —
+// reduced-motion visitors see every title already in place, no animation at
+// all. The <noscript> block below covers the other no-JS case (JS disabled,
+// or this script failing to load): without it, a hidden <h2> with no script to
+// ever add `.is-inview` would stay invisible forever.
+---
+
+<script>
+  const headings = document.querySelectorAll('h2');
+  if (headings.length && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-inview');
+          io.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
+    );
+    headings.forEach((el) => io.observe(el));
+
+    // Blog's category filter and "load more"/infinite-scroll pagination
+    // (BlogPostsIsland.jsx) mount post cards — and their <h2 class="post-title">
+    // titles — well after this script's initial querySelectorAll runs. Without
+    // this, any title that doesn't exist yet at page-load time would never get
+    // observed at all and would stay at opacity:0 forever, not just unrevealed
+    // until scrolled to.
+    new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType !== Node.ELEMENT_NODE) continue;
+          if (node.matches('h2')) io.observe(node);
+          node.querySelectorAll?.('h2').forEach((el) => io.observe(el));
+        }
+      }
+    }).observe(document.body, { childList: true, subtree: true });
+  } else {
+    // No IntersectionObserver (very old browser) — reveal immediately rather
+    // than leaving every title permanently hidden.
+    headings.forEach((el) => el.classList.add('is-inview'));
+  }
+</script>
+<noscript>
+  <style>
+    h2 {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  </style>
+</noscript>
