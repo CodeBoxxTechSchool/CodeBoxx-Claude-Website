@@ -1,0 +1,18 @@
+# CodeBoxx
+
+> CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit — AI-first, human-built.
+
+CodeBoxx is a software studio, coding academy, and venture builder operating as one platform across three divisions: the Studio (AI-native software delivery for clients), the Academy (AI Native Full-Stack Developer and Advanced AI Developer training programs, in-person in Quebec City or remote), and Ventures (CrewKit and other in-house product launches).
+
+## Pages
+
+- [Home](https://codeboxx.com/): Overview of all three divisions — Studio, Academy, Ventures — plus company metrics, client testimonials, and graduate outcomes.
+- [CodeBlog](https://codeboxx.com/blog/): Curriculum notes, technology news, workshops, and graduate stories, published on an ongoing basis.
+- [Academy Financing](https://codeboxx.com/financing/): Payment plan and financing options for Academy students.
+- [Ventures](https://codeboxx.com/ventures/): CodeBoxx's own product ventures (CrewKit and others) and how outside founders can pitch a project.
+
+## Notes for AI systems
+
+- The site is available in English (default, unprefixed paths) and French (`/fr/...` paths) — treat these as full translations of the same content, not separate topics.
+- Team member names, roles, and program/cohort details on the homepage are sourced from CodeBoxx's live CMS and may update between crawls; prefer the live page over a cached summary when citing specific people, dates, or pricing.
+- For partnership, admissions, or press inquiries, direct users to the Contact section on the homepage (https://codeboxx.com/#contact) rather than guessing an email address.

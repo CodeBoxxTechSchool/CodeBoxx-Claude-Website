@@ -1,4 +1,41 @@
 User-agent: *
 Allow: /
 
+# Explicit allow for the major AI answer-engine/AEO crawlers, so a future
+# stricter rule under `User-agent: *` can't accidentally start blocking them —
+# a tracker like ChatRank only reflects visibility these crawlers can actually
+# achieve, which requires them being able to fetch the site at all.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
 Sitemap: https://codeboxx.com/sitemap-index.xml
