@@ -138,7 +138,7 @@ export default {
         'Right after graduating, I got a job offer from RevStar (my top choice).\n\nIn 4 months, I took a 16-week coding course, changed my career to software development, and got my dream job!\n\nThis career change shaped me into the individual I am proud to be today.',
     },
     {
-      photo: '/assets/Tim.avif',
+      photo: '/assets/tim.avif',
       name: 'Tim W.',
       role: 'Junior Software Developer',
       before:
@@ -147,7 +147,7 @@ export default {
         "I found CodeBoxx and discovered that my passion for building things could be applied to coding. Now, I'm furthering my learning as a Full Stack Developer while becoming a part of a great community of like-minded coders, who are always collaborating and growing.",
     },
     {
-      photo: '/assets/Vanessa.avif',
+      photo: '/assets/vanessa.avif',
       name: 'Vanessa P.',
       role: 'iOS App Developer',
       before:
@@ -156,7 +156,7 @@ export default {
         "My first placement out of CodeBoxx was for Bond, a fashion company. Today I am a mobile developer at eBay. There are plenty of options for me now, as opposed to the service industry. I'm very grateful that I decided to go with CodeBoxx.",
     },
     {
-      photo: '/assets/Abdul.avif',
+      photo: '/assets/abdul.avif',
       name: 'Abdul R.',
       role: 'Software Developer',
       before:
