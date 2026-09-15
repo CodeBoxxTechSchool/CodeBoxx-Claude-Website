@@ -788,7 +788,10 @@ const SEED_INTAKES_META = [
 // column is a *different program* in the same row (FSD left, Advanced
 // AI-Developer right — see IntakeCalendar), so the program name moved down
 // into the column itself, stacked above paceTitle.
-function CalendarColumn({ programTitle, paceTitle, rows, onEnroll }) {
+// `hidden` visually hides the column (Bootstrap's `d-none`) without removing
+// it from the tree — used for Part Time below, which still renders (still
+// fetched, still in the DOM/architecture) but isn't shown in the UI.
+function CalendarColumn({ programTitle, paceTitle, rows, onEnroll, hidden }) {
   const { home } = useHomeCtx();
   const tone = {
     Open: 'status-open',
@@ -798,7 +801,7 @@ function CalendarColumn({ programTitle, paceTitle, rows, onEnroll }) {
   };
   const statusLabel = home.intake.status;
   return (
-    <div className="calendar-col">
+    <div className={'calendar-col' + (hidden ? ' d-none' : '')}>
       <div className="calendar-col-head">
         <span className="calendar-col-title">{programTitle}</span>
         <span className="calendar-col-title calendar-pace-title">{paceTitle}</span>
@@ -842,13 +845,18 @@ function IntakeCalendar({ onEnroll }) {
   }));
   const programs = useIntakes() || seed;
   // Fixed 2-column layout per request: left = AI-Native FSD, right = Advanced
-  // AI-Developer, both showing only their "Full Time" dates (relabeled
+  // AI-Developer, each visibly showing only its "Full Time" dates (relabeled
   // "Cohort Start Date" — see home.intake.cohortStartDate). This replaces the
   // old data-driven "one row per program, each with its own Full Time/Part
   // Time columns" layout. Left/right here is just array order — the seed
   // array is already [fsd, aidev], and live Sanity data is already sorted by
   // each program's `order` field (see lib/intakes.js), the same assumption
   // the old row-per-program layout relied on for ordering.
+  //
+  // Part Time is still fetched and rendered below (same paces/schema as
+  // before) — only hidden visually, via CalendarColumn's `hidden` prop — so
+  // the pace data stays live/architecturally present rather than pretending
+  // it doesn't exist. See the comment at that block for how to re-show it.
   const [fsdProgram, aidevProgram] = programs;
   return (
     <div id={intakeId} className="calendar-band">
@@ -878,12 +886,14 @@ function IntakeCalendar({ onEnroll }) {
                 onEnroll={() => onEnroll(aidevProgram.title)}
               />
             ) : null}
-            {/* Part Time hidden per request — could come back someday, and
-            the data (both seed and live Sanity) still has a "Part Time"
-            bucket on every program either way, so restoring this is just
-            uncommenting these two columns, not re-adding any data:
+            {/* Part Time hidden in the UI only (CalendarColumn's `hidden`
+            prop -> d-none) — still fetched and rendered here in the
+            architecture, per request, so re-showing it later is a CSS-only
+            change (drop `hidden` below), not restoring a removed code path
+            or re-fetching data that wasn't being retrieved. */}
             {fsdProgram ? (
               <CalendarColumn
+                hidden
                 programTitle={fsdProgram.title}
                 paceTitle={home.intake.partTime}
                 rows={fsdProgram.paces['Part Time']}
@@ -892,12 +902,13 @@ function IntakeCalendar({ onEnroll }) {
             ) : null}
             {aidevProgram ? (
               <CalendarColumn
+                hidden
                 programTitle={aidevProgram.title}
                 paceTitle={home.intake.partTime}
                 rows={aidevProgram.paces['Part Time']}
                 onEnroll={() => onEnroll(aidevProgram.title)}
               />
-            ) : null} */}
+            ) : null}
           </div>
         </div>
       </div>
