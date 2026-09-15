@@ -169,43 +169,37 @@ function GradCard({ t, labels }) {
   );
 }
 
-// First 3 render as the always-visible .grid3 cards (same treatment as
-// Testimonials above); the rest cycle through a one-at-a-time slider below —
-// there are more of these than fit comfortably in a static row, and each has
-// enough text that ClientSlider's auto-advancing-strip approach would be
-// actively unhelpful (cuts a reader off mid-paragraph).
+// All 8 render as GradCard — same look as before, but every one of them now
+// lives inside one horizontal slider (none pinned outside it as a static
+// "featured 3"). Mechanically the same horizontal-scroll-track + nudge-button
+// pattern as ClientSlider below, just carrying full testimonial cards instead
+// of small logo tiles — and deliberately no auto-scroll (unlike
+// ClientSlider's), since these have enough text that auto-advancing mid-read
+// would be actively unhelpful.
 function GraduateTestimonials({ eyebrow, items, labels }) {
-  const featured = items.slice(0, 3);
-  const rest = items.slice(3);
-  const [index, setIndex] = React.useState(0);
-  const prev = () => setIndex((i) => (i - 1 + rest.length) % rest.length);
-  const next = () => setIndex((i) => (i + 1) % rest.length);
+  const ref = React.useRef(null);
+  const nudge = (d) => {
+    const el = ref.current;
+    if (el) el.scrollBy({ left: d * el.clientWidth * 0.8, behavior: 'smooth' });
+  };
   return (
     <div className="testimonials">
-      <p className="eyebrow">{eyebrow}</p>
-      <div className="grid3">
-        {featured.map((t) => (
+      <div className="grad-slider-head">
+        <p className="eyebrow">{eyebrow}</p>
+        <div className="d-flex gap-2">
+          <Button size="sm" variant="outline-primary" onClick={() => nudge(-1)}>
+            &lt;
+          </Button>
+          <Button size="sm" variant="outline-primary" onClick={() => nudge(1)}>
+            &gt;
+          </Button>
+        </div>
+      </div>
+      <div ref={ref} className="noscroll grad-track">
+        {items.map((t) => (
           <GradCard key={t.name} t={t} labels={labels} />
         ))}
       </div>
-      {rest.length ? (
-        <div className="grad-slider">
-          <GradCard t={rest[index]} labels={labels} />
-          {rest.length > 1 ? (
-            <div className="grad-slider-nav">
-              <Button size="sm" variant="outline-primary" onClick={prev}>
-                &lt;
-              </Button>
-              <span className="grad-slider-count">
-                {index + 1} / {rest.length}
-              </span>
-              <Button size="sm" variant="outline-primary" onClick={next}>
-                &gt;
-              </Button>
-            </div>
-          ) : null}
-        </div>
-      ) : null}
     </div>
   );
 }
