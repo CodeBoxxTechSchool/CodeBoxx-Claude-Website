@@ -240,6 +240,52 @@
   color: v.$ui-slate-400;
 }
 
+// Graduate testimonials only (GraduateTestimonials/GradCard in
+// HomeIsland.jsx) — a two-part "Where I was" / "Where I Am" quote instead of
+// .testimonial-quote's single block of text.
+.grad-testimonial-quote {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  p {
+    margin: 0;
+
+    & + p {
+      margin-top: 12px;
+    }
+  }
+}
+.testimonial-label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: v.$weight-bold;
+  color: v.$blue-500;
+}
+
+// Horizontal slider carrying every graduate testimonial (GraduateTestimonials
+// in HomeIsland.jsx) — same head/track/nudge-button structure as
+// .client-slider-head/.client-track below, just sized for full testimonial
+// cards instead of small logo tiles.
+.grad-slider-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+.grad-track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+
+  .grad-testimonial {
+    flex: 0 0 380px;
+    width: 380px;
+    scroll-snap-align: start;
+  }
+}
+
 // ---- Codi chat drawer (react-bootstrap Offcanvas) ----
 .codi-offcanvas {
   --bs-offcanvas-width: 420px;

@@ -63,7 +63,12 @@ export default {
     seeAllPosts: 'See All Posts',
   },
   clientSlider: { trustedBy: 'Trusted By' },
-  testimonials: { clientEyebrow: 'Client Testimonials', gradEyebrow: 'Graduate Testimonials' },
+  testimonials: {
+    clientEyebrow: 'Client Testimonials',
+    gradEyebrow: 'Graduate Testimonials',
+    whereIWas: 'Where I was',
+    whereIAm: 'Where I Am',
+  },
   clientQuotes: [
     {
       quote:
@@ -84,24 +89,80 @@ export default {
       role: 'Former Executive Chairman of the Board & Interim CEO at Lucky Brand',
     },
   ],
+  // First 3 render as the always-visible cards; the rest (index 3+) go into
+  // the one-at-a-time slider — see GraduateTestimonials in HomeIsland.jsx.
   gradQuotes: [
     {
-      quote:
-        'I merged my first pull request in week two and deployed to a shared cluster in week six. Nothing was a simulation.',
-      name: 'Ariane Bouchard',
-      role: 'Cohort 21 — Junior Engineer, CodeBoxx',
+      photo: '/assets/miachel.avif',
+      name: 'Michael P.',
+      role: 'Junior Software Developer',
+      before:
+        'Before CodeBoxx, I was a project manager in commercial and industrial HVAC construction. During the program, I was offered the opportunity to buy the company and continue to grow it. I decided to take on the challenge!',
+      after:
+        "For me, CodeBoxx is a team of people who are passionate about the field and who helped me acquire knowledge that I didn't have before, while having fun doing it. It's a great gateway into the tech field!",
     },
     {
-      quote:
-        'Weeks nine to twelve put me inside a client pod. The review standard was the same one the senior engineers were held to.',
-      name: 'Tomás Herrera',
-      role: 'Cohort 19 — Platform Engineer, Meridian Health',
+      photo: '/assets/colby.avif',
+      name: 'Cody C.',
+      role: 'Junior Software Developer',
+      before:
+        'Before Codeboxx, I was working full-time in ministry, mentoring men in early recovery and finding deep fulfillment in that calling. Yet I also wanted to launch a career path that could sustain me long term. Codeboxx opened that door, taking me from zero tech experience to building a career in the tech industry.',
+      after:
+        'Now I serve as a coach at CodeBoxx, guiding new students while still continuing my ministry work. For me, Codeboxx is more than just a training program — it’s the bridge between purpose and sustainability, and a place where I can pay it forward.',
     },
     {
-      quote:
-        'No degree, an entrance assessment and twelve weeks. I was hired into the pod I trained in.',
-      name: 'Naomi Fields',
-      role: 'Cohort 23 — Software Engineer, Northline Freight',
+      photo: '/assets/gavriel.avif',
+      name: 'Gavriel R.',
+      role: 'Junior Software Developer',
+      before:
+        'I moved to Florida from the UK after dropping out of university. I was running a food truck business while studying for a part-time degree.',
+      after:
+        'I became a coach specializing in AI, ML, and DS, and now I’m the lead software engineer at Journey Viral, a rapidly growing and exciting start-up, developing AI integrations, GCloud infra, React FED, Python, and PostgreSQL BED.\n\nCodeBoxx provided a flexible, supportive space to hone my craft, push myself, and redefine my limits. It taught me a lot about leadership in tech.',
+    },
+    {
+      photo: '/assets/william.avif',
+      name: 'William M.',
+      role: 'Junior Software Developer',
+      before:
+        'Before CodeBoxx I worked in construction. Everything from building/fixing pallets, mixing, pouring, finishing concrete trenches and lids, to operating forklifts and front end loaders.',
+      after:
+        'Today I help coach the same Full Stack Development program that I went through. Help facilitate an AI Literacy class through partnerships CodeBoxx has. I continue to sharpen my development skills by working on various projects. CodeBoxx has transcended the core pillars into a way of life for me. It has been completely life changing! No more manual labor beating up my body that gave little meaning to my life. CodeBoxx has become a second family to me.',
+    },
+    {
+      photo: '/assets/gaby.avif',
+      name: 'Gabby C.',
+      role: 'Junior Software Developer',
+      before:
+        'I was the general manager at a tea bar in downtown St. Pete from 2019 - 2023. Seeing no growth or future with the company and also being burnt out from the customer service industry, I decided to take the full stack development course at CodeBoxx.',
+      after:
+        'Right after graduating, I got a job offer from RevStar (my top choice).\n\nIn 4 months, I took a 16-week coding course, changed my career to software development, and got my dream job!\n\nThis career change shaped me into the individual I am proud to be today.',
+    },
+    {
+      photo: '/assets/tim.avif',
+      name: 'Tim W.',
+      role: 'Junior Software Developer',
+      before:
+        "I did labor-intensive jobs my whole life. I started as a welder at the shipping docks straight out of high school. Fast forward almost 10+ years and several jobs later, I started to realize I couldn't keep doing this.",
+      after:
+        "I found CodeBoxx and discovered that my passion for building things could be applied to coding. Now, I'm furthering my learning as a Full Stack Developer while becoming a part of a great community of like-minded coders, who are always collaborating and growing.",
+    },
+    {
+      photo: '/assets/vanessa.avif',
+      name: 'Vanessa P.',
+      role: 'iOS App Developer',
+      before:
+        'I got my diploma in culinary arts and made pastries for about 10 years. When I was ​looking to switch fields, CodeBoxx was at the top of my list.',
+      after:
+        "My first placement out of CodeBoxx was for Bond, a fashion company. Today I am a mobile developer at eBay. There are plenty of options for me now, as opposed to the service industry. I'm very grateful that I decided to go with CodeBoxx.",
+    },
+    {
+      photo: '/assets/abdul.avif',
+      name: 'Abdul R.',
+      role: 'Software Developer',
+      before:
+        "I started working at McDonald's at 16. And then I moved into gig work - Uber, GrubHub, DoorDash, you name it. I was trading money for time and working from 8 AM to midnight. I knew something had to change.",
+      after:
+        "I'm in another part of my career. And that's the key word - career. It's not the clock-in, clock-out work from before. It's a career I can be in and grow into as I get older.",
     },
   ],
   studio: {
