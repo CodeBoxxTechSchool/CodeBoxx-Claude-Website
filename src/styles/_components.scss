@@ -299,14 +299,15 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  // Lighter than .hero's own baked-in scrim (rgba(0,47,67,.82)) — that one was
-  // tuned to sit over a static photo; this one only needs to hold text contrast
-  // over motion without hiding the video underneath it.
+  // HeroVideo.astro always sets this inline (its `overlay` prop, per-instance —
+  // e.g. ForgeTeaser's crewkit-forge video uses a flat 60% black instead of
+  // this navy tint). This is only a fallback for the rare case something
+  // renders .hero-video-scrim without going through that component.
   background: rgba(0, 47, 67, 0.55);
 }
 
 // Every .band-dark instance gets this rule (Blog/Financing/Ventures' Band, plus
-// Home's WSJTeaser/ForgeTeaser, which never render a .hero-video) — harmless
+// Home's WSJTeaser, which never renders a .hero-video) — harmless
 // where there's no video layer to stack against, and it's what keeps a band's
 // actual content above the video+scrim on the ones that do have it.
 .band-dark {
