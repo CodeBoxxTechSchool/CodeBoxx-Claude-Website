@@ -73,12 +73,13 @@ export default function BlogPosts({ posts, lang, pathname, strings }) {
         <div className="grid2">
           {list.map((p) => (
             <article key={p.slug} className="panel post-card">
-              <img
-                src={sanityImageUrl(p.featuredImage, { w: 500 })}
-                alt={p.title}
-                loading="lazy"
-                style={{ width: '100%', height: 200, objectFit: 'cover' }}
-              />
+              <div className="post-card-media">
+                <img
+                  src={sanityImageUrl(p.featuredImage, { w: 500 })}
+                  alt={p.title}
+                  loading="lazy"
+                />
+              </div>
               <div className="post-card-body">
                 <div className="post-meta-row">
                   <Badge bg="brand">{p.category}</Badge>

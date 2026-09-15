@@ -320,7 +320,7 @@
 // Below tablet width and under reduced-motion, skip the video: the section's
 // existing static background-image/color already covers the phone/no-motion
 // case, so there's nothing else these need to fall back to.
-@media (max-width: 767.98px), (prefers-reduced-motion: reduce) {
+@media (max-width: v.$breakpoint-sm), (prefers-reduced-motion: reduce) {
   .hero-video,
   .hero-video-scrim {
     display: none;

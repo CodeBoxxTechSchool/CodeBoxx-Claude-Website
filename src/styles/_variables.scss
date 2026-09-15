@@ -173,6 +173,10 @@ $tracking-hero-eyebrow: 0.5px;
 
 // ---- Breakpoints ----
 $breakpoint-md: 1000px;
+// Same value the hero-video CSS already used inline (_components.scss) for its
+// own mobile cutoff — named here so .post-card's fallback stays in sync with it
+// instead of drifting to a different number by accident.
+$breakpoint-sm: 767.98px;
 
 // ---- Radius scale ----
 $radius-sm: 4px;
