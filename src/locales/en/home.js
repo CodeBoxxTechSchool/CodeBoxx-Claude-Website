@@ -401,6 +401,10 @@ export default {
     editable: 'Editable in Sanity',
     fsd: { title: 'AI-Native FSD' },
     aidev: { title: 'Advanced AI-Developer' },
+    // Currently the only column title shown — see the "Part Time hidden" note
+    // in IntakeCalendar (HomeIsland.jsx) for why fullTime/partTime below stay
+    // defined and unused rather than being deleted.
+    cohortStartDate: 'Cohort Start Date',
     fullTime: 'Full Time',
     partTime: 'Part Time',
     onDemand: 'On Demand',

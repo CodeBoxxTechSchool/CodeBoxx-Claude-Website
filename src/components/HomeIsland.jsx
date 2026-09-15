@@ -783,7 +783,12 @@ const SEED_INTAKES_META = [
   },
 ];
 
-function CalendarColumn({ title, rows, onEnroll }) {
+// programTitle used to be shown once per row, shared by both of that
+// program's pace columns (Full Time / Part Time side by side). Now each
+// column is a *different program* in the same row (FSD left, Advanced
+// AI-Developer right — see IntakeCalendar), so the program name moved down
+// into the column itself, stacked above paceTitle.
+function CalendarColumn({ programTitle, paceTitle, rows, onEnroll }) {
   const { home } = useHomeCtx();
   const tone = {
     Open: 'status-open',
@@ -795,7 +800,8 @@ function CalendarColumn({ title, rows, onEnroll }) {
   return (
     <div className="calendar-col">
       <div className="calendar-col-head">
-        <span className="calendar-col-title calendar-pace-title">{title}</span>
+        <span className="calendar-col-title">{programTitle}</span>
+        <span className="calendar-col-title calendar-pace-title">{paceTitle}</span>
       </div>
       {rows.map(([date, place, status], i) => (
         <div key={i} className="calendar-row">
@@ -835,6 +841,15 @@ function IntakeCalendar({ onEnroll }) {
     paces: p.paces,
   }));
   const programs = useIntakes() || seed;
+  // Fixed 2-column layout per request: left = AI-Native FSD, right = Advanced
+  // AI-Developer, both showing only their "Full Time" dates (relabeled
+  // "Cohort Start Date" — see home.intake.cohortStartDate). This replaces the
+  // old data-driven "one row per program, each with its own Full Time/Part
+  // Time columns" layout. Left/right here is just array order — the seed
+  // array is already [fsd, aidev], and live Sanity data is already sorted by
+  // each program's `order` field (see lib/intakes.js), the same assumption
+  // the old row-per-program layout relied on for ordering.
+  const [fsdProgram, aidevProgram] = programs;
   return (
     <div id={intakeId} className="calendar-band">
       <div className="calendar-head">
@@ -845,23 +860,46 @@ function IntakeCalendar({ onEnroll }) {
         <Badge bg="brand">{home.intake.editable}</Badge>
       </div>
       <div className="calendar-rows">
-        {programs.map((p) => (
-          <div key={p.id} className="calendar-program-row">
-            <span className="calendar-col-title">{p.title}</span>
-            <div className="calendar-cols calendar-grid">
+        <div className="calendar-program-row">
+          <div className="calendar-cols calendar-grid">
+            {fsdProgram ? (
               <CalendarColumn
-                title={home.intake.fullTime}
-                rows={p.paces['Full Time']}
-                onEnroll={() => onEnroll(p.title)}
+                programTitle={fsdProgram.title}
+                paceTitle={home.intake.cohortStartDate}
+                rows={fsdProgram.paces['Full Time']}
+                onEnroll={() => onEnroll(fsdProgram.title)}
               />
+            ) : null}
+            {aidevProgram ? (
               <CalendarColumn
-                title={home.intake.partTime}
-                rows={p.paces['Part Time']}
-                onEnroll={() => onEnroll(p.title)}
+                programTitle={aidevProgram.title}
+                paceTitle={home.intake.cohortStartDate}
+                rows={aidevProgram.paces['Full Time']}
+                onEnroll={() => onEnroll(aidevProgram.title)}
               />
-            </div>
+            ) : null}
+            {/* Part Time hidden per request — could come back someday, and
+            the data (both seed and live Sanity) still has a "Part Time"
+            bucket on every program either way, so restoring this is just
+            uncommenting these two columns, not re-adding any data:
+            {fsdProgram ? (
+              <CalendarColumn
+                programTitle={fsdProgram.title}
+                paceTitle={home.intake.partTime}
+                rows={fsdProgram.paces['Part Time']}
+                onEnroll={() => onEnroll(fsdProgram.title)}
+              />
+            ) : null}
+            {aidevProgram ? (
+              <CalendarColumn
+                programTitle={aidevProgram.title}
+                paceTitle={home.intake.partTime}
+                rows={aidevProgram.paces['Part Time']}
+                onEnroll={() => onEnroll(aidevProgram.title)}
+              />
+            ) : null} */}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );

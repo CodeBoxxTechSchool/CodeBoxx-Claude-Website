@@ -424,6 +424,8 @@ export default {
     editable: 'Modifiable dans Sanity',
     fsd: { title: 'FSD AI-Native' },
     aidev: { title: 'Développeur IA avancé' },
+    // See common.js (EN) for why fullTime/partTime stay defined and unused.
+    cohortStartDate: 'Date de début de cohorte',
     fullTime: 'Temps plein',
     partTime: 'Temps partiel',
     onDemand: 'Sur demande',
