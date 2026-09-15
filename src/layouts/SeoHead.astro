@@ -30,11 +30,36 @@ const desc =
   description && description.length > 160
     ? description.slice(0, 159).replace(/\s+\S*$/, '') + '…'
     : description || '';
-const schemas = Array.isArray(structuredData)
+const pageSchemas = Array.isArray(structuredData)
   ? structuredData
   : structuredData
     ? [structuredData]
     : [];
+
+// Sitewide Organization + WebSite JSON-LD, on every native page (not just the
+// ones that pass their own structuredData, like BlogPosting on a post page) —
+// this is the baseline fact sheet an AI answer engine (ChatGPT, Perplexity,
+// Gemini, and rank-tracking tools like ChatRank that monitor how those engines
+// cite a brand) uses to identify who CodeBoxx is at all, independent of
+// whatever page it happened to crawl. Mirrors the copy already used in
+// LegacyShell.astro's own Organization schema, so the two don't say different
+// things about the same company.
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE_NAME,
+  url: SITE_URL + '/',
+  description:
+    'CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit.',
+  logo: SITE_URL + '/favicon.svg',
+};
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE_NAME,
+  url: SITE_URL + '/',
+};
+const schemas = [organizationSchema, websiteSchema, ...pageSchemas];
 ---
 
 <meta charset="utf-8" />
