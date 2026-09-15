@@ -28,6 +28,11 @@ export const HASH_TABLE = {
   'about-history': { en: 'about-history', fr: 'historique' },
   'about-vision': { en: 'about-vision', fr: 'vision-mission' },
   solutions: { en: 'solutions', fr: 'solutions' },
+  // The "Works" nav/footer link — matches nav.solutionsWorks ("Works" /
+  // "Réalisations") — targets the trusted-companies logo slider specifically,
+  // not just the top of the Solutions section (see ClientSlider in
+  // HomeIsland.jsx, which is what actually carries this id).
+  works: { en: 'works', fr: 'realisations' },
   academy: { en: 'academy', fr: 'academie' },
   'academy-courses': { en: 'academy-courses', fr: 'academie-cours' },
   intake: { en: 'intake', fr: 'admission' },
