@@ -690,11 +690,15 @@ function ServiceDetail({ s }) {
 }
 
 function Solutions() {
-  const { home, lang, pathname } = useHomeCtx();
+  const { home, lang, pathname, clientTestimonials: clientTestimonialsLive } = useHomeCtx();
   const services = useServices(home);
   const solutionsId = localizedId('solutions', lang);
   const [activeId, setActiveId] = React.useState('cto');
   const active = services.find((s) => s.id === activeId) || services[0];
+  const clientQuotes =
+    clientTestimonialsLive && clientTestimonialsLive.length
+      ? clientTestimonialsLive
+      : home.clientQuotes;
   return (
     <DivisionBand
       id={solutionsId}
@@ -717,7 +721,7 @@ function Solutions() {
       after={
         <React.Fragment>
           <ClientSlider />
-          <Testimonials eyebrow={home.testimonials.clientEyebrow} items={home.clientQuotes} />
+          <Testimonials eyebrow={home.testimonials.clientEyebrow} items={clientQuotes} />
         </React.Fragment>
       }
       lede={null}
@@ -991,11 +995,21 @@ function useAcademyTopics(home) {
 }
 
 function Academy({ onEnroll }) {
-  const { home, lang, pathname, academyTeam: academyTeamLive } = useHomeCtx();
+  const {
+    home,
+    lang,
+    pathname,
+    academyTeam: academyTeamLive,
+    graduateTestimonials: graduateTestimonialsLive,
+  } = useHomeCtx();
   const topics = useAcademyTopics(home);
   const [active, setActive] = React.useState(0);
   const academyTeam =
     academyTeamLive && academyTeamLive.length ? academyTeamLive : topics[2].people;
+  const gradQuotes =
+    graduateTestimonialsLive && graduateTestimonialsLive.length
+      ? graduateTestimonialsLive
+      : home.gradQuotes;
   const academyId = localizedId('academy', lang);
   const coursesHash = '#' + localizedId('academy-courses', lang);
   const academyHash = '#' + localizedId('academy', lang);
@@ -1027,7 +1041,7 @@ function Academy({ onEnroll }) {
           <IntakeCalendar onEnroll={onEnroll} />
           <GraduateTestimonials
             eyebrow={home.testimonials.gradEyebrow}
-            items={home.gradQuotes}
+            items={gradQuotes}
             labels={home.testimonials}
           />
         </React.Fragment>
@@ -1781,6 +1795,8 @@ export default function HomeIsland({
   academyTeam,
   logos,
   latestPosts,
+  clientTestimonials,
+  graduateTestimonials,
 }) {
   const [codi, setCodi] = React.useState(false);
   const [enroll, setEnroll] = React.useState(null);
@@ -1796,7 +1812,18 @@ export default function HomeIsland({
   }, []);
   return (
     <HomeCtx.Provider
-      value={{ lang, pathname, home, common, studioTeam, academyTeam, logos, latestPosts }}
+      value={{
+        lang,
+        pathname,
+        home,
+        common,
+        studioTeam,
+        academyTeam,
+        logos,
+        latestPosts,
+        clientTestimonials,
+        graduateTestimonials,
+      }}
     >
       <div id="top">
         <TopBar

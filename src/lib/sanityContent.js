@@ -153,3 +153,52 @@ export async function fetchLogos() {
     return null;
   }
 }
+
+function toClientTestimonial(entry) {
+  return { quote: entry.quote, name: entry.name, role: entry.role };
+}
+
+function toGraduateTestimonial(entry) {
+  return {
+    photo: entry.photoUrl,
+    name: entry.name,
+    role: entry.role,
+    before: entry.before,
+    after: entry.after,
+  };
+}
+
+// Same null-or-live shape as fetchTeam/fetchLogos — HomeIsland.jsx falls back to
+// its own hardcoded quotes (home.clientQuotes in src/locales/*/home.js) when this
+// is null, so the real client testimonials already on the site stay as the seed
+// rather than being lost when this collection is empty (e.g. before an editor has
+// entered them into Sanity yet).
+export async function fetchClientTestimonials() {
+  if (!PROJECT_ID) return null;
+  try {
+    const rows = await fetchCollection(
+      'clientTestimonial',
+      ' | order(order asc) {quote, name, role}'
+    );
+    return rows && rows.length ? rows.map(toClientTestimonial) : null;
+  } catch (err) {
+    console.warn('[sanity]', err.message);
+    return null;
+  }
+}
+
+// Same shape/reasoning as fetchClientTestimonials, falling back to
+// home.gradQuotes.
+export async function fetchGraduateTestimonials() {
+  if (!PROJECT_ID) return null;
+  try {
+    const rows = await fetchCollection(
+      'graduateTestimonial',
+      ' | order(order asc) {name, role, before, after, "photoUrl": photo.asset->url}'
+    );
+    return rows && rows.length ? rows.map(toGraduateTestimonial) : null;
+  } catch (err) {
+    console.warn('[sanity]', err.message);
+    return null;
+  }
+}
