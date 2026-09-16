@@ -1,23 +1,30 @@
 import React from 'react';
 
-const PROJECT_ID = import.meta.env.VITE_SANITY_PROJECT_ID;
-const DATASET = import.meta.env.VITE_SANITY_DATASET || 'production';
-const API_VERSION = import.meta.env.VITE_SANITY_API_VERSION || '2024-01-01';
-const TOKEN = import.meta.env.VITE_SANITY_TOKEN;
+// PUBLIC_ (not VITE_) is deliberate: Astro only statically inlines PUBLIC_-
+// prefixed vars into browser-bundled code (its own convention, layered on top
+// of Vite's default VITE_ prefix — see astro.config.mjs, which doesn't
+// override it). VITE_SANITY_* stays correct for sanityContent.js, which only
+// ever runs server-side at build time and so is never subject to that
+// client-bundle filtering; this file is the one Sanity consumer that actually
+// ships to the browser (via lib/intakes.js's useIntakes(), the one piece of
+// Home that fetches client-side), so it needs the client-visible name instead.
+// No token here on purpose: this dataset allows public reads, and a
+// write-capable token must never ship in browser-readable JS.
+const PROJECT_ID = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
+const DATASET = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
+const API_VERSION = import.meta.env.PUBLIC_SANITY_API_VERSION || '2024-01-01';
 
 // Lets other modules (e.g. intakes.js) skip a doomed fetch quietly instead of
 // hitting the same "not configured" warning fetchCollection already throws.
 export const hasSanityProject = Boolean(PROJECT_ID);
 
 export async function fetchCollection(type, groqTail = '') {
-  if (!PROJECT_ID) throw new Error('VITE_SANITY_PROJECT_ID is not set.');
+  if (!PROJECT_ID) throw new Error('PUBLIC_SANITY_PROJECT_ID is not set.');
   const url = new URL(
     'https://' + PROJECT_ID + '.apicdn.sanity.io/v' + API_VERSION + '/data/query/' + DATASET
   );
   url.searchParams.set('query', '*[_type == "' + type + '"]' + groqTail);
-  const res = await fetch(url, {
-    headers: TOKEN ? { Authorization: 'Bearer ' + TOKEN } : {},
-  });
+  const res = await fetch(url);
   if (!res.ok) throw new Error('Sanity ' + res.status + ' on ' + type);
   const body = await res.json();
   return body.result;
