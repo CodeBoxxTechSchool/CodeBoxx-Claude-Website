@@ -263,23 +263,25 @@
   color: v.$blue-500;
 }
 
-// Horizontal slider carrying every graduate testimonial (GraduateTestimonials
-// in HomeIsland.jsx) — same head/track/nudge-button structure as
-// .client-slider-head/.client-track below, just sized for full testimonial
+// Horizontal slider shared by GraduateTestimonials (always a slider) and
+// Testimonials (client testimonials — only switches to this once there are
+// more than 3) in HomeIsland.jsx — same head/track/nudge-button structure as
+// .client-slider-head/.client-track above, just sized for full testimonial
 // cards instead of small logo tiles.
-.grad-slider-head {
+.testimonial-slider-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 24px;
 }
-.grad-track {
+.testimonial-track {
   display: flex;
   gap: 24px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
 
-  .grad-testimonial {
+  .grad-testimonial,
+  .client-testimonial {
     flex: 0 0 380px;
     width: 380px;
     scroll-snap-align: start;

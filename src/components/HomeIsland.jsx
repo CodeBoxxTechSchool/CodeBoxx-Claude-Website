@@ -105,25 +105,62 @@ function Codi({ open, onClose }) {
   );
 }
 
+function ClientCard({ t }) {
+  return (
+    <figure className="panel testimonial client-testimonial">
+      <blockquote className="testimonial-quote">{t.quote}</blockquote>
+      <figcaption className="testimonial-byline">
+        <div className="rule" />
+        <div className="testimonial-person">
+          <Avatar size="md" />
+          <div className="d-flex flex-column gap-1">
+            <span className="testimonial-name">{t.name}</span>
+            <span className="testimonial-role">{t.role}</span>
+          </div>
+        </div>
+      </figcaption>
+    </figure>
+  );
+}
+
+// 3 or fewer: the static 3-up grid, as before. More than 3 (e.g. once an
+// editor adds a 4th client testimonial in Sanity): the same horizontal
+// scroll-track + nudge-button slider GraduateTestimonials uses below, for
+// the same reason — no auto-scroll, since these are read, not glanced at.
 function Testimonials({ eyebrow, items }) {
+  const ref = React.useRef(null);
+  const nudge = (d) => {
+    const el = ref.current;
+    if (el) el.scrollBy({ left: d * el.clientWidth * 0.8, behavior: 'smooth' });
+  };
+  if (items.length > 3) {
+    return (
+      <div className="testimonials">
+        <div className="testimonial-slider-head">
+          <p className="eyebrow">{eyebrow}</p>
+          <div className="d-flex gap-2">
+            <Button size="sm" variant="outline-primary" onClick={() => nudge(-1)}>
+              &lt;
+            </Button>
+            <Button size="sm" variant="outline-primary" onClick={() => nudge(1)}>
+              &gt;
+            </Button>
+          </div>
+        </div>
+        <div ref={ref} className="noscroll testimonial-track">
+          {items.map((t) => (
+            <ClientCard key={t.name} t={t} />
+          ))}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="testimonials">
       <p className="eyebrow">{eyebrow}</p>
       <div className="grid3">
         {items.map((t) => (
-          <figure key={t.name} className="panel testimonial">
-            <blockquote className="testimonial-quote">{t.quote}</blockquote>
-            <figcaption className="testimonial-byline">
-              <div className="rule" />
-              <div className="testimonial-person">
-                <Avatar size="md" />
-                <div className="d-flex flex-column gap-1">
-                  <span className="testimonial-name">{t.name}</span>
-                  <span className="testimonial-role">{t.role}</span>
-                </div>
-              </div>
-            </figcaption>
-          </figure>
+          <ClientCard key={t.name} t={t} />
         ))}
       </div>
     </div>
@@ -184,7 +221,7 @@ function GraduateTestimonials({ eyebrow, items, labels }) {
   };
   return (
     <div className="testimonials">
-      <div className="grad-slider-head">
+      <div className="testimonial-slider-head">
         <p className="eyebrow">{eyebrow}</p>
         <div className="d-flex gap-2">
           <Button size="sm" variant="outline-primary" onClick={() => nudge(-1)}>
@@ -195,7 +232,7 @@ function GraduateTestimonials({ eyebrow, items, labels }) {
           </Button>
         </div>
       </div>
-      <div ref={ref} className="noscroll grad-track">
+      <div ref={ref} className="noscroll testimonial-track">
         {items.map((t) => (
           <GradCard key={t.name} t={t} labels={labels} />
         ))}
