@@ -7,19 +7,28 @@
 import SeoHead from '../layouts/SeoHead.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import HomeIsland from '../components/HomeIsland';
-import { fetchTeam, fetchLogos, fetchPostList } from '../lib/sanityContent';
+import {
+  fetchTeam,
+  fetchLogos,
+  fetchPostList,
+  fetchClientTestimonials,
+  fetchGraduateTestimonials,
+} from '../lib/sanityContent';
 import { LATEST_POSTS } from '../lib/homeSeed';
 import '../styles/main.scss';
 import common from '../locales/en/common';
 import home from '../locales/en/home';
 
 const pathname = Astro.url.pathname;
-const [studioTeam, academyTeam, logos, latestPosts] = await Promise.all([
-  fetchTeam('studio'),
-  fetchTeam('academy'),
-  fetchLogos(),
-  fetchPostList(LATEST_POSTS),
-]);
+const [studioTeam, academyTeam, logos, latestPosts, clientTestimonials, graduateTestimonials] =
+  await Promise.all([
+    fetchTeam('studio'),
+    fetchTeam('academy'),
+    fetchLogos(),
+    fetchPostList(LATEST_POSTS),
+    fetchClientTestimonials(),
+    fetchGraduateTestimonials(),
+  ]);
 ---
 
 <html lang="en">
@@ -37,6 +46,8 @@ const [studioTeam, academyTeam, logos, latestPosts] = await Promise.all([
       academyTeam={academyTeam}
       logos={logos}
       latestPosts={latestPosts}
+      clientTestimonials={clientTestimonials}
+      graduateTestimonials={graduateTestimonials}
     />
     <ScrollReveal />
   </body>
