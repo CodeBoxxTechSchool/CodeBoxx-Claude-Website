@@ -11,9 +11,11 @@
 //
 // Scope matches the schema as documented in readme.md ("headings, bold/italic,
 // links, lists, quotes — no inline images yet"): block styles normal/h1-h4/
-// blockquote, list styles bullet/number, marks strong/em/link. Extend here if the
-// Sanity schema grows (e.g. inline images, code blocks) — mirroring whatever
-// `portableTextComponents` in the old BlogPost.jsx would have needed to add.
+// blockquote, list styles bullet/number, marks strong/em/link, plus tables
+// (the `table` object type from the @sanity/table Studio plugin). Extend here
+// if the Sanity schema grows further (e.g. inline images, code blocks) —
+// mirroring whatever `portableTextComponents` in the old BlogPost.jsx would
+// have needed to add.
 
 const BLOCK_TAG = {
   normal: 'p',
@@ -93,12 +95,38 @@ function renderList(blocks, startIndex) {
   };
 }
 
+// Renders an @sanity/table value ({ rows: [{ cells: [string, ...] }, ...] } —
+// plain strings only, no marks/formatting inside cells, per that plugin's own
+// schema). No explicit header flag exists on the type, so the first row is
+// treated as the header — the common convention for an editor building a
+// table top-down, and the only signal this shape gives us.
+function renderTable(block) {
+  const rows = block.rows || [];
+  if (!rows.length) return '';
+  const cellsHtml = (cells) => (cells || []).map((c) => '<td>' + escapeHtml(c) + '</td>').join('');
+  const headHtml = (cells) => (cells || []).map((c) => '<th>' + escapeHtml(c) + '</th>').join('');
+  const [head, ...body] = rows;
+  const bodyHtml = body.map((row) => '<tr>' + cellsHtml(row.cells) + '</tr>').join('');
+  return (
+    '<div class="post-table-wrap"><table class="post-table"><thead><tr>' +
+    headHtml(head.cells) +
+    '</tr></thead><tbody>' +
+    bodyHtml +
+    '</tbody></table></div>'
+  );
+}
+
 export function portableTextToHtml(blocks) {
   if (!Array.isArray(blocks) || !blocks.length) return '';
   const out = [];
   let i = 0;
   while (i < blocks.length) {
     const block = blocks[i];
+    if (block._type === 'table') {
+      out.push(renderTable(block));
+      i++;
+      continue;
+    }
     if (block._type !== 'block') {
       i++; // unsupported block type (e.g. a future inline image) — skip, don't crash
       continue;

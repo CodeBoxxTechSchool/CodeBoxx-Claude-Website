@@ -40,6 +40,40 @@ const portableTextComponents = {
       </a>
     ),
   },
+  // The `table` object type from the Studio's @sanity/table plugin — plain
+  // strings only, no marks/formatting inside cells, per that plugin's own
+  // schema. No explicit header flag exists on the type, so (matching
+  // lib/portableText.js's server-side renderer used by the native pages) the
+  // first row is treated as the header.
+  types: {
+    table: ({ value }) => {
+      const rows = value.rows || [];
+      if (!rows.length) return null;
+      const [head, ...body] = rows;
+      return (
+        <div className="post-table-wrap">
+          <table className="post-table">
+            <thead>
+              <tr>
+                {(head.cells || []).map((c, i) => (
+                  <th key={i}>{c}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {body.map((row, ri) => (
+                <tr key={row._key || ri}>
+                  {(row.cells || []).map((c, ci) => (
+                    <td key={ci}>{c}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    },
+  },
 };
 
 function NotFound() {
