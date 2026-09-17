@@ -85,6 +85,28 @@
     color: v.$color-text-secondary;
   }
 }
+.post-table-wrap {
+  overflow-x: auto;
+}
+.post-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: v.$text-body;
+  line-height: v.$leading-body;
+  color: v.$color-text-secondary;
+
+  th,
+  td {
+    padding: 10px 14px;
+    text-align: left;
+    border: 1px solid v.$ui-slate-200;
+  }
+  thead th {
+    background: v.$blue-50;
+    color: v.$ui-slate-900;
+    font-weight: v.$weight-semibold;
+  }
+}
 .post-blockquote {
   margin: 0;
   padding-left: 16px;
