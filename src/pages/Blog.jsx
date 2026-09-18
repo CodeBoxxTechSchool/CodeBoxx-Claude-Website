@@ -97,7 +97,7 @@ function Posts() {
               />
               <div className="post-card-body">
                 <div className="post-meta-row">
-                  <Badge bg="brand">{p.category}</Badge>
+                  <Badge bg="brand">{categoryLabels[p.category] || p.category}</Badge>
                   <span className="post-date">{fmt(p.date)}</span>
                 </div>
                 <h2 className="post-title">{p.title}</h2>

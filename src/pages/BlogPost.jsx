@@ -158,7 +158,9 @@ function BlogPost() {
       <main>
         <section className="band-dark" style={heroStyle}>
           <div className="wrap d-flex flex-column gap-4 align-items-start">
-            {post.category ? <Badge bg="brand">{post.category}</Badge> : null}
+            {post.category ? (
+              <Badge bg="brand">{t('blog.categories.' + post.category, post.category)}</Badge>
+            ) : null}
             <h1 className="band-title">{post.title}</h1>
             <div className="d-flex gap-3">
               <span className="band-lede">{post.author}</span>
