@@ -1,7 +1,7 @@
 import React from 'react';
 import { Badge } from 'react-bootstrap';
 import { pickLocale } from '../../lib/sanity';
-import { ScriptTitle } from '../../pages/Home';
+import { ScriptTitle } from './shared';
 
 // Mirrors Home.jsx's Platform() ("01" section), but with fully custom content
 // per landing page and plain external links instead of in-page anchors.

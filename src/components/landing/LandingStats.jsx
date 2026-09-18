@@ -1,6 +1,6 @@
 import React from 'react';
 import { pickLocale } from '../../lib/sanity';
-import { ScriptTitle, CountUp } from '../../pages/Home';
+import { ScriptTitle, CountUp } from './shared';
 
 // Mirrors Home.jsx's Metrics() ("Stats") band.
 function LandingStats({ data, lang }) {

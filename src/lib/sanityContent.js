@@ -189,6 +189,35 @@ export async function fetchClientTestimonials() {
   }
 }
 
+// Sanity 'landingPage' document -> the shape pages/lp/[slug].astro and its FR
+// twin render. Sections pass through as-is (their `_type` picks the renderer
+// in LandingSections.jsx).
+function toLandingPage(entry) {
+  return {
+    title: entry.title,
+    slug: entry.slug?.current || '',
+    slugFr: entry.slugFr?.current || '',
+    showTopBar: entry.showTopBar !== false,
+    showFooter: entry.showFooter !== false,
+    sections: entry.sections || [],
+  };
+}
+
+// All landingPage documents, for getStaticPaths in pages/lp/[slug].astro and
+// pages/fr/lp/[slug].astro — one real prebuilt page per document per language
+// it has a slug for. No seed fallback: this is fully custom per-document
+// content with nothing sensible to hardcode.
+export async function fetchLandingPages() {
+  if (!PROJECT_ID) return [];
+  try {
+    const rows = await fetchCollection('landingPage', '{...}');
+    return (rows || []).map(toLandingPage);
+  } catch (err) {
+    console.warn('[sanity]', err.message);
+    return [];
+  }
+}
+
 // Same shape/reasoning as fetchClientTestimonials, falling back to
 // home.gradQuotes.
 export async function fetchGraduateTestimonials() {

@@ -50,9 +50,9 @@ const NAV_STRUCTURE = [
   { key: 'contact', href: '#contact' },
 ];
 
-function LanguageToggle({ lang, pathname, label }) {
+function LanguageToggle({ lang, pathname, label, hrefOverride }) {
   const next = lang === 'fr' ? 'en' : 'fr';
-  const href = localizedHref(pathname, next, pathname);
+  const href = hrefOverride || localizedHref(pathname, next, pathname);
   return (
     <a className="btn btn-sm btn-outline-primary" href={href} aria-label={label}>
       {next.toUpperCase()}
@@ -114,7 +114,7 @@ function NavItem({ item, onNavigate }) {
   );
 }
 
-export function TopBar({ lang, pathname, strings, onCodi, onEnroll }) {
+export function TopBar({ lang, pathname, strings, onCodi, onEnroll, langHref }) {
   const [expanded, setExpanded] = React.useState(false);
   const nav = NAV_STRUCTURE.map((n) => ({
     key: n.key,
@@ -145,7 +145,12 @@ export function TopBar({ lang, pathname, strings, onCodi, onEnroll }) {
               </Nav>
             </Navbar.Collapse>
             <div className="d-none d-lg-flex align-items-center gap-3 flex-shrink-0">
-              <LanguageToggle lang={lang} pathname={pathname} label={strings.actions.language} />
+              <LanguageToggle
+                lang={lang}
+                pathname={pathname}
+                label={strings.actions.language}
+                hrefOverride={langHref}
+              />
               <Button size="sm" variant="outline-primary" onClick={handleEnroll}>
                 {strings.actions.enrollNow}
               </Button>

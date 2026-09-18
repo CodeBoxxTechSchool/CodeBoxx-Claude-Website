@@ -5,12 +5,11 @@ import Home from './pages/Home';
 import { isFrenchPath } from './lib/routes';
 
 // Code-split every route but Home: most visitors land on Home, and shipping
-// Blog/Financing/Ventures/LandingPage's code to them upfront is pure unused-JS weight.
+// Blog/Financing/Ventures' code to them upfront is pure unused-JS weight.
 const Blog = React.lazy(() => import('./pages/Blog'));
 const BlogPost = React.lazy(() => import('./pages/BlogPost'));
 const Financing = React.lazy(() => import('./pages/Financing'));
 const Ventures = React.lazy(() => import('./pages/Ventures'));
-const LandingPage = React.lazy(() => import('./pages/LandingPage'));
 
 // Makes the URL the source of truth for language: any navigation (a clicked link,
 // back/forward, a typed URL) re-syncs i18next's active language to whatever the
@@ -41,8 +40,6 @@ export default function App() {
           <Route path="/fr/financement" element={<Financing />} />
           <Route path="/ventures" element={<Ventures />} />
           <Route path="/fr/ventures" element={<Ventures />} />
-          <Route path="/lp/:slug" element={<LandingPage />} />
-          <Route path="/fr/lp/:slug" element={<LandingPage />} />
           <Route path="*" element={<Home />} />
         </Routes>
       </React.Suspense>
