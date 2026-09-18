@@ -55,13 +55,15 @@ function toPost(entry) {
 
 // Full post list, newest first — used at build time by both the /blog listing
 // page (all of it, filtering/pagination happens client-side over the full set)
-// and generate-sitemap-equivalent needs (@astrojs/sitemap picks up the actual
-// prerendered post pages instead, so nothing else needs this for that purpose).
+// and getStaticPaths in blog/[slug].astro (every post needs its own static
+// page, not just recent ones). The [0...500] slice is a safety cap, not a
+// "recent posts only" limit — raise it if the blog ever actually grows past
+// that many posts.
 export async function fetchPostList(seed = []) {
   try {
     const rows = await fetchCollection(
       'post',
-      ' | order(publishedAt desc) [0...50]' + FEATURED_IMAGE_PROJECTION
+      ' | order(publishedAt desc) [0...500]' + FEATURED_IMAGE_PROJECTION
     );
     return rows && rows.length ? rows.map(toPost) : seed;
   } catch (err) {
