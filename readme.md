@@ -152,14 +152,24 @@ placeholder for a real admissions API later, and `IntakeCalendar` only ever impo
 source later means rewriting `src/lib/intakes.js` only, with no changes to `HomeIsland.jsx`
 (or the legacy `Home.jsx`, which imports the same hook).
 
-Each post's `content` field is Sanity's standard Portable Text (rich text) — currently
-text-only in the schema (headings, bold/italic, links, lists, quotes), no inline images
-yet; that's a deliberate, easy-to-extend-later scope call, not a limitation of the
-approach. It renders via `@portabletext/react` (the one dependency this project adds
-beyond a plain `fetch` — a small, official rendering library, not an API client, so it
-doesn't conflict with the rest of `sanity.js` staying SDK-free) with `components`
-overrides in `src/pages/BlogPost.jsx` mapping block/list/mark types onto this site's
-existing typography classes (`pbody`, `h2`, `ptitle`, etc.) instead of unstyled defaults.
+Each post's `content` field is Sanity's standard Portable Text (rich text): headings,
+bold/italic, links, lists, quotes, tables (the `@sanity/table` Studio plugin), and a
+`videoEmbed` block (a YouTube/Vimeo URL, not an uploaded file — see below). Still no
+inline images; that's a deliberate, easy-to-extend-later scope call, not a limitation
+of the approach. It renders via `portableTextToHtml()` in `src/lib/portableText.js` — a
+hand-rolled walker (no `@portabletext/react` dependency) that returns a plain HTML
+string Astro inlines at build time, mapping block/list/mark/table/video types onto this
+site's existing typography classes (`pbody`, `h2`, `ptitle`, etc.) instead of unstyled
+defaults.
+
+A `videoEmbed` renders as a click-to-play facade for YouTube (a static
+`i.ytimg.com` thumbnail + play button; the real iframe — and YouTube's own heavy
+embed JS — is only created on click, via the small inline script in
+`src/pages/blog/[slug].astro`) or a `loading="lazy"` iframe for Vimeo (no
+API-free static thumbnail exists for it). This is the actual "auto-optimize"
+lever: neither format is ever stored/transcoded in Sanity — see Sanity's own
+video guidance (no `file`-asset video at scale) — the source platform's
+adaptive streaming does that job instead.
 
 `featuredImage` (optional) is the post page's hero background, via inline `style`
 since the URL is per-post data — stacking a `linear-gradient(rgba(0,0,0,.6), ...)`

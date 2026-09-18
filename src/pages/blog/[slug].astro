@@ -98,3 +98,38 @@ const contentHtml = post.content ? portableTextToHtml(post.content) : '';
     </div>
   </section>
 </Layout>
+
+<script>
+  // Replaces a videoEmbed's static-thumbnail facade (see portableText.js's
+  // renderVideo()) with the real iframe only on click/keyboard-activate — the
+  // whole point being that YouTube's embed JS never loads unless a visitor
+  // actually plays the video. A no-op when the post has no video block.
+  function playVideoFacade(facade: HTMLElement) {
+    const iframe = document.createElement('iframe');
+    iframe.src = facade.dataset.embedSrc || '';
+    iframe.title = 'Embedded video';
+    iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+    iframe.allowFullscreen = true;
+    // Clear + repopulate rather than facade.replaceWith(iframe): the facade
+    // element itself carries the .post-video-frame positioning/aspect-ratio
+    // class (see _blog.scss), so replacing it outright would strand the new
+    // iframe without it.
+    facade.classList.remove('post-video-facade');
+    facade.removeAttribute('role');
+    facade.removeAttribute('tabindex');
+    facade.removeAttribute('aria-label');
+    facade.style.backgroundImage = '';
+    facade.replaceChildren(iframe);
+  }
+  document.addEventListener('click', (event) => {
+    const facade = (event.target as HTMLElement)?.closest('.post-video-facade');
+    if (facade) playVideoFacade(facade as HTMLElement);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    const facade = (event.target as HTMLElement)?.closest('.post-video-facade');
+    if (!facade) return;
+    event.preventDefault();
+    playVideoFacade(facade as HTMLElement);
+  });
+</script>
