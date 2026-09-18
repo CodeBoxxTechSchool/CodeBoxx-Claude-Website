@@ -18,6 +18,12 @@ const {
   noindex,
   structuredData,
   strings, // current-language common.js content (nav/actions/footer), for ChromeIsland
+  hideTopBar = false,
+  hideFooter = false,
+  // Overrides TopBar's computed language-toggle target — needed by pages whose
+  // path isn't in i18nRoutes.js's ROUTE_TABLE (e.g. a landingPage document,
+  // whose EN/FR slugs are per-document and unrelated to each other).
+  langHref,
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
@@ -37,11 +43,13 @@ const pathname = Astro.url.pathname;
   </head>
   <body>
     <div id="top">
-      <TopBar client:load lang={lang} pathname={pathname} strings={strings} />
+      {!hideTopBar && (
+        <TopBar client:load lang={lang} pathname={pathname} strings={strings} langHref={langHref} />
+      )}
       <main>
         <slot />
       </main>
-      <Footer client:load lang={lang} pathname={pathname} strings={strings} />
+      {!hideFooter && <Footer client:load lang={lang} pathname={pathname} strings={strings} />}
     </div>
     <ScrollReveal />
   </body>

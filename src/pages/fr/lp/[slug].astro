@@ -1,0 +1,30 @@
+---
+// FR twin of src/pages/lp/[slug].astro — see that file for the shared
+// rationale. Keyed off each landingPage document's `slugFr`, independent of
+// its EN `slug`.
+import Layout from '../../../layouts/Layout.astro';
+import LandingSections from '../../../components/landing/LandingSections';
+import { fetchLandingPages } from '../../../lib/sanityContent';
+import common from '../../../locales/fr/common';
+
+export async function getStaticPaths() {
+  const pages = await fetchLandingPages();
+  return pages
+    .filter((p) => p.slugFr)
+    .map((page) => ({ params: { slug: page.slugFr }, props: { page } }));
+}
+
+const { page } = Astro.props;
+const langHref = page.slug ? '/lp/' + page.slug + '/' : '/';
+---
+
+<Layout
+  lang="fr"
+  title={page.title}
+  strings={common}
+  hideTopBar={!page.showTopBar}
+  hideFooter={!page.showFooter}
+  langHref={langHref}
+>
+  <LandingSections client:load sections={page.sections} lang="fr" />
+</Layout>

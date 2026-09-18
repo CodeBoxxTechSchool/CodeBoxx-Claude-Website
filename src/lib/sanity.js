@@ -159,3 +159,11 @@ export function useSanityLogos(seed = []) {
   }, []);
   return logos;
 }
+
+// Reads the current language out of a Sanity {en, fr} localized field, falling
+// back to English — used by every landing-page section renderer (see
+// components/landing/), which run client-side as an island so this needs the
+// browser-safe PUBLIC_ fetch above rather than sanityContent.js's build-time one.
+export function pickLocale(field, lang) {
+  return (field && (field[lang] || field.en)) || '';
+}

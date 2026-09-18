@@ -1,0 +1,30 @@
+---
+// Natively-migrated /lp/:slug (EN). One real prebuilt page per landingPage
+// document that has a `slug` — same getStaticPaths-over-Sanity pattern as
+// src/pages/blog/[slug].astro. See src/pages/fr/lp/[slug].astro for the FR
+// twin (keyed off `slugFr`, not the same param value, since editors can set
+// each language's slug independently).
+import Layout from '../../layouts/Layout.astro';
+import LandingSections from '../../components/landing/LandingSections';
+import { fetchLandingPages } from '../../lib/sanityContent';
+import common from '../../locales/en/common';
+
+export async function getStaticPaths() {
+  const pages = await fetchLandingPages();
+  return pages.filter((p) => p.slug).map((page) => ({ params: { slug: page.slug }, props: { page } }));
+}
+
+const { page } = Astro.props;
+const langHref = page.slugFr ? '/fr/lp/' + page.slugFr + '/' : '/fr/';
+---
+
+<Layout
+  lang="en"
+  title={page.title}
+  strings={common}
+  hideTopBar={!page.showTopBar}
+  hideFooter={!page.showFooter}
+  langHref={langHref}
+>
+  <LandingSections client:load sections={page.sections} lang="en" />
+</Layout>
