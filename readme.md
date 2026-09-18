@@ -309,6 +309,31 @@ The deploy step runs `rsync --delete`, so `DROPLET_TARGET_PATH` should stay
 dedicated to this site — anything else living in that directory gets removed to
 match `dist/`.
 
+### Redeploying on a Sanity publish
+
+This is a static build: editing/publishing content in Sanity Studio changes
+nothing on the live site by itself — it only takes effect on the next build.
+`deploy.yml` listens for a `repository_dispatch` event (type
+`sanity-publish`) so a Sanity webhook can trigger that rebuild automatically.
+
+Configure it once at [sanity.io/manage](https://www.sanity.io/manage) → project
+`zagi8xr3` → API → Webhooks → Create webhook:
+
+| Field | Value |
+| --- | --- |
+| Dataset | `production` |
+| URL | `https://api.github.com/repos/CodeBoxxTechSchool/CodeBoxx-Claude-Website/dispatches` |
+| HTTP method | `POST` |
+| Trigger on | Create, Update, Delete |
+| Projection | `{"event_type": "sanity-publish"}` |
+| Headers | `Authorization: Bearer <a GitHub PAT, scoped to just this repo, "Contents: Read and write">`; `Accept: application/vnd.github+json`; `X-GitHub-Api-Version: 2022-11-28` |
+
+Filter/drafts settings can stay at their defaults — webhooks only fire on
+published changes unless "include drafts" is turned on, which is exactly what
+we want here. No extra GROQ filter is needed since every document type on this
+site (posts, landing pages, testimonials, etc.) affects some page's build-time
+data.
+
 ## Structure
 
 ```

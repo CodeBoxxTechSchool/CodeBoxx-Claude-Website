@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Fired by a Sanity webhook (project zagi8xr3, "production" dataset) on every
+  # publish — this is a static build, so a content change alone never reaches
+  # the live site without a rebuild. See readme.md's Deployment section for the
+  # webhook config (URL, headers, GROQ projection) this expects to receive.
+  repository_dispatch:
+    types: [sanity-publish]
 
 jobs:
   deploy:
