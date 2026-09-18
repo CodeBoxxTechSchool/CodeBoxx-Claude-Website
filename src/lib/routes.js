@@ -50,11 +50,27 @@ function translateHash(id, lang) {
 // input and is idempotent — already-target-language input passes through
 // unchanged. Falls back to returning `path` as-is for anything not in
 // ROUTE_TABLE/HASH_TABLE, rather than guessing.
+// Landing pages have arbitrary, editor-chosen per-document slugs that aren't
+// derivable from a fixed path pattern — so unlike ROUTE_TABLE, this is a small
+// mutable registry populated at runtime by LandingPage.jsx once its Sanity
+// document loads, and cleared when it unmounts.
+let landingPageSlugs = null;
+
+export function setLandingPageSlugs(pair) {
+  landingPageSlugs = pair;
+}
+
 export function localizedHref(path, lang) {
   if (path.charAt(0) === '#') {
     const home = lang === 'fr' ? '/fr' : '/';
     const hash = '#' + translateHash(path.slice(1), lang);
     return window.location.pathname === home ? hash : home + hash;
+  }
+  if (landingPageSlugs && (matchPath('/lp/:slug', path) || matchPath('/fr/lp/:slug', path))) {
+    if (lang === 'fr') {
+      return landingPageSlugs.slugFr ? '/fr/lp/' + landingPageSlugs.slugFr : '/fr';
+    }
+    return '/lp/' + landingPageSlugs.slug;
   }
   for (const r of ROUTE_TABLE) {
     const fromEn = matchPath(r.en, path);
