@@ -71,7 +71,9 @@ const contentHtml = post.content ? portableTextToHtml(post.content) : '';
   <section class="band-dark" style={heroStyle}>
     {!post.featuredImage && <HeroVideo />}
     <div class="wrap d-flex flex-column gap-4 align-items-start">
-      {post.category ? <span class="badge bg-brand">{post.category}</span> : null}
+      {post.category ? (
+        <span class="badge bg-brand">{blog.categories[post.category] || post.category}</span>
+      ) : null}
       <h1 class="band-title">{post.title}</h1>
       <div class="d-flex gap-3">
         <span class="band-lede">{post.author}</span>
