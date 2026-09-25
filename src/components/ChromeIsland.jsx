@@ -3,9 +3,8 @@ import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import Logo from './Logo';
 import { localizedHref } from '../lib/i18nRoutes';
 
-// Astro-native counterpart to Chrome.jsx (which stays react-router/react-i18next
-// based, for the legacy Home/Financing/Ventures island only). Same markup/classes/
-// behavior, but props-driven instead of reading a router context or i18next:
+// Site-wide top menu and footer (replaced the old react-router/react-i18next
+// Chrome.jsx). Props-driven instead of reading a router context or i18next:
 // - `lang`/`pathname` replace useTranslation()/useLocation() — passed down from
 //   the Astro page that mounts this (Astro.currentLocale equivalent + Astro.url).
 // - plain <a href> navigation replaces useNavigate(), since Astro pages are real

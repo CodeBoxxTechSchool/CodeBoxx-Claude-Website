@@ -2,10 +2,8 @@
 
 React + SCSS front end for the CodeBoxx corporate site (Studio, Solutions, Academy, Ventures),
 built with Astro, react-bootstrap and a brand-themed SCSS system.
-**Migrated from a Vite/React SPA to Astro** (branch `ml/astrobuild_migration`) — every real
-route is now natively migrated; see "Migration status" below for the one remaining legacy
-seam (the 404 fallback) and why it's a deliberate, low-priority exception rather than
-unfinished work.
+**Migrated from a Vite/React SPA to Astro** (branch `ml/astrobuild_migration`) — every
+route, including the 404 page, is native Astro; the old SPA code has been removed.
 
 ## Stack
 
@@ -29,14 +27,14 @@ client-side, so a shared blog link's social preview and hreflang alternates were
 to anything that doesn't execute JS (most social link-unfurlers, many non-Google crawlers).
 Astro renders that straight into the HTML response instead.
 
-| Route(s)                          | Status                | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| --------------------------------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/blog`, `/fr/blogue`             | ✅ Native Astro       | `src/pages/blog/index.astro` + FR twin. Full post list fetched at build time, filter/pagination is a React island (`BlogPostsIsland.jsx`) hydrated over already-rendered markup.                                                                                                                                                                                                                                                                                                          |
-| `/blog/:slug`, `/fr/blogue/:slug` | ✅ Native Astro       | `src/pages/blog/[slug].astro` + FR twin, via `getStaticPaths`. Post body renders through `src/lib/portableText.js` (a hand-written server-side Portable Text → HTML renderer) — **zero JS** for the article itself, not even a React island, since that would reintroduce the exact bug this migration fixes.                                                                                                                                                                             |
-| `/`, `/fr`                        | ✅ Native Astro       | `src/pages/index.astro` + FR twin, via `HomeIsland.jsx` — see "Why Home is one big island" below. Real SEO tags and all of Home's actual content (hero, division blurbs, team names/photos, service details, academy copy) are now in the HTML response; it's still a fully interactive page after hydration, same as before.                                                                                                                                                             |
-| `/financing`, `/fr/financement`   | ✅ Native Astro       | `src/pages/financing.astro` + FR twin. Zero React islands beyond `Layout.astro`'s TopBar/Footer — every "form" field here was already uncontrolled and both buttons just navigate, so the whole page body is static HTML with **zero extra JS**, same treatment as Blog's static sections.                                                                                                                                                                                                |
-| `/ventures`, `/fr/ventures`       | ✅ Native Astro       | `src/pages/ventures.astro` + FR twin. Only the "Pitch us" button + its drawer need client state, so that's one small island (`PitchWidget.jsx`) — everything else is static, same TopBar/Footer islands as Blog.                                                                                                                                                                                                                                                                          |
-| unmatched paths (404)             | 🚧 Legacy passthrough | `src/pages/404.astro` still mounts the **original, unmodified** React SPA (`src/App.jsx` and everything it imports — `Chrome.jsx`, `routes.js`, `i18n.js`, and the legacy `Home.jsx`/`Financing.jsx`/`Ventures.jsx` page files) as one `client:only="react"` island, so `App.jsx`'s own `*` → Home fallback still fires (pre-existing behavior, not something this migration changed). This is the **only** reason those legacy files still exist — nothing else references them anymore. |
+| Route(s)                          | Status          | Notes                                                                                                                                                                                                                                                                                                                         |
+| --------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/blog`, `/fr/blogue`             | ✅ Native Astro | `src/pages/blog/index.astro` + FR twin. Full post list fetched at build time, filter/pagination is a React island (`BlogPostsIsland.jsx`) hydrated over already-rendered markup.                                                                                                                                              |
+| `/blog/:slug`, `/fr/blogue/:slug` | ✅ Native Astro | `src/pages/blog/[slug].astro` + FR twin, via `getStaticPaths`. Post body renders through `src/lib/portableText.js` (a hand-written server-side Portable Text → HTML renderer) — **zero JS** for the article itself, not even a React island, since that would reintroduce the exact bug this migration fixes.                 |
+| `/`, `/fr`                        | ✅ Native Astro | `src/pages/index.astro` + FR twin, via `HomeIsland.jsx` — see "Why Home is one big island" below. Real SEO tags and all of Home's actual content (hero, division blurbs, team names/photos, service details, academy copy) are now in the HTML response; it's still a fully interactive page after hydration, same as before. |
+| `/financing`, `/fr/financement`   | ✅ Native Astro | `src/pages/financing.astro` + FR twin. Zero React islands beyond `Layout.astro`'s TopBar/Footer — every "form" field here was already uncontrolled and both buttons just navigate, so the whole page body is static HTML with **zero extra JS**, same treatment as Blog's static sections.                                    |
+| `/ventures`, `/fr/ventures`       | ✅ Native Astro | `src/pages/ventures.astro` + FR twin. Only the "Pitch us" button + its drawer need client state, so that's one small island (`PitchWidget.jsx`) — everything else is static, same TopBar/Footer islands as Blog.                                                                                                              |
+| unmatched paths (404)             | ✅ Native Astro | `src/pages/404.astro` on `Layout.astro`: bilingual "Page not found" message with links to the EN and FR homepages, `noindex`. nginx serves `dist/404.html` for any unmatched URL.                                                                                                                                             |
 
 ### Why Home is one big island, not many small ones (like Blog)
 
@@ -60,26 +58,6 @@ is derived by comparing a cohort's start date to _today_, in the browser, on eve
 load — baking that into a build-time snapshot would let it silently go stale
 between deploys with no content change to trigger a rebuild. It still uses the
 unmodified `lib/intakes.js` hook.
-
-### The remaining legacy files exist for one reason: the 404 page
-
-Every real route is natively migrated now. The only thing still mounting the old
-Vite/React SPA is `src/pages/404.astro` (via `src/layouts/LegacyShell.astro` /
-`LegacyAppIsland.jsx`), to preserve `App.jsx`'s pre-existing `*` → Home fallback
-for genuinely unmatched URLs. That one page is the sole reason these files are
-still in the repo — nothing else imports them:
-
-- `src/App.jsx`, `src/lib/routes.js`, `src/lib/i18n.js`
-- `src/components/Chrome.jsx` (superseded by `ChromeIsland.jsx`)
-- `src/lib/sanity.js` (superseded by `sanityContent.js`)
-- `src/pages/Home.jsx`, `src/pages/Financing.jsx`, `src/pages/Ventures.jsx`, `src/pages/BlogPost.jsx`, `src/pages/Blog.jsx`, `src/components/Seo.jsx`
-
-The natural next step — not done in this pass — is to replace `404.astro`'s
-legacy-SPA mount with something native (either a real 404 page, or `HomeIsland`
-directly if "unknown path shows Home" should stay the behavior), and delete this
-entire list in one commit. Left as a deliberate follow-up rather than bundled in
-here, since it's a product decision (what _should_ a 404 do?) more than a
-mechanical migration step.
 
 ## Getting started
 
@@ -113,9 +91,8 @@ EN/FR as distinct paths rather than one parameterized locale route.)
 async functions (`fetchPostList`, `fetchPostBySlug`, `fetchAllPostSlugs`, `fetchTeam`,
 `fetchLogos`) called from Astro frontmatter/`getStaticPaths`, so content is already
 resolved into the HTML by the time it ships — no hook, no loading state.
-`src/lib/sanity.js` is its client-side-hooks predecessor, kept only because the legacy
-404-fallback SPA still imports it (see "Migration status" above) — not used by any native
-page. Both query the Sanity Content API directly over
+`src/lib/sanity.js` is the browser-side counterpart, used only by Home's intake calendar
+(`lib/intakes.js`), which has to fetch at runtime. Both query the Sanity Content API directly over
 `fetch` (no SDK dependency) and fall back to a hardcoded seed array/object
 (`src/lib/blogSeed.js`) when `VITE_SANITY_PROJECT_ID` isn't set, so the site always builds
 and runs with no CMS connection. Entry mapping lives in each file's own `toPost()`-shaped
@@ -149,8 +126,7 @@ consumes the API, it doesn't scaffold a Studio):
 `useIntakes` lives in its own file, not `sanity.js`, on purpose: the intake calendar is a
 placeholder for a real admissions API later, and `IntakeCalendar` only ever imports
 `useIntakes` and expects a `{ fsd: [...], aidev: [...] }` return shape — swapping the data
-source later means rewriting `src/lib/intakes.js` only, with no changes to `HomeIsland.jsx`
-(or the legacy `Home.jsx`, which imports the same hook).
+source later means rewriting `src/lib/intakes.js` only, with no changes to `HomeIsland.jsx`.
 
 Each post's `content` field is Sanity's standard Portable Text (rich text): headings,
 bold/italic, links, lists, quotes, tables (the `@sanity/table` Studio plugin), and a
@@ -175,8 +151,7 @@ adaptive streaming does that job instead.
 since the URL is per-post data — stacking a `linear-gradient(rgba(0,0,0,.6), ...)`
 scrim with `url(...)` in one `background-image`, reusing the scrim-over-photo
 technique already used by the homepage `.hero` (`_components.scss`). It also backs
-the `/blog` listing card's cover (`Blog.jsx`, via the same `<image-slot src>` prop
-already used for team photos/logos). `sanityImageUrl(url, { w, q })` in `sanity.js`
+the `/blog` listing card's cover (`BlogPostsIsland.jsx`). `sanityImageUrl(url, { w, q })` in `sanity.js`
 appends Sanity's CDN resize/quality query params so each use requests only the pixel
 size it renders (large for the hero, small for the card thumbnail) — no
 `@sanity/image-url` package needed. Posts without a `featuredImage` keep the plain
@@ -185,10 +160,8 @@ navy hero, unchanged. The article section below the hero (`.post-content-band` i
 plain CSS, not photo-based.
 
 Team member and partner logo entries carry a stable `id` (the Sanity document `_id`) that's
-used as both the React list key and the `<image-slot>` element's `id` attribute. Don't
-switch that back to an array index — `image-slot` persists locally-dropped images keyed by
-`id`, so a positional id would silently reattach a stale photo to the wrong person after a
-reorder in Studio.
+used as the React list key. Don't switch that back to an array index — a positional key
+would let React reuse the wrong person's DOM (and photo) after a reorder in Studio.
 
 ## Styling
 
@@ -246,8 +219,7 @@ adding an `.is-inview` class), not a React island, specifically so it works iden
 on native Astro pages (no React at all) and on Home (one big React island) without
 caring which produced a given `<h2>`. It's included once per page shell: `Layout.astro`
 (Blog/BlogPost/Financing/Ventures) and directly in `src/pages/index.astro`/`fr/index.astro`
-(Home, which doesn't use `Layout.astro`) — not in `LegacyShell.astro`, since that's the
-404-only legacy SPA fallback.
+(Home, which doesn't use `Layout.astro`).
 
 A `MutationObserver` in the same script also watches for `<h2>`s added after the fact —
 Blog's category filter and "load more"/infinite-scroll pagination
@@ -284,20 +256,11 @@ Required repo secrets (Settings → Secrets and variables → Actions):
 
 On the Droplet (already done for "CodeBoxx Web Claude"):
 
-- nginx installed and enabled, serving `/var/www/codeboxx` with
-  `try_files $uri /index.html;` in its `location /` block.
-  **⚠️ This needs a one-line change before this branch is deployed.** That
-  fallback existed only because the old build was a pure CSR SPA with no real
-  per-route files — every URL needed to resolve to `index.html` and let
-  `react-router` sort it out client-side. Astro's static build produces a real
-  `dist/blog/index.html`, `dist/blog/some-post/index.html`, etc. for every route
-  (`build.format: 'directory'` in `astro.config.mjs`), so a request for `/blog`
-  needs to resolve to `dist/blog/index.html`, not fall through to the site root.
-  Change the directive to `try_files $uri $uri/index.html $uri/ =404;` (or point
-  nginx's `error_page 404` at `/404.html`, which this build also now produces —
-  see `src/pages/404.astro` for why that specific page still needs to exist).
-  Deploying this branch without that change will silently regress every route
-  except literal `/` back to serving the SPA shell.
+- nginx installed and enabled, serving `/var/www/codeboxx`. Each URL resolves to
+  its own prerendered file (`/blog` → `dist/blog/index.html`, per
+  `build.format: 'directory'` in `astro.config.mjs`), and unmatched paths get
+  `dist/404.html` with a 404 status. Don't restore the old SPA fallback
+  (`try_files $uri /index.html;`) — it would serve the homepage shell for every route.
 - A `deploy` system user owns `/var/www/codeboxx`, has no sudo access, and accepts
   SSH only via the dedicated deploy key (password auth disabled). Its
   `authorized_keys` holds only that key's public half.
@@ -319,14 +282,14 @@ nothing on the live site by itself — it only takes effect on the next build.
 Configure it once at [sanity.io/manage](https://www.sanity.io/manage) → project
 `zagi8xr3` → API → Webhooks → Create webhook:
 
-| Field | Value |
-| --- | --- |
-| Dataset | `production` |
-| URL | `https://api.github.com/repos/CodeBoxxTechSchool/CodeBoxx-Claude-Website/dispatches` |
-| HTTP method | `POST` |
-| Trigger on | Create, Update, Delete |
-| Projection | `{"event_type": "sanity-publish"}` |
-| Headers | `Authorization: Bearer <a GitHub PAT, scoped to just this repo, "Contents: Read and write">`; `Accept: application/vnd.github+json`; `X-GitHub-Api-Version: 2022-11-28` |
+| Field       | Value                                                                                                                                                                   |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Dataset     | `production`                                                                                                                                                            |
+| URL         | `https://api.github.com/repos/CodeBoxxTechSchool/CodeBoxx-Claude-Website/dispatches`                                                                                    |
+| HTTP method | `POST`                                                                                                                                                                  |
+| Trigger on  | Create, Update, Delete                                                                                                                                                  |
+| Projection  | `{"event_type": "sanity-publish"}`                                                                                                                                      |
+| Headers     | `Authorization: Bearer <a GitHub PAT, scoped to just this repo, "Contents: Read and write">`; `Accept: application/vnd.github+json`; `X-GitHub-Api-Version: 2022-11-28` |
 
 Filter/drafts settings can stay at their defaults — webhooks only fire on
 published changes unless "include drafts" is turned on, which is exactly what
@@ -340,7 +303,7 @@ data.
 astro.config.mjs           output: 'static', @astrojs/react + @astrojs/sitemap
 
 src/
-  pages/                    Astro file-based routes — all natively migrated except 404
+  pages/                    Astro file-based routes
     blog/, fr/blogue/        index.astro, [slug].astro
     index.astro, fr/index.astro
                              HomeIsland.jsx
@@ -348,31 +311,25 @@ src/
                              fully static, no island beyond Layout.astro's TopBar/Footer
     ventures.astro, fr/ventures.astro
                              PitchWidget.jsx is the one island
-    404.astro                the one page still mounting the legacy SPA (LegacyShell.astro)
+    404.astro                "Page not found", on Layout.astro
   layouts/
     SeoHead.astro            shared real, build-time SEO <head> tags — used by every native page
-    Layout.astro             shell for Blog/Financing/Ventures — TopBar/Footer as independent islands
-    LegacyShell.astro        shell for 404.astro only — old index.html's head, LegacyAppIsland
+    Layout.astro             shell for Blog/Financing/Ventures/404 — TopBar/Footer as independent islands
 
-  App.jsx                   legacy SPA routes (react-router) — mounted client:only via LegacyAppIsland, 404 only
   components/
     ChromeIsland.jsx          Astro-native TopBar/Footer (props-driven, no router/i18next)
     HomeIsland.jsx            Astro-native homepage — one island, see "Why Home is one big island" above
     BlogPostsIsland.jsx       Astro-native filter/pagination island for /blog
     PitchWidget.jsx           Astro-native pitch button + drawer island for /ventures
-    LegacyAppIsland.jsx       mounts App.jsx as one client:only island, 404 only
-    Chrome.jsx                legacy TopBar/NavItem/Footer — superseded, 404 only
     Logo.jsx, Avatar.jsx      brand components with no Bootstrap equivalent, used by both
   lib/
     sanityContent.js          build-time Sanity fetch — every native page
-    sanity.js                 legacy, client-side Sanity fetch hooks — superseded, 404 only
+    sanity.js                 browser-side Sanity fetch — Home's intake calendar only
     blogSeed.js               shared fallback post data, blog pages
     homeSeed.js               shared fallback CodeBlog-teaser data, home page
     portableText.js           server-side Portable Text → HTML, blog post pages only
-    i18nRoutes.js              Astro-native EN/FR path helper (no router dependency)
-    routes.js                 legacy EN/FR path helper — superseded, 404 only
+    i18nRoutes.js             EN/FR path helper (no router dependency)
     intakes.js                intake calendar rows — still client-side everywhere, see Sanity above
-    image-slot.js             <image-slot> web component
   styles/                   main.scss + partials (see Styling above)
 public/assets/              images referenced by the pages
 ```

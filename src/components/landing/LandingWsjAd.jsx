@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import { pickLocale } from '../../lib/sanity';
 
-// Mirrors Home.jsx's WSJTeaser() band. The logo image stays the site's
+// Mirrors HomeIsland.jsx's WSJTeaser() band. The logo image stays the site's
 // existing static asset — only text/link are editable per landing page.
 function LandingWsjAd({ data, lang }) {
   return (

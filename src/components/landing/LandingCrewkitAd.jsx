@@ -1,7 +1,7 @@
 import React from 'react';
 import { pickLocale } from '../../lib/sanity';
 
-// Mirrors Home.jsx's ForgeTeaser() ("CodeBoxx w/ CrewKit Forge 20") band. The
+// Mirrors HomeIsland.jsx's ForgeTeaser() ("CodeBoxx w/ CrewKit Forge 20") band. The
 // logo image stays the site's existing static asset — only text is editable.
 function LandingCrewkitAd({ data, lang }) {
   const features = data.features || [];

@@ -3,11 +3,7 @@
 // path segment for a stable seed-only identity; real Sanity posts get their slug
 // from the `slug` field's own `source: 'title'`, with no reason to match these.
 //
-// Extracted out of the old Blog.jsx (which now re-exports it, so its existing
-// `import { SEED_POSTS } from './Blog'` in BlogPost.jsx keeps working unchanged)
-// so the new Astro pages (src/pages/blog/, src/pages/fr/blogue/) can use the same
-// seed data without pulling in Blog.jsx's react-router-dom/react-bootstrap/
-// react-i18next imports along with it.
+// Used by the Astro blog pages (src/pages/blog/, src/pages/fr/blogue/).
 export const SEED_POSTS = [
   {
     title: 'Best Corporate AI Bootcamps',

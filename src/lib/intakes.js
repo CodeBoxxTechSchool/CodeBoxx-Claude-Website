@@ -8,7 +8,7 @@ import { fetchCollection, hasSanityProject } from './sanity';
 // key note below), each holding its own "Full Time"/"Part Time" buckets (the row's
 // two columns) — the same program can have entries in both. Adding a new
 // 'program' document in Sanity is enough to add a new calendar row; no website
-// code change needed. IntakeCalendar (Home.jsx) renders one row per array entry,
+// code change needed. IntakeCalendar (HomeIsland.jsx) renders one row per array entry,
 // each with exactly two CalendarColumns.
 function todayIso() {
   const now = new Date();
@@ -35,7 +35,7 @@ function toRow(entry) {
 
 // Returns live Sanity data only (or `null` until it arrives / if there's none) —
 // deliberately does NOT take a seed argument or store one in state. IntakeCalendar
-// (Home.jsx) builds its seed fresh every render via `t()` (so it's always in the
+// (HomeIsland.jsx) builds its seed fresh every render via `t()` (so it's always in the
 // current language) and falls back to it with `useIntakes() || seed`. If this hook
 // instead seeded its own state from a language-computed value, that value would be
 // captured only once at mount (a `useState` initializer runs once) and never update
