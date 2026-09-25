@@ -1,0 +1,26 @@
+---
+// Starts the decorative background videos (.hero-video, see HeroVideo.astro and
+// HomeIsland.jsx) only once the page has fully loaded, and only where they are
+// actually shown. The <video> tags carry no `autoplay` on purpose: Chrome fetches
+// an autoplay video even while CSS hides it, so phones were downloading ~4 MB of
+// video they never display, competing with the first paint. With preload="none"
+// and no autoplay, nothing is fetched until play() below.
+//
+// The media query matches the CSS that hides the videos (_components.scss):
+// below 768px wide or under prefers-reduced-motion, the section's static
+// background shows instead and no video is loaded at all.
+---
+
+<script>
+  const start = () => {
+    if (
+      !window.matchMedia('(min-width: 768px) and (prefers-reduced-motion: no-preference)').matches
+    )
+      return;
+    for (const video of document.querySelectorAll('video.hero-video')) {
+      video.play().catch(() => {});
+    }
+  };
+  if (document.readyState === 'complete') start();
+  else window.addEventListener('load', start, { once: true });
+</script>

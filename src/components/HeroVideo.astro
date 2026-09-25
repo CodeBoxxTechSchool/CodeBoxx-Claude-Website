@@ -6,7 +6,8 @@
 // decode WebM skip to the .mp4 source automatically. Hidden below the tablet
 // breakpoint and under prefers-reduced-motion (see _components.scss) — the
 // parent's own static background-image/color covers that case, so there's no
-// separate <img> fallback needed here.
+// separate <img> fallback needed here. No `autoplay`: DeferredVideos.astro starts
+// playback after page load, and only where the video is actually shown.
 //
 // Defaults to the site's original hero clip (the forward-then-reverse
 // "boomerang" used on Home/Blog/Financing/Ventures' intro bands — see git
@@ -23,16 +24,7 @@ const {
 } = Astro.props;
 ---
 
-<video
-  class="hero-video"
-  autoplay
-  muted
-  loop
-  playsinline
-  preload="none"
-  poster={poster}
-  aria-hidden="true"
->
+<video class="hero-video" muted loop playsinline preload="none" poster={poster} aria-hidden="true">
   <source src={webm} type="video/webm" />
   <source src={mp4} type="video/mp4" />
 </video>

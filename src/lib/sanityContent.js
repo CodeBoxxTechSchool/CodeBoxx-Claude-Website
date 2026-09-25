@@ -53,6 +53,14 @@ function toPost(entry) {
   };
 }
 
+// A post trimmed to what a listing card renders — drops `content` (the full
+// Portable Text body), which is most of a post's size. Lists passed to a React
+// island get serialized into the page's HTML, so shipping full posts made the
+// homepage and /blog HTML ~1.6 MB each.
+export function toPostCard({ title, slug, category, author, date, excerpt, featuredImage }) {
+  return { title, slug, category, author, date, excerpt, featuredImage };
+}
+
 // Full post list, newest first — used at build time by both the /blog listing
 // page (all of it, filtering/pagination happens client-side over the full set)
 // and getStaticPaths in blog/[slug].astro (every post needs its own static
