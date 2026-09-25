@@ -2,7 +2,7 @@ import React from 'react';
 import Logo from '../Logo';
 import { pickLocale } from '../../lib/sanity';
 
-// Mirrors Home.jsx's own top hero (the inline ".hero" block in <App>). The logo
+// Mirrors HomeIsland.jsx's own top hero (the inline ".hero" block in <App>). The logo
 // stays the site's existing Logo component — only text is editable.
 function LandingHero({ data, lang }) {
   return (

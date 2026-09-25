@@ -1,14 +1,13 @@
-// Astro-native counterpart to src/lib/routes.js (which stays react-router-based,
-// for the legacy Home/Financing/Ventures island only — see
-// src/layouts/LegacyShell.astro). Same EN/FR path table and hash table, but no
-// react-router/window dependency: every function takes the current pathname as an
+// EN/FR path table and hash table for the whole site (replaced the old
+// react-router-based src/lib/routes.js). No react-router/window dependency:
+// every function takes the current pathname as an
 // explicit argument instead of reading it off `window.location` or a router
 // context, so it works identically in Astro frontmatter (server/build time) and in
 // a hydrated island (client time).
 //
 // Only param this site ever has is a single trailing ":slug" (blog post slugs), so
 // route matching/generation is done with a small manual regex swap instead of
-// pulling in react-router's matchPath/generatePath for this half of the app.
+// pulling in react-router's matchPath/generatePath.
 
 export const ROUTE_TABLE = [
   { en: '/', fr: '/fr' },
@@ -18,9 +17,6 @@ export const ROUTE_TABLE = [
   { en: '/ventures', fr: '/fr/ventures' },
 ];
 
-// Keep in sync with src/lib/routes.js's HASH_TABLE — duplicated rather than shared
-// because that file imports react-i18next's useTranslation, which would drag a
-// react-router-only dependency into pages that no longer use either.
 export const HASH_TABLE = {
   top: { en: 'top', fr: 'top' },
   codeboxx: { en: 'codeboxx', fr: 'a-propos' },
@@ -103,8 +99,7 @@ export function localizedHref(path, lang, currentPathname = '/') {
   return path;
 }
 
-// The DOM id a section should carry in `lang` — see routes.js's useLocalizedId for
-// the react-i18next-bound original this mirrors.
+// The DOM id a section should carry in `lang`.
 export function localizedId(key, lang) {
   const pair = HASH_TABLE[key];
   if (!pair) return key;

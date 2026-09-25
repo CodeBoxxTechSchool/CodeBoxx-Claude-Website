@@ -1,5 +1,5 @@
 // Nav, footer, and other strings shared across every page. NAV/footer structure
-// (hrefs, column keys) stays in Chrome.jsx — only the display text lives here.
+// (hrefs, column keys) stays in ChromeIsland.jsx — only the display text lives here.
 export default {
   nav: {
     about: 'About',
@@ -27,7 +27,7 @@ export default {
   footer: {
     tagline: 'We build AI-Native teams and software that outwork the old way.',
     columns: {
-      // Only titles here — Chrome.jsx/ChromeIsland.jsx build every column's
+      // Only titles here — ChromeIsland.jsx builds every column's
       // actual links straight from nav.* + the same hrefs the top menu uses,
       // so the footer can't silently drift out of sync with it.
       codeboxx: { title: 'CodeBoxx' },

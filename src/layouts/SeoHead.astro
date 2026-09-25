@@ -4,9 +4,8 @@
 // TopBar/Footer in the *same* React tree as its content, to share the Codi/Enroll
 // drawer state — see HomeIsland.jsx) still get the exact same real, build-time SEO
 // tags Blog/BlogPost get. This is the actual fix for the "OG/Twitter/JSON-LD tags
-// are invisible without JS" problem described in the migration writeup — compare
-// src/components/Seo.jsx (react-helmet-async), still used by the not-yet-migrated
-// legacy pages via LegacyShell.astro.
+// are invisible without JS" problem described in the migration writeup (the old
+// SPA set them client-side with react-helmet-async).
 import { localizedHref } from '../lib/i18nRoutes';
 
 const {
@@ -41,9 +40,7 @@ const pageSchemas = Array.isArray(structuredData)
 // this is the baseline fact sheet an AI answer engine (ChatGPT, Perplexity,
 // Gemini, and rank-tracking tools like ChatRank that monitor how those engines
 // cite a brand) uses to identify who CodeBoxx is at all, independent of
-// whatever page it happened to crawl. Mirrors the copy already used in
-// LegacyShell.astro's own Organization schema, so the two don't say different
-// things about the same company.
+// whatever page it happened to crawl.
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',

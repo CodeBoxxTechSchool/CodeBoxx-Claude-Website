@@ -3,7 +3,7 @@ import { Badge } from 'react-bootstrap';
 import { pickLocale } from '../../lib/sanity';
 import { ScriptTitle } from './shared';
 
-// Mirrors Home.jsx's Platform() ("01" section), but with fully custom content
+// Mirrors HomeIsland.jsx's Platform() ("01" section), but with fully custom content
 // per landing page and plain external links instead of in-page anchors.
 function LandingPlatform({ data, lang }) {
   const divisions = data.divisions || [];

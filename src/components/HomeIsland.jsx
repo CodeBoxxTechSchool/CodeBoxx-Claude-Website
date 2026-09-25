@@ -6,8 +6,7 @@ import Logo from './Logo';
 import { useIntakes } from '../lib/intakes';
 import { localizedHref, localizedId } from '../lib/i18nRoutes';
 
-// Astro-native counterpart to Home.jsx (the legacy file stays as-is — it's still
-// used by App.jsx's `*` 404 fallback via LegacyShell.astro, see src/pages/404.astro).
+// The homepage (replaced the old react-router Home.jsx).
 //
 // Unlike Blog/BlogPost, this is NOT decomposed into a dozen fine-grained islands.
 // Home is overwhelmingly *interactive* content — Studio/Solutions/Academy are
