@@ -117,6 +117,15 @@ $badge-warning-fg: #a16207;
 $badge-error-bg: #fee2e2;
 $badge-error-fg: #991b1b;
 
+// ---- Accessible text colors (WCAG AAA, >= 7:1) ----
+// $blue-500 is the brand fill, but as text it is only 2.3:1 on white — below
+// even AA. Use $blue-text for blue text/links on light surfaces (8.5:1 on white,
+// 8.2:1 on the page bg) and $blue-text-on-dark on navy surfaces (7.3:1).
+// Solid $blue-500 buttons keep their dark label (9:1) — white would be 2.3:1.
+$blue-text: #1d5170;
+$blue-text-on-dark: $blue-400;
+$slate-600: #475569;
+
 // ---- Semantic aliases ----
 $primary-color: $blue-500;
 $secondary-color: $navy-500;
@@ -124,8 +133,8 @@ $tertiary-color: $steel-500;
 $accent-color: $yellow-500;
 
 $color-text-primary: $ui-slate-900;
-$color-text-secondary: $ui-slate-500;
-$color-text-tertiary: $ui-slate-400;
+$color-text-secondary: $slate-600;
+$color-text-tertiary: $slate-600;
 $color-border-default: $ui-slate-200;
 $color-bg-primary: $neutral-0;
 $color-bg-page: $ui-slate-50;
@@ -206,8 +215,8 @@ $border-radius-lg: $radius-lg;
 $border-radius-xl: $radius-xl;
 $border-radius-2xl: $radius-2xl;
 
-$link-color: $blue-500;
-$link-hover-color: $blue-600;
+$link-color: $blue-text;
+$link-hover-color: $navy-500;
 
 // Checkbox ground truth from the retired Checkbox.jsx: 20px box, 4px radius,
 // slate-300 ring unchecked, solid blue-500 fill+ring checked. Width is set via a

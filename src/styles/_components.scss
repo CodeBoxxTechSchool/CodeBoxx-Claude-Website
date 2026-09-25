@@ -27,10 +27,10 @@
 .nav a {
   font-size: v.$text-body;
   font-weight: v.$weight-medium;
-  color: v.$ui-slate-500;
+  color: v.$color-text-secondary;
 
   &:hover {
-    color: v.$blue-500;
+    color: v.$blue-text;
   }
 }
 
@@ -61,12 +61,32 @@
   }
 }
 
+// Outline buttons: Bootstrap draws the label in $blue-500, only 2.3:1 on white.
+// Use the AAA text blue on light surfaces and the light blue on the navy ones.
+// Hover/active keep Bootstrap's solid $blue-500 fill with a dark label (9:1).
+.btn-outline-primary {
+  --bs-btn-color: #{v.$blue-text};
+  --bs-btn-border-color: #{v.$blue-700};
+}
+:where(.calendar-band, .band-dark, .sect-navy, .site-footer, .hero) .btn-outline-primary {
+  --bs-btn-color: #{v.$blue-text-on-dark};
+  --bs-btn-border-color: #{v.$blue-text-on-dark};
+}
+// Plain links on dark surfaces: the default $blue-text is for light ones.
+// :where() keeps this at element specificity so any link class still wins.
+:where(.calendar-band, .band-dark, .sect-navy, .site-footer, .hero) a {
+  color: v.$blue-text-on-dark;
+}
+:where(.sect-steel) a {
+  color: v.$neutral-0;
+}
+
 // Bootstrap's Button has no "ghost" variant — ground truth from the retired
 // Button.jsx: transparent bg, blue-500 text, blue-50 hover fill, no border.
 .btn-ghost {
   background: transparent;
   border-color: transparent;
-  color: v.$blue-500;
+  color: v.$blue-text;
   position: fixed;
   top: 14px;
   right: 14px;
@@ -75,7 +95,7 @@
   &:focus {
     background: v.$blue-50;
     border-color: transparent;
-    color: v.$blue-500;
+    color: v.$blue-text;
   }
 }
 
@@ -93,7 +113,7 @@
 .form-actions-note {
   font-size: v.$text-caption;
   font-weight: v.$weight-medium;
-  color: v.$ui-slate-400;
+  color: v.$color-text-secondary;
 
   &.sent {
     color: v.$green-600;
@@ -184,7 +204,7 @@
   overflow: hidden;
   border-radius: v.$radius-full;
   background: v.$navy-500;
-  color: v.$blue-500;
+  color: v.$blue-text-on-dark;
   display: inline-flex;
   justify-content: center;
   align-items: center;

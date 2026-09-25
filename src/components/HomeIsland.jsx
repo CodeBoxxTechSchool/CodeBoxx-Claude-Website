@@ -127,6 +127,38 @@ function ClientCard({ t }) {
 // editor adds a 4th client testimonial in Sanity): the same horizontal
 // scroll-track + nudge-button slider GraduateTestimonials uses below, for
 // the same reason — no auto-scroll, since these are read, not glanced at.
+const SLIDER_LABELS = {
+  en: { prev: 'Previous', next: 'Next', pause: 'Pause', play: 'Play' },
+  fr: { prev: 'Précédent', next: 'Suivant', pause: 'Pause', play: 'Lecture' },
+};
+
+// Prev/next nudge buttons shared by the sliders below. The glyphs are visual
+// only; screen readers get the named labels instead of "less than/greater than".
+function SliderButtons({ onNudge }) {
+  const { lang } = useHomeCtx();
+  const labels = SLIDER_LABELS[lang] || SLIDER_LABELS.en;
+  return (
+    <div className="d-flex gap-2">
+      <Button
+        size="sm"
+        variant="outline-primary"
+        aria-label={labels.prev}
+        onClick={() => onNudge(-1)}
+      >
+        <span aria-hidden="true">&lt;</span>
+      </Button>
+      <Button
+        size="sm"
+        variant="outline-primary"
+        aria-label={labels.next}
+        onClick={() => onNudge(1)}
+      >
+        <span aria-hidden="true">&gt;</span>
+      </Button>
+    </div>
+  );
+}
+
 function Testimonials({ eyebrow, items }) {
   const ref = React.useRef(null);
   const nudge = (d) => {
@@ -138,16 +170,15 @@ function Testimonials({ eyebrow, items }) {
       <div className="testimonials">
         <div className="testimonial-slider-head">
           <p className="eyebrow">{eyebrow}</p>
-          <div className="d-flex gap-2">
-            <Button size="sm" variant="outline-primary" onClick={() => nudge(-1)}>
-              &lt;
-            </Button>
-            <Button size="sm" variant="outline-primary" onClick={() => nudge(1)}>
-              &gt;
-            </Button>
-          </div>
+          <SliderButtons onNudge={nudge} />
         </div>
-        <div ref={ref} className="noscroll testimonial-track">
+        <div
+          ref={ref}
+          className="noscroll testimonial-track"
+          tabIndex={0}
+          role="region"
+          aria-label={eyebrow}
+        >
           {items.map((t) => (
             <ClientCard key={t.name} t={t} />
           ))}
@@ -223,16 +254,15 @@ function GraduateTestimonials({ eyebrow, items, labels }) {
     <div className="testimonials">
       <div className="testimonial-slider-head">
         <p className="eyebrow">{eyebrow}</p>
-        <div className="d-flex gap-2">
-          <Button size="sm" variant="outline-primary" onClick={() => nudge(-1)}>
-            &lt;
-          </Button>
-          <Button size="sm" variant="outline-primary" onClick={() => nudge(1)}>
-            &gt;
-          </Button>
-        </div>
+        <SliderButtons onNudge={nudge} />
       </div>
-      <div ref={ref} className="noscroll testimonial-track">
+      <div
+        ref={ref}
+        className="noscroll testimonial-track"
+        tabIndex={0}
+        role="region"
+        aria-label={eyebrow}
+      >
         {items.map((t) => (
           <GradCard key={t.name} t={t} labels={labels} />
         ))}
@@ -263,12 +293,18 @@ function ClientSlider() {
   const logos = logosLive && logosLive.length ? logosLive : CLIENT_LOGOS;
   const ref = React.useRef(null);
   const [paused, setPaused] = React.useState(false);
+  // Auto-scroll needs a way to stop it that works without a mouse (WCAG 2.2.2):
+  // the Pause toggle, keyboard focus inside the slider, and prefers-reduced-motion.
+  const [stopped, setStopped] = React.useState(false);
+  React.useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) setStopped(true);
+  }, []);
   const nudge = (d) => {
     const el = ref.current;
     if (el) el.scrollBy({ left: d * el.clientWidth * 0.8, behavior: 'smooth' });
   };
   React.useEffect(() => {
-    if (paused) return;
+    if (paused || stopped) return;
     const t = setInterval(() => {
       const el = ref.current;
       if (!el) return;
@@ -277,26 +313,36 @@ function ClientSlider() {
       else el.scrollBy({ left: 224, behavior: 'smooth' });
     }, 2600);
     return () => clearInterval(t);
-  }, [paused]);
+  }, [paused, stopped]);
   return (
     <div
       id={worksId}
       className="client-slider"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) setPaused(false);
+      }}
     >
       <div className="client-slider-head">
         <p className="eyebrow">{home.clientSlider.trustedBy}</p>
         <div className="d-flex gap-2">
-          <Button size="sm" variant="outline-primary" onClick={() => nudge(-1)}>
-            &lt;
+          <Button size="sm" variant="outline-primary" onClick={() => setStopped((v) => !v)}>
+            {stopped
+              ? (SLIDER_LABELS[lang] || SLIDER_LABELS.en).play
+              : (SLIDER_LABELS[lang] || SLIDER_LABELS.en).pause}
           </Button>
-          <Button size="sm" variant="outline-primary" onClick={() => nudge(1)}>
-            &gt;
-          </Button>
+          <SliderButtons onNudge={nudge} />
         </div>
       </div>
-      <div ref={ref} className="noscroll client-track">
+      <div
+        ref={ref}
+        className="noscroll client-track"
+        tabIndex={0}
+        role="region"
+        aria-label={home.clientSlider.trustedBy}
+      >
         {logos.map((logo) => (
           <div key={logo.id} className="client-slide">
             <img
@@ -1276,14 +1322,14 @@ function Contact({ onEnroll }) {
           <h2 className="h2">{home.contact.enrollAcademyTitle}</h2>
           <p className="lede">{home.contact.enrollAcademyLede}</p>
           <div className="d-flex gap-3 flex-wrap">
-            <Button onClick={() => onEnroll('Advanced AI Developer')}>
-              {home.contact.enrollAiBtn}
-            </Button>
             <Button
               variant="outline-primary"
               onClick={() => onEnroll('AI Native Full-Stack Developer')}
             >
               {home.contact.enrollFsdBtn}
+            </Button>
+            <Button onClick={() => onEnroll('Advanced AI Developer')}>
+              {home.contact.enrollAiBtn}
             </Button>
           </div>
         </div>
@@ -1863,13 +1909,8 @@ export default function HomeIsland({
       }}
     >
       <div id="top">
-        <TopBar
-          lang={lang}
-          pathname={pathname}
-          strings={common}
-          onCodi={() => setCodi(true)}
-        />
-        <main>
+        <TopBar lang={lang} pathname={pathname} strings={common} onCodi={() => setCodi(true)} />
+        <main id="main" tabIndex={-1}>
           <div className="hero">
             <video
               className="hero-video"
