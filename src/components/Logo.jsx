@@ -13,7 +13,9 @@ function Logo({ theme = 'light', width = 160, label = 'CodeBoxx' }) {
       height={height}
       role="img"
       aria-label={label}
-      dangerouslySetInnerHTML={{ __html: LOGO_MARKUP }}
+      // <title> (not just aria-label) so a link wrapping only this logo gets an
+      // accessible name — Astro's a11y audit only reads an svg's name from it.
+      dangerouslySetInnerHTML={{ __html: '<title>' + label + '</title>' + LOGO_MARKUP }}
     />
   );
 }
