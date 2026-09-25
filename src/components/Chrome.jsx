@@ -131,21 +131,19 @@ function NavItem({ item, onNavigate }) {
   );
 }
 
-function TopBar({ onCodi, onEnroll }) {
+function TopBar({ onCodi }) {
   const { t, i18n } = useTranslation();
   const nav = useNav();
   const [expanded, setExpanded] = React.useState(false);
-  const enroll = () =>
-    onEnroll
-      ? onEnroll('AI Native Full-Stack Developer')
-      : (window.location.href = localizedHref('#contact', i18n.language));
+  // Same target as the Academy > Courses menu link (opens the Courses tab).
+  const enrollHref = localizedHref('#academy-courses', i18n.language);
   return (
     <React.Fragment>
       <header className="site-header">
         <Navbar expand="lg" expanded={expanded} onToggle={setExpanded}>
           <Container fluid className="wrap">
             <Navbar.Brand href={localizedHref('#top', i18n.language)} className="p-0">
-              <Logo width={168} />
+              <Logo width={168} label="CodeBoxx Technology" />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="main-nav" />
             <Navbar.Collapse id="main-nav">
@@ -157,7 +155,7 @@ function TopBar({ onCodi, onEnroll }) {
             </Navbar.Collapse>
             <div className="d-none d-lg-flex align-items-center gap-3 flex-shrink-0">
               <LanguageToggle />
-              <Button size="sm" variant="outline-primary" onClick={enroll}>
+              <Button size="sm" variant="outline-primary" href={enrollHref}>
                 {t('actions.enrollNow')}
               </Button>
               <Button size="sm" onClick={onCodi}>
@@ -168,7 +166,7 @@ function TopBar({ onCodi, onEnroll }) {
         </Navbar>
       </header>
       <div className="mobile-cta-bar d-lg-none">
-        <Button variant="outline-primary" onClick={enroll}>
+        <Button variant="outline-primary" href={enrollHref}>
           {t('actions.enrollNow')}
         </Button>
         <Button onClick={onCodi}>{t('actions.talkWithCodi')}</Button>

@@ -3,7 +3,7 @@ import { LOGO_VIEWBOX, LOGO_RATIO, LOGO_MARKUP } from './logo-mark';
 
 // Exact mark + wordmark geometry recovered from the retired design-system bundle
 // (components/brand/Logo.jsx) — see logo-mark.js.
-function Logo({ theme = 'light', width = 160 }) {
+function Logo({ theme = 'light', width = 160, label = 'CodeBoxx' }) {
   const height = width / LOGO_RATIO;
   return (
     <svg
@@ -12,7 +12,7 @@ function Logo({ theme = 'light', width = 160 }) {
       width={width}
       height={height}
       role="img"
-      aria-label="CodeBoxx"
+      aria-label={label}
       dangerouslySetInnerHTML={{ __html: LOGO_MARKUP }}
     />
   );

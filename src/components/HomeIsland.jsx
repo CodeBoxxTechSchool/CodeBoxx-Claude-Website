@@ -1868,7 +1868,6 @@ export default function HomeIsland({
           pathname={pathname}
           strings={common}
           onCodi={() => setCodi(true)}
-          onEnroll={setEnroll}
         />
         <main>
           <div className="hero">

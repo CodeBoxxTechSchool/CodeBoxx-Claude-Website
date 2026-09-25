@@ -1650,7 +1650,7 @@ function App() {
   return (
     <div id="top">
       <Seo title={t('home.seo.title')} description={t('home.seo.description')} />
-      <TopBar onCodi={() => setCodi(true)} onEnroll={setEnroll} />
+      <TopBar onCodi={() => setCodi(true)} />
       <main>
         <div className="hero">
           <div className="d-flex">
