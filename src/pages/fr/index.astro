@@ -2,6 +2,7 @@
 // FR twin of src/pages/index.astro — see that file for the shared rationale.
 import SeoHead from '../../layouts/SeoHead.astro';
 import ScrollReveal from '../../components/ScrollReveal.astro';
+import DeferredVideos from '../../components/DeferredVideos.astro';
 import HomeIsland from '../../components/HomeIsland';
 import {
   fetchTeam,
@@ -9,6 +10,7 @@ import {
   fetchPostList,
   fetchClientTestimonials,
   fetchGraduateTestimonials,
+  toPostCard,
 } from '../../lib/sanityContent';
 import { LATEST_POSTS } from '../../lib/homeSeed';
 import '../../styles/main.scss';
@@ -30,6 +32,9 @@ const [studioTeam, academyTeam, logos, latestPosts, clientTestimonials, graduate
 <html lang="fr">
   <head>
     <SeoHead lang="fr" title={home.seo.title} description={home.seo.description} />
+    <!-- The hero's CSS background is the mobile LCP element; without this the
+         browser only discovers it after downloading and parsing the stylesheet. -->
+    <link rel="preload" as="image" href="/assets/hero-bg.webp" fetchpriority="high" />
   </head>
   <body>
     <HomeIsland
@@ -41,10 +46,11 @@ const [studioTeam, academyTeam, logos, latestPosts, clientTestimonials, graduate
       studioTeam={studioTeam}
       academyTeam={academyTeam}
       logos={logos}
-      latestPosts={latestPosts}
+      latestPosts={latestPosts.slice(0, 3).map(toPostCard)}
       clientTestimonials={clientTestimonials}
       graduateTestimonials={graduateTestimonials}
     />
     <ScrollReveal />
+    <DeferredVideos />
   </body>
 </html>

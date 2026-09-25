@@ -1814,7 +1814,6 @@ function ForgeTeaser() {
     <section className="band-dark">
       <video
         className="hero-video"
-        autoPlay
         muted
         loop
         playsInline
@@ -1913,7 +1912,6 @@ export default function HomeIsland({
           <div className="hero">
             <video
               className="hero-video"
-              autoPlay
               muted
               loop
               playsInline

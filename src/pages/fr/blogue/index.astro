@@ -3,12 +3,12 @@
 import Layout from '../../../layouts/Layout.astro';
 import HeroVideo from '../../../components/HeroVideo.astro';
 import BlogPosts from '../../../components/BlogPostsIsland';
-import { fetchPostList } from '../../../lib/sanityContent';
+import { fetchPostList, toPostCard } from '../../../lib/sanityContent';
 import { SEED_POSTS } from '../../../lib/blogSeed';
 import common from '../../../locales/fr/common';
 import blog from '../../../locales/fr/blog';
 
-const posts = await fetchPostList(SEED_POSTS);
+const posts = (await fetchPostList(SEED_POSTS)).map(toPostCard);
 ---
 
 <Layout lang="fr" title={blog.seo.title} description={blog.seo.description} strings={common}>
