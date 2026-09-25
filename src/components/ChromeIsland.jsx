@@ -114,7 +114,7 @@ function NavItem({ item, onNavigate }) {
   );
 }
 
-export function TopBar({ lang, pathname, strings, onCodi, onEnroll, langHref }) {
+export function TopBar({ lang, pathname, strings, onCodi, langHref }) {
   const [expanded, setExpanded] = React.useState(false);
   const nav = NAV_STRUCTURE.map((n) => ({
     key: n.key,
@@ -122,19 +122,20 @@ export function TopBar({ lang, pathname, strings, onCodi, onEnroll, langHref }) 
     href: localizedHref(n.href, lang, pathname),
     items: n.items?.map(([k, href]) => [strings.nav[k], localizedHref(href, lang, pathname)]),
   }));
-  // Both pages that mount this today (Blog, BlogPost) have no on-page Codi/Enroll
-  // drawer — same as the original Chrome.jsx usage from those two pages, this just
-  // sends the visitor to the homepage's #contact section.
+  // Pages without an on-page Codi drawer (Blog, BlogPost) send the visitor to the
+  // homepage's #contact section instead.
   const contactHref = localizedHref('#contact', lang, pathname);
   const handleCodi = onCodi || (() => (window.location.href = contactHref));
-  const handleEnroll = onEnroll || (() => (window.location.href = contactHref));
+  // Same target as the Academy > Courses menu link: HomeIsland's Academy listens
+  // for this hash to scroll there and open the Courses tab.
+  const enrollHref = localizedHref('#academy-courses', lang, pathname);
   return (
     <React.Fragment>
       <header className="site-header">
         <Navbar expand="lg" expanded={expanded} onToggle={setExpanded}>
           <Container fluid className="wrap">
             <Navbar.Brand href={localizedHref('#top', lang, pathname)} className="p-0">
-              <Logo width={168} />
+              <Logo width={168} label="CodeBoxx Technology" />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="main-nav" />
             <Navbar.Collapse id="main-nav">
@@ -151,7 +152,7 @@ export function TopBar({ lang, pathname, strings, onCodi, onEnroll, langHref }) 
                 label={strings.actions.language}
                 hrefOverride={langHref}
               />
-              <Button size="sm" variant="outline-primary" onClick={handleEnroll}>
+              <Button size="sm" variant="outline-primary" href={enrollHref}>
                 {strings.actions.enrollNow}
               </Button>
               <Button size="sm" onClick={handleCodi}>
@@ -162,7 +163,7 @@ export function TopBar({ lang, pathname, strings, onCodi, onEnroll, langHref }) 
         </Navbar>
       </header>
       <div className="mobile-cta-bar d-lg-none">
-        <Button variant="outline-primary" onClick={handleEnroll}>
+        <Button variant="outline-primary" href={enrollHref}>
           {strings.actions.enrollNow}
         </Button>
         <Button onClick={handleCodi}>{strings.actions.talkWithCodi}</Button>
