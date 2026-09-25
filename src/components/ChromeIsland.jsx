@@ -50,11 +50,21 @@ const NAV_STRUCTURE = [
   { key: 'contact', href: '#contact' },
 ];
 
-function LanguageToggle({ lang, pathname, label, hrefOverride }) {
+// Accessible name keeps the visible "FR"/"EN" text (WCAG 2.5.3 Label in Name)
+// and adds the language's own name, announced in that language.
+const LANGUAGE_NAMES = { en: 'English', fr: 'Français' };
+
+function LanguageToggle({ lang, pathname, hrefOverride }) {
   const next = lang === 'fr' ? 'en' : 'fr';
   const href = hrefOverride || localizedHref(pathname, next, pathname);
   return (
-    <a className="btn btn-sm btn-outline-primary" href={href} aria-label={label}>
+    <a
+      className="btn btn-sm btn-outline-primary"
+      href={href}
+      hrefLang={next}
+      lang={next}
+      aria-label={next.toUpperCase() + ' – ' + LANGUAGE_NAMES[next]}
+    >
       {next.toUpperCase()}
     </a>
   );
@@ -131,6 +141,9 @@ export function TopBar({ lang, pathname, strings, onCodi, langHref }) {
   const enrollHref = localizedHref('#academy-courses', lang, pathname);
   return (
     <React.Fragment>
+      <a className="skip-link" href="#main">
+        {strings.actions.skipToContent}
+      </a>
       <header className="site-header">
         <Navbar expand="lg" expanded={expanded} onToggle={setExpanded}>
           <Container fluid className="wrap">
@@ -146,12 +159,7 @@ export function TopBar({ lang, pathname, strings, onCodi, langHref }) {
               </Nav>
             </Navbar.Collapse>
             <div className="d-none d-lg-flex align-items-center gap-3 flex-shrink-0">
-              <LanguageToggle
-                lang={lang}
-                pathname={pathname}
-                label={strings.actions.language}
-                hrefOverride={langHref}
-              />
+              <LanguageToggle lang={lang} pathname={pathname} hrefOverride={langHref} />
               <Button size="sm" variant="outline-primary" href={enrollHref}>
                 {strings.actions.enrollNow}
               </Button>

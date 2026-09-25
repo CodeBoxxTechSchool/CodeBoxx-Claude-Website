@@ -22,6 +22,7 @@ export default {
     talkWithCodi: 'Talk With Codi',
     close: 'Close',
     language: 'Language',
+    skipToContent: 'Skip to main content',
   },
   footer: {
     tagline: 'We build AI-Native teams and software that outwork the old way.',

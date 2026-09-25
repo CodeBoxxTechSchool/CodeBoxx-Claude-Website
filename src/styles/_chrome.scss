@@ -56,11 +56,11 @@
     gap: 4px;
     font-size: v.$text-body;
     font-weight: v.$weight-medium;
-    color: v.$ui-slate-500;
+    color: v.$color-text-secondary;
   }
 
   &.open > a {
-    color: v.$blue-500;
+    color: v.$blue-text;
   }
 }
 
@@ -161,7 +161,7 @@
       width: 100%;
       padding: 12px 16px;
       border-radius: v.$radius-md;
-      color: v.$ui-slate-500;
+      color: v.$color-text-secondary;
     }
   }
 }
@@ -182,7 +182,7 @@
     font-weight: v.$weight-semibold;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: v.$blue-500;
+    color: v.$blue-text-on-dark;
   }
 
   .footer-col a {
@@ -198,6 +198,6 @@
   .footer-meta {
     font-size: v.$text-micro;
     font-weight: v.$weight-medium;
-    color: rgba(255, 255, 255, 0.56);
+    color: rgba(255, 255, 255, 0.8);
   }
 }

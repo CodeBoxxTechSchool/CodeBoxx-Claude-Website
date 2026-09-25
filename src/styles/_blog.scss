@@ -12,12 +12,12 @@
   letter-spacing: 0.5px;
   text-transform: uppercase;
   background: transparent;
-  color: v.$ui-slate-500;
+  color: v.$color-text-secondary;
   box-shadow: inset 0 0 0 1px v.$ui-slate-200;
 
   &.active {
     background: v.$blue-500;
-    color: v.$neutral-0;
+    color: v.$ui-slate-900;
     box-shadow: none;
   }
 }
@@ -42,7 +42,7 @@
 .post-date {
   font-size: v.$text-micro;
   font-weight: v.$weight-medium;
-  color: v.$ui-slate-400;
+  color: v.$color-text-secondary;
 }
 .post-title {
   margin: 0;
@@ -54,7 +54,7 @@
 .post-author {
   font-size: v.$text-caption;
   font-weight: v.$weight-semibold;
-  color: v.$ui-slate-500;
+  color: v.$color-text-secondary;
 }
 
 // Standalone post page (BlogPost.jsx) — a subtle top-fade wash behind the article,
@@ -195,5 +195,5 @@
 .load-more-count {
   font-size: v.$text-micro;
   font-weight: v.$weight-medium;
-  color: v.$ui-slate-400;
+  color: v.$color-text-secondary;
 }

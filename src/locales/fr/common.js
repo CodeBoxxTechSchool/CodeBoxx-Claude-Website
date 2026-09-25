@@ -20,6 +20,7 @@ export default {
     talkWithCodi: 'Parler à Codi',
     close: 'Fermer',
     language: 'Langue',
+    skipToContent: 'Passer au contenu principal',
   },
   footer: {
     tagline:

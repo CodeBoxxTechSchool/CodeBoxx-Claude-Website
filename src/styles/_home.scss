@@ -75,7 +75,7 @@
   overflow-wrap: break-word;
 
   &.active {
-    color: v.$blue-500;
+    color: v.$blue-text;
   }
 }
 
@@ -83,7 +83,7 @@
 .kicker {
   width: fit-content;
   border-radius: v.$radius-full;
-  background: v.$steel-500;
+  background: v.$steel-700;
   margin-bottom: 10px;
   padding: 6px 14px;
   font-size: v.$text-micro;
@@ -106,7 +106,7 @@
   font-size: v.$text-body;
   font-weight: v.$weight-medium;
   line-height: v.$leading-tight;
-  color: v.$ui-slate-500;
+  color: v.$color-text-secondary;
 }
 
 // Headshot grid (ServiceDetail team of 3, Academy team of 4).
@@ -139,7 +139,7 @@
 }
 .person-role {
   font-size: v.$text-caption;
-  color: v.$ui-slate-500;
+  color: v.$color-text-secondary;
 }
 
 .service-steps {
@@ -159,7 +159,7 @@
   height: 28px;
   border-radius: v.$radius-full;
   background: v.$blue-500;
-  color: v.$neutral-0;
+  color: v.$ui-slate-900;
   font-size: v.$text-caption;
   font-weight: v.$weight-bold;
   display: flex;
@@ -237,7 +237,7 @@
 .testimonial-role {
   font-size: v.$text-micro;
   font-weight: v.$weight-medium;
-  color: v.$ui-slate-400;
+  color: v.$color-text-secondary;
 }
 
 // Graduate testimonials only (GraduateTestimonials/GradCard in
@@ -260,7 +260,7 @@
   display: block;
   margin-bottom: 4px;
   font-weight: v.$weight-bold;
-  color: v.$blue-500;
+  color: v.$blue-text;
 }
 
 // Horizontal slider shared by GraduateTestimonials (always a slider) and
@@ -299,7 +299,7 @@
 .codi-role {
   font-size: v.$text-micro;
   font-weight: v.$weight-medium;
-  color: v.$ui-slate-400;
+  color: v.$color-text-secondary;
 }
 .codi-log {
   flex: 1;
@@ -324,7 +324,7 @@
   &.codi-bubble-user {
     align-self: flex-end;
     background: v.$blue-500;
-    color: v.$neutral-0;
+    color: v.$ui-slate-900;
     box-shadow: none;
   }
 }
@@ -392,7 +392,7 @@
   font-weight: v.$weight-semibold;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: v.$blue-500;
+  color: v.$blue-text-on-dark;
 }
 .calendar-title {
   font-size: v.$text-h1;
@@ -460,7 +460,7 @@
 .calendar-place {
   font-size: v.$text-label;
   font-weight: v.$weight-medium;
-  color: rgba(255, 255, 255, 0.56);
+  color: rgba(255, 255, 255, 0.8);
 }
 .calendar-status {
   font-size: v.$text-micro;
@@ -475,10 +475,10 @@
     color: v.$yellow-500;
   }
   &.status-planned {
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.8);
   }
   &.status-in-progress {
-    color: v.$green-500;
+    color: v.$green-400;
   }
 }
 
@@ -568,7 +568,7 @@
 .forge-feature-body {
   font-size: v.$text-body;
   line-height: v.$leading-body;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 // ---- CodeBlog teaser cards ----
@@ -606,7 +606,7 @@
   gap: 12px;
 }
 .link-tag-muted {
-  color: v.$ui-slate-400;
+  color: v.$color-text-secondary;
 }
 .award-block {
   flex: 0 0 148px;
@@ -626,7 +626,7 @@
   font-weight: v.$weight-semibold;
   line-height: 16px;
   text-align: center;
-  color: v.$ui-slate-500;
+  color: v.$color-text-secondary;
   text-wrap: pretty;
 }
 .division-intro {
@@ -638,7 +638,7 @@
   max-width: none;
 }
 .lede-inverse {
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.9);
 }
 .line-block {
   display: block;
@@ -679,7 +679,7 @@
 .consent-text {
   font-size: v.$text-micro;
   line-height: 16px;
-  color: v.$ui-slate-500;
+  color: v.$color-text-secondary;
 
   a {
     text-decoration: underline;
@@ -711,5 +711,5 @@
   font-weight: v.$weight-medium;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: v.$ui-slate-400;
+  color: v.$color-text-secondary;
 }

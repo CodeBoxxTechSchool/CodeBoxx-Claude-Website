@@ -46,7 +46,7 @@ const pathname = Astro.url.pathname;
       {!hideTopBar && (
         <TopBar client:load lang={lang} pathname={pathname} strings={strings} langHref={langHref} />
       )}
-      <main>
+      <main id="main" tabindex="-1">
         <slot />
       </main>
       {!hideFooter && <Footer client:load lang={lang} pathname={pathname} strings={strings} />}
