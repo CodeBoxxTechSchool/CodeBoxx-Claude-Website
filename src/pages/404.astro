@@ -1,15 +1,38 @@
 ---
-// Astro's static build now produces real per-route files, so nginx's old
-// `try_files $uri /index.html` SPA-fallback trick is no longer needed for deep
-// links — but it IS still needed for one thing: the legacy App.jsx's own `*`
-// route renders Home instead of a real 404 (a pre-existing quirk, not something
-// this migration set out to change). Mounting the legacy app here reproduces
-// that exact behavior for any unmatched URL — its router still reads the real
-// browser location and falls through to Home — while Astro's build also emits
-// this as dist/404.html, so nginx can point its 404 handler at that file to keep
-// unmatched paths working the same way they do today. See the astrobuild-migration
-// PR description for the one-line nginx config change this needs.
-import LegacyShell from '../layouts/LegacyShell.astro';
+// Real "page not found" page. nginx serves this file (dist/404.html) for any
+// unmatched URL, EN or FR — a static file can't know which language was asked
+// for, so it leads in English and offers the French homepage right below.
+//
+// It used to mount the legacy react-router app (LegacyShell.astro), which fell
+// through to Home for unknown routes — but that app crashes on load now, so
+// every unknown URL showed a blank page with no heading or landmark.
+import Layout from '../layouts/Layout.astro';
+import common from '../locales/en/common';
 ---
 
-<LegacyShell />
+<Layout
+  lang="en"
+  title="Page not found | CodeBoxx"
+  description="The page you are looking for doesn't exist or has moved."
+  strings={common}
+  noindex
+>
+  <section class="band-dark">
+    <div class="wrap d-flex flex-column gap-4 align-items-start">
+      <span class="pill">404</span>
+      <h1 class="band-title">Page not found</h1>
+      <p class="band-lede">The page you are looking for doesn't exist or has moved.</p>
+      <p class="band-lede" lang="fr">
+        La page que vous cherchez n'existe pas ou a été déplacée.
+      </p>
+      <div class="d-flex gap-3 flex-wrap">
+        <a class="btn btn-primary" href="/">
+          Back to the homepage
+        </a>
+        <a class="btn btn-outline-primary" href="/fr/" lang="fr" hreflang="fr">
+          Retour à l'accueil
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
