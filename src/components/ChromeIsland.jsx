@@ -25,7 +25,6 @@ const NAV_STRUCTURE = [
       ['aboutTeam', '#about-team'],
       ['aboutHistory', '#about-history'],
       ['aboutVisionMission', '#about-vision'],
-      ['aboutFaq', '/faq'],
     ],
   },
   {
@@ -43,6 +42,7 @@ const NAV_STRUCTURE = [
       ['academyCourses', '#academy-courses'],
       ['academyCalendar', '#intake'],
       ['academyFinancing', '/financing'],
+      ['academyFaq', '/faq'],
     ],
   },
   { key: 'ventures', href: '/ventures' },

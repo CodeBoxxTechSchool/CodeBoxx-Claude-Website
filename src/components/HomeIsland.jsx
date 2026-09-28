@@ -1076,6 +1076,74 @@ function useAcademyTopics(home) {
   });
 }
 
+// Corporate-training panel (home.corporate), revealed by "Learn More" on the
+// Tailor-Made Corporate Training course item and rendered between the Academy
+// grid and the intake calendar. Same boxy shape as .calendar-band, in a lighter,
+// lower-contrast colorway; stats reuse the Metrics band's CountUp animation.
+function CorporateTraining({ id, onClose }) {
+  const { home } = useHomeCtx();
+  const c = home.corporate;
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    ref.current?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    ref.current?.focus({ preventScroll: true });
+  }, []);
+  return (
+    <section id={id} ref={ref} tabIndex={-1} className="corp-band" aria-labelledby={id + '-title'}>
+      <div className="corp-head">
+        <div className="d-flex flex-column gap-3 corp-head-text">
+          <span className="corp-eyebrow">{c.eyebrow}</span>
+          <h3 id={id + '-title'} className="corp-title">
+            {c.title}
+          </h3>
+          <p className="lede corp-lede">{c.lede}</p>
+        </div>
+        <button type="button" className="corp-close" onClick={onClose} aria-label={c.close}>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            aria-hidden="true"
+          >
+            <line x1="6" y1="6" x2="18" y2="18" />
+            <line x1="18" y1="6" x2="6" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <div className="grid2 corp-sections">
+        {c.sections.map((sec) => (
+          <div key={sec.title} className="d-flex flex-column gap-3">
+            <h4 className="corp-section-title">{sec.title}</h4>
+            {sec.body.map((para, k) => (
+              <p key={k} className="pbody">
+                {para}
+              </p>
+            ))}
+          </div>
+        ))}
+      </div>
+      <div className="corp-stats">
+        <h4 className="corp-section-title">{c.statsTitle}</h4>
+        <div className="grid3">
+          {c.stats.map(([n, desc]) => (
+            <div key={n} className="metric">
+              <span className="metric-value corp-metric-value">
+                <CountUp value={n} />
+              </span>
+              <span className="corp-metric-desc">{desc}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Academy({ onEnroll }) {
   const {
     home,
@@ -1086,6 +1154,9 @@ function Academy({ onEnroll }) {
   } = useHomeCtx();
   const topics = useAcademyTopics(home);
   const [active, setActive] = React.useState(0);
+  const [corpOpen, setCorpOpen] = React.useState(false);
+  const learnMoreRef = React.useRef(null);
+  const corpId = 'corporate-training';
   const academyTeam =
     academyTeamLive && academyTeamLive.length ? academyTeamLive : topics[2].people;
   const gradQuotes =
@@ -1120,6 +1191,15 @@ function Academy({ onEnroll }) {
       badge={<Badge bg="brand">{home.academy.nextIntake}</Badge>}
       after={
         <React.Fragment>
+          {corpOpen ? (
+            <CorporateTraining
+              id={corpId}
+              onClose={() => {
+                setCorpOpen(false);
+                learnMoreRef.current?.focus();
+              }}
+            />
+          ) : null}
           <IntakeCalendar onEnroll={onEnroll} />
           <GraduateTestimonials
             eyebrow={home.testimonials.gradEyebrow}
@@ -1210,16 +1290,26 @@ function Academy({ onEnroll }) {
                 </Button>
               ) : null}
               {cta === 'contact' ? (
-                <Button
-                  size="sm"
-                  variant="outline-primary"
-                  className="mt-1"
-                  onClick={() => {
-                    location.hash = localizedHref('#contact', lang, pathname);
-                  }}
-                >
-                  {home.academy.contactUs}
-                </Button>
+                <div className="d-flex gap-2 flex-wrap mt-1">
+                  <Button
+                    ref={learnMoreRef}
+                    size="sm"
+                    aria-expanded={corpOpen}
+                    aria-controls={corpId}
+                    onClick={() => setCorpOpen((o) => !o)}
+                  >
+                    {home.academy.learnMore}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline-primary"
+                    onClick={() => {
+                      location.hash = localizedHref('#contact', lang, pathname);
+                    }}
+                  >
+                    {home.academy.contactUs}
+                  </Button>
+                </div>
               ) : null}
             </div>
           )
@@ -1230,9 +1320,12 @@ function Academy({ onEnroll }) {
 }
 
 function CountUp({ value }) {
-  const m = String(value).match(/^([\d.]+)(.*)$/);
-  const target = m ? parseFloat(m[1]) : 0;
-  const suffix = m ? m[2] : '';
+  // Non-numeric prefix/suffix (e.g. "+" and "K" in "+55K") are kept as-is
+  // around the animated number.
+  const m = String(value).match(/^(\D*?)([\d.]+)(.*)$/);
+  const prefix = m ? m[1] : '';
+  const target = m ? parseFloat(m[2]) : 0;
+  const suffix = m ? m[3] : '';
   const [n, setN] = React.useState(0);
   const ref = React.useRef(null);
   React.useEffect(() => {
@@ -1262,6 +1355,7 @@ function CountUp({ value }) {
   }, [target]);
   return (
     <span ref={ref}>
+      {prefix}
       {Math.round(n)}
       {suffix}
     </span>

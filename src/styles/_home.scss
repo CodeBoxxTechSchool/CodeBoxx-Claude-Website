@@ -482,6 +482,122 @@
   }
 }
 
+// ---- Corporate-training panel (CorporateTraining in HomeIsland.jsx) ----
+// Same boxy shape as .calendar-band, in a light steel colorway so it reads as
+// secondary to the navy calendar right below it.
+.corp-band {
+  scroll-margin-top: 96px;
+  margin-top: 64px;
+  padding: 48px;
+  border-radius: v.$radius-xl;
+  background: v.$steel-50;
+  box-shadow: inset 0 0 0 1px v.$steel-100;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  animation: corp-reveal 0.35s ease-out;
+
+  &:focus {
+    outline: none;
+  }
+  @media (max-width: v.$breakpoint-md) {
+    padding: 24px;
+    gap: 32px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+@keyframes corp-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.corp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+
+  @media (max-width: v.$breakpoint-md) {
+    gap: 8px;
+  }
+}
+.corp-eyebrow {
+  font-size: v.$text-micro;
+  font-weight: v.$weight-semibold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: v.$steel-600;
+}
+.corp-title {
+  margin: 0;
+  font-size: v.$text-h1;
+  font-weight: v.$weight-bold;
+  line-height: v.$leading-tight;
+  color: v.$navy-500;
+}
+.corp-head-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.corp-lede {
+  max-width: 640px;
+  margin: 0;
+}
+.corp-close {
+  flex-shrink: 0;
+  display: inline-flex;
+  padding: 8px;
+  margin: -8px -8px 0 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: v.$steel-700;
+  cursor: pointer;
+
+  &:hover {
+    background: v.$steel-100;
+  }
+  &:focus-visible {
+    outline: 2px solid v.$steel-500;
+    outline-offset: 2px;
+  }
+}
+.corp-section-title {
+  margin: 0;
+  font-size: v.$text-h3;
+  font-weight: v.$weight-bold;
+  color: v.$navy-500;
+}
+.corp-sections {
+  gap: 48px;
+
+  @media (max-width: v.$breakpoint-md) {
+    gap: 32px;
+  }
+}
+.corp-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 32px;
+  box-shadow: inset 0 1px 0 0 v.$steel-100;
+}
+.metric-value.corp-metric-value {
+  color: v.$steel-500;
+}
+.corp-metric-desc {
+  font-size: v.$text-body;
+  line-height: v.$leading-body;
+  color: v.$color-text-secondary;
+}
+
 // ---- Metrics band ----
 .metric {
   display: flex;
