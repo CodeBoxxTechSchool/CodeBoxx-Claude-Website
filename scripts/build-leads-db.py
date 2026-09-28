@@ -21,6 +21,12 @@ lost.
 This file handles personal data: it prints counts only, never names, emails or
 phone numbers, and refuses to write anywhere git would track.
 
+Site members: Wix lists them in Contacts, so the same script builds a separate
+members database from Contacts > Site Members exports (their "Login Email" and
+join date are recognized; member status and every other column are kept in
+raw_json). Keep them inside the git-ignored leads/ folder:
+  python3 scripts/build-leads-db.py --raw leads/members/raw --out leads/members
+
 Usage:
   python3 scripts/build-leads-db.py
   python3 scripts/build-leads-db.py --raw DIR --out DIR   # e.g. for test data
@@ -42,14 +48,15 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Wix contacts exports use "Email 1"/"Phone 1"; form exports use the form's own
 # field labels, EN or FR.
 FIELD_PATTERNS = [
-    ('email', r'^(e ?mail|courriel|adresse (e ?mail|courriel))( \d+)?$|^email address$'),
+    ('email', r'^((login |primary )?e ?mail|courriel|adresse (e ?mail|courriel))( \d+)?$|^email address$'),
     ('first_name', r'^(first ?name|pr[eé]nom|given name)$'),
     ('last_name', r'^(last ?name|nom( de famille)?|surname|family name)$'),
     ('full_name', r'^((full )?name|nom complet)$'),
     ('phone', r'^(phone|t[eé]l[eé]phone|phone number|mobile|cell)( \d+)?$'),
     ('company', r'^(company|entreprise|organi[sz]ation|soci[eé]t[eé])( name)?$'),
     ('message', r'^(message|comments?|write a message|leave us a message|details|project)'),
-    ('submitted_at', r'^(submission (time|date)|submitted( at| on)?|created( at| date| on)?( utc.*)?|date)$'),
+    ('submitted_at', r'^(submission (time|date)|submitted( at| on)?|created( at| date| on)?( utc.*)?|date'
+                     r'|joined( at| on| date)?( utc.*)?|member since|sign ?up date|registration date)$'),
 ]
 
 DATE_FORMATS = [
