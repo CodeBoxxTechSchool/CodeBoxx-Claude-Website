@@ -18,15 +18,23 @@ import common from '../../locales/fr/common';
 import home from '../../locales/fr/home';
 
 const pathname = Astro.url.pathname;
-const [studioTeam, academyTeam, logos, latestPosts, clientTestimonials, graduateTestimonials] =
-  await Promise.all([
-    fetchTeam('studio'),
-    fetchTeam('academy'),
-    fetchLogos(),
-    fetchPostList(LATEST_POSTS),
-    fetchClientTestimonials(),
-    fetchGraduateTestimonials(),
-  ]);
+const [
+  studioTeam,
+  academyTeam,
+  logos,
+  academyLogos,
+  latestPosts,
+  clientTestimonials,
+  graduateTestimonials,
+] = await Promise.all([
+  fetchTeam('studio'),
+  fetchTeam('academy'),
+  fetchLogos(),
+  fetchLogos('academyPartnerLogo'),
+  fetchPostList(LATEST_POSTS),
+  fetchClientTestimonials(),
+  fetchGraduateTestimonials(),
+]);
 ---
 
 <html lang="fr">
@@ -46,6 +54,7 @@ const [studioTeam, academyTeam, logos, latestPosts, clientTestimonials, graduate
       studioTeam={studioTeam}
       academyTeam={academyTeam}
       logos={logos}
+      academyLogos={academyLogos}
       latestPosts={latestPosts.slice(0, 3).map(toPostCard)}
       clientTestimonials={clientTestimonials}
       graduateTestimonials={graduateTestimonials}

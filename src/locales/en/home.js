@@ -331,6 +331,7 @@ export default {
     enrollNow: 'Enroll Now',
     contactUs: 'Contact Us',
     learnMore: 'Learn More',
+    logosLabel: 'Our Graduates Work At',
   },
   academyTopics: {
     program: {
