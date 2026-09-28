@@ -178,6 +178,12 @@
   flex-direction: column;
   gap: 24px;
 }
+// "Case Studies" button between the Trusted By slider and client testimonials.
+.case-studies-cta {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+}
 .client-slider-head {
   display: flex;
   justify-content: space-between;
