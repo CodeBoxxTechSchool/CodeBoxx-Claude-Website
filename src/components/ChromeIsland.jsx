@@ -214,6 +214,7 @@ function buildFooterColumns(lang, pathname, strings) {
         { label: nav.academyCourses, href: href('#academy-courses') },
         { label: nav.academyCalendar, href: href('#intake') },
         { label: nav.academyFinancing, href: href('/financing') },
+        { label: nav.academyFaq, href: href('/faq') },
       ],
     },
   ];
