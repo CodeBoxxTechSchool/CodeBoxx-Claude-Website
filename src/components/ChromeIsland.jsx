@@ -236,6 +236,11 @@ export function Footer({ lang, pathname, strings }) {
                   {street}
                 </span>
               ))}
+              <span className="footer-address">
+                <span className="footer-address-city">{strings.footer.phone.label}</span>
+                <span aria-hidden="true"> | </span>
+                <a href={'tel:' + strings.footer.phone.tel}>{strings.footer.phone.display}</a>
+              </span>
             </address>
           </div>
           <div className="d-flex gap-5 flex-wrap">

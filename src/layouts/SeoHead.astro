@@ -49,6 +49,26 @@ const organizationSchema = {
   description:
     'CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit.',
   logo: SITE_URL + '/favicon.svg',
+  // Same phone number and offices as the footer (common.js footer.phone/addresses).
+  telephone: '+1-800-887-2497',
+  address: [
+    {
+      '@type': 'PostalAddress',
+      streetAddress: '1101 4th St S',
+      addressLocality: 'St. Petersburg',
+      addressRegion: 'FL',
+      postalCode: '33701',
+      addressCountry: 'US',
+    },
+    {
+      '@type': 'PostalAddress',
+      streetAddress: '400-1020 Bouvier Street',
+      addressLocality: 'Quebec City',
+      addressRegion: 'QC',
+      postalCode: 'G2K 2C9',
+      addressCountry: 'CA',
+    },
+  ],
 };
 const websiteSchema = {
   '@context': 'https://schema.org',

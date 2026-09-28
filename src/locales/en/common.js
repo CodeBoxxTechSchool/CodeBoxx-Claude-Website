@@ -40,6 +40,7 @@ export default {
       ['St. Pete', '1101 4th St S, St. Petersburg, FL 33701'],
       ['Quebec City', '400-1020 Bouvier Street, Quebec City, QC G2K 2C9'],
     ],
+    phone: { label: 'Phone', display: '1-800-887-2497', tel: '+18008872497' },
     copyright: 'Copyright © 2026 CodeBoxx Technology Corporation. All Rights Reserved.',
   },
 };
