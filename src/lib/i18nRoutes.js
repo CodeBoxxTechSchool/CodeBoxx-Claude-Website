@@ -18,6 +18,8 @@ export const ROUTE_TABLE = [
   { en: '/faq', fr: '/fr/faq' },
   { en: '/pinellas-residents', fr: '/fr/residents-pinellas' },
   { en: '/case-studies', fr: '/fr/etudes-de-cas' },
+  { en: '/privacy-policy', fr: '/fr/politique-de-confidentialite' },
+  { en: '/terms-conditions', fr: '/fr/conditions-generales' },
 ];
 
 export const HASH_TABLE = {

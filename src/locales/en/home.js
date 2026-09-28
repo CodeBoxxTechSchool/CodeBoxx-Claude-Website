@@ -48,7 +48,7 @@ export default {
     send: 'Send',
     replies: [
       'Routing to CodeBoxx Solutions. Median deploy time on managed clusters is 2.4s, 0 errors on the last 40 releases. Want the runbook sample?',
-      'Academy intake opens September 2026. Cohorts run 12 weeks, full time, ending inside a client pod.',
+      'Academy intake opens September 2026. Cohorts run 16 weeks, full time, ending inside a client pod.',
       'A delivery lead and an engineer join the first call. Send the deadline and the system, and I will book it.',
     ],
   },
@@ -323,7 +323,7 @@ export default {
   academy: {
     role: 'The Talent Pipeline',
     name: 'AI-Enabled Coding Education for Next-Gen Technologists',
-    lede: 'A 12-week program that ends inside a real pod. Graduates carry the same tooling and the same review standard as the studio.',
+    lede: 'A 16-week program that ends inside a real pod. Graduates carry the same tooling and the same review standard as the studio.',
     intro:
       'Wherever you come from, AI has the power to jumpstart your career as a developer. You need a fully committed partner moving at the speed of innovation. Find a partner for life with CodeBoxx.',
     nextIntake: 'Next intake: Sept 2026',
@@ -336,7 +336,7 @@ export default {
   },
   academyTopics: {
     program: {
-      titleLine1: '12 weeks, full time',
+      titleLine1: '16 weeks, full time',
       blurb: 'Cohorts start monthly. No prior degree required, entrance assessment only.',
       detail:
         'Twelve weeks, five days a week. The entrance assessment measures aptitude, not credentials, and the calendar below sets the intakes.',

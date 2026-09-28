@@ -1,0 +1,17 @@
+---
+// /privacy-policy (EN). FR twin: src/pages/fr/politique-de-confidentialite.astro.
+// Content in src/data/legal/privacy.json; layout in LegalPage.astro.
+import Layout from '../layouts/Layout.astro';
+import LegalPage from '../components/LegalPage.astro';
+import common from '../locales/en/common';
+import doc from '../data/legal/privacy.json';
+---
+
+<Layout
+  lang="en"
+  title="Privacy Policy"
+  description="How CodeBoxx collects, uses and protects your personal information."
+  strings={common}
+>
+  <LegalPage title="Privacy Policy" doc={doc} lang="en" />
+</Layout>

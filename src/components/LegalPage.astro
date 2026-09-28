@@ -1,0 +1,40 @@
+---
+// Body of the Privacy Policy and Terms & Conditions pages: a plain H1 (no hero
+// band) followed by the document, rendered from src/data/legal/*.json (content
+// migrated from codeboxx.com — see each file's `source`). Blocks are
+// { type: 'h2'|'h3'|'h4'|'p', content } or { type: 'list', items }, where content
+// uses RichParagraph's string-or-segments shape. `note` (FR pages) explains the
+// document is only available in English; the document itself is then marked
+// lang="en" so screen readers pronounce it correctly.
+import RichParagraph from './RichParagraph.astro';
+
+const { title, doc, lang, note } = Astro.props;
+---
+
+<section class="sect legal-page">
+  <div class="wrap legal-wrap">
+    <h1 class="legal-title">{title}</h1>
+    {note && <p class="legal-note">{note}</p>}
+    <div class="legal-body" lang={note ? 'en' : undefined}>
+      {doc.blocks.map((b) =>
+        b.type === 'list' ? (
+          <ul class="legal-list">
+            {b.items.map((it) => (
+              <li>
+                <RichParagraph p={it} lang={lang} class="pbody" />
+              </li>
+            ))}
+          </ul>
+        ) : b.type === 'p' ? (
+          <RichParagraph p={b.content} lang={lang} class="pbody" />
+        ) : b.type === 'h2' ? (
+          <h2 class="legal-h2">{b.content}</h2>
+        ) : b.type === 'h3' ? (
+          <h3 class="legal-h3">{b.content}</h3>
+        ) : (
+          <h4 class="legal-h4">{b.content}</h4>
+        )
+      )}
+    </div>
+  </div>
+</section>

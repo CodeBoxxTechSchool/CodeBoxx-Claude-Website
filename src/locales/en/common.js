@@ -41,6 +41,12 @@ export default {
       ['Quebec City', '400-1020 Bouvier Street, Quebec City, QC G2K 2C9'],
     ],
     phone: { label: 'Phone', display: '1-800-887-2497', tel: '+18008872497' },
+    // [label, path] — shown in the middle of the subfooter.
+    legalLabel: 'Legal',
+    legal: [
+      ['Privacy Policy', '/privacy-policy'],
+      ['Terms and Conditions', '/terms-conditions'],
+    ],
     copyright: 'Copyright © 2026 CodeBoxx Technology Corporation. All Rights Reserved.',
   },
 };

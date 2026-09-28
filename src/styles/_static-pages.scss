@@ -166,3 +166,55 @@
     font-size: v.$text-h3;
   }
 }
+
+// ---- Legal pages (LegalPage.astro): plain H1, no hero band ----
+.legal-wrap {
+  max-width: 880px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.legal-title {
+  margin: 0;
+  font-size: v.$text-h1;
+  font-weight: v.$weight-bold;
+  line-height: v.$leading-tight;
+}
+.legal-note {
+  margin: 0;
+  font-size: v.$text-body;
+  color: v.$color-text-secondary;
+  font-style: italic;
+}
+.legal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.legal-h2 {
+  margin: 24px 0 0;
+  font-size: v.$text-h2;
+  font-weight: v.$weight-bold;
+}
+.legal-h3 {
+  margin: 12px 0 0;
+  font-size: v.$text-h3;
+  font-weight: v.$weight-bold;
+}
+.legal-h4 {
+  margin: 8px 0 0;
+  font-size: v.$text-body;
+  font-weight: v.$weight-bold;
+}
+// Items already carry their own "(1)" / "(i)" numbering from the source text.
+.legal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding-left: 24px;
+  list-style: none;
+}
+.legal-body .pbody {
+  overflow-wrap: anywhere;
+}

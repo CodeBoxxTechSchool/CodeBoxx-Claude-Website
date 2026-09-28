@@ -50,7 +50,7 @@ export default {
     send: 'Envoyer',
     replies: [
       "Direction CodeBoxx Solutions. Le temps de déploiement médian sur nos clusters gérés est de 2,4 s, 0 erreur sur les 40 dernières mises en production. Voulez-vous l'exemple de runbook ?",
-      "L'admission de l'Académie ouvre en septembre 2026. Les cohortes durent 12 semaines, à temps plein, et se terminent à l'intérieur d'un pod client.",
+      "L'admission de l'Académie ouvre en septembre 2026. Les cohortes durent 16 semaines, à temps plein, et se terminent à l'intérieur d'un pod client.",
       "Un chef de livraison et un ingénieur se joignent au premier appel. Envoyez l'échéance et le système, et je vais réserver ça.",
     ],
   },
@@ -341,7 +341,7 @@ export default {
   academy: {
     role: 'La filière de talents',
     name: 'Une formation en programmation propulsée par l’IA pour la prochaine génération de technologues',
-    lede: "Un programme de 12 semaines qui se termine à l'intérieur d'un vrai pod. Les diplômés utilisent les mêmes outils et la même norme de révision que le studio.",
+    lede: "Un programme de 16 semaines qui se termine à l'intérieur d'un vrai pod. Les diplômés utilisent les mêmes outils et la même norme de révision que le studio.",
     intro:
       "D'où que vous veniez, l'IA a le pouvoir de propulser votre carrière de développeur. Vous avez besoin d'un partenaire pleinement engagé qui avance à la vitesse de l'innovation. Trouvez un partenaire pour la vie avec CodeBoxx.",
     nextIntake: 'Prochaine admission : sept. 2026',
@@ -354,7 +354,7 @@ export default {
   },
   academyTopics: {
     program: {
-      titleLine1: '12 semaines, à temps plein',
+      titleLine1: '16 semaines, à temps plein',
       blurb:
         "Les cohortes débutent chaque mois. Aucun diplôme préalable requis, seulement un test d'admission.",
       detail:
