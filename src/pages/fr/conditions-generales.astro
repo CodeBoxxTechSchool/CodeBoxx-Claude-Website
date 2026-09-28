@@ -1,10 +1,10 @@
 ---
-// FR twin of src/pages/terms-conditions.astro. The document itself has no French
-// version, so it's shown in English with a note (see LegalPage.astro).
+// FR twin of src/pages/terms-conditions.astro, with its own French text
+// (src/data/legal/terms.fr.json).
 import Layout from '../../layouts/Layout.astro';
 import LegalPage from '../../components/LegalPage.astro';
 import common from '../../locales/fr/common';
-import doc from '../../data/legal/terms.json';
+import doc from '../../data/legal/terms.fr.json';
 ---
 
 <Layout
@@ -13,10 +13,5 @@ import doc from '../../data/legal/terms.json';
   description="Les conditions générales qui régissent l'utilisation des sites et services de CodeBoxx."
   strings={common}
 >
-  <LegalPage
-    title="Conditions générales"
-    doc={doc}
-    lang="fr"
-    note="Ce document est offert en anglais seulement."
-  />
+  <LegalPage title="Conditions générales" doc={doc} lang="fr" />
 </Layout>

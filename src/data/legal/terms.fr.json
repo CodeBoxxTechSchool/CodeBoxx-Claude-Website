@@ -1,0 +1,752 @@
+{
+ "source": "https://www.codeboxx.com/terms-conditions — French translation of terms.json, 2026-09-28; to be reviewed by counsel.",
+ "blocks": [
+  {
+   "type": "p",
+   "content": [
+    "CodeBoxx a pour raison d’être de proposer une communauté conçue pour lancer et accélérer les carrières dans le domaine des technologies. La plateforme comporte plusieurs composantes. Les présentes conditions expliquent vos droits et vos responsabilités lorsque vous utilisez CodeBoxx. Si vous avez des questions, n’hésitez pas à communiquer avec nous à l’adresse ",
+    {
+     "label": "info@codeboxx.biz",
+     "href": "mailto:info@codeboxx.biz"
+    },
+    ". Vous pouvez également en apprendre davantage à l’adresse ",
+    {
+     "label": "https://codeboxx.biz/privacy",
+     "href": "https://codeboxxtechnology.com/en/privacy"
+    },
+    ". Merci beaucoup d’avoir choisi CodeBoxx."
+   ]
+  },
+  {
+   "type": "h2",
+   "content": "Date d’entrée en vigueur : 4 août 2020"
+  },
+  {
+   "type": "p",
+   "content": "Les modalités suivantes constituent une entente entre vous et CodeBoxx Technology Corporation (« CodeBoxx » ou « nous »), l’exploitant de codeboxx.biz (le « Site Web ») et des sites Web, applications, services et applications mobiles connexes fournis par CodeBoxx et sur lesquels ou dans lesquels les présentes Conditions d’utilisation sont affichées ou mentionnées (collectivement, les « Services »). Les présentes conditions d’utilisation (les « Conditions d’utilisation »), conjointement avec notre POLITIQUE DE CONFIDENTIALITÉ, notre POLITIQUE D’UTILISATION ACCEPTABLE et nos CONDITIONS SUPPLÉMENTAIRES (chacune étant intégrée aux présentes par renvoi et, collectivement, la présente « Entente »), régissent votre utilisation des Services, tant à titre d’utilisateur non inscrit qu’à titre d’utilisateur inscrit."
+  },
+  {
+   "type": "p",
+   "content": [
+    "VEUILLEZ LIRE ATTENTIVEMENT LES CONDITIONS D’UTILISATION SUIVANTES. EN VOUS INSCRIVANT AU SITE WEB, OU EN Y ACCÉDANT, EN LE PARCOURANT OU EN L’UTILISANT, VOUS RECONNAISSEZ AVOIR LU ET COMPRIS LES MODALITÉS SUIVANTES ET ACCEPTEZ D’ÊTRE LIÉ PAR CELLES-CI, Y COMPRIS LA ",
+    {
+     "label": "POLITIQUE DE CONFIDENTIALITÉ",
+     "href": "/privacy-policy"
+    },
+    " DE CodeBoxx ET TOUTE DIRECTIVE SUPPLÉMENTAIRE (TELLE QUE DÉFINIE CI-DESSOUS) (COLLECTIVEMENT, LES « CONDITIONS »)"
+   ]
+  },
+  {
+   "type": "p",
+   "content": "SI VOUS ÊTES UN PARENT OU UN TUTEUR ET QUE VOUS CONSENTEZ À L’INSCRIPTION DE VOTRE ENFANT AU SITE WEB, VOUS ACCEPTEZ D’ÊTRE LIÉ PAR LES PRÉSENTES CONDITIONS D’UTILISATION EN CE QUI CONCERNE L’UTILISATION DU SITE WEB PAR CET ENFANT. SI VOUS FAITES PARTIE DU PERSONNEL SCOLAIRE (TEL QUE DÉFINI CI-DESSOUS) ET QUE VOUS INSCRIVEZ UN UTILISATEUR SCOLAIRE (TEL QUE DÉFINI CI-DESSOUS), VOUS ACCEPTEZ, AU NOM DE VOTRE ÉTABLISSEMENT, QUE L’UTILISATEUR SCOLAIRE SOIT LIÉ PAR LES CONDITIONS, À MOINS QUE VOTRE ÉTABLISSEMENT N’AIT CONCLU AVEC CodeBoxx UNE ENTENTE DE SERVICE ÉCRITE DISTINCTE QUI ACCEPTE LES PRÉSENTES CONDITIONS AU NOM DES UTILISATEURS SCOLAIRES."
+  },
+  {
+   "type": "p",
+   "content": [
+    "VEUILLEZ NOTER QUE LES PRÉSENTES CONDITIONS COMPRENNENT UNE ",
+    {
+     "label": "CLAUSE D’ARBITRAGE",
+     "href": "https://fr.khanacademy.org/about/tos#15.4"
+    },
+    " EXÉCUTOIRE, Y COMPRIS UNE RENONCIATION AUX RECOURS COLLECTIFS. EN ACCEPTANT L’ARBITRAGE EXÉCUTOIRE, DANS LA MESURE PERMISE PAR LA LOI APPLICABLE, VOUS RENONCEZ À VOTRE DROIT DE FAIRE TRANCHER LES LITIGES PAR UN TRIBUNAL ET DE FAIRE STATUER SUR VOTRE CAUSE PAR UN JUGE OU UN JURY."
+   ]
+  },
+  {
+   "type": "h2",
+   "content": "1. Admissibilité ; comptes."
+  },
+  {
+   "type": "p",
+   "content": "LE SITE WEB N’EST PAS OFFERT (A) AUX UTILISATEURS AYANT PRÉCÉDEMMENT ÉTÉ SUSPENDUS OU RETIRÉS DU SITE WEB PAR CodeBoxx NI (B) AUX PERSONNES DE MOINS DE 13 ANS DONT L’INSCRIPTION N’A PAS ÉTÉ APPROUVÉE PAR UN PARENT OU UN TUTEUR LÉGAL (OU, DANS LE CAS DES COMPTES SCOLAIRES, PAR LE PERSONNEL SCOLAIRE, TEL QUE LE PERMETTENT LES CONDITIONS)."
+  },
+  {
+   "type": "h3",
+   "content": "1.1 Généralités."
+  },
+  {
+   "type": "p",
+   "content": "En cliquant sur le bouton « J’accepte » ou en utilisant autrement les Services ou en y ouvrant un compte, vous déclarez que"
+  },
+  {
+   "type": "list",
+   "items": [
+    "(i) vous êtes un résident des États-Unis âgé d’au moins 13 ans, ou",
+    "(ii) vous n’êtes pas un résident des États-Unis et vous avez atteint l’âge légal du consentement pour ouvrir un compte en vertu des lois de votre pays de résidence, ou",
+    "(iii) votre utilisation des Services a été approuvée par votre parent ou tuteur légal, ou par votre école ou votre enseignant pour une utilisation scolaire seulement. Vous déclarez également que vous n’avez pas été précédemment suspendu ou retiré des Services par CodeBoxx, et que votre inscription et votre utilisation des Services sont conformes à l’ensemble des lois applicables."
+   ]
+  },
+  {
+   "type": "h3",
+   "content": "1.2 Compte."
+  },
+  {
+   "type": "p",
+   "content": [
+    "Afin d’utiliser certaines fonctionnalités des Services, vous devez ouvrir un compte. Il peut vous être demandé de fournir un mot de passe relativement à votre compte. Vous êtes seul responsable du maintien de la confidentialité de votre compte et de votre mot de passe, et vous acceptez d’assumer la responsabilité de toutes les activités qui se produisent sous votre compte ou votre mot de passe. Vous acceptez que les renseignements que vous fournissez à CodeBoxx, que ce soit lors de l’inscription ou à tout autre moment, soient véridiques, exacts, à jour et complets. Vous acceptez également de veiller à ce que ces renseignements demeurent exacts et à jour en tout temps. Si vous avez des raisons de croire que votre compte n’est plus sécurisé (p. ex., en cas de perte, de vol ou de divulgation ou d’utilisation non autorisée de votre identifiant de compte ou de votre mot de passe), vous acceptez d’en aviser immédiatement CodeBoxx à l’adresse ",
+    {
+     "label": "info@codeboxx.biz",
+     "href": "mailto:info@codeboxx.biz"
+    },
+    ". Vous pourriez être tenu responsable des pertes subies par CodeBoxx ou par d’autres personnes en raison de toute utilisation non autorisée de votre compte de Services."
+   ]
+  },
+  {
+   "type": "h3",
+   "content": "1.3 Service intégré."
+  },
+  {
+   "type": "p",
+   "content": "CodeBoxx peut vous permettre de vous inscrire aux Services par l’intermédiaire de certains services de réseautage social ou services intégrés de tiers, tels que Facebook Connect et Google (« Service intégré »), ou d’associer autrement votre compte CodeBoxx à ceux-ci. En vous inscrivant aux Services au moyen d’un Service intégré (ou en accordant autrement l’accès à celui-ci), vous acceptez que CodeBoxx puisse accéder aux renseignements de votre compte du Service intégré, et puisse stocker et utiliser certains renseignements déjà associés au Service intégré conformément à notre Politique de confidentialité, et vous acceptez l’ensemble des modalités du Service intégré concernant votre utilisation des Services par l’intermédiaire du Service intégré. Vous pouvez révoquer en tout temps l’accès de CodeBoxx à votre compte sur tout Service intégré en mettant à jour les paramètres de compte appropriés du Service intégré concerné. Vous devriez vérifier vos paramètres de confidentialité sur chaque Service intégré afin de comprendre et de modifier les renseignements qui nous sont transmis par l’intermédiaire de chaque Service intégré. Vous reconnaissez que tout Service intégré est un Site de référence (tel que défini ci-dessous) et que vous êtes seul responsable de vos interactions avec le Service intégré découlant de votre accès aux Services par l’intermédiaire du Service intégré. CodeBoxx ne contrôle pas les pratiques des Services intégrés, et nous vous conseillons de lire la politique de confidentialité et les modalités de tout Service intégré que vous utilisez afin de comprendre leurs pratiques."
+  },
+  {
+   "type": "h3",
+   "content": "1.4 Utilisateur enfant."
+  },
+  {
+   "type": "p",
+   "content": "Si vous avez moins de 13 ans (un « Utilisateur enfant »), vous ne pouvez pas créer ni ouvrir de compte pour les Services sans le consentement et l’approbation de votre parent ou tuteur légal, ou de votre école conformément à l’article 1.6 (« Utilisation scolaire »). Si vous avez moins de 18 ans, vous déclarez que votre parent ou tuteur a examiné et accepté les Conditions en votre nom. Sauf dans le cas des comptes créés pour une Utilisation scolaire (article 1.6), un Utilisateur enfant qui entreprend lui-même le processus d’inscription sans Utilisateur parent (tel que défini ci-dessous) pourrait voir son processus d’inscription restreint jusqu’à ce qu’un parent approuve le compte de l’Utilisateur enfant ou en assume la responsabilité. Un Utilisateur enfant peut utiliser les Services s’il est inscrit par l’intermédiaire de certains organismes éducatifs ou, dans certains cas, par un membre du Personnel scolaire ayant établi une relation directement avec CodeBoxx, pourvu que l’organisme éducatif ait obtenu le consentement du parent ou du tuteur, ou se soit conformé à une exemption aux exigences de consentement parental prévue par la loi applicable. Un Utilisateur enfant ne sera autorisé à utiliser les Services que tant que CodeBoxx croit raisonnablement que cet accès a fait l’objet d’un consentement de la part du parent ou du tuteur de l’Utilisateur enfant, ou d’un Consentement scolaire (tel qu’il est décrit à l’article 1.6, « Utilisation scolaire »)."
+  },
+  {
+   "type": "h3",
+   "content": "1.5 Utilisateur parent."
+  },
+  {
+   "type": "p",
+   "content": "Si vous avez au moins 18 ans et que vous êtes le parent ou tuteur légal d’un enfant qui souhaite s’inscrire à titre d’Utilisateur enfant des Services, vous pouvez ouvrir un compte parent sur les Services (« Utilisateur parent »). Au moyen d’un compte d’Utilisateur parent, vous pouvez créer, inscrire, gérer et approuver des comptes d’Utilisateur enfant uniquement pour votre ou vos propres enfants ou pour le ou les enfants dont vous êtes le tuteur légal. SI VOUS INSCRIVEZ UN UTILISATEUR ENFANT, APPROUVEZ SON INSCRIPTION OU Y CONSENTEZ, OU ASSUMEZ AUTREMENT LA RESPONSABILITÉ DE TOUT UTILISATEUR ENFANT, VOUS DÉCLAREZ ET GARANTISSEZ QUE VOUS ÊTES LE PARENT OU TUTEUR LÉGAL DE CET UTILISATEUR ENFANT ET VOUS ACCEPTEZ D’ÊTRE LIÉ PAR LES CONDITIONS AU NOM DE CET UTILISATEUR ENFANT, Y COMPRIS, SANS S’Y LIMITER, D’ÊTRE TENU RESPONSABLE DE TOUTE UTILISATION DU SITE WEB PAR L’UTILISATEUR ENFANT. Vous reconnaissez que CodeBoxx peut choisir, sans y être tenue, d’effectuer toute vérification, directement ou par l’intermédiaire de tiers, que CodeBoxx juge nécessaire pour valider vos renseignements d’inscription, y compris, sans s’y limiter, retenir les services de tiers pour fournir des services de vérification. CodeBoxx se réserve tous les droits d’intenter des poursuites judiciaires contre quiconque fait une fausse déclaration relativement à des renseignements personnels ou ment autrement au sujet de son identité. NONOBSTANT CE QUI PRÉCÈDE, VOUS RECONNAISSEZ QUE CodeBoxx NE PEUT GARANTIR L’EXACTITUDE DES RENSEIGNEMENTS SOUMIS PAR UN UTILISATEUR ET QUE CodeBoxx N’EST PAS TENUE DE VÉRIFIER L’IDENTITÉ D’UN UTILISATEUR, Y COMPRIS LA PRÉTENTION D’UN UTILISATEUR D’ÊTRE UN UTILISATEUR PARENT, NI DE VÉRIFIER QU’UN PARENT DÉSIGNÉ PAR UN UTILISATEUR ENFANT OU PAR UNE AUTRE PARTIE LORS DE L’INSCRIPTION EST BIEN LE PARENT OU TUTEUR RÉEL DE CET UTILISATEUR ENFANT. Un compte d’Utilisateur parent, ainsi que tous les comptes d’Utilisateur enfant qui y sont associés, peuvent être résiliés par CodeBoxx en tout temps et sans préavis en cas de manquement aux présentes Conditions."
+  },
+  {
+   "type": "h3",
+   "content": "1.6 Utilisation scolaire."
+  },
+  {
+   "type": "p",
+   "content": "CodeBoxx peut rendre disponibles certaines fonctionnalités et certains outils qui permettent aux Utilisateurs inscrits à titre d’enseignants, de dirigeants scolaires, d’aides ou d’autres membres du personnel scolaire similaires (le « Personnel scolaire ») de travailler avec des élèves et d’autres Utilisateurs par l’intermédiaire des Services afin de fournir à ces élèves des services de tutorat, des services éducatifs et d’autres services liés à l’éducation dans le cadre du programme scolaire de l’école, ainsi que d’examiner et d’évaluer les résultats scolaires et les progrès de ces élèves. Si vous êtes un membre du Personnel scolaire qui accède aux Services au nom d’une école, d’un district scolaire ou d’un autre établissement d’enseignement similaire (un « Établissement »), les modalités suivantes s’appliquent à vous :"
+  },
+  {
+   "type": "list",
+   "items": [
+    "(a) Restrictions d’utilisation. Les Services et le Site Web vous sont fournis à des fins éducatives dans le cadre du programme scolaire. Vous devez utiliser les Services et le Site Web conformément à l’ensemble des lois, règles et règlements applicables. Vous acceptez de ne pas reproduire, dupliquer, copier, vendre, revendre ni exploiter autrement à quelque fin commerciale que ce soit toute partie des Services ou du Site Web, ou l’accès aux Services ou au Site Web.",
+    "(b) Responsabilité à l’égard du consentement et des avis. Vous et/ou l’Établissement assumez l’entière responsabilité de l’obtention de tout consentement requis des parents ou tuteurs, et de la communication des renseignements appropriés aux Utilisateurs scolaires et à leurs parents concernant l’utilisation des Services par les Utilisateurs scolaires, nos Conditions et notre Politique de confidentialité. Vous acceptez d’être lié par les présentes Conditions au nom de l’Utilisateur scolaire, tant que le compte de l’Utilisateur scolaire n’est pas transféré à un compte d’Utilisateur parent valide ou à un compte personnel d’un Élève d’âge admissible, ni pris en charge par un tel compte. SI VOUS FAITES PARTIE DU PERSONNEL SCOLAIRE ET QUE VOUS OUVREZ UN COMPTE POUR UN UTILISATEUR ENFANT OU UN AUTRE ÉLÈVE (L’UN OU L’AUTRE, UN « UTILISATEUR SCOLAIRE ») OU QUE VOUS DEMANDEZ À UN UTILISATEUR SCOLAIRE DE CRÉER UN COMPTE POUR UNE UTILISATION SCOLAIRE, VOUS DÉCLAREZ ET GARANTISSEZ QUE VOUS AVEZ REÇU LE CONSENTEMENT EXPRÈS DU PARENT OU TUTEUR LÉGAL DE CET UTILISATEUR SCOLAIRE OU QUE VOUS (OU VOTRE ÉTABLISSEMENT) VOUS ÊTES CONFORMÉ ET VOUS CONFORMEREZ À TOUTES LES EXIGENCES APPLICABLES D’UNE EXEMPTION OU D’UNE EXCEPTION AUX EXIGENCES DE CONSENTEMENT PARENTAL, NÉCESSAIRES POUR QUE VOUS PUISSIEZ INSCRIRE L’UTILISATEUR SCOLAIRE AU SITE WEB ET FOURNIR À CodeBoxx LES RENSEIGNEMENTS QUE VOUS DIVULGUEZ RELATIVEMENT À L’INSCRIPTION DE CET UTILISATEUR SCOLAIRE. Plus précisément, vous acceptez, à titre personnel et au nom de l’Établissement, que :\n\n\n\n(i) Vous connaissez la Family Educational Rights and Privacy Act et les règlements d’application du Department of Education des États-Unis figurant au 34 CFR Part 99 (collectivement, la « FERPA »), ainsi que toutes les autres lois, règles ou règlements concernant la collecte, l’utilisation et la communication de renseignements permettant d’identifier personnellement les Utilisateurs de votre Établissement (collectivement, la « Loi applicable en matière de protection de la vie privée »), et vous acceptez d’être responsable de leur respect.\n\n\n(ii) Vous assumez l’entière responsabilité (et acceptez par les présentes que CodeBoxx n’en est pas responsable) de la communication des avis et des renseignements appropriés aux élèves qui utilisent CodeBoxx en classe (les « Élèves » ou « Utilisateurs élèves ») et à leurs parents concernant l’utilisation du Site Web par les Élèves, nos Conditions et notre Politique de confidentialité, y compris tout avis exigé par la Children’s Online Privacy Protection Act (la « COPPA »), la FERPA ou toute autre Loi applicable en matière de protection de la vie privée.\n\n\n(iii) Vous assumez l’entière responsabilité (et acceptez par les présentes que CodeBoxx n’en est pas responsable) de l’obtention de tout consentement requis des parents ou tuteurs, dans la mesure exigée par la COPPA, la FERPA ou toute autre Loi applicable en matière de protection de la vie privée, relativement aux Services, à l’utilisation du Site Web en classe (y compris l’utilisation des Comptes liés mentionnés à l’article 1.8) et à la communication à CodeBoxx de renseignements permettant d’identifier personnellement une personne dans ce contexte. Vous déclarez et garantissez à CodeBoxx que, avant la création de comptes pour une Utilisation scolaire, vous avez obtenu tous les consentements nécessaires des parents ou tuteurs, ou vous vous êtes conformé et vous conformerez à toutes les exigences applicables d’une exemption ou d’une exception aux exigences de consentement parental, notamment :\n\n\n\nen vertu de la FERPA, vous vous êtes conformé et vous conformerez à l’exception relative aux « fonctionnaires scolaires » ou à l’exception relative aux « renseignements d’annuaire » prévues par celle-ci ; et\n\n\nen vertu de la COPPA, à l’égard des Élèves de moins de 13 ans, vous agissez à titre de mandataire du parent et consentez en son nom à la communication des renseignements personnels de l’Élève.\n\n\n\n\n(iv) Nous appelons ceci un « Consentement scolaire ». Si un Utilisateur parent ne donne pas ce Consentement scolaire ou le révoque, le Personnel scolaire ou l’Établissement doit immédiatement en aviser CodeBoxx afin de mettre fin à l’accès de cet Élève aux Services et de veiller à ce que les renseignements de cet Élève ne soient plus accessibles par l’intermédiaire des Services. CodeBoxx ne sera en aucun cas responsable du défaut du Personnel scolaire de consulter les autorités et les administrateurs de son école ni du défaut d’obtenir le Consentement scolaire lorsqu’il est requis.",
+    "(i) Vous connaissez la Family Educational Rights and Privacy Act et les règlements d’application du Department of Education des États-Unis figurant au 34 CFR Part 99 (collectivement, la « FERPA »), ainsi que toutes les autres lois, règles ou règlements concernant la collecte, l’utilisation et la communication de renseignements permettant d’identifier personnellement les Utilisateurs de votre Établissement (collectivement, la « Loi applicable en matière de protection de la vie privée »), et vous acceptez d’être responsable de leur respect.",
+    "(ii) Vous assumez l’entière responsabilité (et acceptez par les présentes que CodeBoxx n’en est pas responsable) de la communication des avis et des renseignements appropriés aux élèves qui utilisent CodeBoxx en classe (les « Élèves » ou « Utilisateurs élèves ») et à leurs parents concernant l’utilisation du Site Web par les Élèves, nos Conditions et notre Politique de confidentialité, y compris tout avis exigé par la Children’s Online Privacy Protection Act (la « COPPA »), la FERPA ou toute autre Loi applicable en matière de protection de la vie privée.",
+    "(iii) Vous assumez l’entière responsabilité (et acceptez par les présentes que CodeBoxx n’en est pas responsable) de l’obtention de tout consentement requis des parents ou tuteurs, dans la mesure exigée par la COPPA, la FERPA ou toute autre Loi applicable en matière de protection de la vie privée, relativement aux Services, à l’utilisation du Site Web en classe (y compris l’utilisation des Comptes liés mentionnés à l’article 1.8) et à la communication à CodeBoxx de renseignements permettant d’identifier personnellement une personne dans ce contexte. Vous déclarez et garantissez à CodeBoxx que, avant la création de comptes pour une Utilisation scolaire, vous avez obtenu tous les consentements nécessaires des parents ou tuteurs, ou vous vous êtes conformé et vous conformerez à toutes les exigences applicables d’une exemption ou d’une exception aux exigences de consentement parental, notamment :\n\n\n\nen vertu de la FERPA, vous vous êtes conformé et vous conformerez à l’exception relative aux « fonctionnaires scolaires » ou à l’exception relative aux « renseignements d’annuaire » prévues par celle-ci ; et\n\n\nen vertu de la COPPA, à l’égard des Élèves de moins de 13 ans, vous agissez à titre de mandataire du parent et consentez en son nom à la communication des renseignements personnels de l’Élève.",
+    "en vertu de la FERPA, vous vous êtes conformé et vous conformerez à l’exception relative aux « fonctionnaires scolaires » ou à l’exception relative aux « renseignements d’annuaire » prévues par celle-ci ; et",
+    "en vertu de la COPPA, à l’égard des Élèves de moins de 13 ans, vous agissez à titre de mandataire du parent et consentez en son nom à la communication des renseignements personnels de l’Élève.",
+    "(iv) Nous appelons ceci un « Consentement scolaire ». Si un Utilisateur parent ne donne pas ce Consentement scolaire ou le révoque, le Personnel scolaire ou l’Établissement doit immédiatement en aviser CodeBoxx afin de mettre fin à l’accès de cet Élève aux Services et de veiller à ce que les renseignements de cet Élève ne soient plus accessibles par l’intermédiaire des Services. CodeBoxx ne sera en aucun cas responsable du défaut du Personnel scolaire de consulter les autorités et les administrateurs de son école ni du défaut d’obtenir le Consentement scolaire lorsqu’il est requis.",
+    [
+     "(c) Identification des Comptes scolaires. Les Élèves et le Personnel scolaire peuvent avoir des comptes personnels, en plus des comptes établis pour une utilisation en classe et associés à l’utilisation des Services par l’Établissement (les « Comptes scolaires »). Si l’Établissement a conclu avec CodeBoxx une entente de service écrite distincte qui comprend des services de gestion des listes de classe pour votre Établissement, les comptes fournis pour une utilisation en classe seront des Comptes scolaires. Dans les autres cas, pour que des comptes établis pour une utilisation en classe soient désignés comme des « Comptes scolaires », ces comptes doivent être\n\n\n\n(1) créés par le Personnel scolaire (par exemple, lorsqu’un enseignant crée le nom d’utilisateur, l’identifiant de connexion et le mot de passe permettant d’établir des Comptes scolaires, ou lorsque l’enseignant établit la liste d’une classe au moyen de Google Classroom, de Clever ou d’un Service intégré similaire (dans la mesure où nous prenons en charge l’utilisation d’un tel Service intégré)), ou\n\n\n(2) créés par un Utilisateur scolaire à la demande d’une École, dans chaque cas, au moyen d’une adresse courriel de l’École et associés à une classe de l’École sur le Service. Les comptes d’utilisateur créés avec une adresse courriel personnelle ne seront pas considérés comme des Comptes scolaires et seront administrés à titre de comptes personnels. Si vous avez des questions sur la façon de créer des Comptes scolaires associés à une classe d’une École sur le Service, veuillez communiquer avec notre équipe de soutien à la clientèle à l’adresse ",
+     {
+      "label": "support@codeboxx.biz",
+      "href": "mailto:support@codeboxx.biz"
+     },
+     "."
+    ],
+    "(1) créés par le Personnel scolaire (par exemple, lorsqu’un enseignant crée le nom d’utilisateur, l’identifiant de connexion et le mot de passe permettant d’établir des Comptes scolaires, ou lorsque l’enseignant établit la liste d’une classe au moyen de Google Classroom, de Clever ou d’un Service intégré similaire (dans la mesure où nous prenons en charge l’utilisation d’un tel Service intégré)), ou",
+    [
+     "(2) créés par un Utilisateur scolaire à la demande d’une École, dans chaque cas, au moyen d’une adresse courriel de l’École et associés à une classe de l’École sur le Service. Les comptes d’utilisateur créés avec une adresse courriel personnelle ne seront pas considérés comme des Comptes scolaires et seront administrés à titre de comptes personnels. Si vous avez des questions sur la façon de créer des Comptes scolaires associés à une classe d’une École sur le Service, veuillez communiquer avec notre équipe de soutien à la clientèle à l’adresse ",
+     {
+      "label": "support@codeboxx.biz",
+      "href": "mailto:support@codeboxx.biz"
+     },
+     "."
+    ],
+    "(d) Utilisation des Services intégrés dans les Comptes scolaires. Si vous faites partie du Personnel scolaire et que vous choisissez de permettre à vos élèves de se connecter aux Services au moyen d’un Service intégré, tel que Google Classroom ou Clever (dans la mesure où nous prenons en charge l’utilisation d’un tel Service intégré), vous êtes responsable de sensibiliser vos élèves à l’utilisation appropriée des Services intégrés et à la protection de leurs comptes. Voir l’article 1.3."
+   ]
+  },
+  {
+   "type": "h3",
+   "content": "1.7 Coachs."
+  },
+  {
+   "type": "p",
+   "content": "CodeBoxx peut rendre disponibles certaines fonctionnalités et certains outils qui permettent aux Utilisateurs d’ajouter des « Coachs » à leur compte."
+  },
+  {
+   "type": "list",
+   "items": [
+    "(a) Les fonctionnalités de coaching sont fournies afin de permettre à tout Utilisateur de donner à un autre Utilisateur, tel qu’un tuteur, un ami ou un membre de sa famille, la possibilité de consulter l’activité de son compte CodeBoxx afin de lui offrir de l’aide en matière de tutorat ou de coaching sur CodeBoxx. Dans les présentes Conditions, nous désignons tout Utilisateur que vous associez à votre compte CodeBoxx (à l’exception du Personnel scolaire et des Utilisateurs parents, qui disposent d’autorisations de compte différentes) comme un « Coach ». Un Utilisateur parent associé à un Utilisateur enfant peut désactiver la fonctionnalité de coaching lors de la création du compte, ou dans les paramètres du compte de l’Utilisateur enfant.",
+    "(b) Si vous êtes un Coach, les dispositions suivantes s’appliquent à vous. Vous ne pouvez utiliser les fonctionnalités et les outils de CodeBoxx qu’aux fins de fournir du tutorat, du coaching ou toute autre aide liée à l’éducation à un Utilisateur dont le compte a été établi et existe conformément aux présentes Conditions. LES COACHS NE SONT PAS AUTORISÉS À CRÉER NI À OUVRIR DE COMPTES POUR UN AUTRE UTILISATEUR. Afin d’entamer une relation de coaching, l’élève ou l’autre Utilisateur que vous souhaitez accompagner doit soit avoir déjà un compte sur les Services, soit ouvrir un compte conformément aux présentes Conditions. VOUS COMPRENEZ QUE L’OUVERTURE D’UN COMPTE PAR UN UTILISATEUR ENFANT OU POUR CELUI-CI NÉCESSITE LE CONSENTEMENT DU PARENT OU TUTEUR LÉGAL DE CET UTILISATEUR. LES COACHS NE PEUVENT PAS DONNER CE CONSENTEMENT DIRECTEMENT NI AU NOM DU PARENT OU TUTEUR. Vous devez utiliser les Services et le Site Web conformément à l’ensemble des lois, règles et règlements applicables."
+   ]
+  },
+  {
+   "type": "h3",
+   "content": "1.8 Comptes liés."
+  },
+  {
+   "type": "p",
+   "content": "CodeBoxx peut permettre à un Utilisateur d’associer un compte personnel à son Compte scolaire, en utilisant les identifiants de connexion associés à un compte personnel pour se joindre à une classe ou utiliser le compte pour un apprentissage dirigé par l’école. Si un Utilisateur choisit d’associer un compte personnel à son Compte scolaire, les deux comptes seront réputés être des Comptes « liés », et l’activité d’apprentissage de l’Utilisateur (les renseignements concernant l’utilisation du Site Web générés par l’Utilisateur au moyen de son utilisation du Site Web), qu’elle soit générée pendant l’utilisation scolaire ou en dehors de celle-ci, pourra être consultée par toute personne ayant accès à l’un ou l’autre des comptes. Les Comptes « liés » ne sont pas des comptes fonctionnant séparément ; ils permettent d’accéder à un seul et même compte CodeBoxx au moyen de plus d’une interface de compte ou de plus d’un ensemble d’identifiants d’accès. Les Comptes liés peuvent être avantageux pour les Élèves qui souhaitent utiliser le Site Web à des fins tant personnelles que scolaires, en permettant au Personnel scolaire de mieux comprendre les progrès des Élèves et en permettant aux Utilisateurs de suivre l’ensemble de leur activité d’apprentissage sur CodeBoxx de façon globale. Le choix de l’Utilisateur d’activer la liaison des comptes doit être fait, le cas échéant, dans le cadre du processus initial d’inscription du compte et d’établissement des listes de classe pour une année scolaire donnée. Une fois les comptes liés, ils ne peuvent plus être séparés. CodeBoxx peut (sans y être tenue) activer la liaison des comptes de la manière décrite aux présentes. En cas de résiliation du Compte scolaire par un membre autorisé du Personnel scolaire, l’activité d’apprentissage de l’Utilisateur (y compris toute activité d’apprentissage découlant de l’utilisation scolaire) sera conservée dans tout compte personnel lié."
+  },
+  {
+   "type": "h3",
+   "content": "1.9 Districts scolaires."
+  },
+  {
+   "type": "p",
+   "content": "CodeBoxx peut conclure des ententes écrites supplémentaires avec des districts scolaires relativement à l’utilisation des Services à l’échelle d’un district (les « Ententes de district »). Conformément aux Ententes de district, nous pouvons fournir des services supplémentaires aux districts scolaires et/ou prendre des engagements supplémentaires envers les districts scolaires relativement aux Services. Sauf disposition contraire d’une Entente de district, les présentes Conditions demeurent en vigueur pour tous les Utilisateurs individuels des Services dans le district concerné."
+  },
+  {
+   "type": "h3",
+   "content": "1.10 Utilisation internationale."
+  },
+  {
+   "type": "p",
+   "content": "CodeBoxx exploite les Services aux États-Unis et au Canada. Si vous choisissez d’accéder à nos Services à partir d’endroits situés à l’extérieur des États-Unis et du Canada, vous consentez à la collecte, à la transmission, à l’utilisation, au stockage et au traitement de contenu et de données (y compris vos renseignements personnels) aux États-Unis. Vous acceptez également de vous conformer à l’ensemble des lois, règlements et règles locaux du territoire dans lequel vous résidez ou à partir duquel vous accédez aux Services, et vous êtes seul responsable d’en assurer le respect, si et dans la mesure où les lois locales s’appliquent à l’utilisation de nos Services. Si vous avez moins de 18 ans, vous confirmez avoir obtenu le consentement parental, s’il est requis dans votre territoire, pour ouvrir un compte pour le Service et conclure les présentes Conditions. À moins que nous n’ayons conclu avec vous une entente écrite distincte, signée par les deux parties, qui prévoit le contraire, nous ne déclarons pas que nos Services sont appropriés ou disponibles pour une utilisation dans des territoires situés à l’extérieur des États-Unis. Le droit d’accéder aux Services et de les utiliser n’est pas accordé dans les territoires, le cas échéant, où il pourrait être interdit, ou dans lesquels votre utilisation placerait CodeBoxx en situation de violation de toute loi ou de tout règlement applicable, y compris, sans s’y limiter, les Lois applicables en matière de protection de la vie privée."
+  },
+  {
+   "type": "h2",
+   "content": "2. Politique de confidentialité."
+  },
+  {
+   "type": "p",
+   "content": "Votre vie privée est importante pour CodeBoxx. Veuillez lire attentivement la Politique de confidentialité de CodeBoxx, qui est intégrée par les présentes aux présentes Conditions (et qui fait partie de notre contrat avec vous), pour obtenir de l’information sur la collecte, l’utilisation et la communication de vos renseignements personnels par CodeBoxx. Entre autres, notre Politique de confidentialité explique comment nous traitons vos renseignements personnels et protégeons votre vie privée lorsque vous utilisez nos Services, et explique les procédures par lesquelles les Utilisateurs, les Utilisateurs parents et le Personnel scolaire peuvent consulter, mettre à jour, corriger ou supprimer leur compte et leurs renseignements personnels."
+  },
+  {
+   "type": "h2",
+   "content": "3. Conditions de l’API ; autres lignes directrices."
+  },
+  {
+   "type": "p",
+   "content": "3.1 Conditions de l’API. Les Utilisateurs qui utilisent l’une ou l’autre des interfaces de programmation d’applications de CodeBoxx (les « API ») acceptent en outre d’être liés par les Conditions de l’API de CodeBoxx"
+  },
+  {
+   "type": "p",
+   "content": "3.2 Autres lignes directrices. Lorsque vous utilisez les Services, vous êtes assujetti à toute ligne directrice ou règle supplémentaire affichée qui s’applique à des services et à des fonctionnalités spécifiques et qui peut être affichée de temps à autre (les « Lignes directrices »). Toutes ces Lignes directrices sont intégrées par renvoi aux Conditions par les présentes."
+  },
+  {
+   "type": "h2",
+   "content": "4. Modification des Conditions."
+  },
+  {
+   "type": "h3",
+   "content": "4.1 Généralités."
+  },
+  {
+   "type": "p",
+   "content": "Au moment d’ouvrir un compte, vous acceptez les Conditions dans la forme affichée sur notre site Web. CodeBoxx se réserve le droit, à sa discrétion, de changer, de modifier, d’ajouter ou de supprimer des parties des Conditions en tout temps. Veuillez consulter périodiquement les Conditions et toute Ligne directrice afin de prendre connaissance des changements apportés après l’ouverture de votre compte. Le fait que vous continuiez d’utiliser les Services après l’affichage des changements constitue votre acceptation de ces changements, laquelle vous lie. Pour tout changement important apporté aux Conditions, CodeBoxx déploiera des efforts raisonnables pour vous aviser de ces Conditions modifiées, par exemple au moyen d’une notification par courriel à l’adresse associée à votre compte ou par l’affichage d’un avis sur les Services, et ces conditions modifiées vous seront opposables à la première des dates suivantes"
+  },
+  {
+   "type": "list",
+   "items": [
+    "(i) la date à laquelle vous prenez effectivement connaissance de ces changements et",
+    "(ii) trente jours après que CodeBoxx a fait une tentative raisonnable de vous transmettre cet avis. Toutefois, les changements portant sur de nouvelles fonctions d’un service ou les changements apportés pour des raisons juridiques prendront effet immédiatement. Si vous n’acceptez pas les Conditions modifiées, vous devez cesser d’utiliser les Services. Les différends découlant des présentes Conditions seront réglés conformément à la version des Conditions en vigueur au moment où le différend est survenu."
+   ]
+  },
+  {
+   "type": "h3",
+   "content": "4.2 Comptes scolaires."
+  },
+  {
+   "type": "p",
+   "content": "Les dispositions suivantes s’appliquent aux Comptes scolaires en plus des dispositions énoncées à l’article 4.1 ci-dessus. Si un changement concernant la façon dont les renseignements personnels contenus dans les dossiers scolaires sont utilisés ou partagés a une incidence défavorable importante sur les Utilisateurs étudiants ou sur un Établissement, et que l’Établissement n’accepte pas le changement, l’Établissement doit en aviser CodeBoxx dans les trente jours suivant la réception de l’avis de changement, de la manière décrite à la section « Dispositions diverses – Avis » ci-dessous. Si CodeBoxx est avisée de la manière requise, les Comptes scolaires détenus par cet Établissement demeureront régis par les Conditions en vigueur immédiatement avant le changement jusqu’à la fin de la fin de la durée alors en cours de l’entente de service écrite conclue entre l’Établissement et CodeBoxx ou, en l’absence d’une telle entente, jusqu’à la fin de la session scolaire en cours. Si les Services sont renouvelés ou maintenus après ce moment, ils seront renouvelés ou maintenus selon les Conditions de CodeBoxx alors en vigueur"
+  },
+  {
+   "type": "h2",
+   "content": "5.Octroi de licence sur le Contenu utilisateur"
+  },
+  {
+   "type": "h3",
+   "content": "5.1 Contenu utilisateur et propriété."
+  },
+  {
+   "type": "p",
+   "content": "CodeBoxx peut permettre (a) l’affichage ou la publication, par vous et par d’autres Utilisateurs, de notes, de questions, de commentaires, d’évaluations, d’avis, d’images, de vidéos et d’autres documents et communications audiovisuels (collectivement, les « Publications de l’utilisateur ») et (b) l’affichage, la création ou la modification, par vous et par d’autres utilisateurs, de code informatique (y compris le code source et le code objet) (le « Code de l’utilisateur ») (les Publications de l’utilisateur et le Code de l’utilisateur, collectivement, le « Contenu utilisateur »). Vous comprenez que, que ce Contenu utilisateur soit publié ou non, CodeBoxx ne garantit aucune confidentialité à l’égard des soumissions. Conformément à la Loi applicable, entre CodeBoxx et vous, vous conservez tous les droits de propriété que vous détenez sur tout Contenu utilisateur que vous affichez ou publiez sur les Services, et CodeBoxx ne revendique aucun droit de propriété sur ce Contenu utilisateur. Vous reconnaissez que vous êtes seul responsable de votre Contenu utilisateur et des conséquences de l’affichage, de la création ou de la publication de ce Contenu utilisateur."
+  },
+  {
+   "type": "h3",
+   "content": "5.2 Octroi de licence à CodeBoxx."
+  },
+  {
+   "type": "p",
+   "content": "En affichant, en soumettant ou en distribuant du Contenu utilisateur sur les Services ou par leur intermédiaire, vous accordez par les présentes à CodeBoxx un droit et une licence mondiaux, non exclusifs, transférables, cessibles, entièrement libérés et libres de redevances pour (a) héberger, transférer, afficher, exécuter, reproduire et distribuer votre Contenu utilisateur, en préparer des œuvres dérivées, l’utiliser, le fabriquer, le faire fabriquer, l’importer et autrement l’exploiter, en tout ou en partie, dans tout format de média et par tout canal médiatique (connus à ce jour ou mis au point ultérieurement, dans la mesure où cela est conforme à la loi applicable et à la Politique de confidentialité de CodeBoxx). Cette licence est perpétuelle et irrévocable, sauf dans la mesure requise pour se conformer à la Loi applicable en matière de protection de la vie privée relative à la propriété et au contrôle de vos renseignements personnels, y compris les dossiers scolaires. En ce qui concerne les Comptes scolaires, conformément à la Loi applicable en matière de protection de la vie privée, entre CodeBoxx et vous, vous (ou votre école, selon le cas) conservez tous les droits de propriété que vous détenez sur tout Contenu utilisateur dans la mesure où ce contenu constitue un dossier scolaire."
+  },
+  {
+   "type": "h3",
+   "content": "5.3 Octroi de licence aux Utilisateurs."
+  },
+  {
+   "type": "list",
+   "items": [
+    "(a) Publications de l’utilisateur. En affichant, en soumettant ou en distribuant des Publications de l’utilisateur par l’intermédiaire des Services, vous accordez par les présentes à chaque Utilisateur des Services une licence non exclusive lui permettant d’accéder à vos Publications de l’utilisateur et de les utiliser de toute manière permise ou rendue possible par CodeBoxx sur les Services ou par leur intermédiaire.",
+    [
+     "(b) Code de l’utilisateur. En affichant, en soumettant ou en distribuant du Code de l’utilisateur par l’intermédiaire des Services, vous accordez par les présentes à chaque Utilisateur des Services une licence non exclusive lui permettant d’accéder à votre Code de l’utilisateur, de l’utiliser, de le reproduire et de le distribuer dans toute la mesure permise par la licence MIT et conformément à ses modalités (actuellement accessible à l’adresse : ",
+     {
+      "label": "la page Web de la licence open source",
+      "href": "https://opensource.org/licenses/mit-license.php"
+     },
+     ") (la « Licence MIT »)"
+    ],
+    "(c) Contenu téléchargeable. Les Services peuvent vous permettre de télécharger des applications mobiles ou certains contenus éducatifs numériques (le « Contenu téléchargeable »). Sous réserve de votre respect complet et continu de toutes les modalités énoncées aux présentes, CodeBoxx vous accorde une licence limitée, non exclusive, non transférable, ne pouvant faire l’objet d’une sous-licence et révocable pour télécharger, installer, visionner et utiliser le Contenu téléchargeable, sous forme de code objet, sur des appareils qui vous appartiennent ou que vous contrôlez, uniquement à des fins personnelles et non commerciales. Vous acceptez de ne pas\n\n\n\n(i) modifier le Contenu téléchargeable ni créer des œuvres dérivées de celui-ci\n\n\n(ii) retirer, désactiver ou contourner toute protection contre la copie, toute gestion des droits, toute limitation technique ou toute fonctionnalité de sécurité intégrée au Contenu téléchargeable ou le protégeant, ni autrement créer ou mettre en œuvre une solution de contournement à leur égard, et\n\n\n(iii) retirer tout avis de droit d’auteur et tout autre avis de propriété figurant sur le Contenu téléchargeable et sur toutes ses copies.",
+    "(i) modifier le Contenu téléchargeable ni créer des œuvres dérivées de celui-ci",
+    "(ii) retirer, désactiver ou contourner toute protection contre la copie, toute gestion des droits, toute limitation technique ou toute fonctionnalité de sécurité intégrée au Contenu téléchargeable ou le protégeant, ni autrement créer ou mettre en œuvre une solution de contournement à leur égard, et",
+    "(iii) retirer tout avis de droit d’auteur et tout autre avis de propriété figurant sur le Contenu téléchargeable et sur toutes ses copies."
+   ]
+  },
+  {
+   "type": "h3",
+   "content": "5.4 Accès à votre Contenu utilisateur."
+  },
+  {
+   "type": "p",
+   "content": "CodeBoxx peut permettre aux Utilisateurs de partager leur Contenu utilisateur avec un groupe restreint d’autres Utilisateurs, ou de rendre leur Contenu utilisateur public afin que tous (même les personnes qui n’utilisent pas les Services) puissent le consulter. Vous reconnaissez et acceptez que, bien que CodeBoxx puisse offrir certaines fonctionnalités destinées à vous permettre de restreindre l’accès d’autrui à une partie du Contenu utilisateur que vous créez, CodeBoxx ne garantit pas que ce Contenu utilisateur ne sera jamais accessible à d’autres personnes. En cas d’accès non autorisé, CodeBoxx déploiera des efforts raisonnables pour vous en aviser conformément à l’article 15.1 ci-dessous. CodeBoxx DÉCLINE PAR LES PRÉSENTES TOUTE RESPONSABILITÉ À L’ÉGARD DE TOUT ACCÈS NON AUTORISÉ À TOUT CONTENU UTILISATEUR RESTREINT."
+  },
+  {
+   "type": "h3",
+   "content": "5.5 Exclusion de responsabilité relative au Contenu utilisateur."
+  },
+  {
+   "type": "p",
+   "content": "Vous comprenez que, lorsque vous utilisez les Services, vous serez exposé à du Contenu utilisateur provenant de diverses sources, et que CodeBoxx n’est pas responsable de l’exactitude ou de l’utilité de ce Contenu utilisateur, ni des droits de propriété intellectuelle sur celui-ci ou s’y rapportant. Vous comprenez et reconnaissez en outre que vous pourriez être exposé à du Contenu utilisateur inexact, offensant, indécent ou répréhensible, et vous acceptez de renoncer, et renoncez par les présentes, à tout droit ou recours, en droit ou en equity, que vous avez ou pourriez avoir contre CodeBoxx à cet égard. CodeBoxx n’approuve aucun Contenu utilisateur ni aucune opinion, recommandation ou aucun conseil qui y est exprimé, et CodeBoxx décline expressément toute responsabilité relativement au Contenu utilisateur."
+  },
+  {
+   "type": "h2",
+   "content": "6. Documents exclusifs ; licences"
+  },
+  {
+   "type": "h3",
+   "content": "6.1 Documents exclusifs."
+  },
+  {
+   "type": "p",
+   "content": "Les Services appartiennent à CodeBoxx et sont exploités par celle-ci. Les interfaces visuelles, les éléments graphiques, la conception, la compilation, l’information, le code informatique (y compris le code source ou le code objet), les logiciels, les services, le contenu, les vidéos et exercices éducatifs, ainsi que tous les autres éléments des Services (les « Documents des Services ») sont protégés par les lois des États-Unis et les lois internationales sur le droit d’auteur, les brevets et les marques de commerce, par les conventions internationales et par les autres lois applicables régissant la propriété intellectuelle et les droits exclusifs. À l’exception de tout Contenu utilisateur fourni par les Utilisateurs et leur appartenant, et sauf disposition contraire du présent article, tous les Documents des Services, ainsi que toutes les marques de commerce, marques de service et dénominations commerciales figurant sur les Services ou accessibles par leur intermédiaire, appartiennent à CodeBoxx ou font l’objet d’une licence concédée à CodeBoxx, et CodeBoxx se réserve tous les droits sur ceux-ci qui ne sont pas expressément accordés par les présentes Conditions."
+  },
+  {
+   "type": "h3",
+   "content": "6.2 Droit de propriété intellectuelle."
+  },
+  {
+   "type": "p",
+   "content": "Sauf indication contraire, tout Contenu publié sur le Site Web ou les Services est la propriété exclusive de CodeBoxx. Ce droit de propriété est conféré par les lois des États-Unis et les lois internationales sur le droit d’auteur. Tous les droits relatifs au Contenu sont expressément réservés par les présentes. Codeboxx, son ou ses logos et tous les autres noms ou slogans de produits ou de services affichés sur le Site Web ou les Services sont des marques de commerce déposées ou des marques de commerce de common law de CodeBoxx. Toute violation des présentes Conditions peut constituer une violation du droit d’auteur, d’une marque de commerce ou d’un autre droit de propriété intellectuelle susceptible de vous exposer à des sanctions civiles ou pénales. L’apparence et la convivialité du Site Web et des Services, y compris tous les en-têtes de page, les éléments graphiques personnalisés, les icônes de boutons et les scripts, constituent la marque de service, la marque de commerce ou l’habillage commercial de CodeBoxx et ne peuvent être copiés, imités ou utilisés, en tout ou en partie, sans l’autorisation écrite expresse de CodeBoxx. Vous ne devez pas copier, reproduire, retransmettre, vendre, publier, communiquer, diffuser, distribuer, transmettre, afficher ou autrement modifier tout Contenu, en créer des œuvres dérivées, ni y créer un lien ou un lien profond. De plus, vous ne devez pas :"
+  },
+  {
+   "type": "list",
+   "items": [
+    "(a) Copier le Site Web ou les Services ;",
+    "(b) Afficher ou publier le Site Web ou les Services, ou créer des œuvres dérivées fondées sur ceux-ci ;",
+    "(c) décompiler ou désosser le Site Web ou les Services, ni prendre toute autre mesure visant à découvrir le code source ou les idées ou l’algorithme sous-jacents de toute composante de ceux-ci ;",
+    "(d) retirer tout avis de droit d’auteur, toute marque de commerce ou de service, tout nom de marque et tout autre élément semblable du Site Web ou des Services ou de la documentation connexe. Sauf indication explicite aux présentes, aucune disposition des Conditions ne peut être interprétée comme conférant une licence sur des droits de propriété intellectuelle, que ce soit par préclusion, par implication ou autrement."
+   ]
+  },
+  {
+   "type": "h3",
+   "content": "6.3 Contenu éducatif sous licence."
+  },
+  {
+   "type": "p",
+   "content": "CodeBoxx peut rendre disponibles sur les Services certaines vidéos éducatives, certains exercices et certains documents complémentaires connexes qui appartiennent à CodeBoxx ou à ses concédants de licence tiers (le « Contenu éducatif sous licence »). CodeBoxx vous accorde un droit non exclusif et non transférable d’accéder au Contenu éducatif sous licence et de l’utiliser, tel qu’il est rendu disponible sur les Services par CodeBoxx, uniquement à des fins personnelles et non commerciales. À moins qu’il ne soit expressément indiqué sur les Services qu’un élément particulier du Contenu éducatif sous licence est mis à la disposition des Utilisateurs selon d’autres modalités de licence, vous ne pouvez pas télécharger, distribuer, vendre, louer ou modifier le Contenu éducatif sous licence, ni autrement y donner accès à un tiers."
+  },
+  {
+   "type": "list",
+   "items": [
+    "(a) Licences de remplacement. Dans certains cas, CodeBoxx ou ses concédants de licence peuvent rendre disponible du Contenu éducatif sous licence selon d’autres modalités de licence, comme une variante de la Licence Creative Commons (au sens défini ci-dessous) (chacune, une « Licence de remplacement »). Lorsque cela est expressément indiqué comme tel sur les Services, et sous réserve des modalités des présentes Conditions, une licence sur le Contenu éducatif sous licence applicable vous est concédée selon les modalités de la Licence de remplacement. En utilisant ce Contenu éducatif sous licence, en le téléchargeant ou en y accédant autrement, vous acceptez de vous conformer pleinement à toutes les modalités de cette Licence de remplacement.",
+    [
+     "(b) Licence Creative Commons. Sauf indication expresse contraire sur les Services à l’égard d’un élément particulier du Contenu éducatif sous licence, toute mention de la licence « Creative Commons », « CC » ou d’une licence désignée de façon semblable est réputée être une mention de la licence Creative Commons Attribution-NonCommercial-ShareAlike 3.0 United States License (accessible à l’adresse ",
+     {
+      "label": "creativecommons.org/licenses/",
+      "href": "http://creativecommons.org/licenses/by-nc-sa/3.0/us/"
+     },
+     ") (la « Licence Creative Commons »)."
+    ]
+   ]
+  },
+  {
+   "type": "h3",
+   "content": "6.4 Code éducatif sous licence."
+  },
+  {
+   "type": "p",
+   "content": "CodeBoxx peut rendre disponible, ou permettre aux Utilisateurs de créer et de rendre disponible, sur les Services ou par leur intermédiaire, certain code source éducatif lisible par l’utilisateur en lien avec les modules ou exercices « Informatique » offerts sur les Services (le « Code éducatif sous licence »). Sauf indication contraire, tout le Code éducatif sous licence est la propriété de CodeBoxx ou de concédants de licence tiers et, sous réserve des modalités des présentes Conditions, vous est concédé sous licence selon les modalités de la Licence MIT. En téléchargeant ce Code éducatif sous licence ou en y accédant autrement, vous acceptez de vous conformer à toutes les modalités de la Licence MIT."
+  },
+  {
+   "type": "h3",
+   "content": "6.5 Utilisation non commerciale."
+  },
+  {
+   "type": "p",
+   "content": "Le Contenu éducatif sous licence et le Code éducatif sous licence sont destinés à un usage personnel et non commercial seulement. Sans limiter la portée de ce qui précède, et malgré les modalités de toute Licence de remplacement applicable à ce Contenu éducatif sous licence, le Contenu éducatif sous licence ne peut être utilisé, distribué ni autrement exploité à quelque fin commerciale, pour quelque avantage commercial ou pour quelque rémunération pécuniaire privée que ce soit, sauf entente écrite préalable contraire avec CodeBoxx."
+  },
+  {
+   "type": "list",
+   "items": [
+    "(a) Utilisations non permises. Sans limiter la portée générale de ce qui précède, voici les types d’utilisation que CodeBoxx définit expressément comme ne relevant pas d’une utilisation « non commerciale » :\n\n\n\n(i) la vente ou la location (1) de toute partie du Contenu éducatif sous licence, (2) de toute œuvre dérivée fondée, au moins en partie, sur le Contenu éducatif sous licence, ou (3) de toute œuvre collective comprenant une partie du Contenu éducatif sous licence ;\n\n\n(ii) la prestation de services de formation, de soutien ou de rédaction qui utilisent le Contenu éducatif sous licence ou y font référence, moyennant des frais ; et\n\n\n(iii) la vente de publicités, de commandites ou de promotions placées sur le Contenu éducatif sous licence ou sur toute partie de celui-ci, ou la vente de publicités, de commandites ou de promotions sur tout site Web ou blogue contenant une partie du Matériel éducatif sous licence, y compris, sans s’y limiter, toute « publicité en fenêtre surgissante ».",
+    "(i) la vente ou la location (1) de toute partie du Contenu éducatif sous licence, (2) de toute œuvre dérivée fondée, au moins en partie, sur le Contenu éducatif sous licence, ou (3) de toute œuvre collective comprenant une partie du Contenu éducatif sous licence ;",
+    "(ii) la prestation de services de formation, de soutien ou de rédaction qui utilisent le Contenu éducatif sous licence ou y font référence, moyennant des frais ; et",
+    "(iii) la vente de publicités, de commandites ou de promotions placées sur le Contenu éducatif sous licence ou sur toute partie de celui-ci, ou la vente de publicités, de commandites ou de promotions sur tout site Web ou blogue contenant une partie du Matériel éducatif sous licence, y compris, sans s’y limiter, toute « publicité en fenêtre surgissante ».",
+    "(b) Qualification de l’utilisation. Le caractère « non commercial » d’une utilisation particulière du Contenu éducatif sous licence dépend de l’utilisation, et non de l’utilisateur. Ainsi, une utilisation du Contenu éducatif sous licence qui n’exige pas que les utilisateurs paient des frais et qui ne procure pas d’avantage commercial à une entité est « non commerciale », même si cette utilisation est faite par une entité commerciale. À l’inverse, toute utilisation qui comporte l’imposition de frais aux utilisateurs en lien avec leur accès au Contenu éducatif sous licence n’est pas « non commerciale », même si cette utilisation est faite par une entité sans but lucratif. Par exemple, l’utilisation du Contenu éducatif sous licence par une société à but lucratif pour le perfectionnement professionnel interne ou la formation de ses employés est permise, pourvu que la société n’exige aucuns frais, directement ou indirectement, pour cette utilisation. À l’inverse, à titre d’autre exemple, l’utilisation du Contenu éducatif sous licence par une entité sans but lucratif dans le cadre d’un programme de formation ou d’enseignement payant N’EST PAS « non commerciale » et n’est pas permise."
+   ]
+  },
+  {
+   "type": "h2",
+   "content": "7. Documents exclusifs ; licences"
+  },
+  {
+   "type": "p",
+   "content": "VOUS CONVENEZ DE NE PAS :"
+  },
+  {
+   "type": "list",
+   "items": [
+    "7.1 utiliser les Services à quelque fin ou usage commercial que ce soit, à moins d’une autorisation expresse et écrite de CodeBoxx, étant entendu que les Services et les services connexes sont destinés exclusivement à un usage personnel et non commercial ;",
+    "7.2 sauf dans la mesure expressément permise aux articles 5.3 et 6 des présentes Conditions, louer, donner à bail, prêter, vendre, revendre, octroyer une sous-licence, distribuer ou autrement transférer les licences visant tout Matériel des Services ;",
+    "7.3 publier, téléverser ou distribuer tout Contenu utilisateur ou autre contenu diffamatoire, calomnieux ou inexact ;",
+    "7.4 publier, téléverser ou distribuer tout Contenu utilisateur ou autre contenu qui est illégal ou qu’une personne raisonnable pourrait juger répréhensible, choquant, indécent, pornographique, harcelant, menaçant, embarrassant, bouleversant, vulgaire, haineux, offensant sur le plan racial ou ethnique, ou autrement inapproprié ;",
+    "7.5 utiliser les Services d’une manière qui est préjudiciable aux mineurs, ou d’une manière qui contrevient aux Lignes directrices de la communauté de CodeBoxx ;",
+    "7.6 usurper l’identité de toute personne ou entité, prétendre faussement être affilié à une personne ou entité, accéder sans autorisation aux comptes des Services d’autrui, ou exercer toute autre activité frauduleuse ;",
+    "7.7 supprimer les avis de droit d’auteur ou d’autres droits de propriété figurant sur les Services ou sur tout Contenu éducatif sous licence, Code éducatif sous licence ou Contenu utilisateur ;",
+    "7.8 faire valoir, ou autoriser, aider ou encourager un tiers à faire valoir, contre CodeBoxx ou l’un des membres de son groupe ou de ses concédants de licence, toute réclamation pour contrefaçon de brevet ou autre atteinte à la propriété intellectuelle relativement à tout Contenu éducatif sous licence, Code éducatif sous licence ou Contenu utilisateur que vous avez utilisé, soumis ou autrement rendu disponible sur les Services ou par leur intermédiaire ;",
+    "7.9 faire des offres, des publicités ou des propositions non sollicitées, ou envoyer du courrier indésirable ou des pourriels à d’autres Utilisateurs des Services (y compris, sans s’y limiter, de la publicité non sollicitée, du matériel promotionnel ou tout autre matériel de sollicitation, des envois massifs de publicité commerciale, des chaînes de lettres, des annonces informatives, des demandes de dons à des organismes de bienfaisance et des pétitions de signatures) ;",
+    "7.10 utiliser les Services à quelque fin illégale que ce soit, ou en violation de toute loi locale, étatique, nationale ou internationale, y compris, sans s’y limiter, les lois régissant la propriété intellectuelle et les autres droits de propriété, ainsi que la protection des données et la vie privée ;",
+    "7.11 diffamer, harceler, maltraiter, menacer ou frauder les Utilisateurs des Services, ou recueillir ou tenter de recueillir des renseignements personnels sur des Utilisateurs ou des tiers sans leur consentement ;",
+    "7.12 retirer, contourner, désactiver, endommager ou autrement entraver les fonctions liées à la sécurité des Services, du Contenu éducatif sous licence, du Code éducatif sous licence ou du Contenu utilisateur, les fonctions qui empêchent ou restreignent l’utilisation ou la copie de tout contenu accessible par l’intermédiaire des Services, ou les fonctions qui imposent des limites à l’utilisation des Services, du Contenu éducatif sous licence, du Code éducatif sous licence ou du Contenu utilisateur ;",
+    "7.13 procéder à l’ingénierie inverse, décompiler, désassembler ou autrement tenter de découvrir le code source des Services ou de toute partie de ceux-ci, sauf si et uniquement dans la mesure où une telle activité est expressément permise par la loi applicable malgré la présente limitation ;",
+    "7.14 modifier, adapter, traduire ou créer des œuvres dérivées fondées sur les Services ou sur toute partie de ceux-ci, sauf si et uniquement dans la mesure expressément permise par CodeBoxx dans les présentes ou dans la mesure où la restriction qui précède est expressément interdite par la loi applicable ; ou",
+    "7.15 entraver ou endommager intentionnellement le fonctionnement des Services ou la jouissance de ceux-ci par tout utilisateur, par quelque moyen que ce soit, y compris, sans s’y limiter, en participant à toute attaque de type déni de service ou en téléversant ou en disséminant autrement des virus, des logiciels publicitaires, des logiciels espions, des vers ou tout autre code malveillant."
+   ]
+  },
+  {
+   "type": "h2",
+   "content": "8. Sites, produits et services de tiers ; liens."
+  },
+  {
+   "type": "p",
+   "content": "Les Services peuvent comprendre des liens ou des renvois vers d’autres sites Web ou services uniquement pour la commodité des Utilisateurs (« Sites de référence »). CodeBoxx n’approuve aucun de ces Sites de référence ni les renseignements, documents, produits ou services qui s’y trouvent ou qui sont accessibles par leur intermédiaire. L’ACCÈS AUX SITES DE RÉFÉRENCE ET LEUR UTILISATION, Y COMPRIS LES RENSEIGNEMENTS, DOCUMENTS, PRODUITS ET SERVICES QUI S’Y TROUVENT OU QUI SONT DISPONIBLES PAR LEUR INTERMÉDIAIRE, SONT ENTIÈREMENT À VOS PROPRES RISQUES."
+  },
+  {
+   "type": "h2",
+   "content": "9. Durée et résiliation."
+  },
+  {
+   "type": "h3",
+   "content": "9.1 Durée."
+  },
+  {
+   "type": "p",
+   "content": "Les présentes Conditions demeurent pleinement en vigueur tant que vous utilisez les Services, à moins que votre compte ne soit résilié conformément aux présentes Conditions, auquel cas vous n’avez plus le droit d’utiliser les Services."
+  },
+  {
+   "type": "h3",
+   "content": "9.2 Droit de propriété intellectuelle."
+  },
+  {
+   "type": "p",
+   "content": "CodeBoxx peut, à son entière discrétion, pour quelque motif que ce soit ou sans motif, et sans pénalité, suspendre ou résilier tout compte (ou toute partie de celui-ci) que vous pouvez détenir auprès de CodeBoxx ou votre utilisation des Services, et retirer et supprimer la totalité ou une partie de votre compte, de votre profil d’Utilisateur et de votre Contenu utilisateur, à tout moment. CodeBoxx peut également, à son entière discrétion et à tout moment, cesser de fournir l’accès aux Services, ou à toute partie de ceux-ci, avec ou sans préavis. Vous convenez que toute résiliation de votre accès aux Services ou de tout compte que vous pouvez détenir, ou de toute partie de celui-ci, peut être effectuée sans préavis, et vous convenez que CodeBoxx ne sera pas responsable envers vous ou envers un tiers d’une telle résiliation. Toute activité soupçonnée d’être frauduleuse, abusive ou illégale peut être signalée aux autorités policières compétentes. Ces recours s’ajoutent à tout autre recours dont CodeBoxx peut disposer en droit ou en equity. Comme il est indiqué dans les présentes, CodeBoxx ne permet pas les activités portant atteinte aux droits d’auteur, aux marques de commerce ou à d’autres droits de propriété intellectuelle sur les Services, et mettra fin à l’accès aux Services, et retirera tout Contenu utilisateur ou autre contenu soumis, de tout Utilisateur qui s’avère être un contrefacteur récidiviste."
+  },
+  {
+   "type": "h3",
+   "content": "9.3 Résiliation par vous."
+  },
+  {
+   "type": "p",
+   "content": "Votre seul recours en cas d’insatisfaction à l’égard"
+  },
+  {
+   "type": "list",
+   "items": [
+    "(i) des Services,",
+    "(ii) de toute disposition des présentes Conditions,",
+    "(iii) des Lignes directrices,",
+    "(iv) de toute politique ou pratique de CodeBoxx dans l’exploitation des Services, ou",
+    "(v) de tout contenu ou renseignement transmis par l’intermédiaire des Services,"
+   ]
+  },
+  {
+   "type": "p",
+   "content": "consiste à résilier les Conditions et votre compte. Vous pouvez résilier les présentes Conditions à tout moment (pour l’avenir seulement) en supprimant votre compte de connexion aux Services et en cessant d’utiliser toute partie des Services."
+  },
+  {
+   "type": "h3",
+   "content": "9.4 Résiliation des comptes du Personnel scolaire, des Enfants et des Élèves."
+  },
+  {
+   "type": "p",
+   "content": "Certains Utilisateurs (p. ex., les Utilisateurs parents et le Personnel scolaire) peuvent résilier les présentes Conditions à l’égard de leur compte ou d’un compte d’Utilisateur enfant ou d’Utilisateur élève qu’ils ont créé ou qui a été créé sur leurs instructions, conformément au présent article."
+  },
+  {
+   "type": "list",
+   "items": [
+    [
+     "(a) Résiliation par le Personnel scolaire. Le Personnel scolaire peut mettre fin à l’utilisation des Services à titre individuel ou à l’égard des Comptes scolaires créés par ce Personnel scolaire, ou les deux, à tout moment en communiquant avec nous à l’adresse ",
+     {
+      "label": "info@codeboxx.biz",
+      "href": "mailto:info@codeboxx.biz"
+     },
+     ", sous réserve toutefois qu’un Établissement puisse exiger que certaines conditions soient remplies avant que le Personnel scolaire puisse résilier des comptes créés à des fins scolaires. Avant la résiliation de Comptes scolaires sur les instructions du Personnel scolaire, CodeBoxx peut inviter les Utilisateurs, ou les parents ou tuteurs légaux des Élèves, à créer et à maintenir un compte personnel afin de conserver tout contenu généré ou fourni par les Utilisateurs et leur appartenant en vertu des présentes Conditions (y compris l’activité d’apprentissage de cet Utilisateur). Tout compte personnel de ce type sera créé selon le processus standard d’ouverture de compte de CodeBoxx, y compris le consentement parental pour les Utilisateurs de moins de 13 ans."
+    ],
+    [
+     "(b) Résiliation par les parents. En tant qu’Utilisateur parent, si vous avez créé un compte Enfant sur les Services et que vous détenez un compte d’Utilisateur parent associé au compte Enfant, vous pouvez résilier le compte de connexion de votre Enfant au moyen du profil du compte, ou en communiquant avec notre équipe du soutien à la clientèle à l’adresse ",
+     {
+      "label": "support@codeboxx.biz",
+      "href": "mailto:support@codeboxx.biz"
+     },
+     ", bien que nous puissions devoir vérifier votre identité avant de prendre toute mesure à l’égard du compte. Les parents d’Élèves qui utilisent des Comptes scolaires créés par l’enseignant de votre Enfant à l’école ou sur ses instructions pourraient d’abord devoir communiquer avec l’école de votre enfant pour demander la résiliation."
+    ]
+   ]
+  },
+  {
+   "type": "h3",
+   "content": "9.5 Responsabilité à l’égard des activités antérieures à la résiliation."
+  },
+  {
+   "type": "p",
+   "content": "La résiliation des Conditions à l’égard de tout compte d’Utilisateur ne limitera pas les droits et recours de CodeBoxx relativement à tout manquement aux présentes Conditions survenu avant cette résiliation."
+  },
+  {
+   "type": "h2",
+   "content": "10. Déclarations et garanties."
+  },
+  {
+   "type": "p",
+   "content": "Vous garantissez, déclarez et convenez que vous ne fournirez aucun Contenu utilisateur et n’utiliserez pas autrement les Services d’une manière qui (i) porte atteinte aux droits de propriété intellectuelle, aux droits à l’image ou à la vie privée ou à d’autres droits d’autrui, les viole ou se les approprie illicitement ; (ii) contrevient à toute loi, à tout statut, à toute ordonnance ou à tout règlement international, fédéral, étatique ou local, ou qui placerait CodeBoxx en situation de contravention à toute loi ou à tout règlement applicable, y compris, sans s’y limiter, les Lois applicables en matière de protection de la vie privée (collectivement, la « Loi applicable ») ; (iii) est préjudiciable, frauduleuse, menaçante, abusive, harcelante, délictueuse, diffamatoire, vulgaire, obscène, calomnieuse ou autrement répréhensible ; ou (iv) compromet de quelque façon que ce soit la sécurité de votre compte ou des Services, par exemple en permettant à une autre personne d’accéder à votre compte ou à votre mot de passe ou en soumettant du Contenu utilisateur qui contient des virus. De plus, vous déclarez, garantissez et convenez que"
+  },
+  {
+   "type": "list",
+   "items": [
+    "(i) vous détenez tous les droits nécessaires pour fournir votre Contenu utilisateur et accorder à la Société les droits prévus aux présentes Conditions ;",
+    "(ii) vous vous conformerez aux Lois applicables dans le cadre de votre utilisation du Service ; et",
+    "(iii), si vous faites partie du Personnel scolaire, vous comprenez que vous êtes seul responsable de fournir les avis et d’obtenir les consentements exigés par les Lois applicables pour que les élèves puissent utiliser les Services ou fournir du Contenu utilisateur, y compris le respect des dispositions applicables de la FERPA et de la COPPA lors de l’utilisation du Consentement scolaire."
+   ]
+  },
+  {
+   "type": "h2",
+   "content": "11. Indemnisation."
+  },
+  {
+   "type": "p",
+   "content": "Vous convenez, dans la mesure permise par les lois de votre État, d’indemniser, de défendre et de tenir à couvert CodeBoxx, ainsi que sa société mère, ses successeurs, les sociétés de son groupe, ses entrepreneurs, dirigeants, administrateurs, employés et mandataires, et ses fournisseurs, concédants de licence et partenaires tiers (les « Parties CodeBoxx ») à l’égard de l’ensemble des pertes, dommages-intérêts, responsabilités, demandes, jugements, règlements, coûts et frais de toute nature (y compris les honoraires et frais juridiques) découlant de toute réclamation ou demande présentée par un tiers relativement à ce qui suit ou en découlant"
+  },
+  {
+   "type": "list",
+   "items": [
+    "(i) votre accès aux Services, ou votre utilisation ou utilisation abusive de ceux-ci ;",
+    "(ii) votre manquement ou manquement allégué aux présentes Conditions, ou toute violation des Conditions ;",
+    "(iii) tout manquement aux déclarations, garanties et engagements faits aux présentes, que ce soit par vous ou par tout Utilisateur enfant ou Utilisateur scolaire dont vous avez approuvé le compte à titre d’Utilisateur parent ou de membre du Personnel scolaire ;",
+    "(iv) votre défaut de vous conformer aux Lois applicables (y compris tout défaut d’obtenir ou de fournir tout consentement ou avis nécessaire) ;",
+    "(v) l’atteinte, par vous ou par tout tiers utilisant votre compte, à tout droit de propriété intellectuelle, droit à la vie privée ou autre droit de toute personne ou entité, y compris relativement à votre Contenu utilisateur, ou",
+    "(vi) votre manquement ou manquement allégué à toute interaction, entente ou politique entre vous et tout autre Utilisateur."
+   ]
+  },
+  {
+   "type": "p",
+   "content": "CodeBoxx se réserve le droit, à vos frais, d’assumer la défense et le contrôle exclusifs de toute affaire pour laquelle vous êtes tenu d’indemniser CodeBoxx, et vous convenez de collaborer à la défense de CodeBoxx relativement à ces réclamations. Vous convenez de ne régler aucune affaire de ce type sans le consentement écrit préalable de CodeBoxx. CodeBoxx déploiera des efforts raisonnables pour vous aviser de toute réclamation, action ou procédure de ce type dès qu’elle en aura connaissance."
+  },
+  {
+   "type": "h2",
+   "content": "12. Exclusions de responsabilité ; absence de garanties"
+  },
+  {
+   "type": "h3",
+   "content": "12.1 Absence de garanties."
+  },
+  {
+   "type": "p",
+   "content": "LE SITE WEB, AINSI QUE L’ENSEMBLE DES DONNÉES, INFORMATIONS, LOGICIELS, DOCUMENTS DU SITE WEB, CONTENUS (QU’ILS SOIENT DÉTENUS OU FASSENT L’OBJET D’UNE LICENCE), CONTENUS UTILISATEUR, SITES DE RÉFÉRENCE, SERVICES OU APPLICATIONS MIS À DISPOSITION EN LIEN AVEC LE SITE WEB OU PAR SON INTERMÉDIAIRE (LES « OFFRES CodeBoxx »), SONT FOURNIS « TELS QUELS », « SELON LEUR DISPONIBILITÉ » ET « AVEC TOUS LEURS DÉFAUTS ». DANS TOUTE LA MESURE PERMISE PAR LA LOI APPLICABLE, LES PARTIES CodeBoxx DÉCLINENT TOUTES GARANTIES ET CONDITIONS DE QUELQUE NATURE QUE CE SOIT, QU’ELLES SOIENT LÉGALES, EXPRESSES OU IMPLICITES, Y COMPRIS, SANS S’Y LIMITER, TOUTES LES GARANTIES IMPLICITES DE QUALITÉ MARCHANDE, DE QUALITÉ, DE DISPONIBILITÉ, DE JOUISSANCE PAISIBLE, D’ADÉQUATION À UN USAGE PARTICULIER, DE TITRE ET D’ABSENCE DE CONTREFAÇON. AUCUN CONSEIL NI AUCUNE INFORMATION, ORAL OU ÉCRIT, OBTENU PAR VOUS AUPRÈS DE CodeBoxx OU PAR L’INTERMÉDIAIRE DU SITE WEB NE CRÉERA DE GARANTIE QUI N’EST PAS EXPRESSÉMENT ÉNONCÉE AUX PRÉSENTES."
+  },
+  {
+   "type": "h3",
+   "content": "12.2 Contenu."
+  },
+  {
+   "type": "p",
+   "content": "CodeBoxx ET LES PARTIES CodeBoxx NE GARANTISSENT PAS QUE LE SITE WEB OU TOUTE DONNÉE, TOUT CONTENU UTILISATEUR, TOUTE FONCTION OU TOUTE AUTRE INFORMATION OFFERTE SUR LE SITE WEB OU PAR SON INTERMÉDIAIRE SERONT ININTERROMPUS OU EXEMPTS D’ERREURS, DE VIRUS OU D’AUTRES COMPOSANTS NUISIBLES, ET NE GARANTISSENT PAS QUE L’UN OU L’AUTRE DES ÉLÉMENTS QUI PRÉCÈDENT SERA CORRIGÉ. CodeBoxx ET LES PARTIES CodeBoxx NE FONT AUCUNE DÉCLARATION NI NE DONNENT AUCUNE GARANTIE (1) QUE LES OFFRES CodeBoxx (A) RÉPONDRONT À VOS EXIGENCES OU À VOS ATTENTES, OU SERONT À VOTRE GOÛT, OU (B) SERONT OPPORTUNES, SÉCURISÉES, EXACTES, EXEMPTES D’ERREURS OU DE PERTES, OU ININTERROMPUES, (2) QUE LES SERVICES SONT EXEMPTS DE VIRUS OU D’AUTRES COMPOSANTS NUISIBLES, OU (3) QUE TOUT DÉFAUT OU TOUTE ERREUR SERA CORRIGÉ. CERTAINES FONCTIONNALITÉS PEUVENT ÊTRE NOUVELLES OU EXPÉRIMENTALES ET PEUVENT N’AVOIR FAIT L’OBJET D’AUCUN ESSAI DE QUELQUE MANIÈRE QUE CE SOIT."
+  },
+  {
+   "type": "h3",
+   "content": "12.3 Dommages causés à votre ordinateur."
+  },
+  {
+   "type": "p",
+   "content": "VOUS COMPRENEZ ET ACCEPTEZ QUE VOTRE UTILISATION, VOTRE CONSULTATION, VOTRE TÉLÉCHARGEMENT OU TOUTE AUTRE FORME D’OBTENTION DE CONTENU, DE DOCUMENTS DU SITE WEB, DE LOGICIELS OU DE DONNÉES PAR L’INTERMÉDIAIRE DU SITE WEB (Y COMPRIS PAR L’INTERMÉDIAIRE DE TOUTE API) SE FAIT À VOTRE PROPRE DISCRÉTION ET À VOS PROPRES RISQUES, ET QUE VOUS SEREZ SEUL RESPONSABLE DE TOUT DOMMAGE CAUSÉ À VOS BIENS (Y COMPRIS VOTRE SYSTÈME INFORMATIQUE) OU DE TOUTE PERTE DE DONNÉES QUI EN RÉSULTE."
+  },
+  {
+   "type": "h3",
+   "content": "12.4 Limitations prévues par la loi applicable."
+  },
+  {
+   "type": "p",
+   "content": "CERTAINS ÉTATS OU AUTRES TERRITOIRES DE COMPÉTENCE N’AUTORISENT PAS L’EXCLUSION DES GARANTIES IMPLICITES, DE SORTE QUE LES EXCLUSIONS CI-DESSUS PEUVENT NE PAS S’APPLIQUER À VOUS. VOUS POUVEZ ÉGALEMENT DISPOSER D’AUTRES DROITS QUI VARIENT D’UN ÉTAT À L’AUTRE ET D’UN TERRITOIRE DE COMPÉTENCE À L’AUTRE."
+  },
+  {
+   "type": "h2",
+   "content": "13. Limitation de responsabilité et des dommages-intérêts."
+  },
+  {
+   "type": "h3",
+   "content": "13.1 Limitation de responsabilité."
+  },
+  {
+   "type": "p",
+   "content": "EN AUCUNE CIRCONSTANCE, Y COMPRIS, SANS S’Y LIMITER, EN CAS DE NÉGLIGENCE, CodeBoxx OU LES PARTIES CodeBoxx NE SERONT RESPONSABLES DE QUELQUES DOMMAGES-INTÉRÊTS SPÉCIAUX, INDIRECTS, ACCESSOIRES, CONSÉCUTIFS, PUNITIFS, FONDÉS SUR LA CONFIANCE OU EXEMPLAIRES QUE CE SOIT (Y COMPRIS, SANS S’Y LIMITER, LES DOMMAGES-INTÉRÊTS DÉCOULANT DE TOUTE ACTION EN JUSTICE INFRUCTUEUSE OU DE TOUT DIFFÉREND JURIDIQUE, DE LA PERTE D’AFFAIRES, DE LA PERTE DE REVENUS OU DE PROFITS, DE LA PERTE DE DONNÉES OU DE TOUTE AUTRE PERTE OU DE TOUT AUTRE DOMMAGE, PÉCUNIAIRE OU NON PÉCUNIAIRE, DE QUELQUE NATURE QUE CE SOIT), MÊME SI CodeBoxx OU UNE PARTIE CodeBoxx A ÉTÉ AVISÉE DE LA POSSIBILITÉ DE TELS DOMMAGES-INTÉRÊTS, DÉCOULANT OU SE RAPPORTANT (i) AUX CONDITIONS ; (ii) À VOTRE UTILISATION (OU À VOTRE INCAPACITÉ D’UTILISER) LE SITE WEB OU LES OFFRES CodeBoxx, OU (iii) À TOUTE AUTRE INTERACTION AVEC CodeBoxx OU AVEC TOUT TIERS PAR L’INTERMÉDIAIRE DES OFFRES CodeBoxx OU EN LIEN AVEC CELLES-CI, Y COMPRIS D’AUTRES UTILISATEURS. IL EST POSSIBLE QUE LA LOI APPLICABLE N’AUTORISE PAS LA LIMITATION OU L’EXCLUSION DE RESPONSABILITÉ OU DES DOMMAGES-INTÉRÊTS ACCESSOIRES OU CONSÉCUTIFS, DE SORTE QUE LA LIMITATION OU L’EXCLUSION CI-DESSUS PEUT NE PAS S’APPLIQUER À VOUS. DANS DE TELS CAS, LA RESPONSABILITÉ DE CodeBoxx SERA LIMITÉE DANS TOUTE LA MESURE PERMISE PAR LA LOI APPLICABLE."
+  },
+  {
+   "type": "h3",
+   "content": "13.2 Limitation des dommages-intérêts."
+  },
+  {
+   "type": "p",
+   "content": "EN AUCUN CAS LA RESPONSABILITÉ TOTALE DE CodeBoxx OU DES PARTIES CodeBoxx ENVERS VOUS À L’ÉGARD DE L’ENSEMBLE DES DOMMAGES, PERTES ET CAUSES D’ACTION DÉCOULANT DES CONDITIONS OU S’Y RAPPORTANT, OU DÉCOULANT DE VOTRE UTILISATION DU SITE WEB OU DE VOS INTERACTIONS AVEC D’AUTRES UTILISATEURS DU SITE WEB OU S’Y RAPPORTANT (QUE CE SOIT EN MATIÈRE CONTRACTUELLE, DÉLICTUELLE (Y COMPRIS LA NÉGLIGENCE, LA GARANTIE OU AUTREMENT), NE DÉPASSERA LE MONTANT QUE VOUS AVEZ PAYÉ À CodeBoxx, LE CAS ÉCHÉANT, POUR ACCÉDER AU SITE WEB AU COURS DES DOUZE MOIS PRÉCÉDANT IMMÉDIATEMENT LA DATE DE LA RÉCLAMATION OU CENT DOLLARS (100 $), SELON LE MONTANT LE PLUS ÉLEVÉ."
+  },
+  {
+   "type": "h3",
+   "content": "13.3 Fondement du marché conclu."
+  },
+  {
+   "type": "p",
+   "content": "VOUS RECONNAISSEZ ET ACCEPTEZ QUE CodeBoxx A OFFERT LE SITE WEB ET A CONCLU LES CONDITIONS EN SE FONDANT SUR LES EXCLUSIONS DE RESPONSABILITÉ ET LES LIMITATIONS DE RESPONSABILITÉ ÉNONCÉES AUX PRÉSENTES, QUE LES EXCLUSIONS DE RESPONSABILITÉ ET LES LIMITATIONS DE RESPONSABILITÉ ÉNONCÉES AUX PRÉSENTES REFLÈTENT UNE RÉPARTITION RAISONNABLE ET ÉQUITABLE DES RISQUES ENTRE VOUS ET CodeBoxx, ET QUE LES EXCLUSIONS DE RESPONSABILITÉ ET LES LIMITATIONS DE RESPONSABILITÉ ÉNONCÉES AUX PRÉSENTES CONSTITUENT UN FONDEMENT ESSENTIEL DU MARCHÉ CONCLU ENTRE VOUS ET CodeBoxx. CodeBoxx NE SERAIT PAS EN MESURE DE VOUS FOURNIR LE SITE WEB SUR UNE BASE ÉCONOMIQUEMENT RAISONNABLE SANS CES LIMITATIONS."
+  },
+  {
+   "type": "h3",
+   "content": "13.4 Interactions entre Utilisateurs et quittance."
+  },
+  {
+   "type": "list",
+   "items": [
+    "(a) Différends entre Utilisateurs. CodeBoxx n’est pas responsable des actions, du contenu, des informations ou des données d’autres tiers, y compris d’autres Utilisateurs. Vous êtes seul responsable de vos interactions avec les autres utilisateurs des Services et avec toute autre partie avec laquelle vous interagissez par l’intermédiaire du Service. Vous devriez effectuer toute vérification que vous jugez nécessaire ou appropriée avant d’entreprendre toute interaction en ligne ou hors ligne avec toute autre personne. Nous nous réservons le droit, sans toutefois y être tenus, d’intervenir de quelque manière que ce soit dans ces différends.",
+    "(b) Quittance. Si vous avez un différend avec un ou plusieurs Utilisateurs, vous nous libérez (ainsi que les Parties CodeBoxx) de toutes les réclamations, demandes et de tous les dommages-intérêts (réels et consécutifs) de quelque type et de quelque nature que ce soit, connus et inconnus, découlant de tels différends ou s’y rattachant de quelque manière que ce soit, y compris les dommages-intérêts pour perte de profits, d’achalandage, d’utilisation, de confidentialité ou de données. Si vous résidez en Californie, vous renoncez aux droits que vous confère l’article 1542 du Code civil de la Californie (§1542), qui prévoit ce qui suit : « Une quittance générale ne s’étend pas aux réclamations dont le créancier ne connaît pas ou ne soupçonne pas l’existence en sa faveur au moment de la signature de la quittance et qui, s’il en avait eu connaissance, auraient dû influer de manière importante sur son règlement avec le débiteur. » Et, si vous ne résidez pas en Californie, vous renoncez aux droits que vous confèrent toutes lois applicables ayant un effet similaire, dans toute la mesure permise par la loi applicable."
+   ]
+  },
+  {
+   "type": "h2",
+   "content": "14. Documents exclusifs ; licences"
+  },
+  {
+   "type": "h3",
+   "content": "14.1 Avis."
+  },
+  {
+   "type": "p",
+   "content": [
+    "CodeBoxx peut vous transmettre des avis, y compris des avis concernant des modifications apportées aux Conditions, par courriel, par courrier ordinaire, par des publications sur les Services ou par tout autre moyen raisonnable. Un avis sera réputé donné vingt-quatre heures après l’envoi du courriel, à moins que CodeBoxx ne soit avisée que l’adresse courriel est invalide. Nous pouvons également vous donner un avis juridique par courrier à une adresse postale, si vous l’avez fournie par l’intermédiaire des Services. Dans ce cas, l’avis sera réputé donné trois jours après la date de mise à la poste. Les avis publiés sur les Services sont réputés donnés 30 jours après leur publication initiale. Tout avis destiné à CodeBoxx doit être envoyé par courrier de première classe de l’U.S. Mail à CodeBoxx, au 1 Harbor dr. Ste 300, Sausalito, CA, 94965, ainsi que par courriel à ",
+    {
+     "label": "info@codeboxx.biz",
+     "href": "mailto:info@codeboxx.biz"
+    },
+    "."
+   ]
+  },
+  {
+   "type": "h3",
+   "content": "14.2 Renonciation."
+  },
+  {
+   "type": "p",
+   "content": "Le fait que CodeBoxx n’exerce pas ou ne fasse pas respecter un droit ou une disposition des Conditions ne constituera pas une renonciation à ce droit ou à cette disposition. Toute renonciation à une disposition des Conditions ne prendra effet que si elle est faite par écrit et signée par CodeBoxx."
+  },
+  {
+   "type": "h3",
+   "content": "14.3 Droit applicable."
+  },
+  {
+   "type": "p",
+   "content": "Les Conditions seront régies et interprétées conformément aux lois de l’État de Californie, sans égard aux principes de conflits de lois qui entraîneraient l’application des lois de tout autre territoire de compétence."
+  },
+  {
+   "type": "h3",
+   "content": "14.4 Règlement des différends et arbitrage."
+  },
+  {
+   "type": "p",
+   "content": "VEUILLEZ LIRE ATTENTIVEMENT LA PRÉSENTE SECTION, CAR ELLE A UNE INCIDENCE SUR VOS DROITS. EN ACCEPTANT L’ARBITRAGE EXÉCUTOIRE, VOUS RENONCEZ À VOTRE DROIT DE PORTER DES DIFFÉRENDS DEVANT UN TRIBUNAL ET DE FAIRE TRANCHER VOTRE CAUSE PAR UN JUGE OU UN JURY."
+  },
+  {
+   "type": "list",
+   "items": [
+    "(a) Généralités. Afin d’accélérer le règlement des différends et d’en maîtriser les coûts, CodeBoxx et vous convenez que toute réclamation, tout différend, toute action ou toute procédure, fondé en droit ou en equity, découlant de votre utilisation des Services ou des présentes Conditions, ou s’y rapportant (un « Différend »), sera réglé de la manière suivante, dans toute la mesure permise par la loi.",
+    [
+     "(b) Avis de différend. En cas de Différend, vous ou CodeBoxx devez remettre à l’autre partie une déclaration écrite indiquant le nom, l’adresse et les coordonnées de la partie qui la remet, les faits à l’origine du Différend et une proposition de solution (un « Avis de différend »). Vous devez envoyer tout Avis de différend par courrier de première classe de l’U.S. Mail à CodeBoxx, à l’adresse P.O. Box 1630, Mountain View, CA 94042, ainsi que par courriel à ",
+     {
+      "label": "info@codeboxx.biz",
+      "href": "mailto:info@codeboxx.biz"
+     },
+     ". CodeBoxx vous enverra tout Avis de différend par courrier de première classe de l’U.S. Mail à votre adresse, si CodeBoxx la possède, ou autrement à votre adresse courriel. Vous et CodeBoxx tenterez de bonne foi de régler tout Différend par voie de négociation informelle dans un délai de soixante (60) jours à compter de la date d’envoi de l’Avis de différend. Après soixante (60) jours, vous ou CodeBoxx pourrez entreprendre un arbitrage."
+    ],
+    "(c) Arbitrage exécutoire. Tout Différend qui n’a pas été réglé par voie de négociation conformément aux présentes dans un délai de soixante (60) jours, ou dans tout autre délai dont vous et CodeBoxx pourriez convenir, sera réglé de manière définitive par arbitrage exécutoire, tel qu’il est décrit à la présente section 14.4. Vous renoncez au droit de porter l’ensemble des Différends devant un tribunal, devant un juge ou un jury (ou d’y participer à titre de partie ou de membre d’un groupe). Tous les Différends seront plutôt réglés devant un arbitre neutre, dont la décision sera définitive, sous réserve d’un droit d’appel limité en vertu de la Federal Arbitration Act. Le lieu de l’arbitrage sera le comté de Santa Clara, en Californie. Tout tribunal compétent à l’égard des parties pourra faire exécuter la sentence de l’arbitre.",
+    "(d) Renonciation au recours collectif. Toute procédure visant à régler ou à trancher un Différend, devant quelque instance que ce soit, sera menée uniquement sur une base individuelle. Ni vous ni CodeBoxx ne chercherez à faire entendre un Différend dans le cadre d’un recours collectif ou de toute autre procédure dans laquelle l’une ou l’autre des parties agit ou se propose d’agir à titre de représentant. Aucun arbitrage ni aucune procédure ne sera joint à un autre sans le consentement écrit préalable de toutes les parties à l’ensemble des arbitrages ou procédures visés.",
+    "(e) Procédures d’arbitrage Tout arbitrage sera mené par JAMS conformément aux JAMS Comprehensive Arbitration Rules and Procedures (les « Règles de JAMS ») en vigueur au moment du dépôt du Différend. Vous pouvez demander une audience par téléphone ou en personne en suivant les Règles de JAMS. Dans le cas d’un différend portant sur 10 000 $ ou moins, toute audience se tiendra par téléphone, à moins que l’arbitre ne juge qu’il existe un motif valable de tenir plutôt une audience en personne. Dans la mesure où l’instance offerte par JAMS n’est pas disponible, CodeBoxx et vous convenez de choisir un service de règlement extrajudiciaire des différends de remplacement qui vous convient mutuellement et que ce service de règlement extrajudiciaire des différends de remplacement appliquera les Règles de JAMS. L’arbitre peut vous accorder, à titre individuel, les mêmes dommages-intérêts qu’un tribunal pourrait accorder. L’arbitre peut vous accorder une réparation déclaratoire ou injonctive uniquement à titre individuel, et uniquement dans la mesure nécessaire pour satisfaire votre réclamation individuelle.",
+    "(f) Frais d’arbitrage. La partie qui engage l’arbitrage paiera les frais de dépôt initiaux. Si CodeBoxx engage l’arbitrage, CodeBoxx paiera ; si vous l’engagez, vous paierez, à moins d’obtenir une dispense de frais en vertu des règles d’arbitrage applicables. Chaque partie assumera les frais de ses propres avocats, experts et témoins, ainsi que ses autres frais, quelle que soit la partie qui obtient gain de cause, mais une partie pourra recouvrer une partie ou la totalité de ses frais auprès d’une autre partie si l’arbitre, appliquant la loi applicable, en décide ainsi.",
+    "(g) Délai de dépôt. Dans la mesure permise par la loi, tout Différend en vertu des présentes Conditions doit être soumis à une procédure d’arbitrage dans un délai d’un (1) an. Ce délai d’un an commence à courir au moment où surviennent pour la première fois les événements à l’origine du Différend. Si un Différend n’est pas soumis dans un délai d’un an, il est définitivement prescrit.",
+    "(h) Tribunal compétent. Dans l’éventualité où un Différend ne pourrait être réglé par arbitrage exécutoire conformément à la présente section 14.4, vous acceptez que ce Différend soit porté uniquement devant les tribunaux d’État ou fédéraux du comté de Santa Clara, en Californie, et vous et CodeBoxx consentez par les présentes à vous soumettre à la compétence personnelle et exclusive de ces tribunaux aux fins de toute telle action. Nonobstant ce qui précède, CodeBoxx pourra tout de même demander une injonction ou toute autre réparation en equity afin de protéger ou de faire respecter ses droits de propriété intellectuelle devant tout tribunal compétent."
+   ]
+  },
+  {
+   "type": "h3",
+   "content": "14.5 Divisibilité."
+  },
+  {
+   "type": "p",
+   "content": "Si une disposition des Conditions ou des Lignes directrices est jugée illégale, nulle ou inapplicable pour quelque raison que ce soit, cette disposition sera limitée ou retranchée des Conditions dans la mesure minimale nécessaire et n’aura aucune incidence sur la validité et le caractère exécutoire des autres dispositions."
+  },
+  {
+   "type": "h3",
+   "content": "14.6 Cession."
+  },
+  {
+   "type": "p",
+   "content": "Les Conditions et les Lignes directrices connexes, ainsi que tous les droits et licences accordés en vertu des présentes, ne peuvent être transférés ou cédés par vous sans le consentement écrit préalable de CodeBoxx, mais peuvent être cédés par CodeBoxx sans consentement ni restriction. Toute tentative de cession effectuée en violation des Conditions sera nulle et sans effet."
+  },
+  {
+   "type": "h3",
+   "content": "14.7 Survie."
+  },
+  {
+   "type": "p",
+   "content": "À la résiliation des Conditions, toute disposition qui, de par sa nature ou ses termes exprès, devrait survivre survivra à cette résiliation ou expiration, y compris, sans s’y limiter, les sections 2, 4 à 6, 7.1, 7.4, 7.5 et 9 à 14."
+  },
+  {
+   "type": "h3",
+   "content": "14.8 Titres."
+  },
+  {
+   "type": "p",
+   "content": "Les titres utilisés aux présentes ne sont fournis qu’à des fins de commodité, ne font pas partie des Conditions et ne seront pas réputés limiter ou modifier les dispositions des présentes."
+  },
+  {
+   "type": "h3",
+   "content": "14.9 Intégralité de l’Entente."
+  },
+  {
+   "type": "p",
+   "content": "Les Conditions, la Politique de confidentialité et les Lignes directrices constituent l’intégralité de l’Entente entre vous et CodeBoxx relativement à leur objet et ne seront modifiées que par écrit, avec la signature des deux parties, ou par une modification apportée aux Conditions, à la Politique de confidentialité ou aux Lignes directrices par CodeBoxx, tel qu’il est prévu à la section 4 ci-dessus."
+  },
+  {
+   "type": "h3",
+   "content": "14.10 Divulgations."
+  },
+  {
+   "type": "p",
+   "content": [
+    "Les Services sont hébergés aux États-Unis, et les services fournis en vertu des présentes sont offerts par CodeBoxx : 1 Harbor dr. Ste 300. CA, 94965 ; ",
+    {
+     "label": "info@codeboxx.biz",
+     "href": "mailto:info@codeboxx.biz"
+    },
+    "."
+   ]
+  },
+  {
+   "type": "h3",
+   "content": "14.11 Avis concernant Apple."
+  },
+  {
+   "type": "p",
+   "content": "Vous reconnaissez que les présentes Conditions sont conclues uniquement entre vous et CodeBoxx, et non avec Apple, et qu’Apple n’est pas responsable des Services ni de leur contenu. Apple n’a aucune obligation, de quelque nature que ce soit, de fournir des services d’entretien et de soutien à l’égard des Services. Dans l’éventualité où les Services ne seraient pas conformes à une garantie applicable, vous pouvez en aviser Apple, et Apple vous remboursera le prix d’achat de l’application mobile concernée, le cas échéant ; et, dans toute la mesure permise par la loi applicable, Apple n’a aucune autre obligation de garantie, de quelque nature que ce soit, à l’égard des Services. Apple n’est pas responsable du traitement des réclamations que vous ou tout tiers pourriez présenter relativement aux Services ou à votre possession et/ou utilisation des Services, y compris, sans s’y limiter :"
+  },
+  {
+   "type": "list",
+   "items": [
+    "(i) les réclamations en matière de responsabilité du fait des produits ;",
+    "(ii) toute réclamation selon laquelle les Services ne sont pas conformes à une exigence légale ou réglementaire applicable ; et",
+    "(iii) les réclamations découlant de lois sur la protection du consommateur ou de lois similaires."
+   ]
+  },
+  {
+   "type": "p",
+   "content": "Apple n’est pas responsable de l’enquête, de la défense, du règlement et de l’extinction de toute réclamation d’un tiers selon laquelle les Services ou votre possession et utilisation des Services portent atteinte aux droits de propriété intellectuelle de ce tiers. Vous acceptez de vous conformer à toutes les conditions de tiers applicables lorsque vous utilisez les Services. Apple et les filiales d’Apple sont des tiers bénéficiaires des présentes Conditions et, dès votre acceptation des Conditions, Apple aura le droit (et sera réputée avoir accepté le droit) de faire respecter les Conditions à votre endroit à titre de tiers bénéficiaire des Conditions. Vous déclarez et garantissez par les présentes que"
+  },
+  {
+   "type": "list",
+   "items": [
+    "(i) vous ne vous trouvez pas dans un pays visé par un embargo du gouvernement des États-Unis ou désigné par le gouvernement des États-Unis comme un pays « soutenant le terrorisme » ; et",
+    "(ii) vous ne figurez sur aucune liste du gouvernement des États-Unis de parties interdites ou faisant l’objet de restrictions."
+   ]
+  }
+ ]
+}
