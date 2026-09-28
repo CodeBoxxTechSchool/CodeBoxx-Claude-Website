@@ -1554,7 +1554,7 @@ function Contact({ onEnroll }) {
             />
             <span className="consent-text">
               {home.contact.consentTextPart1}
-              <a href="mailto:info@codeboxx.biz">info@codeboxx.biz</a>
+              <a href="mailto:info@codeboxx.com">info@codeboxx.com</a>
               {home.contact.consentTextPart2}
               <a href={localizedHref('#contact', lang, pathname)}>{home.contact.consentLinkText}</a>
               {home.contact.consentTextPart3}
