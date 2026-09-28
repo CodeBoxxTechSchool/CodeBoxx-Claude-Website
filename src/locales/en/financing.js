@@ -70,6 +70,10 @@ export default {
       },
     ],
   },
+  pinellas: [
+    'Pinellas County, Florida residents: local funding through CareerSource can cover all or part of your tuition. ',
+    { label: 'Learn more', href: '/pinellas-residents' },
+  ],
   riskFree: {
     eyebrow: 'RISK-FREE PERIOD',
     title: 'Jump into tech for a few weeks. No strings attached.',

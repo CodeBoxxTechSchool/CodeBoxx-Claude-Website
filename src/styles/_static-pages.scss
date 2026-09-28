@@ -85,11 +85,13 @@
   flex-direction: column;
   gap: 12px;
   padding: 0 24px 24px;
+}
 
-  a {
-    color: v.$blue-text;
-    text-decoration: underline;
-  }
+// In-text links inside locale paragraphs (RichParagraph.astro).
+.pbody a,
+.panel-callout a {
+  color: v.$blue-text;
+  text-decoration: underline;
 }
 
 // ---- Financing path panels ----
@@ -103,4 +105,11 @@
   margin: 0;
   font-size: v.$text-caption;
   color: v.$color-text-secondary;
+}
+
+.panel-callout {
+  margin: 0;
+  padding: 20px 24px;
+  border-radius: v.$radius-lg;
+  background: v.$blue-50;
 }

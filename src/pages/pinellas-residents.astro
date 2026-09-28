@@ -1,0 +1,65 @@
+---
+// Natively-migrated /pinellas-residents (EN), content from academy.codeboxx.com's
+// local-support page. See src/pages/fr/residents-pinellas.astro for the FR twin.
+// Same hero band + sections shape as FAQ/Financing, no island.
+import Layout from '../layouts/Layout.astro';
+import HeroVideo from '../components/HeroVideo.astro';
+import RichParagraph from '../components/RichParagraph.astro';
+import common from '../locales/en/common';
+import pinellas from '../locales/en/pinellas';
+---
+
+<Layout
+  lang="en"
+  title={pinellas.seo.title}
+  description={pinellas.seo.description}
+  strings={common}
+>
+  <section class="band-dark">
+    <HeroVideo />
+    <div class="wrap d-flex flex-column gap-4 align-items-start">
+      <span class="pill">{pinellas.pill}</span>
+      <h1 class="band-title">{pinellas.band.title}</h1>
+      <p class="band-lede">{pinellas.band.lede}</p>
+      <p class="band-lede">{pinellas.band.lede2}</p>
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="wrap d-flex flex-column gap-5">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{pinellas.programs.eyebrow}</p>
+        <h2 class="h2">{pinellas.programs.title}</h2>
+      </div>
+      <div class="grid2">
+        {pinellas.programs.items.map(({ title, body }) => (
+          <div class="panel">
+            <div class="panel-header-row">
+              <h3 class="ptitle">{title}</h3>
+              <span class="badge bg-brand">{pinellas.badge}</span>
+            </div>
+            {body.map((p) => (
+              <RichParagraph p={p} lang="en" />
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sect sect-navy">
+    <div class="wrap band-dark-left">
+      <p class="eyebrow eyebrow-brand">{pinellas.streamline.eyebrow}</p>
+      <h2 class="h2 h2-inverse">{pinellas.streamline.title}</h2>
+      <p class="band-body">{pinellas.streamline.body}</p>
+      <a
+        class="btn btn-primary align-self-start"
+        href={pinellas.streamline.ctaHref}
+        target="_blank"
+        rel="noopener"
+      >
+        {pinellas.streamline.cta}
+      </a>
+    </div>
+  </section>
+</Layout>

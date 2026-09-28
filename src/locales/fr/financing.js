@@ -71,6 +71,10 @@ export default {
       },
     ],
   },
+  pinellas: [
+    'Résidents du comté de Pinellas, en Floride : le financement local offert par CareerSource peut couvrir la totalité ou une partie de vos frais de scolarité. ',
+    { label: 'En savoir plus', href: '/pinellas-residents' },
+  ],
   riskFree: {
     eyebrow: 'PÉRIODE SANS RISQUE',
     title: 'Plongez dans la technologie pendant quelques semaines. Sans engagement.',
