@@ -4,3 +4,8 @@ dist/
 .env
 public/sitemap.xml
 .astro/
+# Personal Claude Code settings (local permission rules).
+.claude/settings.local.json
+# Lead exports and the generated leads DB (personal data): never commit, never
+# deploy. See scripts/build-leads-db.py.
+leads/
