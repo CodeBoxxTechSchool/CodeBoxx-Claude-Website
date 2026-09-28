@@ -25,6 +25,7 @@ const NAV_STRUCTURE = [
       ['aboutTeam', '#about-team'],
       ['aboutHistory', '#about-history'],
       ['aboutVisionMission', '#about-vision'],
+      ['aboutFaq', '/faq'],
     ],
   },
   {

@@ -1,6 +1,6 @@
 @use 'variables' as v;
 
-// Shared between the Financing and Ventures pages — both are hero band + 2-col
+// Shared between the Financing, Ventures and FAQ pages — both are hero band + 2-col
 // bullet-list panels + 3-col numbered steps + closing CTA/form panel.
 
 .panel-header-row {
@@ -36,4 +36,58 @@
 // ---- Ventures "Pitch Your Project" drawer ----
 .pitch-offcanvas {
   --bs-offcanvas-width: 460px;
+}
+
+// ---- FAQ accordion (native <details>, see FaqAccordion.astro) ----
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 880px;
+}
+.faq-item {
+  border-radius: v.$radius-lg;
+  background: v.$neutral-0;
+  box-shadow: inset 0 0 0 1px v.$ui-slate-200;
+
+  &[open] .faq-caret {
+    transform: rotate(180deg);
+  }
+}
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  cursor: pointer;
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+  &:focus-visible {
+    outline: 2px solid v.$blue-500;
+    outline-offset: 2px;
+    border-radius: v.$radius-lg;
+  }
+  .ptitle {
+    font-size: v.$text-h3;
+  }
+}
+.faq-caret {
+  flex-shrink: 0;
+  color: v.$blue-text;
+  transition: transform 0.2s ease;
+}
+.faq-answer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 24px 24px;
+
+  a {
+    color: v.$blue-text;
+    text-decoration: underline;
+  }
 }

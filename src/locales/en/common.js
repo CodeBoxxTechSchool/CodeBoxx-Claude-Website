@@ -6,6 +6,7 @@ export default {
     aboutTeam: 'Team',
     aboutHistory: 'History',
     aboutVisionMission: 'Vision & Mission',
+    aboutFaq: 'FAQ',
     solutions: 'Solutions',
     solutionsServices: 'Services',
     solutionsWorks: 'Works',

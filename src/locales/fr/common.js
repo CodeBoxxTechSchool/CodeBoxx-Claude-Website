@@ -4,6 +4,7 @@ export default {
     aboutTeam: 'Équipe',
     aboutHistory: 'Historique',
     aboutVisionMission: 'Vision et mission',
+    aboutFaq: 'FAQ',
     solutions: 'Solutions',
     solutionsServices: 'Services',
     solutionsWorks: 'Réalisations',
