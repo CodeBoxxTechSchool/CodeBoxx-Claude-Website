@@ -228,6 +228,15 @@ export function Footer({ lang, pathname, strings }) {
           <div className="d-flex flex-column gap-3">
             <Logo theme="dark" width={200} />
             <span className="footer-tagline">{strings.footer.tagline}</span>
+            <address className="footer-addresses">
+              {strings.footer.addresses.map(([city, street]) => (
+                <span key={city} className="footer-address">
+                  <span className="footer-address-city">{city}</span>
+                  <span aria-hidden="true"> | </span>
+                  {street}
+                </span>
+              ))}
+            </address>
           </div>
           <div className="d-flex gap-5 flex-wrap">
             {footerColumns.map((col) => (

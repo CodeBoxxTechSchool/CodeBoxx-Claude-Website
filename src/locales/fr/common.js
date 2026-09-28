@@ -32,6 +32,10 @@ export default {
       solutions: { title: 'Solutions' },
       academy: { title: 'Académie' },
     },
-    copyright: '© 2026 CodeBoxx',
+    addresses: [
+      ['St. Pete', '1101 4th St S, St. Petersburg, FL 33701'],
+      ['Québec', '400-1020 Bouvier Street, Quebec City, QC G2K 2C9'],
+    ],
+    copyright: 'Copyright © 2026 CodeBoxx Technology Corporation. Tous droits réservés.',
   },
 };

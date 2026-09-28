@@ -177,6 +177,21 @@
     max-width: 280px;
   }
 
+  .footer-addresses {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 8px 0 0;
+    font-style: normal;
+    font-size: v.$text-label;
+    line-height: v.$leading-body;
+    color: rgba(255, 255, 255, 0.72);
+  }
+  .footer-address-city {
+    font-weight: v.$weight-semibold;
+    color: v.$neutral-0;
+  }
+
   .footer-col-title {
     font-size: v.$text-micro;
     font-weight: v.$weight-semibold;
