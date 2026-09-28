@@ -214,6 +214,7 @@ function buildFooterColumns(lang, pathname, strings) {
         { label: nav.academyCourses, href: href('#academy-courses') },
         { label: nav.academyCalendar, href: href('#intake') },
         { label: nav.academyFinancing, href: href('/financing') },
+        { label: nav.academyFaq, href: href('/faq') },
       ],
     },
   ];
@@ -228,6 +229,20 @@ export function Footer({ lang, pathname, strings }) {
           <div className="d-flex flex-column gap-3">
             <Logo theme="dark" width={200} />
             <span className="footer-tagline">{strings.footer.tagline}</span>
+            <address className="footer-addresses">
+              {strings.footer.addresses.map(([city, street]) => (
+                <span key={city} className="footer-address">
+                  <span className="footer-address-city">{city}</span>
+                  <span aria-hidden="true"> | </span>
+                  {street}
+                </span>
+              ))}
+              <span className="footer-address">
+                <span className="footer-address-city">{strings.footer.phone.label}</span>
+                <span aria-hidden="true"> | </span>
+                <a href={'tel:' + strings.footer.phone.tel}>{strings.footer.phone.display}</a>
+              </span>
+            </address>
           </div>
           <div className="d-flex gap-5 flex-wrap">
             {footerColumns.map((col) => (
