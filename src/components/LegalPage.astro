@@ -9,6 +9,12 @@
 import RichParagraph from './RichParagraph.astro';
 
 const { title, doc, lang, note } = Astro.props;
+
+// Fail the build rather than publish a policy with an unfilled placeholder.
+const placeholder = JSON.stringify(doc).match(/__[A-Z_]+__/);
+if (placeholder) {
+  throw new Error(`${title}: fill in ${placeholder[0]} in src/data/legal/ before building.`);
+}
 ---
 
 <section class="sect legal-page">

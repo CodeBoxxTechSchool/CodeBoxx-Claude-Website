@@ -1,0 +1,107 @@
+{
+ "source": "FR twin of privacy.json (rédigée le 2026-09-28 pour la Loi 25; à faire réviser par un conseiller juridique).",
+ "blocks": [
+  {"type": "p", "content": "Dernière mise à jour : 28 septembre 2026"},
+  {"type": "p", "content": "La présente politique de confidentialité explique quels renseignements personnels CodeBoxx recueille, pourquoi nous les recueillons, avec qui nous les communiquons, combien de temps nous les conservons et quels sont vos droits. Elle est rédigée pour répondre aux exigences de la Loi sur la protection des renseignements personnels dans le secteur privé du Québec (telle que modifiée par la Loi 25), et pour informer les résidents d'autres provinces, États et pays de la façon dont nous traitons leurs renseignements."},
+
+  {"type": "h2", "content": "1. Qui nous sommes"},
+  {"type": "p", "content": "CodeBoxx Technology Corporation (« CodeBoxx », « nous ») est une société du Delaware qui exploite un studio de logiciels (CodeBoxx Solutions), une école de technologie (CodeBoxx Académie) et CodeBoxx Ventures. La présente politique s'applique à nos sites Web codeboxx.com (y compris academy.codeboxx.com et solutions.codeboxx.com), au Portail CodeBoxx, ainsi qu'aux programmes et services que nous offrons."},
+  {"type": "list", "items": [
+   "Bureau de St. Petersburg : 1101 4th St S, St. Petersburg, FL 33701, États-Unis",
+   "Bureau de Québec : 400-1020, rue Bouvier, Québec (Québec) G2K 2C9, Canada",
+   "Téléphone : 1-800-887-2497"
+  ]},
+
+  {"type": "h2", "content": "2. Responsable de la protection des renseignements personnels"},
+  {"type": "p", "content": "Notre président-directeur général est le responsable de la protection des renseignements personnels chez CodeBoxx. Vous pouvez communiquer avec lui pour toute question, demande ou plainte concernant la présente politique ou vos renseignements personnels :"},
+  {"type": "list", "items": [
+   "Nicolas Genest, président-directeur général",
+   ["Courriel : ", {"label": "__PRIVACY_EMAIL__", "href": "mailto:__PRIVACY_EMAIL__"}],
+   "Poste : À l'attention du responsable de la protection des renseignements personnels, CodeBoxx, 400-1020, rue Bouvier, Québec (Québec) G2K 2C9, Canada"
+  ]},
+
+  {"type": "h2", "content": "3. Renseignements personnels que nous recueillons"},
+  {"type": "p", "content": "Nous ne recueillons que les renseignements personnels nécessaires aux fins décrites à la section 4. Selon la façon dont vous interagissez avec nous, il peut s'agir des renseignements suivants."},
+  {"type": "h3", "content": "3.1 Renseignements que vous nous fournissez"},
+  {"type": "list", "items": [
+   "Demandes de renseignements et de contact : vos nom, adresse courriel, numéro de téléphone, entreprise et le contenu de votre message.",
+   "Candidatures et inscriptions aux programmes : vos renseignements d'identité et de contact, le programme et l'horaire choisis, votre parcours scolaire et professionnel, ainsi que les renseignements que vous nous communiquez sur vos objectifs ou votre intérêt pour le financement.",
+   "Présentations de projets et mandats clients (Solutions et Ventures) : vos nom, coordonnées, entreprise et la description de votre projet.",
+   "Ateliers et événements : vos renseignements d'inscription et votre présence.",
+   "Portail CodeBoxx (étudiants et diplômés) : les renseignements de votre compte, vos travaux, votre présence, vos évaluations et votre progression, ainsi que les renseignements liés à l'accompagnement de carrière, comme votre CV et l'état de votre recherche d'emploi."
+  ]},
+  {"type": "h3", "content": "3.2 Renseignements recueillis automatiquement"},
+  {"type": "list", "items": [
+   "Journaux du serveur : lorsque vous visitez nos sites Web, notre hébergeur enregistre des renseignements techniques comme votre adresse IP, le type de navigateur, les pages demandées ainsi que la date et l'heure de la demande. Ces journaux servent à la sécurité et au bon fonctionnement des sites.",
+   "Témoins (cookies) et technologies similaires : voir la section 5. Les témoins qui ne sont pas strictement nécessaires ne sont utilisés qu'avec votre consentement."
+  ]},
+  {"type": "h3", "content": "3.3 Renseignements provenant de tiers"},
+  {"type": "list", "items": [
+   "Les employeurs qui inscrivent leur personnel à un programme de formation de CodeBoxx peuvent nous transmettre le nom et les coordonnées des participants.",
+   "Lorsque vous demandez du financement auprès d'un partenaire comme MiaShare ou Desjardins, vous traitez directement avec ce partenaire, selon sa propre politique de confidentialité. Nous recevons seulement les renseignements nécessaires pour confirmer votre financement et votre inscription."
+  ]},
+  {"type": "p", "content": "Nous ne demandons pas de renseignements sensibles (comme des renseignements de santé), sauf s'ils sont nécessaires à une fin précise, par exemple une mesure d'adaptation que vous demandez. Nous ne les recueillons alors qu'avec votre consentement exprès."},
+
+  {"type": "h2", "content": "4. Pourquoi nous utilisons vos renseignements"},
+  {"type": "list", "items": [
+   "Pour répondre à vos questions et à vos demandes.",
+   "Pour traiter votre candidature, vous inscrire à un programme et offrir notre formation, notamment au moyen du Portail CodeBoxx.",
+   "Pour offrir de l'accompagnement de carrière et, avec votre consentement, vous présenter à des employeurs potentiels.",
+   "Pour définir et réaliser des projets et services logiciels pour nos clients.",
+   "Pour vous transmettre de l'information sur nos programmes, événements et services. Vous pouvez vous désabonner en tout temps.",
+   "Avec votre consentement, pour mesurer l'utilisation de nos sites Web ainsi que mesurer et améliorer notre publicité.",
+   "Pour assurer la sécurité de nos sites et systèmes, et respecter nos obligations légales."
+  ]},
+  {"type": "p", "content": "Nous utilisons vos renseignements uniquement aux fins pour lesquelles ils ont été recueillis, ou à d'autres fins auxquelles vous consentez ou que la loi permet. Nous ne vendons pas vos renseignements personnels."},
+
+  {"type": "h2", "content": "5. Témoins et technologies similaires"},
+  {"type": "p", "content": "Lors de votre première visite sur nos sites Web, une bannière vous permet d'accepter ou de refuser les témoins par catégorie. Seuls les témoins strictement nécessaires sont utilisés avant que vous fassiez un choix. Vous pouvez modifier votre choix en tout temps à l'aide du bouton des paramètres des témoins sur nos sites."},
+  {"type": "list", "items": [
+   "Strictement nécessaires : CookieYes, qui conserve vos choix en matière de témoins.",
+   "Analyse (seulement avec votre consentement) : Google Analytics, chargé au moyen de Google Tag Manager, pour comprendre comment les visiteurs utilisent nos sites.",
+   "Publicité (seulement avec votre consentement) : le suivi des conversions de Google Ads et la balise LinkedIn Insight, pour mesurer les résultats de nos campagnes publicitaires."
+  ]},
+
+  {"type": "h2", "content": "6. Avec qui nous communiquons vos renseignements"},
+  {"type": "p", "content": "Vos renseignements ne sont accessibles qu'aux employés de CodeBoxx qui en ont besoin dans l'exercice de leurs fonctions. Nous communiquons des renseignements personnels à l'extérieur de CodeBoxx seulement dans les cas suivants :"},
+  {"type": "list", "items": [
+   "Fournisseurs de services qui agissent en notre nom, en vertu de contrats qui les obligent à protéger vos renseignements et à ne les utiliser que pour nous fournir leurs services : hébergement des sites Web (DigitalOcean), diffusion du contenu des sites (Sanity), gestion du consentement aux témoins (CookieYes) et, seulement avec votre consentement, analyse et mesure publicitaire (Google et LinkedIn).",
+   "Employeurs et clients : avec votre consentement, par exemple lorsque nous présentons un diplômé à un employeur, ou lorsqu'un employeur parraine votre formation et reçoit les renseignements sur votre progression et la réussite du programme.",
+   "Partenaires de financement : avec votre consentement, les renseignements nécessaires pour confirmer votre financement et votre inscription.",
+   "Lorsque la loi l'exige ou le permet, par exemple en réponse à une ordonnance d'un tribunal, ou dans le cadre de la vente ou de la réorganisation de tout ou partie de notre entreprise."
+  ]},
+
+  {"type": "h2", "content": "7. Renseignements conservés à l'extérieur du Québec"},
+  {"type": "p", "content": "Certains de nos fournisseurs de services conservent ou traitent des renseignements personnels à l'extérieur du Québec, notamment aux États-Unis. Avant de communiquer des renseignements personnels à l'extérieur du Québec, nous évaluons s'ils bénéficieront d'une protection adéquate et nous concluons des ententes écrites avec nos fournisseurs. Les renseignements conservés à l'extérieur du Québec peuvent être accessibles aux autorités du pays où ils se trouvent, conformément aux lois de ce pays."},
+
+  {"type": "h2", "content": "8. Durée de conservation"},
+  {"type": "p", "content": "Nous conservons les renseignements personnels seulement le temps nécessaire aux fins pour lesquelles ils ont été recueillis, ou aussi longtemps que la loi l'exige, par exemple pour la conservation des dossiers étudiants et financiers. Lorsqu'ils ne sont plus nécessaires, nous les détruisons ou les anonymisons."},
+
+  {"type": "h2", "content": "9. Protection de vos renseignements"},
+  {"type": "p", "content": "Nous utilisons des mesures de sécurité administratives, techniques et physiques adaptées à la sensibilité des renseignements, notamment des contrôles d'accès et le chiffrement des données en transit sur nos sites Web. Si un incident de confidentialité présente un risque de préjudice sérieux, nous en avisons la Commission d'accès à l'information du Québec et les personnes concernées, et nous tenons un registre des incidents de confidentialité, comme l'exige la loi."},
+
+  {"type": "h2", "content": "10. Vos droits"},
+  {"type": "p", "content": "Sous réserve de la loi, vous avez le droit :"},
+  {"type": "list", "items": [
+   "d'accéder aux renseignements personnels que nous détenons à votre sujet et d'en recevoir une copie;",
+   "de faire rectifier des renseignements inexacts, incomplets ou périmés;",
+   "de retirer votre consentement à l'utilisation ou à la communication de vos renseignements;",
+   "de recevoir les renseignements personnels informatisés que vous nous avez fournis dans un format technologique structuré et couramment utilisé;",
+   "de nous demander de cesser de diffuser vos renseignements ou de désindexer tout hyperlien rattaché à votre nom, lorsque la loi le permet;",
+   "d'être informé lorsqu'une décision vous concernant est fondée exclusivement sur un traitement automatisé. Nous ne prenons pas de telles décisions."
+  ]},
+  {"type": "p", "content": ["Pour exercer ces droits, communiquez avec notre responsable de la protection des renseignements personnels (section 2). Nous répondons dans un délai de 30 jours. Nous pouvons vous demander de confirmer votre identité avant de donner suite à votre demande. Si notre réponse ne vous satisfait pas, vous pouvez déposer une plainte auprès de la ", {"label": "Commission d'accès à l'information du Québec", "href": "https://www.cai.gouv.qc.ca/"}, "."]},
+
+  {"type": "h2", "content": "11. Mineurs"},
+  {"type": "p", "content": "Nos sites Web et services ne s'adressent pas aux enfants de moins de 14 ans, et nous ne recueillons pas sciemment leurs renseignements personnels sans le consentement d'un parent ou tuteur. Si vous croyez qu'un enfant nous a fourni des renseignements personnels, communiquez avec nous et nous les supprimerons."},
+
+  {"type": "h2", "content": "12. Liens vers d'autres sites Web"},
+  {"type": "p", "content": "Nos sites Web contiennent des liens vers des sites que nous ne contrôlons pas, comme ceux de nos partenaires de financement. Leurs pratiques en matière de confidentialité sont régies par leurs propres politiques."},
+
+  {"type": "h2", "content": "13. Modifications de la présente politique"},
+  {"type": "p", "content": "Nous pouvons mettre à jour la présente politique de temps à autre. La date en haut de la page indique sa dernière mise à jour. En cas de modifications importantes, nous publierons un avis sur nos sites Web."},
+
+  {"type": "h2", "content": "14. Nous joindre"},
+  {"type": "p", "content": ["Pour toute question sur la présente politique ou sur vos renseignements personnels, communiquez avec notre responsable de la protection des renseignements personnels à ", {"label": "__PRIVACY_EMAIL__", "href": "mailto:__PRIVACY_EMAIL__"}, " ou par la poste à l'adresse indiquée à la section 2."]}
+ ]
+}
