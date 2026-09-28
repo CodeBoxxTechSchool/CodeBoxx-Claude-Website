@@ -220,6 +220,17 @@ function buildFooterColumns(lang, pathname, strings) {
   ];
 }
 
+// Florida CIE licensure disclosure (see footer.licensure in common.js for why the
+// wording is fixed). Also rendered on its own by Layout.astro on pages that hide
+// the footer, since landing pages are advertising too.
+export function LicensureNotice({ lang, strings, className = 'footer-licensure' }) {
+  return (
+    <p className={className} lang={lang === 'en' ? undefined : 'en'}>
+      {strings.footer.licensure}
+    </p>
+  );
+}
+
 export function Footer({ lang, pathname, strings }) {
   const footerColumns = buildFooterColumns(lang, pathname, strings);
   return (
@@ -258,6 +269,7 @@ export function Footer({ lang, pathname, strings }) {
           </div>
         </div>
         <div className="footer-rule" />
+        <LicensureNotice lang={lang} strings={strings} />
         <div className="d-flex justify-content-between gap-4 footer-meta">
           <span>{strings.footer.copyright}</span>
           <nav className="footer-legal" aria-label={strings.footer.legalLabel}>
