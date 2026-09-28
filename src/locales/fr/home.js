@@ -349,7 +349,7 @@ export default {
     enrollNow: "S'inscrire",
     contactUs: 'Nous contacter',
     learnMore: 'En savoir plus',
-    logosLabel: 'Nos diplômés travaillent chez',
+    logosLabel: 'Partenaires de l’Académie',
   },
   academyTopics: {
     program: {
