@@ -330,6 +330,7 @@ export default {
     coursesLabel: 'Courses',
     enrollNow: 'Enroll Now',
     contactUs: 'Contact Us',
+    learnMore: 'Learn More',
   },
   academyTopics: {
     program: {
@@ -362,7 +363,7 @@ export default {
         },
         {
           tag: 'CodeBoxx for Businesses',
-          title: 'Tailor-Made for Enterprises Training',
+          title: 'Tailor-Made Corporate Training',
           body: 'Gaining the Skills to Break into Tech Has Never Been Easier.',
           cta: 'contact',
         },
@@ -410,6 +411,41 @@ export default {
     onDemand: 'On Demand',
     enroll: 'Enroll',
     status: { Open: 'Open', Waitlist: 'Waitlist', Planned: 'Planned', InProgress: 'In Progress' },
+  },
+  // Corporate-training panel, revealed by "Learn More" on the Tailor-Made
+  // Corporate Training course item. Content from
+  // https://academy.codeboxx.com/corporate-training.
+  corporate: {
+    eyebrow: 'CodeBoxx for Businesses',
+    title: 'Technology Training for Businesses',
+    lede: 'Build up your workforce with tailor-made technology training programs and exclusive access to our coding school’s pool of tech talent.',
+    close: 'Close',
+    sections: [
+      {
+        title: 'Our Secret Sauce',
+        body: [
+          'Beyond teaching the necessary technical skills, we cultivate a set of invaluable professional qualities, including effective communication, unwavering resiliency, and exceptional leadership. Our proprietary Pro Dev modules, designed in collaboration with top tech employers, help program participants develop these traits so they know how to work well individually and within a team, delivering results quickly and effectively.',
+          'And we’re constantly working to innovate in this space and develop new programs that address modern challenges faced by today’s businesses.',
+        ],
+      },
+      {
+        title: 'Stay Ahead in the Digital Race',
+        body: [
+          'Understanding the challenges that employers face when recruiting top-tier technology talent inspired us to create the ultimate solution: tailor-made training programs that take participants on a journey from limited tech experience to confidently developing technology solutions in just a few weeks.',
+          'From technical sales to software development to prompt engineering, we empower people with the skills needed to achieve rewarding careers in technology. The insights we gain from our clientele in our Solutions Division powers our academy, ensuring our programs incorporate the latest trends and industry advancements.',
+        ],
+      },
+    ],
+    statsTitle: 'The best kept secret in North America',
+    // [value, description] — value runs through CountUp (prefix/suffix kept).
+    stats: [
+      ['+300', 'Graduates make their marks at many renowned companies.'],
+      ['+100', 'Companies have employed our Business-First technologists.'],
+      [
+        '+55K',
+        'Salaries over 100K offered to many of our graduates after 3 years in the industry.',
+      ],
+    ],
   },
   metrics: {
     eyebrow: 'The AI in 2026',

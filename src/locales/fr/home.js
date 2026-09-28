@@ -348,6 +348,7 @@ export default {
     coursesLabel: 'Cours',
     enrollNow: "S'inscrire",
     contactUs: 'Nous contacter',
+    learnMore: 'En savoir plus',
   },
   academyTopics: {
     program: {
@@ -381,7 +382,7 @@ export default {
         },
         {
           tag: 'CodeBoxx pour les entreprises',
-          title: 'Formation sur mesure pour les entreprises',
+          title: 'Formation corporative sur mesure',
           body: "Acquérir les compétences pour percer en technologie n'a jamais été aussi facile.",
           cta: 'contact',
         },
@@ -436,6 +437,39 @@ export default {
       Planned: 'Prévu',
       InProgress: 'En cours',
     },
+  },
+  // FR twin of home.corporate (EN) — the Wix source has no French version, so
+  // this is a translation.
+  corporate: {
+    eyebrow: 'CodeBoxx pour les entreprises',
+    title: 'Formation technologique pour les entreprises',
+    lede: 'Développez votre main-d’œuvre grâce à des programmes de formation technologique sur mesure et à un accès exclusif au bassin de talents techno de notre école de programmation.',
+    close: 'Fermer',
+    sections: [
+      {
+        title: 'Notre ingrédient secret',
+        body: [
+          'Au-delà des compétences techniques nécessaires, nous cultivons un ensemble de qualités professionnelles inestimables, notamment une communication efficace, une résilience à toute épreuve et un leadership exceptionnel. Nos modules exclusifs de développement professionnel (Pro Dev), conçus en collaboration avec les plus grands employeurs du secteur techno, aident les participants à développer ces traits afin qu’ils sachent travailler efficacement seuls comme en équipe, et livrer des résultats rapidement.',
+          'Et nous innovons sans cesse dans ce domaine en développant de nouveaux programmes qui répondent aux défis actuels des entreprises.',
+        ],
+      },
+      {
+        title: 'Gardez une longueur d’avance dans la course numérique',
+        body: [
+          'Comprendre les défis que vivent les employeurs pour recruter des talents technos de haut calibre nous a inspirés à créer la solution ultime : des programmes de formation sur mesure qui amènent les participants d’une expérience techno limitée à la conception confiante de solutions technologiques en quelques semaines seulement.',
+          'De la vente technique au développement logiciel en passant par l’ingénierie de requêtes (prompt engineering), nous donnons aux gens les compétences nécessaires pour bâtir des carrières gratifiantes en technologie. Ce que nous apprenons de notre clientèle dans notre division Solutions alimente notre académie, pour que nos programmes intègrent les plus récentes tendances et avancées de l’industrie.',
+        ],
+      },
+    ],
+    statsTitle: 'Le secret le mieux gardé en Amérique du Nord',
+    stats: [
+      ['+300', 'Diplômés qui se démarquent dans de nombreuses entreprises reconnues.'],
+      ['+100', 'Entreprises ont embauché nos technologues axés sur les affaires.'],
+      [
+        '+55K',
+        'Salaires de plus de 100 K offerts à plusieurs de nos diplômés après 3 ans dans l’industrie.',
+      ],
+    ],
   },
   metrics: {
     eyebrow: "L'IA en 2026",
