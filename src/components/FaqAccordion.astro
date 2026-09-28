@@ -2,11 +2,9 @@
 // FAQ list for /faq and /fr/faq — native <details>/<summary>, so the page ships
 // zero JS for it (same no-island stance as Financing). See src/locales/en/faq.js
 // for the item shape; src/lib/faqSchema.js builds the matching JSON-LD.
-import { localizedHref } from '../lib/i18nRoutes';
+import RichParagraph from './RichParagraph.astro';
 
 const { items, lang } = Astro.props;
-const pathname = Astro.url.pathname;
-const segments = (p) => (Array.isArray(p) ? p : [p]);
 ---
 
 <div class="faq-list">
@@ -31,15 +29,7 @@ const segments = (p) => (Array.isArray(p) ? p : [p]);
       </summary>
       <div class="faq-answer">
         {a.map((p) => (
-          <p class="pbody">
-            {segments(p).map((s) =>
-              typeof s === 'string' ? (
-                s
-              ) : (
-                <a href={localizedHref(s.href, lang, pathname)}>{s.label}</a>
-              )
-            )}
-          </p>
+          <RichParagraph p={p} lang={lang} />
         ))}
       </div>
     </details>

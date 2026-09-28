@@ -91,3 +91,16 @@
     text-decoration: underline;
   }
 }
+
+// ---- Financing path panels ----
+.panel-subtitle {
+  margin: 0;
+  font-size: v.$text-h3;
+  font-weight: v.$weight-semibold;
+  color: v.$blue-text;
+}
+.panel-note {
+  margin: 0;
+  font-size: v.$text-caption;
+  color: v.$color-text-secondary;
+}

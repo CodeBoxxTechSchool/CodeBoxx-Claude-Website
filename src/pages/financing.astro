@@ -1,11 +1,10 @@
 ---
-// Natively-migrated /financing (EN). See src/pages/fr/financement.astro for the FR
-// twin. Unlike Home/Ventures, this page has zero client state anywhere (every
-// "form" field in the legacy Financing.jsx was already uncontrolled, and both
-// buttons just navigate) — so it needs no React island at all beyond the shared
-// TopBar/Footer from Layout.astro, same pattern as Blog's static sections.
+// Natively-migrated /financing (EN), content from academy.codeboxx.com's financing
+// page. See src/pages/fr/financement.astro for the FR twin. No React island beyond
+// the shared TopBar/Footer from Layout.astro — every button here just navigates.
 import Layout from '../layouts/Layout.astro';
 import HeroVideo from '../components/HeroVideo.astro';
+import RichParagraph from '../components/RichParagraph.astro';
 import { localizedHref } from '../lib/i18nRoutes';
 import common from '../locales/en/common';
 import financing from '../locales/en/financing';
@@ -25,6 +24,9 @@ const pathname = Astro.url.pathname;
       <span class="pill">{financing.pill}</span>
       <h1 class="band-title">{financing.band.title}</h1>
       <p class="band-lede">{financing.band.lede}</p>
+      <a class="btn btn-primary" href={financing.schedule.href} target="_blank" rel="noopener">
+        {financing.schedule.label}
+      </a>
     </div>
   </section>
 
@@ -36,39 +38,39 @@ const pathname = Astro.url.pathname;
         <p class="lede lede-640">{financing.paths.lede}</p>
       </div>
       <div class="grid2">
-        {financing.paths.items.map(([title, d, bullets]) => (
+        {financing.paths.items.map(({ title, subtitle, body, bullets, cta, note }) => (
           <div class="panel">
             <div class="panel-header-row">
               <h3 class="ptitle">{title}</h3>
               <span class="badge bg-brand">{financing.academyBadge}</span>
             </div>
-            <p class="pbody">{d}</p>
-            <div class="rule" />
-            <div class="bullet-list">
-              {bullets.map((b) => (
-                <div class="bullet">
-                  <span>{b}</span>
+            <p class="panel-subtitle">{subtitle}</p>
+            {body.map((p) => (
+              <RichParagraph p={p} lang="en" />
+            ))}
+            {bullets && (
+              <>
+                <div class="rule" />
+                <div class="bullet-list">
+                  {bullets.map((b) => (
+                    <div class="bullet">
+                      <span>{b}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="sect sect-contact">
-    <div class="wrap d-flex flex-column gap-5">
-      <div class="d-flex flex-column gap-3">
-        <p class="eyebrow">{financing.process.eyebrow}</p>
-        <h2 class="h2">{financing.process.title}</h2>
-      </div>
-      <div class="grid3">
-        {financing.process.steps.map(([title, d], i) => (
-          <div class="numbered-step">
-            <span class="numbered-step-index">{'0' + (i + 1)}</span>
-            <h3 class="ptitle">{title}</h3>
-            <p class="pbody">{d}</p>
+              </>
+            )}
+            {cta && (
+              <a
+                class="btn btn-outline-primary align-self-start"
+                href={cta.href}
+                target="_blank"
+                rel="noopener"
+              >
+                {cta.label}
+              </a>
+            )}
+            {note && <RichParagraph p={note} lang="en" class="panel-note" />}
           </div>
         ))}
       </div>
@@ -79,59 +81,44 @@ const pathname = Astro.url.pathname;
     <div class="wrap band-dark-left">
       <p class="eyebrow eyebrow-brand">{financing.riskFree.eyebrow}</p>
       <h2 class="h2 h2-inverse">{financing.riskFree.title}</h2>
-      <p class="band-body">{financing.riskFree.body1}</p>
-      <p class="band-body">{financing.riskFree.body2}</p>
+      {financing.riskFree.body.map((p) => (
+        <p class="band-body">{p}</p>
+      ))}
     </div>
   </section>
 
   <section class="sect">
+    <div class="wrap d-flex flex-column gap-3">
+      <p class="eyebrow">{financing.beyond.eyebrow}</p>
+      <h2 class="h2">{financing.beyond.title}</h2>
+      <div class="d-flex flex-column gap-3 lede-640">
+        {financing.beyond.body.map((p) => (
+          <RichParagraph p={p} lang="en" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sect sect-contact">
     <div class="wrap grid2">
       <div class="d-flex flex-column gap-3">
         <p class="eyebrow">{financing.ask.eyebrow}</p>
         <h2 class="h2">{financing.ask.title}</h2>
         <p class="lede">{financing.ask.lede}</p>
         <div class="d-flex gap-3 flex-wrap">
-          <a class="btn btn-primary" href="CodeBoxx.html#academy">
-            {financing.ask.seePrograms}
-          </a>
-          <a class="btn btn-outline-primary" href={localizedHref('#contact', 'en', pathname)}>
-            {financing.ask.contactAdmissions}
+          <a class="btn btn-primary" href={financing.schedule.href} target="_blank" rel="noopener">
+            {financing.ask.schedule}
           </a>
         </div>
       </div>
-      <div class="panel">
-        <h3 class="ptitle">{financing.ask.formTitle}</h3>
-        <div class="mb-3">
-          <label class="form-label" for="fin-name">
-            {financing.ask.fullNameLabel}
-          </label>
-          <input
-            class="form-control"
-            id="fin-name"
-            placeholder={financing.ask.fullNamePlaceholder}
-          />
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="fin-email">
-            {financing.ask.emailLabel}
-          </label>
-          <input class="form-control" id="fin-email" placeholder={financing.ask.emailPlaceholder} />
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="fin-program">
-            {financing.ask.programLabel}
-          </label>
-          <input
-            class="form-control"
-            id="fin-program"
-            placeholder={financing.ask.programPlaceholder}
-          />
-        </div>
-        <div class="rule" />
-        <div class="form-actions">
-          <span class="form-actions-note">{financing.ask.answeredNote}</span>
-          <button class="btn btn-primary btn-lg">{financing.ask.send}</button>
-        </div>
+      <div class="panel align-self-start">
+        <h3 class="ptitle">{financing.ask.investTitle}</h3>
+        <a
+          class="btn btn-outline-primary align-self-start"
+          href={localizedHref('#academy-courses', 'en', pathname)}
+        >
+          {financing.ask.enroll}
+        </a>
       </div>
     </div>
   </section>
