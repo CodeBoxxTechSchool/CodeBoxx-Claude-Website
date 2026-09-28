@@ -124,6 +124,11 @@ function NavItem({ item, onNavigate }) {
   );
 }
 
+// "Talk With Codi" is hidden for now, not removed: flip to true to bring the
+// button back in the top bar and the mobile CTA bar. The Codi drawer and its
+// handlers stay wired up.
+const SHOW_CODI_BUTTON = false;
+
 export function TopBar({ lang, pathname, strings, onCodi, langHref }) {
   const [expanded, setExpanded] = React.useState(false);
   const nav = NAV_STRUCTURE.map((n) => ({
@@ -163,9 +168,11 @@ export function TopBar({ lang, pathname, strings, onCodi, langHref }) {
               <Button size="sm" variant="outline-primary" href={enrollHref}>
                 {strings.actions.enrollNow}
               </Button>
-              <Button size="sm" onClick={handleCodi}>
-                {strings.actions.talkWithCodi}
-              </Button>
+              {SHOW_CODI_BUTTON && (
+                <Button size="sm" onClick={handleCodi}>
+                  {strings.actions.talkWithCodi}
+                </Button>
+              )}
             </div>
           </Container>
         </Navbar>
@@ -174,7 +181,7 @@ export function TopBar({ lang, pathname, strings, onCodi, langHref }) {
         <Button variant="outline-primary" href={enrollHref}>
           {strings.actions.enrollNow}
         </Button>
-        <Button onClick={handleCodi}>{strings.actions.talkWithCodi}</Button>
+        {SHOW_CODI_BUTTON && <Button onClick={handleCodi}>{strings.actions.talkWithCodi}</Button>}
       </div>
     </React.Fragment>
   );
