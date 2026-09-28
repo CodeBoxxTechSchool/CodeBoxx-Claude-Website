@@ -1,0 +1,61 @@
+---
+// Natively-migrated /faq (EN), content from academy.codeboxx.com's FAQ page. See
+// src/pages/fr/faq.astro for the FR twin. Same hero band + sections shape as
+// Ventures, but no island at all: the accordion is native <details>.
+import Layout from '../layouts/Layout.astro';
+import HeroVideo from '../components/HeroVideo.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import { localizedHref } from '../lib/i18nRoutes';
+import { faqSchema } from '../lib/faqSchema';
+import common from '../locales/en/common';
+import faq from '../locales/en/faq';
+
+const pathname = Astro.url.pathname;
+---
+
+<Layout
+  lang="en"
+  title={faq.seo.title}
+  description={faq.seo.description}
+  strings={common}
+  structuredData={faqSchema(faq.items)}
+>
+  <section class="band-dark">
+    <HeroVideo />
+    <div class="wrap d-flex flex-column gap-4 align-items-start">
+      <span class="pill">{faq.pill}</span>
+      <h1 class="band-title">{faq.band.title}</h1>
+      <p class="band-lede">{faq.band.lede}</p>
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="wrap d-flex flex-column gap-5">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{faq.list.eyebrow}</p>
+        <h2 class="h2">{faq.list.title}</h2>
+      </div>
+      <FaqAccordion items={faq.items} lang="en" />
+    </div>
+  </section>
+
+  <section class="sect sect-contact">
+    <div class="wrap d-flex flex-column gap-4 align-items-start">
+      <p class="eyebrow">{faq.more.eyebrow}</p>
+      <h2 class="h2">{faq.more.title}</h2>
+      <div class="d-flex gap-3 flex-wrap">
+        <a class="btn btn-primary" href={localizedHref('#contact', 'en', pathname)}>
+          {faq.more.contact}
+        </a>
+        <a
+          class="btn btn-outline-primary"
+          href={faq.more.scheduleHref}
+          target="_blank"
+          rel="noopener"
+        >
+          {faq.more.schedule}
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

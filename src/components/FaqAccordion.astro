@@ -1,0 +1,47 @@
+---
+// FAQ list for /faq and /fr/faq — native <details>/<summary>, so the page ships
+// zero JS for it (same no-island stance as Financing). See src/locales/en/faq.js
+// for the item shape; src/lib/faqSchema.js builds the matching JSON-LD.
+import { localizedHref } from '../lib/i18nRoutes';
+
+const { items, lang } = Astro.props;
+const pathname = Astro.url.pathname;
+const segments = (p) => (Array.isArray(p) ? p : [p]);
+---
+
+<div class="faq-list">
+  {items.map(({ q, a }, i) => (
+    <details class="faq-item" open={i === 0}>
+      <summary class="faq-question">
+        <h3 class="ptitle">{q}</h3>
+        <svg
+          class="faq-caret"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </summary>
+      <div class="faq-answer">
+        {a.map((p) => (
+          <p class="pbody">
+            {segments(p).map((s) =>
+              typeof s === 'string' ? (
+                s
+              ) : (
+                <a href={localizedHref(s.href, lang, pathname)}>{s.label}</a>
+              )
+            )}
+          </p>
+        ))}
+      </div>
+    </details>
+  ))}
+</div>

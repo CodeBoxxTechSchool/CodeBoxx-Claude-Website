@@ -15,6 +15,7 @@ export const ROUTE_TABLE = [
   { en: '/blog/:slug', fr: '/fr/blogue/:slug' },
   { en: '/financing', fr: '/fr/financement' },
   { en: '/ventures', fr: '/fr/ventures' },
+  { en: '/faq', fr: '/fr/faq' },
 ];
 
 export const HASH_TABLE = {
