@@ -288,8 +288,24 @@ function sanityImageUrl(url, { w, q = 60 } = {}) {
 
 function ClientSlider() {
   const { home, lang, logos: logosLive } = useHomeCtx();
-  const worksId = localizedId('works', lang);
   const logos = logosLive && logosLive.length ? logosLive : CLIENT_LOGOS;
+  return (
+    <LogoSlider id={localizedId('works', lang)} label={home.clientSlider.trustedBy} logos={logos} />
+  );
+}
+
+// Academy's "our graduates work at" slider (academyPartnerLogo in Sanity), shown
+// between the intake calendar and the graduate testimonials. No static fallback:
+// renders nothing until Sanity has documents.
+function AcademyLogoSlider() {
+  const { home, academyLogos } = useHomeCtx();
+  if (!academyLogos || !academyLogos.length) return null;
+  return <LogoSlider label={home.academy.logosLabel} logos={academyLogos} />;
+}
+
+// Shared auto-scrolling logo track behind both sliders above.
+function LogoSlider({ id, label, logos }) {
+  const { lang } = useHomeCtx();
   const ref = React.useRef(null);
   const [paused, setPaused] = React.useState(false);
   // Auto-scroll needs a way to stop it that works without a mouse (WCAG 2.2.2):
@@ -315,7 +331,7 @@ function ClientSlider() {
   }, [paused, stopped]);
   return (
     <div
-      id={worksId}
+      id={id}
       className="client-slider"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -325,7 +341,7 @@ function ClientSlider() {
       }}
     >
       <div className="client-slider-head">
-        <p className="eyebrow">{home.clientSlider.trustedBy}</p>
+        <p className="eyebrow">{label}</p>
         <div className="d-flex gap-2">
           <Button size="sm" variant="outline-primary" onClick={() => setStopped((v) => !v)}>
             {stopped
@@ -340,7 +356,7 @@ function ClientSlider() {
         className="noscroll client-track"
         tabIndex={0}
         role="region"
-        aria-label={home.clientSlider.trustedBy}
+        aria-label={label}
       >
         {logos.map((logo) => (
           <div key={logo.id} className="client-slide">
@@ -1201,6 +1217,7 @@ function Academy({ onEnroll }) {
             />
           ) : null}
           <IntakeCalendar onEnroll={onEnroll} />
+          <AcademyLogoSlider />
           <GraduateTestimonials
             eyebrow={home.testimonials.gradEyebrow}
             items={gradQuotes}
@@ -1969,6 +1986,7 @@ export default function HomeIsland({
   studioTeam,
   academyTeam,
   logos,
+  academyLogos,
   latestPosts,
   clientTestimonials,
   graduateTestimonials,
@@ -1995,6 +2013,7 @@ export default function HomeIsland({
         studioTeam,
         academyTeam,
         logos,
+        academyLogos,
         latestPosts,
         clientTestimonials,
         graduateTestimonials,

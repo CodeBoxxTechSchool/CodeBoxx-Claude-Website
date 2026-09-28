@@ -150,11 +150,13 @@ export async function fetchTeam(group) {
 // Same null-or-live shape as fetchTeam, for the same reason (HomeIsland.jsx falls
 // back to its own CLIENT_LOGOS constant, which needs no translation but lives with
 // the rest of that component's static seed data).
-export async function fetchLogos() {
+// `type` is 'partnerLogo' (Solutions client slider) or 'academyPartnerLogo'
+// (Academy "our graduates work at" slider) — same document shape.
+export async function fetchLogos(type = 'partnerLogo') {
   if (!PROJECT_ID) return null;
   try {
     const rows = await fetchCollection(
-      'partnerLogo',
+      type,
       ' | order(order asc) {_id, name, "logo": logo.asset->url}'
     );
     return rows && rows.length ? rows.map(toLogo) : null;
