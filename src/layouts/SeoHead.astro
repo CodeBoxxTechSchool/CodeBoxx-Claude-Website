@@ -7,6 +7,7 @@
 // are invisible without JS" problem described in the migration writeup (the old
 // SPA set them client-side with react-helmet-async).
 import { localizedHref } from '../lib/i18nRoutes';
+import Tracking from '../components/Tracking.astro';
 
 const {
   lang,
@@ -81,6 +82,7 @@ const schemas = [organizationSchema, websiteSchema, ...pageSchemas];
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<Tracking />
 
 <title>{fullTitle}</title>
 <meta name="description" content={desc} />

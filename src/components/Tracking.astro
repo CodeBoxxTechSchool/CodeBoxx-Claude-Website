@@ -1,0 +1,51 @@
+---
+// Analytics and marketing tags, rendered at the top of every page's <head> via
+// SeoHead.astro. IDs match what codeboxx.com (Wix) loads today:
+// - CookieYes consent banner (account registered to codeboxx.com, so the banner
+//   only runs on that domain and its subdomains). It must load first: it holds
+//   back known trackers until the visitor consents. Its built-in list covers
+//   googletagmanager.com (analytics) and doubleclick.net (advertising).
+// - Google Tag Manager GTM-K83Z8XD, which carries GA4 G-TWDY5EXTEZ.
+// - Google Ads AW-11226981671 and the LinkedIn Insight Tag 7311770. Neither is
+//   on CookieYes's built-in list for the advertising category, so they're
+//   marked type="text/plain" + data-cookieyes="cookieyes-advertisement", which
+//   CookieYes swaps to runnable scripts only after advertising consent.
+//   CookieYes only re-enables blocked scripts that have a src, not inline
+//   ones, so the Ads config and LinkedIn loader live in public/assets/js/.
+const GTM_ID = 'GTM-K83Z8XD';
+const GOOGLE_ADS_ID = 'AW-11226981671'; // also in public/assets/js/google-ads.js
+// LinkedIn partner 7311770 lives in public/assets/js/linkedin-insight.js.
+const COOKIEYES_SRC = 'https://cdn-cookieyes.com/client_data/728b9c1a29fbe2d7dfd2c0f5/script.js';
+---
+
+<script is:inline id="cookieyes" type="text/javascript" src={COOKIEYES_SRC}></script>
+
+<script is:inline define:vars={{ GTM_ID }}>
+  (function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != 'dataLayer' ? '&l=' + l : '';
+    j.async = true;
+    j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', GTM_ID);
+</script>
+
+<script
+  is:inline
+  type="text/plain"
+  data-cookieyes="cookieyes-advertisement"
+  async
+  src={'https://www.googletagmanager.com/gtag/js?id=' + GOOGLE_ADS_ID}></script>
+<script
+  is:inline
+  type="text/plain"
+  data-cookieyes="cookieyes-advertisement"
+  src="/assets/js/google-ads.js"></script>
+<script
+  is:inline
+  type="text/plain"
+  data-cookieyes="cookieyes-advertisement"
+  src="/assets/js/linkedin-insight.js"></script>
