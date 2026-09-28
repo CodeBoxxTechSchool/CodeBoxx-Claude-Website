@@ -58,7 +58,7 @@
   {"type": "p", "content": "When you first visit our websites, a banner lets you accept or refuse cookies by category. Only strictly necessary cookies are used before you make a choice. You can change your choice at any time using the cookie settings button on our websites."},
   {"type": "list", "items": [
    "Strictly necessary: CookieYes, which stores your cookie choices.",
-   "Analytics (only with your consent): Google Analytics, loaded through Google Tag Manager, to understand how visitors use our websites.",
+   "Analytics (only with your consent): Google Analytics, loaded directly and through Google Tag Manager, to understand how visitors use our websites.",
    "Advertising (only with your consent): Google Ads conversion tracking and the LinkedIn Insight Tag, to measure the results of our advertising campaigns."
   ]},
 
