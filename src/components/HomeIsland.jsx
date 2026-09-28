@@ -819,6 +819,11 @@ function Solutions() {
       after={
         <React.Fragment>
           <ClientSlider />
+          <div className="case-studies-cta">
+            <Button variant="outline-primary" href={localizedHref('/case-studies', lang, pathname)}>
+              {home.solutions.caseStudies}
+            </Button>
+          </div>
           <Testimonials eyebrow={home.testimonials.clientEyebrow} items={clientQuotes} />
         </React.Fragment>
       }

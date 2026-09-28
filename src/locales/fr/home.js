@@ -237,6 +237,7 @@ export default {
     award: {
       caption: 'Nous avons reçu le prix du meilleur chatbot IA parmi plus de 1000 candidatures',
     },
+    caseStudies: 'Études de cas',
   },
   services: {
     cto: {

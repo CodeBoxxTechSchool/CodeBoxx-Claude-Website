@@ -1,0 +1,121 @@
+---
+// Natively-migrated /case-studies (EN), content from
+// www.solutions.codeboxx.com/case-studies. See src/pages/fr/etudes-de-cas.astro for
+// the FR twin. Ventures page template (hero band + sections); the closing CTA reuses Ventures'
+// PitchWidget drawer, its only island.
+import Layout from '../layouts/Layout.astro';
+import HeroVideo from '../components/HeroVideo.astro';
+import { localizedHref } from '../lib/i18nRoutes';
+import common from '../locales/en/common';
+import cs from '../locales/en/caseStudies';
+import ventures from '../locales/en/ventures';
+import PitchWidget from '../components/PitchWidget';
+
+const pathname = Astro.url.pathname;
+const contactHref = localizedHref('#contact', 'en', pathname);
+---
+
+<Layout lang="en" title={cs.seo.title} description={cs.seo.description} strings={common}>
+  <section class="band-dark">
+    <HeroVideo />
+    <div class="wrap d-flex flex-column gap-4 align-items-start">
+      <span class="pill">{cs.pill}</span>
+      <h1 class="band-title">{cs.band.title}</h1>
+      <p class="band-lede">{cs.band.lede}</p>
+      <a class="btn btn-primary" href={contactHref}>
+        {cs.cta.contact}
+      </a>
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="wrap d-flex flex-column gap-3">
+      <p class="eyebrow">{cs.intro.eyebrow}</p>
+      <h2 class="h2">{cs.intro.title}</h2>
+      <p class="panel-subtitle">{cs.intro.subtitle}</p>
+      <div class="d-flex flex-column gap-3 lede-640">
+        {cs.intro.body.map((p) => (
+          <p class="lede">{p}</p>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sect sect-contact">
+    <div class="wrap d-flex flex-column gap-5">
+      {cs.cases.map((c) => (
+        <article class="panel case-study">
+          <div class="panel-header-row">
+            <img class="case-logo" src={c.logo} alt={c.client} loading="lazy" />
+            <span class="badge bg-brand">{cs.badge}</span>
+          </div>
+          <div class="grid2 case-grid">
+            <div class="d-flex flex-column gap-3">
+              <h3 class="ptitle">{c.client}</h3>
+              {c.body.map((p) => (
+                <p class="pbody">{p}</p>
+              ))}
+            </div>
+            <dl class="case-facts">
+              <div>
+                <dt>{cs.labels.mandate}</dt>
+                <dd>{c.mandate}</dd>
+              </div>
+              <div>
+                <dt>{cs.labels.duration}</dt>
+                <dd>{c.duration}</dd>
+              </div>
+              <div>
+                <dt>{cs.labels.resources}</dt>
+                <dd>{c.resources}</dd>
+              </div>
+              <div>
+                <dt>{cs.labels.solution}</dt>
+                <dd>
+                  <div class="bullet-list">
+                    {c.solution.map((s) => (
+                      <div class="bullet">
+                        <span>{s}</span>
+                      </div>
+                    ))}
+                  </div>
+                </dd>
+              </div>
+              <div>
+                <dt>{cs.labels.technology}</dt>
+                <dd>{c.technology}</dd>
+              </div>
+            </dl>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="wrap d-flex flex-column gap-5">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{cs.services.eyebrow}</p>
+        <h2 class="h2">{cs.services.title}</h2>
+      </div>
+      <div class="grid4">
+        {cs.services.items.map(([label, href], i) => (
+          <a class="numbered-step case-service" href={localizedHref(href, 'en', pathname)}>
+            <span class="numbered-step-index">{'0' + (i + 1)}</span>
+            <span class="ptitle">{label}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sect sect-navy">
+    <div class="wrap band-dark-left">
+      <p class="eyebrow eyebrow-brand">{cs.cta.eyebrow}</p>
+      <h2 class="h2 h2-inverse">{cs.cta.title}</h2>
+      <div>
+        <PitchWidget client:load ventures={ventures} closeLabel={common.actions.close} />
+      </div>
+    </div>
+  </section>
+</Layout>

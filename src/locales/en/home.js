@@ -229,6 +229,7 @@ export default {
     introPara2:
       'With the rise of generative AI, technologists are no longer just coders—they design systems that can learn, adapt, and respond. This shift has given rise to vibe coding, a skill that blends clear intent, logic, creativity, and human intuition. As intelligent machines become more common, this way of working is becoming an essential skill for the next generation.',
     award: { caption: 'We were awarded Best AI Chatbot from over a 1000 entries' },
+    caseStudies: 'Case Studies',
   },
   services: {
     cto: {
