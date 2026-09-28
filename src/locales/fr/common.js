@@ -37,6 +37,11 @@ export default {
       ['Québec', '400-1020 Bouvier Street, Quebec City, QC G2K 2C9'],
     ],
     phone: { label: 'Téléphone', display: '1-800-887-2497', tel: '+18008872497' },
+    // Florida CIE licensure disclosure. Rule 6E-2.004(11)(c)16, F.A.C. (as amended
+    // 8-27-24) requires this exact phrase in all advertising, websites included;
+    // "any other phrase or form" is a violation. So it's identical, in English, on
+    // the FR site too (rendered lang="en"), and must not be reworded or translated.
+    licensure: 'Licensed by the Florida Commission for Independent Education, License No. 9103.',
     legalLabel: 'Mentions légales',
     legal: [
       ['Politique de confidentialité', '/privacy-policy'],

@@ -8,7 +8,7 @@ import '../styles/main.scss';
 import SeoHead from './SeoHead.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import DeferredVideos from '../components/DeferredVideos.astro';
-import { TopBar, Footer } from '../components/ChromeIsland';
+import { TopBar, Footer, LicensureNotice } from '../components/ChromeIsland';
 
 const {
   lang,
@@ -51,6 +51,9 @@ const pathname = Astro.url.pathname;
         <slot />
       </main>
       {!hideFooter && <Footer client:load lang={lang} pathname={pathname} strings={strings} />}
+      {hideFooter && (
+        <LicensureNotice lang={lang} strings={strings} className="licensure-standalone" />
+      )}
     </div>
     <ScrollReveal />
     <DeferredVideos />

@@ -214,6 +214,13 @@
     background: rgba(255, 255, 255, 0.16);
   }
 
+  .footer-licensure {
+    margin: 0;
+    font-size: v.$text-micro;
+    line-height: v.$leading-body;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
   .footer-meta {
     font-size: v.$text-micro;
     font-weight: v.$weight-medium;
@@ -248,4 +255,13 @@
       justify-content: flex-start;
     }
   }
+}
+
+// Licensure line on pages that hide the footer (landing pages): see LicensureNotice.
+.licensure-standalone {
+  margin: 0;
+  padding: 16px;
+  text-align: center;
+  font-size: v.$text-micro;
+  color: v.$color-text-secondary;
 }
