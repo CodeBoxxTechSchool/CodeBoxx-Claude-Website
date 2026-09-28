@@ -58,7 +58,7 @@
   {"type": "p", "content": "Lors de votre première visite sur nos sites Web, une bannière vous permet d'accepter ou de refuser les témoins par catégorie. Seuls les témoins strictement nécessaires sont utilisés avant que vous fassiez un choix. Vous pouvez modifier votre choix en tout temps à l'aide du bouton des paramètres des témoins sur nos sites."},
   {"type": "list", "items": [
    "Strictement nécessaires : CookieYes, qui conserve vos choix en matière de témoins.",
-   "Analyse (seulement avec votre consentement) : Google Analytics, chargé au moyen de Google Tag Manager, pour comprendre comment les visiteurs utilisent nos sites.",
+   "Analyse (seulement avec votre consentement) : Google Analytics, chargé directement et au moyen de Google Tag Manager, pour comprendre comment les visiteurs utilisent nos sites.",
    "Publicité (seulement avec votre consentement) : le suivi des conversions de Google Ads et la balise LinkedIn Insight, pour mesurer les résultats de nos campagnes publicitaires."
   ]},
 
