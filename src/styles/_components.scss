@@ -77,6 +77,11 @@
 :where(.calendar-band, .band-dark, .sect-navy, .site-footer, .hero) a {
   color: v.$blue-text-on-dark;
 }
+// The base a:hover ($navy-500) is the same colour as these surfaces, which made
+// hovered links vanish; brighten to white instead.
+:where(.calendar-band, .band-dark, .sect-navy, .site-footer, .hero) a:hover {
+  color: v.$neutral-0;
+}
 :where(.sect-steel) a {
   color: v.$neutral-0;
 }

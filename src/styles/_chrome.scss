@@ -203,6 +203,10 @@
   .footer-col a {
     font-size: v.$text-body;
     color: rgba(255, 255, 255, 0.72);
+
+    &:hover {
+      color: v.$neutral-0;
+    }
   }
 
   .footer-rule {
