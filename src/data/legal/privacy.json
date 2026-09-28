@@ -16,7 +16,7 @@
   {"type": "p", "content": "Our Chief Executive Officer is the person in charge of the protection of personal information at CodeBoxx. You can contact them for any question, request or complaint about this policy or about your personal information:"},
   {"type": "list", "items": [
    "Nicolas Genest, Chief Executive Officer",
-   ["Email: ", {"label": "__PRIVACY_EMAIL__", "href": "mailto:__PRIVACY_EMAIL__"}],
+   ["Email: ", {"label": "info@codeboxx.com", "href": "mailto:info@codeboxx.com"}],
    "Mail: Attention: Person in charge of the protection of personal information, CodeBoxx, 400-1020 Bouvier Street, Quebec City, QC G2K 2C9, Canada"
   ]},
 
@@ -102,6 +102,6 @@
   {"type": "p", "content": "We may update this policy from time to time. The date at the top shows when it was last updated. If we make significant changes, we will post a notice on our websites."},
 
   {"type": "h2", "content": "14. Contact us"},
-  {"type": "p", "content": ["For any question about this policy or your personal information, contact our person in charge of the protection of personal information at ", {"label": "__PRIVACY_EMAIL__", "href": "mailto:__PRIVACY_EMAIL__"}, " or by mail at the address in section 2."]}
+  {"type": "p", "content": ["For any question about this policy or your personal information, contact our person in charge of the protection of personal information at ", {"label": "info@codeboxx.com", "href": "mailto:info@codeboxx.com"}, " or by mail at the address in section 2."]}
  ]
 }

@@ -16,7 +16,7 @@
   {"type": "p", "content": "Notre président-directeur général est le responsable de la protection des renseignements personnels chez CodeBoxx. Vous pouvez communiquer avec lui pour toute question, demande ou plainte concernant la présente politique ou vos renseignements personnels :"},
   {"type": "list", "items": [
    "Nicolas Genest, président-directeur général",
-   ["Courriel : ", {"label": "__PRIVACY_EMAIL__", "href": "mailto:__PRIVACY_EMAIL__"}],
+   ["Courriel : ", {"label": "info@codeboxx.com", "href": "mailto:info@codeboxx.com"}],
    "Poste : À l'attention du responsable de la protection des renseignements personnels, CodeBoxx, 400-1020, rue Bouvier, Québec (Québec) G2K 2C9, Canada"
   ]},
 
@@ -102,6 +102,6 @@
   {"type": "p", "content": "Nous pouvons mettre à jour la présente politique de temps à autre. La date en haut de la page indique sa dernière mise à jour. En cas de modifications importantes, nous publierons un avis sur nos sites Web."},
 
   {"type": "h2", "content": "14. Nous joindre"},
-  {"type": "p", "content": ["Pour toute question sur la présente politique ou sur vos renseignements personnels, communiquez avec notre responsable de la protection des renseignements personnels à ", {"label": "__PRIVACY_EMAIL__", "href": "mailto:__PRIVACY_EMAIL__"}, " ou par la poste à l'adresse indiquée à la section 2."]}
+  {"type": "p", "content": ["Pour toute question sur la présente politique ou sur vos renseignements personnels, communiquez avec notre responsable de la protection des renseignements personnels à ", {"label": "info@codeboxx.com", "href": "mailto:info@codeboxx.com"}, " ou par la poste à l'adresse indiquée à la section 2."]}
  ]
 }
