@@ -1,12 +1,15 @@
 ---
 // Natively-migrated /case-studies (EN), content from
 // www.solutions.codeboxx.com/case-studies. See src/pages/fr/etudes-de-cas.astro for
-// the FR twin. Ventures page template (hero band + sections), no island.
+// the FR twin. Ventures page template (hero band + sections); the closing CTA reuses Ventures'
+// PitchWidget drawer, its only island.
 import Layout from '../layouts/Layout.astro';
 import HeroVideo from '../components/HeroVideo.astro';
 import { localizedHref } from '../lib/i18nRoutes';
 import common from '../locales/en/common';
 import cs from '../locales/en/caseStudies';
+import ventures from '../locales/en/ventures';
+import PitchWidget from '../components/PitchWidget';
 
 const pathname = Astro.url.pathname;
 const contactHref = localizedHref('#contact', 'en', pathname);
@@ -110,9 +113,9 @@ const contactHref = localizedHref('#contact', 'en', pathname);
     <div class="wrap band-dark-left">
       <p class="eyebrow eyebrow-brand">{cs.cta.eyebrow}</p>
       <h2 class="h2 h2-inverse">{cs.cta.title}</h2>
-      <a class="btn btn-primary align-self-start" href={contactHref}>
-        {cs.cta.contact}
-      </a>
+      <div>
+        <PitchWidget client:load ventures={ventures} closeLabel={common.actions.close} />
+      </div>
     </div>
   </section>
 </Layout>

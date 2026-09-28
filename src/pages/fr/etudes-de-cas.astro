@@ -5,6 +5,8 @@ import HeroVideo from '../../components/HeroVideo.astro';
 import { localizedHref } from '../../lib/i18nRoutes';
 import common from '../../locales/fr/common';
 import cs from '../../locales/fr/caseStudies';
+import ventures from '../../locales/fr/ventures';
+import PitchWidget from '../../components/PitchWidget';
 
 const pathname = Astro.url.pathname;
 const contactHref = localizedHref('#contact', 'fr', pathname);
@@ -108,9 +110,9 @@ const contactHref = localizedHref('#contact', 'fr', pathname);
     <div class="wrap band-dark-left">
       <p class="eyebrow eyebrow-brand">{cs.cta.eyebrow}</p>
       <h2 class="h2 h2-inverse">{cs.cta.title}</h2>
-      <a class="btn btn-primary align-self-start" href={contactHref}>
-        {cs.cta.contact}
-      </a>
+      <div>
+        <PitchWidget client:load ventures={ventures} closeLabel={common.actions.close} />
+      </div>
     </div>
   </section>
 </Layout>
