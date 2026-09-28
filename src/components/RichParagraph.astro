@@ -1,0 +1,26 @@
+---
+// One locale paragraph: a plain string, or an array of segments where a
+// { label, href } segment renders as a link. Site paths/anchors go through
+// localizedHref (so they get their FR twin); absolute URLs open in a new tab.
+// Shared by the FAQ and Financing pages — see src/locales/en/faq.js.
+import { localizedHref } from '../lib/i18nRoutes';
+
+const { p, lang, class: className = 'pbody' } = Astro.props;
+const pathname = Astro.url.pathname;
+const segments = Array.isArray(p) ? p : [p];
+const isExternal = (href) => /^https?:\/\//.test(href);
+---
+
+<p class={className}>
+  {segments.map((s) =>
+    typeof s === 'string' ? (
+      s
+    ) : isExternal(s.href) ? (
+      <a href={s.href} target="_blank" rel="noopener">
+        {s.label}
+      </a>
+    ) : (
+      <a href={localizedHref(s.href, lang, pathname)}>{s.label}</a>
+    )
+  )}
+</p>
