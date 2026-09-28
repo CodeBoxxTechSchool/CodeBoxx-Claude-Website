@@ -54,7 +54,9 @@ export default {
         [
           'Résidents du comté de Pinellas, en Floride : nous vous invitons à ',
           { label: 'communiquer avec nous', href: '#contact' },
-          ' pour en savoir plus sur le financement local qui peut couvrir la totalité ou une partie de vos frais de scolarité.',
+          ' pour en savoir plus sur le ',
+          { label: 'financement local', href: '/pinellas-residents' },
+          ' qui peut couvrir la totalité ou une partie de vos frais de scolarité.',
         ],
       ],
     },
