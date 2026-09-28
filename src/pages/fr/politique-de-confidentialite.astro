@@ -1,0 +1,22 @@
+---
+// FR twin of src/pages/privacy-policy.astro. The document itself has no French
+// version, so it's shown in English with a note (see LegalPage.astro).
+import Layout from '../../layouts/Layout.astro';
+import LegalPage from '../../components/LegalPage.astro';
+import common from '../../locales/fr/common';
+import doc from '../../data/legal/privacy.json';
+---
+
+<Layout
+  lang="fr"
+  title="Politique de confidentialité"
+  description="Comment CodeBoxx recueille, utilise et protège vos renseignements personnels."
+  strings={common}
+>
+  <LegalPage
+    title="Politique de confidentialité"
+    doc={doc}
+    lang="fr"
+    note="Ce document est offert en anglais seulement."
+  />
+</Layout>

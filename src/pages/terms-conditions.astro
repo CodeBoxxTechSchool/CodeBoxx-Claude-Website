@@ -1,0 +1,17 @@
+---
+// /terms-conditions (EN). FR twin: src/pages/fr/conditions-generales.astro.
+// Content in src/data/legal/terms.json; layout in LegalPage.astro.
+import Layout from '../layouts/Layout.astro';
+import LegalPage from '../components/LegalPage.astro';
+import common from '../locales/en/common';
+import doc from '../data/legal/terms.json';
+---
+
+<Layout
+  lang="en"
+  title="Terms & Conditions"
+  description="The terms and conditions that govern your use of CodeBoxx's websites and services."
+  strings={common}
+>
+  <LegalPage title="Terms & Conditions" doc={doc} lang="en" />
+</Layout>

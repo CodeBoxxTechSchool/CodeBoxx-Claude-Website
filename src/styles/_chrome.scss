@@ -203,6 +203,10 @@
   .footer-col a {
     font-size: v.$text-body;
     color: rgba(255, 255, 255, 0.72);
+
+    &:hover {
+      color: v.$neutral-0;
+    }
   }
 
   .footer-rule {
@@ -214,5 +218,34 @@
     font-size: v.$text-micro;
     font-weight: v.$weight-medium;
     color: rgba(255, 255, 255, 0.8);
+  }
+  // Three columns (copyright | legal links | version) so the links sit exactly
+  // centred regardless of the side texts' widths. !important beats the
+  // markup's Bootstrap .d-flex, which is itself !important.
+  @media (min-width: calc(v.$breakpoint-md + 1px)) {
+    .footer-meta {
+      display: grid !important;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+
+      > :last-child {
+        justify-self: end;
+      }
+    }
+  }
+  .footer-legal {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  @media (max-width: v.$breakpoint-md) {
+    .footer-meta {
+      flex-wrap: wrap;
+    }
+    .footer-legal {
+      order: 3;
+      justify-content: flex-start;
+    }
   }
 }

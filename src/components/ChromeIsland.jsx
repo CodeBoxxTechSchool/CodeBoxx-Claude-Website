@@ -260,6 +260,13 @@ export function Footer({ lang, pathname, strings }) {
         <div className="footer-rule" />
         <div className="d-flex justify-content-between gap-4 footer-meta">
           <span>{strings.footer.copyright}</span>
+          <nav className="footer-legal" aria-label={strings.footer.legalLabel}>
+            {strings.footer.legal.map(([label, path]) => (
+              <a key={path} href={localizedHref(path, lang, pathname)}>
+                {label}
+              </a>
+            ))}
+          </nav>
           <span>v1.0.0 Stable · SHA: 7be1af8</span>
         </div>
       </div>
