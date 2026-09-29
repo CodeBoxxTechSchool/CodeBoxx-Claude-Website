@@ -46,14 +46,13 @@ export default function ForgeEvidence({ t, lang }) {
   return (
     <div className="fd-evidence">
       <div className="fd-controls" role="group">
-        <div className="fd-seg" role="radiogroup" aria-label={e.metricLabel}>
+        <div className="fd-seg" role="group" aria-label={e.metricLabel}>
           <span className="fd-seg-label">{e.metricLabel}</span>
           {['cost', 'time'].map((m) => (
             <button
               key={m}
               type="button"
-              role="radio"
-              aria-checked={metric === m}
+              aria-pressed={metric === m}
               className={'fd-seg-btn' + (metric === m ? ' is-on' : '')}
               onClick={() => setMetric(m)}
             >
@@ -61,14 +60,13 @@ export default function ForgeEvidence({ t, lang }) {
             </button>
           ))}
         </div>
-        <div className="fd-seg" role="radiogroup" aria-label={e.filterLabel}>
+        <div className="fd-seg" role="group" aria-label={e.filterLabel}>
           <span className="fd-seg-label">{e.filterLabel}</span>
           {['all', 'benchmark', 'additional'].map((f) => (
             <button
               key={f}
               type="button"
-              role="radio"
-              aria-checked={filter === f}
+              aria-pressed={filter === f}
               className={'fd-seg-btn' + (filter === f ? ' is-on' : '')}
               onClick={() => setFilter(f)}
             >

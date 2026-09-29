@@ -790,7 +790,8 @@ $fd-surface: v.$neutral-0;
 
 // Print: keep the business case and the evidence, drop chrome and interactive bits.
 @media print {
-  #header,
+  .site-header,
+  .mobile-cta-bar,
   footer,
   .fd-noprint,
   .fd-controls,

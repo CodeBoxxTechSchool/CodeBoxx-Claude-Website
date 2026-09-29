@@ -166,7 +166,7 @@ export default {
       ],
       [
         'Benchmark vs additional',
-        'The 5.2× and 78% headline averages the four benchmark studies only. The other platforms are additional proof and are not counted in it.',
+        'The 5.2× and 78% headline averages apply to the four benchmark studies only. The other platforms are additional proof and are not counted in those averages.',
       ],
     ],
   },
@@ -176,7 +176,8 @@ export default {
     lede: 'Describe one project the way you would staff it today. The builder applies the gains the factory has actually shown and turns them into numbers you can take to your leadership team.',
     inputs: {
       team: 'Traditional team size',
-      teamUnit: 'people',
+      teamUnitSingular: 'person',
+      teamUnitPlural: 'people',
       rate: 'Fully loaded cost per person, per month',
       months: 'Planned duration with that team',
       monthsUnit: 'months',
@@ -203,7 +204,7 @@ export default {
     },
     summaryTitle: 'Your business case',
     summary:
-      'A {team}-person team for {months} months costs about {tradCost}. Applying the {scenario} results, the factory delivers the same scope in about {factMonths} months for about {factCost}: {saved} saved and {monthsSaved} months to market gained{valuePart}. At {projects} project(s) a year, that is {yearSaved} of build cost avoided annually.',
+      'A team of {team} {teamUnit} for {months} months costs about {tradCost}. Applying the {scenario} results, the factory delivers the same scope in about {factMonths} months for about {factCost}: {saved} saved and {monthsSaved} months to market gained{valuePart}. At {projects} project(s) a year, that is {yearSaved} of build cost avoided annually.',
     summaryValue: ', worth about {earlyValue} in value delivered earlier',
     copy: 'Copy the business case',
     copied: 'Copied to your clipboard',

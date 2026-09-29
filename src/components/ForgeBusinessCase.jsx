@@ -59,6 +59,7 @@ export default function ForgeBusinessCase({ t, lang }) {
 
   const vars = {
     team: v.team,
+    teamUnit: v.team === 1 ? b.inputs.teamUnitSingular : b.inputs.teamUnitPlural,
     months: v.months,
     tradCost: money(tradCost, lang),
     scenario: b.scenarios[scenario][0],
@@ -112,7 +113,7 @@ export default function ForgeBusinessCase({ t, lang }) {
               <output className="fb-out" htmlFor={'fb-' + f.id}>
                 {f.money ? moneyFull(v[f.id], lang) : v[f.id]}
                 {f.id === 'team'
-                  ? ' ' + b.inputs.teamUnit
+                  ? ' ' + (v.team === 1 ? b.inputs.teamUnitSingular : b.inputs.teamUnitPlural)
                   : f.id === 'months'
                     ? ' ' + b.inputs.monthsUnit
                     : ''}

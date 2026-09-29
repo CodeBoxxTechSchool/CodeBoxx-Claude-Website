@@ -178,7 +178,8 @@ export default {
     lede: 'Décrivez un projet comme vous le doteriez aujourd’hui. L’outil applique les gains que l’usine a réellement démontrés et les traduit en chiffres à présenter à votre direction.',
     inputs: {
       team: 'Taille de l’équipe traditionnelle',
-      teamUnit: 'personnes',
+      teamUnitSingular: 'personne',
+      teamUnitPlural: 'personnes',
       rate: 'Coût complet par personne, par mois',
       months: 'Durée prévue avec cette équipe',
       monthsUnit: 'mois',
@@ -214,7 +215,7 @@ export default {
     },
     summaryTitle: 'Votre analyse de rentabilité',
     summary:
-      'Une équipe de {team} personnes pendant {months} mois coûte environ {tradCost}. En appliquant les résultats « {scenario} », l’usine livre la même portée en environ {factMonths} mois pour environ {factCost} : {saved} économisés et {monthsSaved} mois gagnés sur la mise en marché{valuePart}. À {projects} projet(s) par année, cela représente {yearSaved} de coûts de construction évités chaque année.',
+      'Une équipe de {team} {teamUnit} pendant {months} mois coûte environ {tradCost}. En appliquant les résultats « {scenario} », l’usine livre la même portée en environ {factMonths} mois pour environ {factCost} : {saved} économisés et {monthsSaved} mois gagnés sur la mise en marché{valuePart}. À {projects} projet(s) par année, cela représente {yearSaved} de coûts de construction évités chaque année.',
     summaryValue: ', soit environ {earlyValue} de valeur livrée plus tôt',
     copy: 'Copier l’analyse',
     copied: 'Copiée dans le presse-papiers',
