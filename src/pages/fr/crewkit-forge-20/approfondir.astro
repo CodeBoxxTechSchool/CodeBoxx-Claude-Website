@@ -1,0 +1,26 @@
+---
+// FR twin of src/pages/crewkit-forge-20/dive-deeper.astro.
+import Layout from '../../../layouts/Layout.astro';
+import ForgeDeep from '../../../components/ForgeDeep.astro';
+import { localizedHref } from '../../../lib/i18nRoutes';
+import common from '../../../locales/fr/common';
+import forge from '../../../locales/fr/forge';
+import deep from '../../../locales/fr/forgeDeep';
+
+const pathname = Astro.url.pathname;
+---
+
+<Layout
+  lang="fr"
+  title={deep.seo.title}
+  description={deep.seo.description}
+  image="https://codeboxx.com/assets/crewkit-forge-poster.webp"
+  strings={common}
+>
+  <ForgeDeep
+    t={deep}
+    lang="fr"
+    forgeHref={localizedHref('/crewkit-forge-20', 'fr', pathname)}
+    buildOrderUrl={forge.buildOrderUrl}
+  />
+</Layout>

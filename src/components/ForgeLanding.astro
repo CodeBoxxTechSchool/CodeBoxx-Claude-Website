@@ -7,7 +7,7 @@
 import HeroVideo from './HeroVideo.astro';
 import ForgeCube from './ForgeCube.astro';
 
-const { t, contactHref } = Astro.props;
+const { t, contactHref, deepHref } = Astro.props;
 const order = { href: t.buildOrderUrl, target: '_blank', rel: 'noopener' };
 ---
 
@@ -181,6 +181,9 @@ const order = { href: t.buildOrderUrl, target: '_blank', rel: 'noopener' };
       <p class="eyebrow">{t.proof.eyebrow}</p>
       <h3 class="fg-proof-title">{t.proof.title}</h3>
       <p class="pbody">{t.proof.body}</p>
+      <a class="fg-proof-link" href={deepHref}>
+        {t.proof.deepLink}
+      </a>
     </div>
   </div>
 </section>

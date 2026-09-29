@@ -20,5 +20,9 @@ const pathname = Astro.url.pathname;
   image="https://codeboxx.com/assets/crewkit-forge-poster.webp"
   strings={common}
 >
-  <ForgeLanding t={forge} contactHref={localizedHref('#contact', 'en', pathname)} />
+  <ForgeLanding
+    t={forge}
+    contactHref={localizedHref('#contact', 'en', pathname)}
+    deepHref={localizedHref('/crewkit-forge-20/dive-deeper', 'en', pathname)}
+  />
 </Layout>

@@ -1,0 +1,28 @@
+---
+// /crewkit-forge-20/dive-deeper — the delivery evidence and interactive business
+// case behind the CrewKit Forge 20 appliance, linked from the Forge landing page.
+// FR twin: src/pages/fr/crewkit-forge-20/approfondir.astro.
+import Layout from '../../layouts/Layout.astro';
+import ForgeDeep from '../../components/ForgeDeep.astro';
+import { localizedHref } from '../../lib/i18nRoutes';
+import common from '../../locales/en/common';
+import forge from '../../locales/en/forge';
+import deep from '../../locales/en/forgeDeep';
+
+const pathname = Astro.url.pathname;
+---
+
+<Layout
+  lang="en"
+  title={deep.seo.title}
+  description={deep.seo.description}
+  image="https://codeboxx.com/assets/crewkit-forge-poster.webp"
+  strings={common}
+>
+  <ForgeDeep
+    t={deep}
+    lang="en"
+    forgeHref={localizedHref('/crewkit-forge-20', 'en', pathname)}
+    buildOrderUrl={forge.buildOrderUrl}
+  />
+</Layout>

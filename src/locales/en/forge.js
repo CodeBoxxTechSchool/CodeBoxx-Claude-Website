@@ -161,6 +161,7 @@ export default {
     eyebrow: 'Proven in live delivery',
     title: 'Built by a software factory, for yours.',
     body: 'CodeBoxx built CrewKit inside its own delivery business, used it to navigate a 2024 demand shock and returned to profitability in 2025. Forge 20 puts that same factory in your building.',
+    deepLink: 'Dive deeper: see the numbers →',
   },
   cta: {
     eyebrow: 'It’s time to re-shore your enterprise software.',
