@@ -27,8 +27,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Test the relay
-        run: npm run test:relay
+      # ops/ is installed on the droplet by hand (ops/nginx-report/README.md), never deployed.
+      - name: Test the relay and ops/
+        run: |
+          npm run test:relay
+          npm run test:ops
 
       - name: Build
         run: npm run build
