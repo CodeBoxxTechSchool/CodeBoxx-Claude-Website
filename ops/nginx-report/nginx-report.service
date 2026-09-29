@@ -1,0 +1,26 @@
+[Unit]
+Description=Daily email of the website's nginx 404s and 5xx
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/node /opt/nginx-report/report.js
+# Read as root before the service drops to its dynamic user: root:root, mode 0600.
+EnvironmentFile=/etc/nginx-report/env
+DynamicUser=yes
+# nginx's logs are www-data:adm 0640.
+SupplementaryGroups=adm
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=yes
+LockPersonality=yes
+RestrictRealtime=yes
