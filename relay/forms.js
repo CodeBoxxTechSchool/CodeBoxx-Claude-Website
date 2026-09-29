@@ -74,9 +74,9 @@ function isPageUrl(value) {
 }
 
 /** Maps validated contact data to the portal's form submission (POST /api/v1/form-submissions). */
-export function toContact(data) {
+export function toContact(data, now) {
   return {
-    ...common('contact', data),
+    ...common('contact', data, now),
     division: data.division,
     isMobilePhone: data.mobile === 'yes',
     country: data.country,
@@ -85,16 +85,16 @@ export function toContact(data) {
 }
 
 /** Maps validated pitch data to the portal's form submission. */
-export function toPitch(data) {
+export function toPitch(data, now) {
   return {
-    ...common('pitch', data),
+    ...common('pitch', data, now),
     division: 'ventures',
     ...(data.description && { message: data.description }),
     ...(data.projectType && { extra: { projectType: data.projectType } }),
   };
 }
 
-function common(form, data) {
+function common(form, data, now = Date.now()) {
   return {
     submissionId: data.submissionId,
     form,
@@ -104,6 +104,8 @@ function common(form, data) {
     phone: data.phone,
     language: data.lang,
     consent: true,
+    // Stamped here, not by the portal: a queued copy may reach it up to 72 hours later.
+    consentAt: new Date(now).toISOString(),
     ...(data.pageUrl && { pageUrl: data.pageUrl }),
   };
 }
