@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { isHoneypot, toLead, validateEnroll } from '../enroll.js';
+import { toLead, validateEnroll } from '../enroll.js';
+import { isHoneypot } from '../fields.js';
 import { VALID } from './fixtures.js';
 
 const now = new Date('2026-09-28T12:00:00Z');

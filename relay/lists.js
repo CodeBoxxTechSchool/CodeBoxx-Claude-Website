@@ -41,3 +41,7 @@ export const HEARD_ABOUT = new Map(
     [fr, en],
   ])
 );
+
+// The pitch drawer's project types, the values of pitchDrawer.projectKinds in
+// src/locales/{en,fr}/ventures.js.
+export const PROJECT_TYPES = new Set(['native-app', 'web-app', 'web-project', 'other']);

@@ -55,6 +55,22 @@ test('resends a queued submission and deletes it once received, a repeated ID in
   }
 });
 
+test('resends a contact or pitch submission to the form submissions endpoint', async () => {
+  for (const kind of ['contact', 'pitch']) {
+    for (const status of [201, 409]) {
+      answer = status;
+      await enqueue(dir, ID, kind, { submissionId: ID }, clock);
+      await resendQueued(config);
+      assert.equal(calls.at(-1).url, 'http://portal.test/api/v1/form-submissions');
+      assert.deepEqual(await readdir(dir), []);
+      assert.equal(
+        logs.at(-1),
+        `resend ${ID}.json portal=${status} ${status === 201 ? 'received' : 'refused'}`
+      );
+    }
+  }
+});
+
 test('keeps it on a portal 5xx, timeout or network error', async () => {
   for (const status of [500, 'timeout', 'error']) {
     answer = status;

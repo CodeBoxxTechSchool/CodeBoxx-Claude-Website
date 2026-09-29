@@ -1,6 +1,8 @@
 import http from 'node:http';
 import { join } from 'node:path';
-import { isHoneypot, toLead, validateEnroll } from './enroll.js';
+import { toLead, validateEnroll } from './enroll.js';
+import { isHoneypot } from './fields.js';
+import { toContact, toPitch, validateContact, validatePitch } from './forms.js';
 import { dequeue, enqueue, queueStats, startResending } from './outbox.js';
 import { isRetryable, sendToPortal } from './portal.js';
 
@@ -10,18 +12,23 @@ const MAX_BODY_BYTES = 16 * 1024;
 // body is added to the answer's JSON; note goes to the log, so it must never carry personal data.
 const routes = {
   '/api/health': { GET: health },
-  '/api/enroll': { POST: enroll },
+  '/api/enroll': { POST: submission('enroll', validateEnroll, toLead) },
+  '/api/contact': { POST: submission('contact', validateContact, toContact) },
+  '/api/pitch': { POST: submission('pitch', validatePitch, toPitch) },
 };
 
 async function health(_, { outboxDir, now }) {
   return { status: 200, body: { queue: outboxDir ? await queueStats(outboxDir, now?.()) : null } };
 }
 
-async function enroll(body, config) {
-  if (isHoneypot(body)) return { status: 200, note: 'honeypot' };
-  const result = validateEnroll(body);
-  if (!result.ok) return { status: 400, note: `invalid=${result.errors.join(',')}` };
-  return forward('enroll', toLead(result.data), result.data.submissionId, config);
+// A form's handler: validate turns the browser's fields into data, toPortal maps it for the portal.
+function submission(kind, validate, toPortal) {
+  return async (body, config) => {
+    if (isHoneypot(body)) return { status: 200, note: 'honeypot' };
+    const result = validate(body);
+    if (!result.ok) return { status: 400, note: `invalid=${result.errors.join(',')}` };
+    return forward(kind, toPortal(result.data), result.data.submissionId, config);
+  };
 }
 
 // Only a submission with an ID is queued: the portal takes a resend of it at most once.

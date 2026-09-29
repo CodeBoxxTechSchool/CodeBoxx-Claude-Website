@@ -8,7 +8,7 @@ import Logo from './Logo';
 import { useIntakes } from '../lib/intakes';
 import { localizedHref, localizedId } from '../lib/i18nRoutes';
 import { suggestEmail } from '../lib/emailTypos';
-import { newSubmissionId } from '../lib/submissionId';
+import { pageUrl, useRelaySubmit } from '../lib/useRelaySubmit';
 
 // The homepage (replaced the old react-router Home.jsx).
 //
@@ -1416,19 +1416,43 @@ function Metrics() {
   );
 }
 
+const CONTACT_BLANK = {
+  first: '',
+  last: '',
+  email: '',
+  country: '',
+  phone: '',
+  message: '',
+  website: '',
+};
+
 function Contact({ onEnroll }) {
-  const { home, lang, pathname } = useHomeCtx();
+  const { home, lang } = useHomeCtx();
   const divisions = useDivisions(home);
   const contactId = localizedId('contact', lang);
-  const [f, setF] = React.useState({ first: '', last: '', email: '', country: '', phone: '' });
+  const [f, setF] = React.useState(CONTACT_BLANK);
   const [division, setDivision] = React.useState('codeboxx');
   const [mobile, setMobile] = React.useState('yes');
-  const [lg, setLg] = React.useState('en');
+  const [lg, setLg] = React.useState(lang === 'fr' ? 'fr' : 'en');
   const [consent, setConsent] = React.useState(false);
-  const [sent, setSent] = React.useState(false);
+  const { status, submit } = useRelaySubmit('/api/contact');
   const set = (k) => (e) => setF((v) => Object.assign({}, v, { [k]: e.target.value }));
   const invalid = f.email.length > 0 && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email);
   const ready = f.first && f.last && f.email && !invalid && f.country && f.phone && consent;
+  const sending = status === 'sending';
+  const send = async () => {
+    const fields = { ...f, division, mobile, lang: lg, consent, pageUrl: pageUrl() };
+    // Blank again after a success, so a second click can't send the same message twice.
+    if (await submit(fields)) {
+      setF(CONTACT_BLANK);
+      setConsent(false);
+    }
+  };
+  const note = {
+    sent: home.contact.sentNote,
+    error: home.contact.errorNote,
+    busy: home.contact.busyNote,
+  }[status];
   return (
     <section id={contactId} className="sect sect-contact">
       <div className="wrap grid2">
@@ -1500,12 +1524,16 @@ function Contact({ onEnroll }) {
             </Form.Control.Feedback>
           </Form.Group>
           <div className="form-row-2">
-            <Form.Control
-              placeholder={home.contact.countryPlaceholder}
+            <CountryCombobox
+              id="contact-country"
+              label={home.enroll.countryLabel}
+              lang={lang}
               value={f.country}
-              onChange={set('country')}
+              onChange={(country) => setF((v) => ({ ...v, country }))}
+              strings={home.enroll}
             />
             <Form.Control
+              className="align-self-end"
               placeholder={home.contact.phonePlaceholder}
               value={f.phone}
               onChange={set('phone')}
@@ -1549,6 +1577,17 @@ function Contact({ onEnroll }) {
               />
             </div>
           </div>
+          <Form.Group>
+            <Form.Label htmlFor="contact-message">{home.contact.messageLabel}</Form.Label>
+            <Form.Control
+              id="contact-message"
+              as="textarea"
+              rows={4}
+              maxLength={2000}
+              value={f.message}
+              onChange={set('message')}
+            />
+          </Form.Group>
           <div className="d-flex gap-2 align-items-start">
             <Form.Check
               type="checkbox"
@@ -1560,17 +1599,32 @@ function Contact({ onEnroll }) {
               {home.contact.consentTextPart1}
               <a href="mailto:info@codeboxx.com">info@codeboxx.com</a>
               {home.contact.consentTextPart2}
-              <a href={localizedHref('#contact', lang, pathname)}>{home.contact.consentLinkText}</a>
+              <a href={localizedHref('/privacy-policy', lang)}>{home.contact.consentLinkText}</a>
               {home.contact.consentTextPart3}
             </span>
           </div>
+          <div className="enroll-hp" aria-hidden="true">
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={f.website}
+              onChange={set('website')}
+            />
+          </div>
           <div className="rule" />
           <div className="form-actions">
-            <span className={'form-actions-note' + (sent ? ' sent' : '')}>
-              {sent ? home.contact.sentNote : home.contact.notSentNote}
+            <span
+              className={'form-actions-note' + (status === 'sent' ? ' sent' : note ? ' error' : '')}
+              aria-live="polite"
+            >
+              {note ?? home.contact.notSentNote}
             </span>
-            <Button size="lg" disabled={!ready} onClick={() => setSent(true)}>
-              {home.contact.submit}
+            <Button size="lg" disabled={!ready || sending} onClick={send}>
+              {sending && <Spinner size="sm" aria-hidden="true" />}
+              {sending ? home.contact.sending : home.contact.submit}
             </Button>
           </div>
         </div>
@@ -1633,9 +1687,6 @@ const ENROLL_BLANK = {
   website: '',
 };
 
-// Past the relay's own 10 s portal timeout, so a slow portal still gets its answer through.
-const ENROLL_TIMEOUT_MS = 15000;
-
 function EnrollDrawer({ course, onClose }) {
   const { home, common, lang: pageLang } = useHomeCtx();
   const [form, setForm] = React.useState(ENROLL_BLANK);
@@ -1644,15 +1695,11 @@ function EnrollDrawer({ course, onClose }) {
   const [lang, setLang] = React.useState(pageLang === 'fr' ? 'fr' : 'en');
   const [contactBy, setContactBy] = React.useState('email');
   const [heard, setHeard] = React.useState('');
-  // idle | sending | sent | error | busy (429)
-  const [status, setStatus] = React.useState('idle');
+  const { status, setStatus, submit } = useRelaySubmit('/api/enroll');
   const [emailHint, setEmailHint] = React.useState(null);
   const [renderCourse, setRenderCourse] = React.useState(course);
   const emailRef = React.useRef(null);
   const sentRef = React.useRef(null);
-  // Kept across retries, so the relay's resends and the visitor's retries make a single lead.
-  const submissionId = React.useRef(null);
-  if (submissionId.current === null) submissionId.current = newSubmissionId();
   React.useEffect(() => {
     if (course) {
       setRenderCourse(course);
@@ -1683,36 +1730,6 @@ function EnrollDrawer({ course, onClose }) {
   const program = renderCourse && /full[\s-]?stack|fsd/i.test(renderCourse) ? 'fsd' : 'ai';
   const title = home.enroll.titles[program];
   const heardAbout = home.heardAbout;
-  const submit = async () => {
-    setStatus('sending');
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), ENROLL_TIMEOUT_MS);
-    try {
-      const res = await fetch('/api/enroll', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...form,
-          mobile,
-          lang,
-          contactBy,
-          heard,
-          program,
-          submissionId: submissionId.current,
-        }),
-        signal: controller.signal,
-      });
-      // Checks the body too: a 200 from anything but the relay (e.g. an HTML page) isn't a lead.
-      const body = res.ok ? await res.json().catch(() => null) : null;
-      // "Submit again" after a success is a new submission.
-      if (body?.ok) submissionId.current = newSubmissionId();
-      setStatus(body?.ok ? 'sent' : res.status === 429 ? 'busy' : 'error');
-    } catch {
-      setStatus('error');
-    } finally {
-      clearTimeout(timer);
-    }
-  };
   const submitAgain = () => {
     flushSync(() => setStatus('idle'));
     emailRef.current?.focus();
@@ -1928,7 +1945,11 @@ function EnrollDrawer({ course, onClose }) {
           <span className={'form-actions-note' + (note ? ' error' : '')} aria-live="polite">
             {note}
           </span>
-          <Button size="lg" disabled={!ready || sending} onClick={submit}>
+          <Button
+            size="lg"
+            disabled={!ready || sending}
+            onClick={() => submit({ ...form, mobile, lang, contactBy, heard, program })}
+          >
             {sending && <Spinner size="sm" aria-hidden="true" />}
             {sending ? home.enroll.sending : home.enroll.submit}
           </Button>

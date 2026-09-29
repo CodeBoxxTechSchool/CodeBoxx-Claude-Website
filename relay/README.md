@@ -45,8 +45,21 @@ known ID as it did the first time without saving or emailing again. A non-empty 
 
 Other errors: 404 unknown path, 405 wrong method, 413 body too large, 415 not JSON.
 
-To add a form, add a route to `routes` in `server.js` and, if it can be queued, its portal path to
-`KINDS` in `portal.js`.
+`POST /api/contact` (the home page's contact form) and `POST /api/pitch` (the Ventures pitch
+drawer) → the portal's `POST /api/v1/form-submissions`, with the same honeypot and answers as
+enroll, except that only a portal 201 answers 200 (a 409, an ID already used on another endpoint,
+answers 502 and is not queued). Both require `first`, `last`, `email`, `phone` (as typed: digits,
+spaces, `+ - ( ) .`, 7 to 15 digits), `lang` (`en`/`fr`), `consent` (`true`) and `submissionId`,
+and take an optional `pageUrl` (http(s), 500 characters max).
+
+- Contact also requires `division` (`codeboxx`/`solutions`/`academy`/`ventures`), `mobile`
+  (`yes`/`no`) and `country` (ISO 3166-1 alpha-2), and takes an optional `message` (2000 max).
+- Pitch takes an optional `projectType` (`native-app`/`web-app`/`web-project`/`other`, sent to
+  the portal as `extra.projectType`) and `description` (2000 max, sent as `message`); its
+  division is always `ventures`.
+
+To add a form, add a route to `routes` in `server.js` and its portal path to `KINDS` in
+`portal.js`, which the queue uses to resend it.
 
 ### Queue
 
