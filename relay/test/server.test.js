@@ -298,6 +298,29 @@ test('answers the health check with the queue size and age, without calling the 
   assert.match(logs[0], /^GET \/api\/health 200 \d+ms$/);
 });
 
+test('answers 503 to a health check with ?queue= once a submission waited longer', async () => {
+  const health = (query) => fetch(`${relayUrl}/api/health?queue=${query}`);
+  const empty = await health(900);
+  assert.equal(empty.status, 200);
+  assert.deepEqual(await empty.json(), { ok: true, queue: { size: 0, oldestAgeSeconds: null } });
+  await enqueue(outboxDir, ID, 'enroll', VALID, NOW - 900_000);
+  assert.equal((await health(900)).status, 200);
+  const late = await health(899);
+  assert.equal(late.status, 503);
+  assert.deepEqual(await late.json(), { ok: false, queue: { size: 1, oldestAgeSeconds: 900 } });
+  assert.equal((await fetch(`${relayUrl}/api/health`)).status, 200);
+  assert.match(logs[2], /^GET \/api\/health 503 \d+ms$/);
+});
+
+test('refuses a health check whose ?queue= is not a whole number of seconds', async () => {
+  for (const query of ['abc', '-1', '1.5', '']) {
+    const res = await fetch(`${relayUrl}/api/health?queue=${query}`);
+    assert.equal(res.status, 400, query);
+    assert.deepEqual(await res.json(), { ok: false, errors: ['queue'] });
+  }
+  assert.match(logs[0], /^GET \/api\/health 400 \d+ms invalid=queue$/);
+});
+
 test('logs no personal data', async () => {
   await post('/api/enroll', VALID);
   await post('/api/enroll', { ...VALID, birth: '1990-02-30' });

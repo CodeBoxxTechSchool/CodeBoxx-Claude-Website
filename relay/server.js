@@ -17,8 +17,9 @@ const MAX_BODY_BYTES = 16 * 1024;
 // A 5 MB CV is about 7 MB in base64, plus the form's fields.
 const BODY_LIMITS = { '/api/careers': 8 * 1024 * 1024 };
 
-// Handlers get the parsed JSON body (POST) and the config, and resolve to { status, note?, body? };
-// body is added to the answer's JSON; note goes to the log, so it must never carry personal data.
+// Handlers get the parsed JSON body (POST) or the query's URLSearchParams (GET) and the config, and
+// resolve to { status, note?, body? }; body is added to the answer's JSON; note goes to the log, so
+// it must never carry personal data.
 const routes = {
   '/api/health': { GET: health },
   '/api/enroll': { POST: submission('enroll', validateEnroll, toLead) },
@@ -27,8 +28,18 @@ const routes = {
   '/api/careers': { POST: submission('careers', validateCareers, toCareers) },
 };
 
-async function health(_, { outboxDir, now }) {
-  return { status: 200, body: { queue: outboxDir ? await queueStats(outboxDir, now?.()) : null } };
+/**
+ * With ?queue=<seconds>, answers 503 once the oldest queued submission is older than that, for an
+ * uptime check that only looks at the status code.
+ */
+async function health(query, { outboxDir, now }) {
+  const maxAge = query.get('queue');
+  if (maxAge !== null && !/^\d+$/.test(maxAge)) {
+    return { status: 400, note: 'invalid=queue', body: { errors: ['queue'] } };
+  }
+  const queue = outboxDir ? await queueStats(outboxDir, now?.()) : null;
+  const late = maxAge !== null && queue?.oldestAgeSeconds > Number(maxAge);
+  return { status: late ? 503 : 200, body: { queue } };
 }
 
 // A form's handler: validate turns the browser's fields into data, toPortal maps it for the portal.
@@ -94,7 +105,9 @@ async function handle(req, path, config) {
   if (!route) return { status: 404 };
   const handler = route[req.method];
   if (!handler) return { status: 405, allow: Object.keys(route).join(', ') };
-  if (req.method !== 'POST') return handler(null, config);
+  if (req.method !== 'POST') {
+    return handler(new URLSearchParams(req.url.slice(path.length)), config);
+  }
 
   const type = (req.headers['content-type'] ?? '').split(';')[0].trim().toLowerCase();
   if (type !== 'application/json') return { status: 415 };

@@ -27,7 +27,10 @@ With neither `STATE_DIRECTORY` nor `OUTBOX_DIR`, nothing is queued (one warning 
 ## Routes
 
 `GET /api/health` → `200 {ok: true, queue: {size, oldestAgeSeconds}}` (`oldestAgeSeconds` null when
-the queue is empty, `queue` null when it is disabled), without calling the portal.
+the queue is empty, `queue` null when it is disabled), without calling the portal. With
+`?queue=<seconds>`, it answers `503 {ok: false, queue: …}` when the oldest queued submission is
+older than that (and 400 when the value is not a whole number): the DigitalOcean uptime check on
+`/api/health?queue=900` alerts when a submission has waited more than 15 minutes.
 
 `POST /api/enroll` (JSON, 16 KB max) → the portal's `POST /api/v1/leads`. Fields, all strings:
 `first`, `last`, `birth` (`YYYY-MM-DD`), `email`, `dial` (`+1`), `phone`, `mobile` (`yes`/`no`),
