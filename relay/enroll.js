@@ -1,4 +1,5 @@
 import { COUNTRY_CODES, HEARD_ABOUT } from './lists.js';
+import { isSubmissionId } from './outbox.js';
 
 const REQUIRED = [
   'first',
@@ -74,6 +75,12 @@ export function validateEnroll(body, now = new Date()) {
 
   if (data.heard && !HEARD_ABOUT.has(data.heard)) errors.add('heard');
 
+  // Optional: a page loaded before the drawer sent one has none.
+  if (body.submissionId !== undefined) {
+    if (isSubmissionId(body.submissionId)) data.submissionId = body.submissionId.toLowerCase();
+    else errors.add('submissionId');
+  }
+
   return errors.size ? { ok: false, errors: [...errors] } : { ok: true, data };
 }
 
@@ -107,6 +114,8 @@ export function toLead(data) {
   };
   // Omitted rather than empty: the portal stores "Unknown" for a missing channel.
   if (data.heard) lead.ReferralChannel = HEARD_ABOUT.get(data.heard);
+  // A repeat of a known ID gets the first answer, without a second lead or email.
+  if (data.submissionId) lead.SubmissionId = data.submissionId;
   return lead;
 }
 
