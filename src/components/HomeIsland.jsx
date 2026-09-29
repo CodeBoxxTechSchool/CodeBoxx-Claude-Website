@@ -2016,7 +2016,7 @@ function CodeBlog() {
 }
 
 function ForgeTeaser() {
-  const { home } = useHomeCtx();
+  const { home, lang, pathname } = useHomeCtx();
   const features = home.forge.features;
   return (
     <section className="band-dark">
@@ -2065,7 +2065,7 @@ function ForgeTeaser() {
           </Button>
           <Button
             variant="outline-primary"
-            onClick={() => window.open('http://crewkit.io', '_blank', 'noopener')}
+            href={localizedHref('/crewkit-forge-20', lang, pathname)}
           >
             {home.forge.learnMore}
           </Button>

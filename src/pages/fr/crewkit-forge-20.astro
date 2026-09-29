@@ -1,0 +1,20 @@
+---
+// FR twin of src/pages/crewkit-forge-20.astro — see that file for the rationale.
+import Layout from '../../layouts/Layout.astro';
+import ForgeLanding from '../../components/ForgeLanding.astro';
+import { localizedHref } from '../../lib/i18nRoutes';
+import common from '../../locales/fr/common';
+import forge from '../../locales/fr/forge';
+
+const pathname = Astro.url.pathname;
+---
+
+<Layout
+  lang="fr"
+  title={forge.seo.title}
+  description={forge.seo.description}
+  image="https://codeboxx.com/assets/crewkit-forge-poster.webp"
+  strings={common}
+>
+  <ForgeLanding t={forge} contactHref={localizedHref('#contact', 'fr', pathname)} />
+</Layout>

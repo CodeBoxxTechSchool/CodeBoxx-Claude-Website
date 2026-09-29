@@ -1,0 +1,24 @@
+---
+// /crewkit-forge-20 — landing page for the CodeBoxx w/ CrewKit Forge 20 appliance.
+// Same path as the retired Wix page (www.codeboxx.com/crewkit-forge-20), so the
+// legacy URL maps one-to-one. Body lives in ForgeLanding.astro, shared with the FR
+// twin at src/pages/fr/crewkit-forge-20.astro. Home's Forge band "Learn More"
+// button links here.
+import Layout from '../layouts/Layout.astro';
+import ForgeLanding from '../components/ForgeLanding.astro';
+import { localizedHref } from '../lib/i18nRoutes';
+import common from '../locales/en/common';
+import forge from '../locales/en/forge';
+
+const pathname = Astro.url.pathname;
+---
+
+<Layout
+  lang="en"
+  title={forge.seo.title}
+  description={forge.seo.description}
+  image="https://codeboxx.com/assets/crewkit-forge-poster.webp"
+  strings={common}
+>
+  <ForgeLanding t={forge} contactHref={localizedHref('#contact', 'en', pathname)} />
+</Layout>

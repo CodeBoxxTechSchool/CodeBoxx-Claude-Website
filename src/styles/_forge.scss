@@ -1,0 +1,535 @@
+@use 'variables' as v;
+
+// /crewkit-forge-20 landing page (src/components/ForgeLanding.astro). Brand
+// palette only: navy for the "owned hardware" surfaces, blue for action, with the
+// three lane colours in the local-first section carrying meaning (local / logged /
+// never). Every class is prefixed fg- so nothing here leaks into other pages.
+
+$fg-ink: v.$navy-900;
+
+.fg-h2 {
+  font-size: 40px;
+  letter-spacing: -0.01em;
+  line-height: 1.08;
+  text-wrap: balance;
+  max-width: 18ch;
+}
+
+.fg-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.fg-note {
+  margin: 0;
+  font-size: v.$text-caption;
+  font-weight: v.$weight-semibold;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+// ---- Hero ----
+// The poster doubles as the static background where HeroVideo hides itself
+// (phones, reduced motion), darkened so the white type stays readable.
+.fg-hero {
+  padding: 120px 0 112px;
+  background:
+    linear-gradient(rgba(0, 14, 20, 0.82), rgba(0, 14, 20, 0.82)),
+    url('/assets/crewkit-forge-poster.webp') center / cover no-repeat,
+    $fg-ink;
+}
+.fg-hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+}
+.fg-hero-logo {
+  width: 150px;
+  height: auto;
+}
+.fg-hero-title {
+  margin: 0;
+  max-width: 13ch;
+  font-size: 68px;
+  font-weight: v.$weight-black;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: v.$neutral-0;
+  text-wrap: balance;
+}
+.fg-hero-lede {
+  margin: 0;
+  max-width: 600px;
+  font-size: 18px;
+  line-height: 28px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+// ---- Manifesto ----
+.fg-manifesto {
+  padding: 120px 0;
+  background: $fg-ink;
+}
+.fg-manifesto-line {
+  margin: 0;
+  max-width: 16ch;
+  font-size: clamp(40px, 6vw, 88px);
+  font-weight: v.$weight-black;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: v.$neutral-0;
+  text-wrap: balance;
+}
+.fg-pillar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 2px solid v.$blue-500;
+}
+.fg-pillar-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: v.$weight-bold;
+  color: v.$neutral-0;
+}
+.fg-pillar-body {
+  margin: 0;
+  font-size: 15px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+// ---- Who needs a Data Center? ----
+.fg-dc {
+  background: v.$neutral-50;
+  scroll-margin-top: 80px;
+}
+.fg-dc-grid {
+  align-items: center;
+  gap: 48px;
+}
+.fg-specs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px 24px;
+  margin: 8px 0 0;
+}
+.fg-spec {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 14px;
+  border-top: 1px solid v.$neutral-200;
+
+  dt {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  dd {
+    margin: 0;
+    font-size: 13px;
+    line-height: 18px;
+    color: v.$color-text-secondary;
+  }
+}
+.fg-spec-value {
+  font-size: 44px;
+  font-weight: v.$weight-black;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: v.$navy-500;
+}
+.fg-spec-unit {
+  font-size: v.$text-caption;
+  font-weight: v.$weight-bold;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: v.$blue-text;
+}
+.fg-cube-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.fg-footnote {
+  font-size: v.$text-caption;
+  line-height: 18px;
+  color: v.$color-text-secondary;
+}
+
+// The drawing itself. Dark satin body on the light section, blue glass screens.
+.forge-cube {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+
+  .fx-body polygon {
+    stroke: v.$neutral-700;
+    stroke-width: 1;
+    stroke-linejoin: round;
+  }
+  .fx-top {
+    fill: v.$neutral-800;
+  }
+  .fx-side-l {
+    fill: v.$neutral-900;
+  }
+  .fx-side-r {
+    fill: v.$neutral-950;
+  }
+  .fx-chamfer {
+    fill: v.$neutral-800;
+  }
+  .fx-screen {
+    fill: v.$blue-900;
+    stroke: v.$blue-500 !important;
+    stroke-width: 1.5 !important;
+  }
+  .fx-screen-top {
+    fill: v.$blue-800;
+  }
+  .fx-glow {
+    fill: v.$blue-500;
+    stroke: none !important;
+  }
+  .fx-caster {
+    fill: v.$neutral-900;
+  }
+  .fx-callouts {
+    polyline {
+      fill: none;
+      stroke: v.$navy-300;
+      stroke-width: 1;
+    }
+    circle {
+      fill: v.$blue-500;
+    }
+  }
+  .fx-label {
+    font-size: 16px;
+    font-weight: v.$weight-bold;
+    fill: v.$navy-500;
+  }
+  .fx-sub {
+    font-size: 13px;
+    fill: v.$color-text-secondary;
+  }
+  .fx-dim {
+    line {
+      stroke: v.$neutral-400;
+      stroke-width: 1;
+    }
+    text {
+      font-size: 14px;
+      font-weight: v.$weight-bold;
+      fill: v.$neutral-500;
+    }
+  }
+}
+
+// ---- Lead. Think. Write. Run. ----
+.fg-rhythm {
+  background: v.$neutral-0;
+}
+.fg-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: fg-step;
+}
+.fg-step {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 18px;
+  border-top: 3px solid v.$navy-500;
+  counter-increment: fg-step;
+
+  &::before {
+    content: '0' counter(fg-step);
+    font-size: v.$text-micro;
+    font-weight: v.$weight-semibold;
+    letter-spacing: 1px;
+    color: v.$blue-text;
+  }
+}
+.fg-step-word {
+  font-size: 40px;
+  font-weight: v.$weight-black;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: v.$navy-500;
+}
+
+// ---- Local-first ----
+.fg-local-grid {
+  align-items: center;
+  gap: 48px;
+}
+.fg-local-body {
+  margin: 0;
+  max-width: 560px;
+  font-size: 15px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, 0.75);
+}
+.fg-lanes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.fg-lane {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 24px;
+  border-left: 4px solid v.$green-400;
+  border-radius: 0 v.$radius-md v.$radius-md 0;
+  background: rgba(255, 255, 255, 0.05);
+}
+.fg-lane-1 {
+  border-left-color: v.$blue-500;
+}
+.fg-lane-2 {
+  border-left-color: v.$red-400;
+}
+.fg-lane-label {
+  font-size: v.$text-caption;
+  font-weight: v.$weight-bold;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: v.$green-400;
+}
+.fg-lane-1 .fg-lane-label {
+  color: v.$blue-400;
+}
+.fg-lane-2 .fg-lane-label {
+  color: v.$red-300;
+}
+.fg-lane-body {
+  font-size: 16px;
+  line-height: 24px;
+  color: v.$neutral-0;
+}
+
+// ---- Why it looks like that ----
+.fg-visible {
+  position: relative;
+  overflow: hidden;
+  background: $fg-ink;
+}
+.fg-visible-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 65% center;
+}
+.fg-visible-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 14, 20, 0.94) 0%,
+    rgba(0, 14, 20, 0.78) 45%,
+    rgba(0, 14, 20, 0.2) 100%
+  );
+}
+.fg-visible-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-block: 160px;
+}
+.fg-quote {
+  margin: 0;
+  max-width: 17ch;
+  font-size: clamp(30px, 4vw, 54px);
+  font-weight: v.$weight-black;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: v.$neutral-0;
+  text-wrap: balance;
+}
+.fg-visible-body {
+  margin: 0;
+  max-width: 480px;
+  font-size: 16px;
+  line-height: 26px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+// ---- Workload ----
+.fg-workload {
+  background: v.$neutral-50;
+}
+.fg-plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 32px;
+  border: 1px solid v.$neutral-200;
+  border-radius: v.$radius-xl;
+  background: v.$neutral-0;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: v.$blue-500;
+    transform: translateY(-2px);
+    color: inherit;
+  }
+}
+.fg-plan-name {
+  font-size: 36px;
+  font-weight: v.$weight-black;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: v.$navy-500;
+}
+.fg-plan-go {
+  align-self: flex-end;
+  font-size: 24px;
+  color: v.$blue-text;
+}
+.fg-options-title {
+  margin: 0;
+  font-size: v.$text-caption;
+  font-weight: v.$weight-bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: v.$color-text-tertiary;
+}
+.fg-option {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid v.$neutral-200;
+}
+.fg-option-name {
+  font-size: 16px;
+  font-weight: v.$weight-bold;
+  color: v.$navy-500;
+}
+
+// ---- Included + proof ----
+.fg-included {
+  background: v.$neutral-0;
+}
+.fg-included-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 18px;
+  border-top: 1px solid v.$neutral-200;
+}
+.fg-proof {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 760px;
+  padding: 28px 32px;
+  border-left: 4px solid v.$blue-500;
+  background: v.$neutral-50;
+}
+.fg-proof-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: v.$weight-bold;
+  color: v.$navy-500;
+}
+
+// ---- Closing call to action ----
+.fg-cta {
+  padding: 128px 0;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(67, 180, 240, 0.22), transparent 48%),
+    radial-gradient(circle at 12% 90%, rgba(67, 180, 240, 0.12), transparent 40%), $fg-ink;
+}
+.fg-cta-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+
+  .fg-actions {
+    justify-content: center;
+  }
+}
+.fg-cta-title {
+  margin: 0;
+  font-size: clamp(44px, 7vw, 96px);
+  font-weight: v.$weight-black;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: v.$neutral-0;
+}
+.fg-cta-kicker {
+  margin: 0;
+  font-size: 22px;
+  font-weight: v.$weight-bold;
+  color: v.$blue-400;
+}
+.fg-cta-body {
+  margin: 0;
+  max-width: 620px;
+  font-size: 16px;
+  line-height: 26px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+@media (max-width: v.$breakpoint-md) {
+  .fg-hero {
+    padding: 88px 0 80px;
+  }
+  .fg-hero-title {
+    font-size: 42px;
+  }
+  .fg-h2 {
+    font-size: 30px;
+  }
+  .fg-manifesto,
+  .fg-cta {
+    padding: 88px 0;
+  }
+  .fg-specs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .fg-spec-value {
+    font-size: 36px;
+  }
+  .fg-visible-inner {
+    padding-block: 96px;
+  }
+  .fg-visible-scrim {
+    background: rgba(0, 14, 20, 0.82);
+  }
+}
+
+// On phones the drawing scales down until its callout text is unreadable; the
+// spec tiles right above it carry the same facts, so show just the drawing.
+@media (max-width: 600px) {
+  .forge-cube .fx-callouts {
+    display: none;
+  }
+}
