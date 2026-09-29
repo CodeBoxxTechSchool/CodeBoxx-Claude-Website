@@ -32,6 +32,7 @@ export default {
       solutions: { title: 'Solutions' },
       academy: { title: 'Académie' },
     },
+    careers: 'Carrières',
     addresses: [
       ['St. Pete', '1101 4th St S, St. Petersburg, FL 33701'],
       ['Québec', '400-1020 Bouvier Street, Quebec City, QC G2K 2C9'],

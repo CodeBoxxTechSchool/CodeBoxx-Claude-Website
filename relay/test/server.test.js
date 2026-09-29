@@ -6,12 +6,13 @@ import { join } from 'node:path';
 import { after, before, beforeEach, test } from 'node:test';
 import { enqueue, resendQueued } from '../outbox.js';
 import { createServer } from '../server.js';
-import { CONTACT, PITCH, VALID } from './fixtures.js';
+import { base64, CAREERS, CONTACT, PDF, PITCH, VALID } from './fixtures.js';
 
 const API_KEY = 'test-key';
 const NOW = Date.parse('2026-09-29T12:00:00Z');
 const ID = '3f2b8c1e-9a4d-4e6f-8b7a-1c2d3e4f5a6b';
 const outboxDir = join(await mkdtemp(join(tmpdir(), 'relay-')), 'outbox');
+const MB = 1024 * 1024;
 
 // Fake portal: answers portalStatus, or never answers when portalStatus is null.
 let portalStatus;
@@ -75,7 +76,7 @@ const post = (path, body, headers = { 'content-type': 'application/json' }) =>
 
 async function expect(res, status) {
   assert.equal(res.status, status);
-  assert.deepEqual(await res.json(), { ok: status === 200 });
+  assert.equal((await res.json()).ok, status === 200);
 }
 
 test('forwards a valid lead to the portal with the api key', async () => {
@@ -168,10 +169,11 @@ test('answers 502 when the portal is unreachable', async () => {
   }
 });
 
-test('forwards contact and pitch submissions to the portal, queuing only a 5xx', async () => {
+test('forwards contact, pitch and careers submissions to the portal, queuing only a 5xx', async () => {
   for (const [path, body, kind] of [
     ['/api/contact', CONTACT, 'contact'],
     ['/api/pitch', PITCH, 'pitch'],
+    ['/api/careers', CAREERS, 'careers'],
   ]) {
     for (const [status, expected, queues] of [
       [201, 200, false],
@@ -192,7 +194,29 @@ test('forwards contact and pitch submissions to the portal, queuing only a 5xx',
     }
     const file = JSON.parse(await readFile(join(outboxDir, `${ID}.json`), 'utf8'));
     assert.equal(file.kind, kind);
+    assert.deepEqual(file.body, portalRequests.at(-1).body);
   }
+  assert.deepEqual(portalRequests.at(-1).body.cv, CAREERS.cv);
+});
+
+test('takes a body of up to 8 MB on the careers route only', async () => {
+  await expect(await post('/api/contact', { ...CONTACT, pad: 'x'.repeat(16 * 1024) }), 413);
+  const pdf = Buffer.concat([PDF, Buffer.alloc(5 * MB - PDF.length, 0x20)]);
+  const cv = { fileName: 'cv.pdf', content: base64(pdf) };
+  await expect(await post('/api/careers', { ...CAREERS, cv }), 200);
+  assert.equal(portalRequests.length, 1);
+  assert.equal(portalRequests[0].body.cv.content, cv.content);
+  await expect(await post('/api/careers', { ...CAREERS, pad: 'x'.repeat(8 * MB) }), 413);
+  assert.equal(portalRequests.length, 1);
+});
+
+test('rejects a CV the portal would refuse without calling it', async () => {
+  const cv = { fileName: 'cv.pdf', content: base64(Buffer.from('not a pdf')) };
+  const res = await post('/api/careers', { ...CAREERS, cv });
+  assert.equal(res.status, 400);
+  assert.deepEqual(await res.json(), { ok: false, errors: ['cv'] });
+  assert.equal(portalRequests.length, 0);
+  assert.match(logs[0], /^POST \/api\/careers 400 \d+ms invalid=cv$/);
 });
 
 test('resends a queued contact submission with the time the visitor consented', async () => {
@@ -248,17 +272,20 @@ test('rejects bad requests', async () => {
 });
 
 test('caps a chunked body without a content-length', async () => {
-  const status = await new Promise((resolve, reject) => {
-    const req = http.request(`${relayUrl}/api/enroll`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'transfer-encoding': 'chunked' },
+  const postChunked = (path) =>
+    new Promise((resolve, reject) => {
+      const req = http.request(`${relayUrl}${path}`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'transfer-encoding': 'chunked' },
+      });
+      req.on('response', (res) => resolve(res.statusCode));
+      req.on('error', reject);
+      for (let i = 0; i < 20; i++) req.write('x'.repeat(1024));
+      req.end();
     });
-    req.on('response', (res) => resolve(res.statusCode));
-    req.on('error', reject);
-    for (let i = 0; i < 20; i++) req.write('x'.repeat(1024));
-    req.end();
-  });
-  assert.equal(status, 413);
+  assert.equal(await postChunked('/api/enroll'), 413);
+  // Read to the end, then refused as JSON.
+  assert.equal(await postChunked('/api/careers'), 400);
 });
 
 test('answers the health check with the queue size and age, without calling the portal', async () => {
@@ -278,8 +305,21 @@ test('logs no personal data', async () => {
   await post('/api/enroll', { ...VALID, submissionId: ID });
   await post('/api/contact', CONTACT);
   await post('/api/pitch', { ...PITCH, phone: 'x' });
+  await post('/api/careers', CAREERS);
+  await post('/api/careers', { ...CAREERS, startDate: 'x', cv: { ...CAREERS.cv, content: 'x' } });
   const text = logs.join('\n').toLowerCase();
-  for (const value of ['ada', 'lovelace', '555', 'main st', 'g1a', API_KEY]) {
+  const cv = CAREERS.cv.content.slice(0, 12).toLowerCase();
+  for (const value of [
+    'ada',
+    'lovelace',
+    '555',
+    'main st',
+    'g1a',
+    'developer',
+    '.pdf',
+    cv,
+    API_KEY,
+  ]) {
     assert.ok(!text.includes(value), value);
   }
 });

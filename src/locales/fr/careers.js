@@ -1,0 +1,50 @@
+export default {
+  seo: {
+    title: 'Carrières — Joignez-vous à l’équipe CodeBoxx',
+    description:
+      'Vous cherchez une carrière qui va plus loin qu’un simple emploi ? Posez votre candidature chez CodeBoxx, ou envoyez-nous votre CV pour de futures occasions.',
+  },
+  pill: 'Carrières',
+  band: {
+    title: 'Joignez-vous à notre équipe.',
+    lede: 'Vous cherchez une carrière qui va plus loin qu’un simple emploi ? Joignez-vous à une équipe de professionnels motivés qui veulent faire une différence en technologie.',
+  },
+  intro: {
+    eyebrow: 'TRAVAILLER AVEC NOUS',
+    title: 'Des projets qui façonnent notre industrie.',
+    paragraphs: [
+      'Vous travaillerez avec plusieurs de nos clients sur des projets et des initiatives qui façonnent l’avenir de notre industrie. Que vous ayez de l’expérience ou que vous commenciez votre carrière, votre candidature est la bienvenue.',
+      'On offre une rémunération concurrentielle et de belles possibilités de croissance et d’avancement.',
+      'Aucun poste ouvert ne vous correspond ? On aimerait quand même avoir de vos nouvelles. Envoyez le formulaire et on gardera votre CV en dossier pour les futures occasions qui correspondent à vos compétences.',
+    ],
+  },
+  form: {
+    title: 'Postulez dès aujourd’hui.',
+    firstPlaceholder: 'Prénom',
+    lastPlaceholder: 'Nom',
+    emailPlaceholder: 'Courriel',
+    invalidEmail: 'Adresse invalide. Domaine manquant.',
+    didYouMean: 'Vouliez-vous dire ',
+    didYouMeanEnd: ' ?',
+    phonePlaceholder: 'Téléphone',
+    positionLabel: 'Poste ou rôle qui vous intéresse',
+    startDateLabel: 'Date de disponibilité',
+    cvLabel: 'CV',
+    cvHint: 'PDF, DOC ou DOCX, 5 Mo max.',
+    cvWrongType: 'Choisissez un fichier PDF, DOC ou DOCX.',
+    cvRejected: "Ce fichier n'est pas un vrai PDF, DOC ou DOCX. Veuillez choisir un autre fichier.",
+    cvTooBig: 'Ce fichier dépasse 5 Mo.',
+    cvEmpty: 'Ce fichier est vide.',
+    consentTextPart1:
+      'En soumettant ce formulaire, vous acceptez que nous puissions vous appeler, vous texter et vous envoyer des courriels au sujet de votre candidature. Vous comprenez que vous pouvez vous désabonner à tout moment, notamment en envoyant votre demande à ',
+    consentTextPart2: '. Des frais de messagerie et de données peuvent s’appliquer. ',
+    consentLinkText: 'Consultez notre politique de confidentialité complète',
+    consentTextPart3: ' pour plus de détails.',
+    requiredNote: 'Tous les champs sont obligatoires.',
+    receivedNote: 'Candidature reçue. Merci !',
+    submit: 'Envoyer',
+    sending: 'Envoi…',
+    errorNote: "Votre candidature n'a pas pu être envoyée. Veuillez réessayer.",
+    busyNote: 'Trop de tentatives. Veuillez patienter une minute, puis réessayer.',
+  },
+};

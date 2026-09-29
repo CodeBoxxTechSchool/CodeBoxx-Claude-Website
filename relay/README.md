@@ -3,8 +3,9 @@
 A small Node server that takes the site's forms and forwards them to the school portal, so the
 portal's API key never reaches the browser. nginx proxies `/api/` to it. Node 24, no npm
 dependencies: the folder runs on its own (`node server.js`). Only a submission the portal could not
-take is saved to disk, in the queue below, and for 72 hours at most; the logs hold status codes,
-timings and random submission IDs only.
+take is saved to disk, in the queue below, and for 72 hours at most (a careers application's CV
+included: it is never written anywhere else); the logs hold status codes, timings and random
+submission IDs only, never a file name or content.
 
 ## Run
 
@@ -59,6 +60,16 @@ received the submission, which a queued resend keeps.
   the portal as `extra.projectType`) and `description` (2000 max, sent as `message`); its
   division is always `ventures`.
 
+`POST /api/careers` (the careers page's application form, **8 MB max**; every other route stays at
+16 KB) → the same portal endpoint, with the same fields, rules and answers as contact and pitch,
+and no division. It also requires `position` (100 max) and `startDate` (`YYYY-MM-DD`, a real date
+no more than a year ago), both sent to the portal in `extra`, and `cv`: `{fileName, content}`, the
+file name (255 max) and the file's content in plain base64 (no `data:` prefix), sent to the portal
+as is. The relay decodes the content and refuses (400, `invalid=cv`) anything empty, over 5 MB, or
+that is not a PDF (starts with `%PDF-`), a DOC (an OLE compound file) or a DOCX (a zip naming
+`word/document.xml`), judged by the content alone. The portal checks it again, stores it in its
+private bucket, and answers 503 when it could not, which is queued like any 5xx.
+
 To add a form, add a route to `routes` in `server.js` and its portal path to `KINDS` in
 `portal.js`, which the queue uses to resend it.
 
@@ -99,8 +110,28 @@ One-time droplet setup (Ubuntu 24.04, done 2026-09-28, as root):
 4. nginx: `/etc/nginx/conf.d/forms-ratelimit.conf` has
    `limit_req_zone $binary_remote_addr zone=forms:1m rate=5r/m;`, and the `codeboxx` site has
    `location /api/` (`limit_req zone=forms burst=3 nodelay`, `limit_req_status 429`,
-   `client_max_body_size 16k`, `proxy_pass http://127.0.0.1:8787`) plus `location = /api/health`
-   without the limit, for uptime checks.
+   `client_max_body_size 16k`, `proxy_pass http://127.0.0.1:8787`, `proxy_set_header Host` and
+   `X-Forwarded-For`, `proxy_read_timeout 15s`) plus `location = /api/health` without the limit,
+   for uptime checks.
+
+   The careers form has a block of its own for the larger body, next to `location /api/`.
+   `client_body_buffer_size` keeps the body in memory: without it, nginx writes any body over
+   16 KB to a temporary file under `/var/lib/nginx/body`, which would put a copy of the CV on disk.
+   Then `nginx -t && systemctl reload nginx`.
+
+   ```nginx
+   location = /api/careers {
+       limit_req zone=forms burst=3 nodelay;
+       limit_req_status 429;
+       client_max_body_size 8m;
+       client_body_buffer_size 8m;
+       proxy_pass http://127.0.0.1:8787;
+       proxy_set_header Host $host;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_read_timeout 15s;
+   }
+   ```
+
 5. `/etc/sudoers.d/website-relay`: `deploy ALL=(root) NOPASSWD: /usr/bin/systemctl restart website-relay`
    (mode `0440`, checked with `visudo -c`).
 

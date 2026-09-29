@@ -15,6 +15,7 @@ export const ROUTE_TABLE = [
   { en: '/blog/:slug', fr: '/fr/blogue/:slug' },
   { en: '/financing', fr: '/fr/financement' },
   { en: '/ventures', fr: '/fr/ventures' },
+  { en: '/careers', fr: '/fr/carrieres' },
   { en: '/faq', fr: '/fr/faq' },
   { en: '/pinellas-residents', fr: '/fr/residents-pinellas' },
   { en: '/case-studies', fr: '/fr/etudes-de-cas' },

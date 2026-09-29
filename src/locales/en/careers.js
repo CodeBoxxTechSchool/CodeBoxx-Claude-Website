@@ -1,0 +1,50 @@
+export default {
+  seo: {
+    title: 'Careers — Join the CodeBoxx Team',
+    description:
+      'Looking for a career that’s more than a job? Apply to join the CodeBoxx team, or send us your résumé for future opportunities.',
+  },
+  pill: 'Careers',
+  band: {
+    title: 'Join our team.',
+    lede: 'Looking for a career that’s more than a job? Join a driven team of professionals who want to make a difference in tech.',
+  },
+  intro: {
+    eyebrow: 'WORK WITH US',
+    title: 'Projects that shape our industry.',
+    paragraphs: [
+      'You’ll work with a range of our clients on projects and initiatives that shape the future of our industry. Whether you’re an experienced professional or just starting your career, we welcome your application.',
+      'We offer competitive compensation and plenty of room to grow and advance.',
+      'No open position that fits? We’d still love to hear from you. Send the form and we’ll keep your résumé on file for future opportunities that match your skills.',
+    ],
+  },
+  form: {
+    title: 'Apply today.',
+    firstPlaceholder: 'First Name',
+    lastPlaceholder: 'Last Name',
+    emailPlaceholder: 'Email',
+    invalidEmail: 'Invalid address. Missing domain.',
+    didYouMean: 'Did you mean ',
+    didYouMeanEnd: '?',
+    phonePlaceholder: 'Phone',
+    positionLabel: 'Position or role you’re interested in',
+    startDateLabel: 'Available start date',
+    cvLabel: 'Résumé',
+    cvHint: 'PDF, DOC or DOCX, 5 MB max.',
+    cvWrongType: 'Choose a PDF, DOC or DOCX file.',
+    cvRejected: "This file isn't a real PDF, DOC or DOCX. Please choose another file.",
+    cvTooBig: 'This file is over 5 MB.',
+    cvEmpty: 'This file is empty.',
+    consentTextPart1:
+      'By submitting this form, you agree that we may call, text, and email you about your application. You understand that you can unsubscribe at any time including by emailing your request to ',
+    consentTextPart2: '. Message and data rates may apply. ',
+    consentLinkText: 'View our complete Privacy Policy',
+    consentTextPart3: ' for further detail.',
+    requiredNote: 'All fields are required.',
+    receivedNote: 'Application received. Thank you!',
+    submit: 'Submit',
+    sending: 'Sending…',
+    errorNote: "Your application couldn't be sent. Please try again.",
+    busyNote: 'Too many attempts. Please wait a minute and try again.',
+  },
+};
