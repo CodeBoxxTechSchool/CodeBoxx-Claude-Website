@@ -100,6 +100,26 @@ test('enforces maximum lengths', () => {
   assert.deepEqual(errorsFor({ phone: `555-555-0100${'-'.repeat(19)}` }), ['phone']);
 });
 
+test('checks an optional submission ID', () => {
+  const id = '3F2B8C1E-9A4D-4E6F-8B7A-1C2D3E4F5A6B';
+  assert.equal(
+    toLead(validateEnroll({ ...VALID, submissionId: id }, now).data).SubmissionId,
+    id.toLowerCase()
+  );
+  assert.equal('SubmissionId' in toLead(validateEnroll(VALID, now).data), false);
+  for (const submissionId of [
+    '',
+    'nope',
+    `${id}0`,
+    '../../etc/passwd',
+    42,
+    null,
+    '00000000-0000-0000-0000-000000000000',
+  ]) {
+    assert.deepEqual(errorsFor({ submissionId }), ['submissionId'], String(submissionId));
+  }
+});
+
 test('spots a filled honeypot', () => {
   assert.equal(isHoneypot(VALID), false);
   assert.equal(isHoneypot({ ...VALID, website: '' }), false);

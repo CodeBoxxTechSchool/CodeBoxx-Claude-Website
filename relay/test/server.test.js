@@ -1,10 +1,17 @@
 import assert from 'node:assert/strict';
+import { mkdtemp, readdir, readFile, rm, stat } from 'node:fs/promises';
 import http from 'node:http';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { after, before, beforeEach, test } from 'node:test';
+import { enqueue } from '../outbox.js';
 import { createServer } from '../server.js';
 import { VALID } from './fixtures.js';
 
 const API_KEY = 'test-key';
+const NOW = Date.parse('2026-09-29T12:00:00Z');
+const ID = '3f2b8c1e-9a4d-4e6f-8b7a-1c2d3e4f5a6b';
+const outboxDir = join(await mkdtemp(join(tmpdir(), 'relay-')), 'outbox');
 
 // Fake portal: answers portalStatus, or never answers when portalStatus is null.
 let portalStatus;
@@ -28,7 +35,14 @@ async function listen(server) {
 }
 
 function startRelay(portalUrl) {
-  relay = createServer({ portalUrl, apiKey: API_KEY, timeoutMs: 200, log: (l) => logs.push(l) });
+  relay = createServer({
+    portalUrl,
+    apiKey: API_KEY,
+    timeoutMs: 200,
+    log: (l) => logs.push(l),
+    outboxDir,
+    now: () => NOW,
+  });
   return listen(relay);
 }
 
@@ -40,13 +54,17 @@ after(() => {
   relay.close();
   portal.closeAllConnections();
   portal.close();
+  return rm(join(outboxDir, '..'), { recursive: true });
 });
 
-beforeEach(() => {
+beforeEach(async () => {
   portalStatus = 201;
   portalRequests = [];
   logs = [];
+  await rm(outboxDir, { recursive: true, force: true });
 });
+
+const queued = () => readdir(outboxDir).catch(() => []);
 
 const post = (path, body, headers = { 'content-type': 'application/json' }) =>
   fetch(`${relayUrl}${path}`, {
@@ -90,6 +108,46 @@ test('answers 502 when the portal times out', async () => {
   portalStatus = null;
   await expect(await post('/api/enroll', VALID), 502);
   assert.match(logs[0], /portal=timeout$/);
+  assert.deepEqual(await queued(), []);
+});
+
+test('passes the submission ID and clears a queued copy once received', async () => {
+  await enqueue(outboxDir, ID, 'enroll', {});
+  for (const status of [201, 409]) {
+    portalStatus = status;
+    await expect(await post('/api/enroll', { ...VALID, submissionId: ID.toUpperCase() }), 200);
+    assert.equal(portalRequests.at(-1).body.SubmissionId, ID);
+    assert.deepEqual(await queued(), []);
+  }
+});
+
+test('queues a submission on a portal 5xx or timeout, not on a 4xx', async () => {
+  for (const [status, expected] of [
+    [400, false],
+    [500, true],
+    [503, true],
+    [null, true],
+  ]) {
+    await rm(outboxDir, { recursive: true, force: true });
+    portalStatus = status;
+    await expect(await post('/api/enroll', { ...VALID, submissionId: ID }), 502);
+    assert.deepEqual(await queued(), expected ? [`${ID}.json`] : [], String(status));
+  }
+  assert.match(logs.at(-1), new RegExp(`portal=timeout queued=${ID}$`));
+  const file = join(outboxDir, `${ID}.json`);
+  assert.deepEqual(JSON.parse(await readFile(file, 'utf8')), {
+    kind: 'enroll',
+    body: portalRequests.at(-1).body,
+    queuedAt: '2026-09-29T12:00:00.000Z',
+  });
+  assert.equal((await stat(outboxDir)).mode & 0o777, 0o700);
+  assert.equal((await stat(file)).mode & 0o777, 0o600);
+});
+
+test('queues nothing without a submission ID', async () => {
+  portalStatus = 500;
+  await expect(await post('/api/enroll', VALID), 502);
+  assert.deepEqual(await queued(), []);
 });
 
 test('answers 502 when the portal is unreachable', async () => {
@@ -100,8 +158,9 @@ test('answers 502 when the portal is unreachable', async () => {
   const savedRelay = relay;
   relayUrl = await startRelay(deadUrl);
   try {
-    await expect(await post('/api/enroll', VALID), 502);
-    assert.match(logs[0], /portal=error$/);
+    await expect(await post('/api/enroll', { ...VALID, submissionId: ID }), 502);
+    assert.match(logs[0], new RegExp(`portal=error queued=${ID}$`));
+    assert.deepEqual(await queued(), [`${ID}.json`]);
   } finally {
     relay.close();
     relay = savedRelay;
@@ -148,8 +207,12 @@ test('caps a chunked body without a content-length', async () => {
   assert.equal(status, 413);
 });
 
-test('answers the health check without calling the portal', async () => {
-  await expect(await fetch(`${relayUrl}/api/health`), 200);
+test('answers the health check with the queue size and age, without calling the portal', async () => {
+  const health = async () => (await fetch(`${relayUrl}/api/health`)).json();
+  assert.deepEqual(await health(), { ok: true, queue: { size: 0, oldestAgeSeconds: null } });
+  await enqueue(outboxDir, ID, 'enroll', VALID, NOW - 90_000);
+  await enqueue(outboxDir, ID.replace('3', '4'), 'enroll', VALID, NOW - 5_000);
+  assert.deepEqual(await health(), { ok: true, queue: { size: 2, oldestAgeSeconds: 90 } });
   assert.equal(portalRequests.length, 0);
   assert.match(logs[0], /^GET \/api\/health 200 \d+ms$/);
 });
@@ -157,6 +220,8 @@ test('answers the health check without calling the portal', async () => {
 test('logs no personal data', async () => {
   await post('/api/enroll', VALID);
   await post('/api/enroll', { ...VALID, birth: '1990-02-30' });
+  portalStatus = 500;
+  await post('/api/enroll', { ...VALID, submissionId: ID });
   const text = logs.join('\n').toLowerCase();
   for (const value of ['ada', 'lovelace', '555', 'main st', 'g1a', API_KEY]) {
     assert.ok(!text.includes(value), value);

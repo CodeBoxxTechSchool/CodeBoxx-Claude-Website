@@ -1,25 +1,50 @@
 import http from 'node:http';
+import { join } from 'node:path';
 import { isHoneypot, toLead, validateEnroll } from './enroll.js';
-import { sendLead } from './portal.js';
+import { dequeue, enqueue, queueStats, startResending } from './outbox.js';
+import { isRetryable, sendToPortal } from './portal.js';
 
 const MAX_BODY_BYTES = 16 * 1024;
 
-// Handlers get the parsed JSON body (POST) and the config, and resolve to { status, note? };
-// note goes to the log, so it must never carry personal data.
+// Handlers get the parsed JSON body (POST) and the config, and resolve to { status, note?, body? };
+// body is added to the answer's JSON; note goes to the log, so it must never carry personal data.
 const routes = {
-  '/api/health': { GET: async () => ({ status: 200 }) },
+  '/api/health': { GET: health },
   '/api/enroll': { POST: enroll },
 };
+
+async function health(_, { outboxDir, now }) {
+  return { status: 200, body: { queue: outboxDir ? await queueStats(outboxDir, now?.()) : null } };
+}
 
 async function enroll(body, config) {
   if (isHoneypot(body)) return { status: 200, note: 'honeypot' };
   const result = validateEnroll(body);
   if (!result.ok) return { status: 400, note: `invalid=${result.errors.join(',')}` };
-  const outcome = await sendLead(toLead(result.data), config);
-  return { status: outcome.ok ? 200 : 502, note: `portal=${outcome.status}` };
+  return forward('enroll', toLead(result.data), result.data.submissionId, config);
 }
 
-/** config: { portalUrl, apiKey, timeoutMs?, fetch?, log? }. Call .listen() on the result. */
+// Only a submission with an ID is queued: the portal takes a resend of it at most once.
+async function forward(kind, body, id, config) {
+  const { received, status } = await sendToPortal(kind, body, config);
+  let note = `portal=${status}`;
+  if (id && config.outboxDir) {
+    // The visitor's retry may have beaten the resend of a queued copy.
+    if (received) await dequeue(config.outboxDir, id).catch(() => {});
+    else if (isRetryable(status)) {
+      note += await enqueue(config.outboxDir, id, kind, body, config.now?.()).then(
+        () => ` queued=${id}`,
+        (err) => ` queue-error=${err.code ?? err.name}`
+      );
+    }
+  }
+  return { status: received ? 200 : 502, note };
+}
+
+/**
+ * config: { portalUrl, apiKey, timeoutMs?, fetch?, log?, outboxDir?, now? }; without outboxDir,
+ * nothing is queued. Call .listen() on the result.
+ */
 export function createServer(config) {
   const log = config.log ?? console.log;
   return http.createServer(async (req, res) => {
@@ -34,7 +59,7 @@ export function createServer(config) {
     if (result.allow) res.setHeader('Allow', result.allow);
     if (result.status === 413) res.setHeader('Connection', 'close');
     res.writeHead(result.status, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ ok: result.status === 200 }));
+    res.end(JSON.stringify({ ok: result.status === 200, ...result.body }));
     const ms = Math.round(performance.now() - started);
     log([req.method, path, result.status, `${ms}ms`, result.note].filter(Boolean).join(' '));
   });
@@ -93,9 +118,15 @@ if (import.meta.main) {
     console.error('website-relay: PORTAL_URL is not a valid URL');
     process.exit(1);
   }
-  const server = createServer({ portalUrl: PORTAL_URL, apiKey: WEBSITE_LEADS_API_KEY });
+  const { STATE_DIRECTORY, OUTBOX_DIR } = process.env;
+  // STATE_DIRECTORY comes from the unit's StateDirectory=; OUTBOX_DIR is for local runs.
+  const outboxDir = STATE_DIRECTORY ? join(STATE_DIRECTORY, 'outbox') : OUTBOX_DIR;
+  if (!outboxDir) console.warn('website-relay: no STATE_DIRECTORY or OUTBOX_DIR, queue disabled');
+  const config = { portalUrl: PORTAL_URL, apiKey: WEBSITE_LEADS_API_KEY, outboxDir };
+  const server = createServer(config);
   server.listen(Number(PORT), '127.0.0.1', () => {
     console.log(`website-relay listening on 127.0.0.1:${PORT}`);
   });
+  if (outboxDir) startResending(config);
   process.on('SIGTERM', () => server.close(() => process.exit(0)));
 }

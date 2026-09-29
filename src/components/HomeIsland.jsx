@@ -8,6 +8,7 @@ import Logo from './Logo';
 import { useIntakes } from '../lib/intakes';
 import { localizedHref, localizedId } from '../lib/i18nRoutes';
 import { suggestEmail } from '../lib/emailTypos';
+import { newSubmissionId } from '../lib/submissionId';
 
 // The homepage (replaced the old react-router Home.jsx).
 //
@@ -1649,6 +1650,9 @@ function EnrollDrawer({ course, onClose }) {
   const [renderCourse, setRenderCourse] = React.useState(course);
   const emailRef = React.useRef(null);
   const sentRef = React.useRef(null);
+  // Kept across retries, so the relay's resends and the visitor's retries make a single lead.
+  const submissionId = React.useRef(null);
+  if (submissionId.current === null) submissionId.current = newSubmissionId();
   React.useEffect(() => {
     if (course) {
       setRenderCourse(course);
@@ -1687,11 +1691,21 @@ function EnrollDrawer({ course, onClose }) {
       const res = await fetch('/api/enroll', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, mobile, lang, contactBy, heard, program }),
+        body: JSON.stringify({
+          ...form,
+          mobile,
+          lang,
+          contactBy,
+          heard,
+          program,
+          submissionId: submissionId.current,
+        }),
         signal: controller.signal,
       });
       // Checks the body too: a 200 from anything but the relay (e.g. an HTML page) isn't a lead.
       const body = res.ok ? await res.json().catch(() => null) : null;
+      // "Submit again" after a success is a new submission.
+      if (body?.ok) submissionId.current = newSubmissionId();
       setStatus(body?.ok ? 'sent' : res.status === 429 ? 'busy' : 'error');
     } catch {
       setStatus('error');
