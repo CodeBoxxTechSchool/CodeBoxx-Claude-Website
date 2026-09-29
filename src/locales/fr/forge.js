@@ -161,6 +161,7 @@ export default {
     eyebrow: 'Éprouvé en livraison réelle',
     title: 'Conçu par une usine logicielle, pour la vôtre.',
     body: 'CodeBoxx a bâti CrewKit au sein de ses propres activités de livraison, s’en est servi pour traverser une chute de la demande en 2024 et est revenue à la rentabilité en 2025. Le Forge 20 installe cette même usine dans vos locaux.',
+    deepLink: 'Approfondir : voir les chiffres →',
   },
   cta: {
     eyebrow: 'Il est temps de rapatrier vos logiciels d’entreprise.',

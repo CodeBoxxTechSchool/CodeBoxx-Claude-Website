@@ -1,0 +1,93 @@
+---
+// Body of the Forge "Dive Deeper" page — the delivery evidence and business case
+// behind CrewKit Forge 20. Shared by src/pages/crewkit-forge-20/dive-deeper.astro
+// (EN) and src/pages/fr/crewkit-forge-20/approfondir.astro (FR). Two React islands
+// carry the interaction: ForgeEvidence (explore the seven delivered platforms) and
+// ForgeBusinessCase (apply the demonstrated gains to your own project). Styles in
+// src/styles/_forge-deep.scss.
+import ForgeEvidence from './ForgeEvidence';
+import ForgeBusinessCase from './ForgeBusinessCase';
+
+const { t, lang, forgeHref, buildOrderUrl } = Astro.props;
+const order = { href: buildOrderUrl, target: '_blank', rel: 'noopener' };
+---
+
+<section class="fd-hero">
+  <div class="wrap fd-hero-inner">
+    <a class="fd-back" href={forgeHref}>
+      {t.back}
+    </a>
+    <span class="pill">{t.hero.pill}</span>
+    <h1 class="fd-hero-title">{t.hero.title}</h1>
+    <p class="fd-hero-lede">{t.hero.lede}</p>
+    <dl class="fd-hero-stats">
+      {t.hero.stats.map(([value, unit, note]) => (
+        <div class="fd-hero-stat">
+          <dt>
+            <span class="fd-hero-value">{value}</span>
+            <span class="fd-hero-unit">{unit}</span>
+          </dt>
+          <dd>{note}</dd>
+        </div>
+      ))}
+    </dl>
+    <a class="btn btn-primary btn-lg" href="#business-case">
+      {t.hero.cta}
+    </a>
+  </div>
+</section>
+
+<section class="sect fd-evidence-sect">
+  <div class="wrap d-flex flex-column gap-4">
+    <div class="d-flex flex-column gap-3">
+      <p class="eyebrow">{t.evidence.eyebrow}</p>
+      <h2 class="h2 fg-h2">{t.evidence.title}</h2>
+      <p class="lede lede-640">{t.evidence.lede}</p>
+    </div>
+    <ForgeEvidence client:visible t={t} lang={lang} />
+  </div>
+</section>
+
+<section class="sect fd-method">
+  <div class="wrap d-flex flex-column gap-5">
+    <div class="d-flex flex-column gap-3">
+      <p class="eyebrow">{t.method.eyebrow}</p>
+      <h2 class="h2 fg-h2">{t.method.title}</h2>
+    </div>
+    <div class="grid3">
+      {t.method.items.map(([title, body]) => (
+        <div class="fg-option">
+          <span class="fg-option-name">{title}</span>
+          <p class="pbody">{body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="sect fd-builder-sect" id="business-case">
+  <div class="wrap d-flex flex-column gap-4">
+    <div class="d-flex flex-column gap-3">
+      <p class="eyebrow">{t.builder.eyebrow}</p>
+      <h2 class="h2 fg-h2">{t.builder.title}</h2>
+      <p class="lede lede-640">{t.builder.lede}</p>
+    </div>
+    <ForgeBusinessCase client:visible t={t} lang={lang} />
+  </div>
+</section>
+
+<section class="fg-cta fd-noprint">
+  <div class="wrap fg-cta-inner">
+    <p class="eyebrow eyebrow-brand">{t.bridge.eyebrow}</p>
+    <h2 class="fg-cta-title fd-bridge-title">{t.bridge.title}</h2>
+    <p class="fg-cta-body">{t.bridge.body}</p>
+    <div class="fg-actions">
+      <a class="btn btn-primary btn-lg" {...order}>
+        {t.bridge.primary}
+      </a>
+      <a class="btn btn-outline-light btn-lg" href={forgeHref}>
+        {t.bridge.secondary}
+      </a>
+    </div>
+  </div>
+</section>
