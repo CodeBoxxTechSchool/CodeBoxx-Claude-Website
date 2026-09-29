@@ -110,13 +110,14 @@ One-time droplet setup (Ubuntu 24.04, done 2026-09-28, as root):
 4. nginx: `/etc/nginx/conf.d/forms-ratelimit.conf` has
    `limit_req_zone $binary_remote_addr zone=forms:1m rate=5r/m;`, and the `codeboxx` site has
    `location /api/` (`limit_req zone=forms burst=3 nodelay`, `limit_req_status 429`,
-   `client_max_body_size 16k`, `proxy_pass http://127.0.0.1:8787`) plus `location = /api/health`
-   without the limit, for uptime checks.
+   `client_max_body_size 16k`, `proxy_pass http://127.0.0.1:8787`, `proxy_set_header Host` and
+   `X-Forwarded-For`, `proxy_read_timeout 15s`) plus `location = /api/health` without the limit,
+   for uptime checks.
 
-   **To do for the careers form** (not applied yet): the same site needs a block of its own for
-   the larger body, next to `location /api/`. `client_body_buffer_size` keeps the body in memory:
-   without it, nginx writes any body over 16 KB to a temporary file under `/var/lib/nginx/body`,
-   which would put a copy of the CV on disk. Then `nginx -t && systemctl reload nginx`.
+   The careers form has a block of its own for the larger body, next to `location /api/`.
+   `client_body_buffer_size` keeps the body in memory: without it, nginx writes any body over
+   16 KB to a temporary file under `/var/lib/nginx/body`, which would put a copy of the CV on disk.
+   Then `nginx -t && systemctl reload nginx`.
 
    ```nginx
    location = /api/careers {
@@ -125,6 +126,9 @@ One-time droplet setup (Ubuntu 24.04, done 2026-09-28, as root):
        client_max_body_size 8m;
        client_body_buffer_size 8m;
        proxy_pass http://127.0.0.1:8787;
+       proxy_set_header Host $host;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_read_timeout 15s;
    }
    ```
 
