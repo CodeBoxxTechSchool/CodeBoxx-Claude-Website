@@ -123,6 +123,9 @@
   &.sent {
     color: v.$green-600;
   }
+  &.error {
+    color: v.$red-600;
+  }
 }
 
 // Reusable 2-up form field row (name/name, city/region, etc).

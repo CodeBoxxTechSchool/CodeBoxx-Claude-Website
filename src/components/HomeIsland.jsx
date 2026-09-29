@@ -1,10 +1,13 @@
 import React from 'react';
-import { Button, Badge, Form, Offcanvas } from 'react-bootstrap';
+import { flushSync } from 'react-dom';
+import { Button, Badge, Form, Offcanvas, Spinner } from 'react-bootstrap';
 import { TopBar, Footer } from './ChromeIsland';
 import Avatar from './Avatar';
+import CountryCombobox from './CountryCombobox';
 import Logo from './Logo';
 import { useIntakes } from '../lib/intakes';
 import { localizedHref, localizedId } from '../lib/i18nRoutes';
+import { suggestEmail } from '../lib/emailTypos';
 
 // The homepage (replaced the old react-router Home.jsx).
 //
@@ -1592,13 +1595,17 @@ const DIAL_CODES = [
 // option string (which is what plain-string options did before, and which is why
 // EnrollDrawer's radios below pass value/label pairs instead of the display text).
 function RadioRow({ label, options, value, onChange }) {
+  const id = React.useId();
   return (
-    <div className="d-flex flex-column gap-2">
-      <Form.Label className="mb-0">{label}</Form.Label>
+    <div className="d-flex flex-column gap-2" role="group" aria-labelledby={id}>
+      <Form.Label className="mb-0" id={id}>
+        {label}
+      </Form.Label>
       <div className="d-flex gap-3 flex-wrap">
         {options.map((o) => (
           <Form.Check
             key={o.value}
+            id={`${id}-${o.value}`}
             type="checkbox"
             checked={value === o.value}
             onChange={() => onChange(o.value)}
@@ -1622,23 +1629,35 @@ const ENROLL_BLANK = {
   region: '',
   country: '',
   postal: '',
+  website: '',
 };
 
+// Past the relay's own 10 s portal timeout, so a slow portal still gets its answer through.
+const ENROLL_TIMEOUT_MS = 15000;
+
 function EnrollDrawer({ course, onClose }) {
-  const { home, common } = useHomeCtx();
+  const { home, common, lang: pageLang } = useHomeCtx();
   const [form, setForm] = React.useState(ENROLL_BLANK);
   const [mobile, setMobile] = React.useState('yes');
-  const [lang, setLang] = React.useState('en');
+  // The portal emails the applicant in this language, so it starts as the page's.
+  const [lang, setLang] = React.useState(pageLang === 'fr' ? 'fr' : 'en');
   const [contactBy, setContactBy] = React.useState('email');
   const [heard, setHeard] = React.useState('');
-  const [sent, setSent] = React.useState(false);
+  // idle | sending | sent | error | busy (429)
+  const [status, setStatus] = React.useState('idle');
+  const [emailHint, setEmailHint] = React.useState(null);
   const [renderCourse, setRenderCourse] = React.useState(course);
+  const emailRef = React.useRef(null);
+  const sentRef = React.useRef(null);
   React.useEffect(() => {
     if (course) {
       setRenderCourse(course);
-      setSent(false);
+      setStatus((s) => (s === 'sending' ? s : 'idle'));
     }
   }, [course]);
+  React.useEffect(() => {
+    if (status === 'sent') sentRef.current?.focus();
+  }, [status]);
   const set = (k) => (e) => setForm((f) => Object.assign({}, f, { [k]: e.target.value }));
   const invalid = form.email.length > 0 && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email);
   const ready =
@@ -1653,16 +1672,39 @@ function EnrollDrawer({ course, onClose }) {
     form.region &&
     form.country &&
     form.postal;
-  const title =
-    // Matches both the legacy hyphenated "Full-Stack" and Sanity's real Program
-    // title "Full Stack" (space-separated) — a real cohort's title now comes
-    // straight from a live Program document, not just this file's own hardcoded
-    // strings, so the space form has to match too.
-    renderCourse && /full[\s-]?stack|fsd/i.test(renderCourse)
-      ? home.enroll.titles.fsd
-      : home.enroll.titles.ai;
-  const countries = home.countries;
+  // Matches both the legacy hyphenated "Full-Stack" and Sanity's real Program
+  // title "Full Stack" (space-separated) — a real cohort's title now comes
+  // straight from a live Program document, not just this file's own hardcoded
+  // strings, so the space form has to match too.
+  const program = renderCourse && /full[\s-]?stack|fsd/i.test(renderCourse) ? 'fsd' : 'ai';
+  const title = home.enroll.titles[program];
   const heardAbout = home.heardAbout;
+  const submit = async () => {
+    setStatus('sending');
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), ENROLL_TIMEOUT_MS);
+    try {
+      const res = await fetch('/api/enroll', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, mobile, lang, contactBy, heard, program }),
+        signal: controller.signal,
+      });
+      // Checks the body too: a 200 from anything but the relay (e.g. an HTML page) isn't a lead.
+      const body = res.ok ? await res.json().catch(() => null) : null;
+      setStatus(body?.ok ? 'sent' : res.status === 429 ? 'busy' : 'error');
+    } catch {
+      setStatus('error');
+    } finally {
+      clearTimeout(timer);
+    }
+  };
+  const submitAgain = () => {
+    flushSync(() => setStatus('idle'));
+    emailRef.current?.focus();
+  };
+  const sending = status === 'sending';
+  const note = { error: home.enroll.errorNote, busy: home.enroll.busyNote }[status];
   return (
     <Offcanvas show={!!course} onHide={onClose} placement="end" className="enroll-offcanvas">
       <Offcanvas.Header className="site-header">
@@ -1674,14 +1716,36 @@ function EnrollDrawer({ course, onClose }) {
           {common.actions.close}
         </Button>
       </Offcanvas.Header>
-      <Offcanvas.Body className="d-flex flex-column gap-4">
-        <h3 className="ptitle">{home.enroll.createAccount}</h3>
+      {status === 'sent' && (
+        <Offcanvas.Body className="d-flex flex-column gap-3">
+          <h3 className="ptitle" ref={sentRef} tabIndex={-1}>
+            {home.enroll.receivedNote}
+          </h3>
+          <p className="pbody">
+            {home.enroll.linkSentBefore}
+            <strong>{form.email.trim()}</strong>
+            {home.enroll.linkSentAfter}
+          </p>
+          <p className="pbody">
+            {home.enroll.wrongAddress}{' '}
+            <button type="button" className="inline-link" onClick={submitAgain}>
+              {home.enroll.submitAgain}
+            </button>
+          </p>
+        </Offcanvas.Body>
+      )}
+      {/* Hidden rather than unmounted after sending, so "Submit again" finds it as it was. */}
+      <Offcanvas.Body className={status === 'sent' ? 'd-none' : 'd-flex flex-column gap-4'}>
+        <h3 className="ptitle">{home.enroll.applyTitle}</h3>
         <p className="pbody">
           {home.enroll.alreadyHave}
-          <a href="https://student.codeboxx.com/pages/login.php" target="_blank" rel="noopener">
+          <a
+            href="https://portal.codeboxx.dev/Identity/Account/Login"
+            target="_blank"
+            rel="noopener"
+          >
             {home.enroll.logIn}
           </a>
-          {home.enroll.toMakeSelection}
         </p>
         <div className="form-row-2">
           <Form.Control
@@ -1706,12 +1770,33 @@ function EnrollDrawer({ course, onClose }) {
         </Form.Group>
         <Form.Group>
           <Form.Control
+            ref={emailRef}
             placeholder={home.enroll.emailPlaceholder}
             value={form.email}
             isInvalid={invalid}
-            onChange={set('email')}
+            onChange={(e) => {
+              set('email')(e);
+              setEmailHint(null);
+            }}
+            onBlur={() => setEmailHint(suggestEmail(form.email))}
           />
           <Form.Control.Feedback type="invalid">{home.enroll.invalidEmail}</Form.Control.Feedback>
+          {emailHint && (
+            <Form.Text as="p" className="mb-0">
+              {home.enroll.didYouMean}
+              <button
+                type="button"
+                className="inline-link"
+                onClick={() => {
+                  setForm((f) => ({ ...f, email: emailHint }));
+                  setEmailHint(null);
+                }}
+              >
+                {emailHint}
+              </button>
+              {home.enroll.didYouMeanEnd}
+            </Form.Text>
+          )}
         </Form.Group>
         <Form.Group>
           <Form.Label>{home.enroll.phoneNumberLabel}</Form.Label>
@@ -1781,22 +1866,16 @@ function EnrollDrawer({ course, onClose }) {
           />
         </div>
         <div className="form-row-2">
-          <Form.Group>
-            <Form.Label>{home.enroll.countryLabel}</Form.Label>
-            <Form.Select
-              aria-label={home.enroll.countryLabel}
-              value={form.country}
-              onChange={set('country')}
-            >
-              <option value="">{home.enroll.selectPlaceholder}</option>
-              {countries.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
+          <CountryCombobox
+            id="enroll-country"
+            label={home.enroll.countryLabel}
+            lang={pageLang}
+            value={form.country}
+            onChange={(country) => setForm((f) => ({ ...f, country }))}
+            strings={home.enroll}
+          />
           <Form.Control
+            className="align-self-end"
             placeholder={home.enroll.postalPlaceholder}
             value={form.postal}
             onChange={set('postal')}
@@ -1817,14 +1896,27 @@ function EnrollDrawer({ course, onClose }) {
             ))}
           </Form.Select>
         </Form.Group>
-        <p className="pbody">{home.enroll.reviewNote}</p>
+        <p className="pbody">{home.enroll.nextStepNote}</p>
+        {/* Honeypot: off-screen rather than display:none, which some bots skip. */}
+        <div className="enroll-hp" aria-hidden="true">
+          <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            value={form.website}
+            onChange={set('website')}
+          />
+        </div>
         <div className="rule" />
         <div className="form-actions">
-          <span className={'form-actions-note' + (sent ? ' sent' : '')}>
-            {sent ? home.enroll.receivedNote : home.enroll.submitsNote}
+          <span className={'form-actions-note' + (note ? ' error' : '')} aria-live="polite">
+            {note}
           </span>
-          <Button size="lg" disabled={!ready} onClick={() => setSent(true)}>
-            {home.enroll.submit}
+          <Button size="lg" disabled={!ready || sending} onClick={submit}>
+            {sending && <Spinner size="sm" aria-hidden="true" />}
+            {sending ? home.enroll.sending : home.enroll.submit}
           </Button>
         </div>
       </Offcanvas.Body>

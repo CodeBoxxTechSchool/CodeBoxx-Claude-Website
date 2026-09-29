@@ -10,4 +10,6 @@ export default defineConfig({
   output: 'static',
   integrations: [react(), sitemap()],
   build: { format: 'directory' },
+  // Local dev only: the forms' relay (relay/server.js); nginx does this in production.
+  vite: { server: { proxy: { '/api': 'http://localhost:8787' } } },
 });
