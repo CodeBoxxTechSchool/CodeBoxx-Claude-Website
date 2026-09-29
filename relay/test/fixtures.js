@@ -46,3 +46,22 @@ export const PITCH = {
   pageUrl: 'https://codeboxx.com/ventures/',
   submissionId: '3f2b8c1e-9a4d-4e6f-8b7a-1c2d3e4f5a6b',
 };
+
+// A file's content as the careers form sends it: plain base64.
+export const base64 = (bytes) => Buffer.from(bytes).toString('base64');
+
+export const PDF = Buffer.from('%PDF-1.7\n1 0 obj << /Type /Catalog >> endobj\n%%EOF\n');
+
+export const CAREERS = {
+  first: ' Ada ',
+  last: 'Lovelace',
+  email: ' Ada@Example.COM ',
+  phone: '+1 (555) 555-0100',
+  position: ' Full-stack developer ',
+  startDate: '2026-11-02',
+  lang: 'fr',
+  consent: true,
+  pageUrl: 'https://codeboxx.com/fr/carrieres/',
+  submissionId: '3f2b8c1e-9a4d-4e6f-8b7a-1c2d3e4f5a6b',
+  cv: { fileName: 'Ada Lovelace CV.pdf', content: base64(PDF) },
+};

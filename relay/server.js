@@ -2,11 +2,20 @@ import http from 'node:http';
 import { join } from 'node:path';
 import { toLead, validateEnroll } from './enroll.js';
 import { isHoneypot } from './fields.js';
-import { toContact, toPitch, validateContact, validatePitch } from './forms.js';
+import {
+  toCareers,
+  toContact,
+  toPitch,
+  validateCareers,
+  validateContact,
+  validatePitch,
+} from './forms.js';
 import { dequeue, enqueue, queueStats, startResending } from './outbox.js';
 import { isRetryable, sendToPortal } from './portal.js';
 
 const MAX_BODY_BYTES = 16 * 1024;
+// A 5 MB CV is about 7 MB in base64, plus the form's fields.
+const BODY_LIMITS = { '/api/careers': 8 * 1024 * 1024 };
 
 // Handlers get the parsed JSON body (POST) and the config, and resolve to { status, note?, body? };
 // body is added to the answer's JSON; note goes to the log, so it must never carry personal data.
@@ -15,6 +24,7 @@ const routes = {
   '/api/enroll': { POST: submission('enroll', validateEnroll, toLead) },
   '/api/contact': { POST: submission('contact', validateContact, toContact) },
   '/api/pitch': { POST: submission('pitch', validatePitch, toPitch) },
+  '/api/careers': { POST: submission('careers', validateCareers, toCareers) },
 };
 
 async function health(_, { outboxDir, now }) {
@@ -25,8 +35,15 @@ async function health(_, { outboxDir, now }) {
 function submission(kind, validate, toPortal) {
   return async (body, config) => {
     if (isHoneypot(body)) return { status: 200, note: 'honeypot' };
-    const result = validate(body);
-    if (!result.ok) return { status: 400, note: `invalid=${result.errors.join(',')}` };
+    const result = validate(body, config.now ? new Date(config.now()) : undefined);
+    // Field names only, never values: the careers form tells a refused CV apart from other errors.
+    if (!result.ok) {
+      return {
+        status: 400,
+        note: `invalid=${result.errors.join(',')}`,
+        body: { errors: result.errors },
+      };
+    }
     return forward(kind, toPortal(result.data, config.now?.()), result.data.submissionId, config);
   };
 }
@@ -81,7 +98,7 @@ async function handle(req, path, config) {
 
   const type = (req.headers['content-type'] ?? '').split(';')[0].trim().toLowerCase();
   if (type !== 'application/json') return { status: 415 };
-  const raw = await readBody(req);
+  const raw = await readBody(req, BODY_LIMITS[path] ?? MAX_BODY_BYTES);
   if (raw === null) return { status: 413 };
   let body;
   try {
@@ -95,15 +112,15 @@ async function handle(req, path, config) {
   return handler(body, config);
 }
 
-// Resolves to the body as a string, or null once it passes MAX_BODY_BYTES (the rest is not read).
-function readBody(req) {
-  if (Number(req.headers['content-length']) > MAX_BODY_BYTES) return Promise.resolve(null);
+// Resolves to the body as a string, or null once it passes maxBytes (the rest is not read).
+function readBody(req, maxBytes) {
+  if (Number(req.headers['content-length']) > maxBytes) return Promise.resolve(null);
   return new Promise((resolve, reject) => {
     const chunks = [];
     let size = 0;
     req.on('data', (chunk) => {
       size += chunk.length;
-      if (size > MAX_BODY_BYTES) {
+      if (size > maxBytes) {
         req.pause();
         req.removeAllListeners('data');
         resolve(null);

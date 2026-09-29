@@ -80,10 +80,11 @@ npm run dev
 | `/blog/:slug` | `src/pages/blog/[slug].astro`                   | Standalone post page -- one prebuilt page per post                 |
 | `/financing`  | `src/pages/financing.astro`                     | Academy financing options -- fully static, no React island         |
 | `/ventures`   | `src/pages/ventures.astro` -> `PitchWidget.jsx` | CodeBoxx Ventures -- one small island for the pitch form           |
+| `/careers`    | `src/pages/careers.astro` -> `CareersForm.jsx`  | Careers -- one island for the application form (CV upload)         |
 
 (Each has an `/fr/...` twin — `/fr`, `/fr/blogue`, `/fr/blogue/:slug`, `/fr/financement`,
-`/fr/ventures` — as its own separate page file, matching how `ROUTE_TABLE` already modeled
-EN/FR as distinct paths rather than one parameterized locale route.)
+`/fr/ventures`, `/fr/carrieres` — as its own separate page file, matching how `ROUTE_TABLE`
+already modeled EN/FR as distinct paths rather than one parameterized locale route.)
 
 ## Sanity
 

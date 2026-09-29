@@ -5,6 +5,7 @@ export const KINDS = {
   // 409: the ID was used on another endpoint, so this one was never received; not retried.
   contact: { path: '/api/v1/form-submissions', received: [201] },
   pitch: { path: '/api/v1/form-submissions', received: [201] },
+  careers: { path: '/api/v1/form-submissions', received: [201] },
 };
 
 /**

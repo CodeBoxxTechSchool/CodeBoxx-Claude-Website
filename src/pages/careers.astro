@@ -1,0 +1,33 @@
+---
+// /careers (EN); src/pages/fr/carrieres.astro is the FR twin. Only the application form needs
+// client state (CareersForm.jsx); the rest is static, on the same Layout.astro shell as Ventures.
+import Layout from '../layouts/Layout.astro';
+import HeroVideo from '../components/HeroVideo.astro';
+import CareersForm from '../components/CareersForm';
+import common from '../locales/en/common';
+import careers from '../locales/en/careers';
+---
+
+<Layout lang="en" title={careers.seo.title} description={careers.seo.description} strings={common}>
+  <section class="band-dark">
+    <HeroVideo />
+    <div class="wrap d-flex flex-column gap-4 align-items-start">
+      <span class="pill">{careers.pill}</span>
+      <h1 class="band-title">{careers.band.title}</h1>
+      <p class="band-lede">{careers.band.lede}</p>
+    </div>
+  </section>
+
+  <section class="sect sect-contact">
+    <div class="wrap grid2">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{careers.intro.eyebrow}</p>
+        <h2 class="h2">{careers.intro.title}</h2>
+        {careers.intro.paragraphs.map((p) => (
+          <p class="lede">{p}</p>
+        ))}
+      </div>
+      <CareersForm client:load strings={careers.form} lang="en" />
+    </div>
+  </section>
+</Layout>

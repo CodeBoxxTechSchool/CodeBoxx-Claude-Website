@@ -35,6 +35,8 @@ export default {
       solutions: { title: 'Solutions' },
       academy: { title: 'Academy' },
     },
+    // Footer only: not in the top menu, so not under nav.
+    careers: 'Careers',
     // [city label, street address] — shown under the tagline.
     addresses: [
       ['St. Pete', '1101 4th St S, St. Petersburg, FL 33701'],

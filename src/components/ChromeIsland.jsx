@@ -204,6 +204,7 @@ function buildFooterColumns(lang, pathname, strings) {
         { label: nav.ventures, href: href('/ventures') },
         { label: nav.blog, href: href('/blog') },
         { label: nav.about, href: href('#codeboxx') },
+        { label: strings.footer.careers, href: href('/careers') },
       ],
     },
     {
