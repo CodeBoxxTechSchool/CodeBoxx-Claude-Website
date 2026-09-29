@@ -351,6 +351,37 @@
   grid-template-columns: 120px 1fr;
   gap: 8px;
 }
+// The listbox opens right under the input (Bootstrap .dropdown-menu, no Popper).
+.country-combobox {
+  position: relative;
+}
+.country-list {
+  width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
+
+  .dropdown-item {
+    white-space: normal;
+    cursor: pointer;
+  }
+}
+// A link-looking button inside a sentence (email suggestion, "Submit again").
+.inline-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: v.$link-color;
+  text-decoration: underline;
+}
+// Honeypot: off-screen, not display:none (see EnrollDrawer).
+.enroll-hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
 
 // ---- Intake calendar ----
 .calendar-grid {
