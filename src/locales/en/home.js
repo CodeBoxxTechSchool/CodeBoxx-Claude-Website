@@ -514,10 +514,9 @@ export default {
   enroll: {
     kicker: 'Enroll',
     titles: { fsd: 'AI Native Full-Stack Developer', ai: 'Advanced AI Developer' },
-    createAccount: 'Create Your Student Portal Account.',
-    alreadyHave: 'If you already have a student portal account please ',
-    logIn: 'log in',
-    toMakeSelection: ' to make your course selection.',
+    applyTitle: 'Apply to CodeBoxx Academy.',
+    alreadyHave: 'Already have a portal account? ',
+    logIn: 'Log in',
     birthdate: 'Birthdate',
     firstPlaceholder: 'First',
     lastPlaceholder: 'Last',
@@ -543,9 +542,8 @@ export default {
     countryLabel: 'Country',
     selectPlaceholder: 'Select',
     heardAboutQ: 'How did you hear about us?',
-    reviewNote:
-      'Applications are reviewed within one business day. The entrance assessment is scheduled by email.',
-    submitsNote: 'Submits to the admissions API.',
+    nextStepNote:
+      'After you apply, we email you a link to create your portal account and continue your admission.',
     receivedNote: 'Application received.',
     linkSentBefore: 'We sent a link to create your portal account to ',
     linkSentAfter: '.',

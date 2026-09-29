@@ -538,10 +538,9 @@ export default {
   enroll: {
     kicker: 'Inscription',
     titles: { fsd: 'Développeur AI Native Full-Stack', ai: 'Développeur IA avancé' },
-    createAccount: 'Créez votre compte du portail étudiant.',
-    alreadyHave: 'Si vous avez déjà un compte sur le portail étudiant, veuillez ',
-    logIn: 'vous connecter',
-    toMakeSelection: ' pour faire votre choix de cours.',
+    applyTitle: "Postulez à l'Académie CodeBoxx.",
+    alreadyHave: 'Vous avez déjà un compte sur le portail ? ',
+    logIn: 'Connectez-vous',
     birthdate: 'Date de naissance',
     firstPlaceholder: 'Prénom',
     lastPlaceholder: 'Nom',
@@ -567,9 +566,8 @@ export default {
     countryLabel: 'Pays',
     selectPlaceholder: 'Sélectionner',
     heardAboutQ: 'Comment avez-vous entendu parler de nous ?',
-    reviewNote:
-      "Les candidatures sont révisées dans un délai d'un jour ouvrable. Le test d'admission est planifié par courriel.",
-    submitsNote: "Sera envoyé à l'API des admissions.",
+    nextStepNote:
+      'Après votre demande, vous recevrez par courriel un lien pour créer votre compte sur le portail et poursuivre votre admission.',
     receivedNote: 'Candidature reçue.',
     linkSentBefore: 'Un lien pour créer votre compte sur le portail a été envoyé à ',
     linkSentAfter: '.',

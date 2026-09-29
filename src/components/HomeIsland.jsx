@@ -1595,13 +1595,17 @@ const DIAL_CODES = [
 // option string (which is what plain-string options did before, and which is why
 // EnrollDrawer's radios below pass value/label pairs instead of the display text).
 function RadioRow({ label, options, value, onChange }) {
+  const id = React.useId();
   return (
-    <div className="d-flex flex-column gap-2">
-      <Form.Label className="mb-0">{label}</Form.Label>
+    <div className="d-flex flex-column gap-2" role="group" aria-labelledby={id}>
+      <Form.Label className="mb-0" id={id}>
+        {label}
+      </Form.Label>
       <div className="d-flex gap-3 flex-wrap">
         {options.map((o) => (
           <Form.Check
             key={o.value}
+            id={`${id}-${o.value}`}
             type="checkbox"
             checked={value === o.value}
             onChange={() => onChange(o.value)}
@@ -1732,13 +1736,16 @@ function EnrollDrawer({ course, onClose }) {
       )}
       {/* Hidden rather than unmounted after sending, so "Submit again" finds it as it was. */}
       <Offcanvas.Body className={status === 'sent' ? 'd-none' : 'd-flex flex-column gap-4'}>
-        <h3 className="ptitle">{home.enroll.createAccount}</h3>
+        <h3 className="ptitle">{home.enroll.applyTitle}</h3>
         <p className="pbody">
           {home.enroll.alreadyHave}
-          <a href="https://student.codeboxx.com/pages/login.php" target="_blank" rel="noopener">
+          <a
+            href="https://portal.codeboxx.dev/Identity/Account/Login"
+            target="_blank"
+            rel="noopener"
+          >
             {home.enroll.logIn}
           </a>
-          {home.enroll.toMakeSelection}
         </p>
         <div className="form-row-2">
           <Form.Control
@@ -1889,7 +1896,7 @@ function EnrollDrawer({ course, onClose }) {
             ))}
           </Form.Select>
         </Form.Group>
-        <p className="pbody">{home.enroll.reviewNote}</p>
+        <p className="pbody">{home.enroll.nextStepNote}</p>
         {/* Honeypot: off-screen rather than display:none, which some bots skip. */}
         <div className="enroll-hp" aria-hidden="true">
           <input
@@ -1905,7 +1912,7 @@ function EnrollDrawer({ course, onClose }) {
         <div className="rule" />
         <div className="form-actions">
           <span className={'form-actions-note' + (note ? ' error' : '')} aria-live="polite">
-            {note ?? home.enroll.submitsNote}
+            {note}
           </span>
           <Button size="lg" disabled={!ready || sending} onClick={submit}>
             {sending && <Spinner size="sm" aria-hidden="true" />}
