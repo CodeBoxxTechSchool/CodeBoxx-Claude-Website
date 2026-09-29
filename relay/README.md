@@ -37,3 +37,33 @@ drawer, English or French). A non-empty `website` (honeypot) answers 200 and sen
 Other errors: 404 unknown path, 405 wrong method, 413 body too large, 415 not JSON.
 
 To add a form, add a route to `routes` in `server.js`.
+
+## Deployment
+
+The GitHub Action (`.github/workflows/deploy.yml`) runs `npm run test:relay` before building, then
+rsyncs `relay/` (without `test/`) to `/opt/website-relay/` on the website droplet and restarts the
+service only when a file changed, checking `/api/health` afterwards.
+
+One-time droplet setup (Ubuntu 24.04, done 2026-09-28, as root):
+
+1. Node 24 LTS from NodeSource (Ubuntu's own `nodejs` is Node 18, past end of life):
+   `/etc/apt/keyrings/nodesource.gpg` (from `https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key`),
+   `/etc/apt/sources.list.d/nodesource.list` (`deb [signed-by=…] https://deb.nodesource.com/node_24.x nodistro main`),
+   `/etc/apt/preferences.d/nodejs` (pin `origin deb.nodesource.com` at 600), then `apt-get install nodejs`.
+   `/etc/apt/apt.conf.d/51unattended-upgrades-nodesource` adds `"site=deb.nodesource.com"` to
+   `Unattended-Upgrade::Origins-Pattern`, so Node updates install automatically.
+2. `/opt/website-relay/` owned by `deploy`; `/etc/website-relay/env` (`PORTAL_URL`,
+   `WEBSITE_LEADS_API_KEY`, `PORT=8787`), `root:deploy`, mode `0640`.
+3. `/etc/systemd/system/website-relay.service`: `User=deploy`,
+   `EnvironmentFile=/etc/website-relay/env`, `ExecStart=/usr/bin/node /opt/website-relay/server.js`,
+   `Restart=always`, sandboxed (`ProtectSystem=strict`, `ProtectHome`, `NoNewPrivileges`, …);
+   `systemctl enable --now website-relay`. Logs: `journalctl -u website-relay`.
+4. nginx: `/etc/nginx/conf.d/forms-ratelimit.conf` has
+   `limit_req_zone $binary_remote_addr zone=forms:1m rate=5r/m;`, and the `codeboxx` site has
+   `location /api/` (`limit_req zone=forms burst=3 nodelay`, `limit_req_status 429`,
+   `client_max_body_size 16k`, `proxy_pass http://127.0.0.1:8787`) plus `location = /api/health`
+   without the limit, for uptime checks.
+5. `/etc/sudoers.d/website-relay`: `deploy ALL=(root) NOPASSWD: /usr/bin/systemctl restart website-relay`
+   (mode `0440`, checked with `visudo -c`).
+
+At launch behind Cloudflare, nginx must rate-limit on the visitor's IP (`real_ip`), not Cloudflare's.
