@@ -2,6 +2,9 @@
 export const KINDS = {
   // 409: the email is already known, which the visitor must not see as a failure.
   enroll: { path: '/api/v1/leads', received: [201, 409] },
+  // 409: the ID was used on another endpoint, so this one was never received; not retried.
+  contact: { path: '/api/v1/form-submissions', received: [201] },
+  pitch: { path: '/api/v1/form-submissions', received: [201] },
 };
 
 /**

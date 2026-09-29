@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { after, before, beforeEach, test } from 'node:test';
 import { enqueue } from '../outbox.js';
 import { createServer } from '../server.js';
-import { VALID } from './fixtures.js';
+import { CONTACT, PITCH, VALID } from './fixtures.js';
 
 const API_KEY = 'test-key';
 const NOW = Date.parse('2026-09-29T12:00:00Z');
@@ -168,6 +168,42 @@ test('answers 502 when the portal is unreachable', async () => {
   }
 });
 
+test('forwards contact and pitch submissions to the portal, queuing only a 5xx', async () => {
+  for (const [path, body, kind] of [
+    ['/api/contact', CONTACT, 'contact'],
+    ['/api/pitch', PITCH, 'pitch'],
+  ]) {
+    for (const [status, expected, queues] of [
+      [201, 200, false],
+      [400, 502, false],
+      [409, 502, false],
+      [500, 502, true],
+    ]) {
+      await rm(outboxDir, { recursive: true, force: true });
+      portalStatus = status;
+      await expect(await post(path, body), expected);
+      const request = portalRequests.at(-1);
+      assert.equal(request.url, '/api/v1/form-submissions');
+      assert.equal(request.headers['api-key'], API_KEY);
+      assert.equal(request.body.form, kind);
+      assert.equal(request.body.submissionId, ID);
+      assert.deepEqual(await queued(), queues ? [`${ID}.json`] : [], `${kind} ${status}`);
+    }
+    const file = JSON.parse(await readFile(join(outboxDir, `${ID}.json`), 'utf8'));
+    assert.equal(file.kind, kind);
+  }
+});
+
+test('requires a submission ID and consent on contact and pitch', async () => {
+  await expect(await post('/api/contact', { ...CONTACT, submissionId: undefined }), 400);
+  await expect(await post('/api/pitch', { ...PITCH, consent: false }), 400);
+  await expect(await post('/api/pitch', { ...PITCH, website: 'spam' }), 200);
+  assert.equal(portalRequests.length, 0);
+  assert.match(logs[0], /400 \d+ms invalid=submissionId$/);
+  assert.match(logs[1], /400 \d+ms invalid=consent$/);
+  assert.match(logs[2], /200 \d+ms honeypot$/);
+});
+
 test('rejects an invalid submission without calling the portal', async () => {
   await expect(await post('/api/enroll', { ...VALID, email: 'nope', lang: 'de' }), 400);
   assert.equal(portalRequests.length, 0);
@@ -222,6 +258,8 @@ test('logs no personal data', async () => {
   await post('/api/enroll', { ...VALID, birth: '1990-02-30' });
   portalStatus = 500;
   await post('/api/enroll', { ...VALID, submissionId: ID });
+  await post('/api/contact', CONTACT);
+  await post('/api/pitch', { ...PITCH, phone: 'x' });
   const text = logs.join('\n').toLowerCase();
   for (const value of ['ada', 'lovelace', '555', 'main st', 'g1a', API_KEY]) {
     assert.ok(!text.includes(value), value);

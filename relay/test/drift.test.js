@@ -4,7 +4,9 @@ import { test } from 'node:test';
 import countries from '../../src/data/countries.js';
 import en from '../../src/locales/en/home.js';
 import fr from '../../src/locales/fr/home.js';
-import { COUNTRY_CODES, HEARD_ABOUT } from '../lists.js';
+import venturesEn from '../../src/locales/en/ventures.js';
+import venturesFr from '../../src/locales/fr/ventures.js';
+import { COUNTRY_CODES, HEARD_ABOUT, PROJECT_TYPES } from '../lists.js';
 
 test('the relay accepts exactly the countries the site offers', () => {
   assert.equal(COUNTRY_CODES.size, 250);
@@ -20,4 +22,11 @@ test('the relay maps exactly the heard-about labels the site offers', () => {
     ])
   );
   assert.deepEqual(HEARD_ABOUT, expected);
+});
+
+test('the relay accepts exactly the project types the pitch drawer offers', () => {
+  for (const ventures of [venturesEn, venturesFr]) {
+    const values = ventures.pitchDrawer.projectKinds.map((k) => k.value);
+    assert.deepEqual(values, [...PROJECT_TYPES]);
+  }
 });

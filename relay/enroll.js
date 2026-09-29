@@ -1,3 +1,4 @@
+import { isEmail, readFields } from './fields.js';
 import { COUNTRY_CODES, HEARD_ABOUT } from './lists.js';
 import { isSubmissionId } from './outbox.js';
 
@@ -44,23 +45,18 @@ const CHOICES = {
  * { ok: false, errors } listing the offending field names. Unknown fields are ignored.
  */
 export function validateEnroll(body, now = new Date()) {
-  const data = {};
-  const errors = new Set();
-
-  for (const field of [...REQUIRED, 'heard']) {
-    const value = body[field] ?? '';
-    if (typeof value !== 'string') errors.add(field);
-    else data[field] = value.trim();
-    if (data[field] === '' && field !== 'heard') errors.add(field);
-    if (data[field]?.length > (MAX_LENGTH[field] ?? Infinity)) errors.add(field);
-  }
+  const { data, errors } = readFields(body, {
+    required: REQUIRED,
+    optional: ['heard'],
+    maxLength: MAX_LENGTH,
+  });
 
   for (const [field, choices] of Object.entries(CHOICES)) {
     if (!Object.hasOwn(choices, data[field])) errors.add(field);
   }
 
   data.email = data.email?.toLowerCase();
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) errors.add('email');
+  if (!isEmail(data.email)) errors.add('email');
 
   if (!isBirthDate(data.birth, now)) errors.add('birth');
 
@@ -118,6 +114,3 @@ export function toLead(data) {
   if (data.submissionId) lead.SubmissionId = data.submissionId;
   return lead;
 }
-
-/** A bot filled the hidden `website` field. */
-export const isHoneypot = (body) => Boolean(body.website);

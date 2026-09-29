@@ -1,5 +1,7 @@
 import React from 'react';
-import { Button, Form, Offcanvas } from 'react-bootstrap';
+import { Button, Form, Offcanvas, Spinner } from 'react-bootstrap';
+import { localizedHref } from '../lib/i18nRoutes';
+import { pageUrl, useRelaySubmit } from '../lib/useRelaySubmit';
 
 // The one piece of Ventures that needs a React island: the "Pitch us" trigger
 // button and the drawer it opens share local state, so they're one small
@@ -9,19 +11,41 @@ import { Button, Form, Offcanvas } from 'react-bootstrap';
 // with `client:load` right where the trigger button belongs in the page; the
 // Offcanvas itself overlays the viewport when open, so its position in the DOM
 // tree doesn't affect where it visually appears.
-const PITCH_BLANK = { first: '', last: '', email: '', phone: '', kind: '', details: '' };
+const PITCH_BLANK = {
+  first: '',
+  last: '',
+  email: '',
+  phone: '',
+  projectType: '',
+  description: '',
+  website: '',
+};
 
-export default function PitchWidget({ ventures, closeLabel }) {
+export default function PitchWidget({ ventures, lang, closeLabel }) {
   const [open, setOpen] = React.useState(false);
-  const projectKinds = ventures.pitchDrawer.projectKinds;
   const [form, setForm] = React.useState(PITCH_BLANK);
-  const [sent, setSent] = React.useState(false);
+  const [consent, setConsent] = React.useState(false);
+  const { status, setStatus, submit } = useRelaySubmit('/api/pitch');
   React.useEffect(() => {
-    if (open) setSent(false);
+    if (open) setStatus((s) => (s === 'sending' ? s : 'idle'));
   }, [open]);
   const set = (k) => (e) => setForm((f) => Object.assign({}, f, { [k]: e.target.value }));
   const invalid = form.email.length > 0 && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email);
-  const ready = form.first && form.last && form.email && !invalid && form.phone;
+  const ready = form.first && form.last && form.email && !invalid && form.phone && consent;
+  const sending = status === 'sending';
+  const sent = status === 'sent';
+  const note = {
+    sent: ventures.pitchDrawer.receivedNote,
+    error: ventures.pitchDrawer.errorNote,
+    busy: ventures.pitchDrawer.busyNote,
+  }[status];
+  const send = async () => {
+    // Blank again after a success, so a second click can't send the same pitch twice.
+    if (await submit({ ...form, consent, lang, pageUrl: pageUrl() })) {
+      setForm(PITCH_BLANK);
+      setConsent(false);
+    }
+  };
   return (
     <React.Fragment>
       <Button onClick={() => setOpen(true)}>{ventures.band.pitchButton}</Button>
@@ -73,28 +97,66 @@ export default function PitchWidget({ ventures, closeLabel }) {
             <Form.Label>{ventures.pitchDrawer.kindLabel}</Form.Label>
             <Form.Select
               aria-label={ventures.pitchDrawer.kindLabel}
-              value={form.kind}
-              onChange={set('kind')}
+              value={form.projectType}
+              onChange={set('projectType')}
             >
               <option value="">{ventures.pitchDrawer.selectPlaceholder}</option>
-              {projectKinds.map((k) => (
-                <option key={k} value={k}>
-                  {k}
+              {ventures.pitchDrawer.projectKinds.map((k) => (
+                <option key={k.value} value={k.value}>
+                  {k.label}
                 </option>
               ))}
             </Form.Select>
           </Form.Group>
           <Form.Group>
             <Form.Label>{ventures.pitchDrawer.describeLabel}</Form.Label>
-            <Form.Control as="textarea" rows={4} value={form.details} onChange={set('details')} />
+            <Form.Control
+              as="textarea"
+              rows={4}
+              maxLength={2000}
+              value={form.description}
+              onChange={set('description')}
+            />
           </Form.Group>
+          <div className="d-flex gap-2 align-items-start">
+            <Form.Check
+              type="checkbox"
+              checked={consent}
+              onChange={(e) => setConsent(e.target.checked)}
+              aria-label={ventures.pitchDrawer.consentTextPart1}
+            />
+            <span className="consent-text">
+              {ventures.pitchDrawer.consentTextPart1}
+              <a href="mailto:info@codeboxx.com">info@codeboxx.com</a>
+              {ventures.pitchDrawer.consentTextPart2}
+              <a href={localizedHref('/privacy-policy', lang)}>
+                {ventures.pitchDrawer.consentLinkText}
+              </a>
+              {ventures.pitchDrawer.consentTextPart3}
+            </span>
+          </div>
+          <div className="enroll-hp" aria-hidden="true">
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={form.website}
+              onChange={set('website')}
+            />
+          </div>
           <div className="rule" />
           <div className="form-actions">
-            <span className={'form-actions-note' + (sent ? ' sent' : '')}>
-              {sent ? ventures.pitchDrawer.receivedNote : ventures.pitchDrawer.reviewedNote}
+            <span
+              className={'form-actions-note' + (sent ? ' sent' : note ? ' error' : '')}
+              aria-live="polite"
+            >
+              {note ?? ventures.pitchDrawer.reviewedNote}
             </span>
-            <Button size="lg" disabled={!ready} onClick={() => setSent(true)}>
-              {ventures.pitchDrawer.submit}
+            <Button size="lg" disabled={!ready || sending} onClick={send}>
+              {sending && <Spinner size="sm" aria-hidden="true" />}
+              {sending ? ventures.pitchDrawer.sending : ventures.pitchDrawer.submit}
             </Button>
           </div>
         </Offcanvas.Body>
