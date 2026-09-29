@@ -4,7 +4,7 @@ import http from 'node:http';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { after, before, beforeEach, test } from 'node:test';
-import { enqueue } from '../outbox.js';
+import { enqueue, resendQueued } from '../outbox.js';
 import { createServer } from '../server.js';
 import { CONTACT, PITCH, VALID } from './fixtures.js';
 
@@ -187,11 +187,29 @@ test('forwards contact and pitch submissions to the portal, queuing only a 5xx',
       assert.equal(request.headers['api-key'], API_KEY);
       assert.equal(request.body.form, kind);
       assert.equal(request.body.submissionId, ID);
+      assert.equal(request.body.consentAt, '2026-09-29T12:00:00.000Z');
       assert.deepEqual(await queued(), queues ? [`${ID}.json`] : [], `${kind} ${status}`);
     }
     const file = JSON.parse(await readFile(join(outboxDir, `${ID}.json`), 'utf8'));
     assert.equal(file.kind, kind);
   }
+});
+
+test('resends a queued contact submission with the time the visitor consented', async () => {
+  portalStatus = 500;
+  await expect(await post('/api/contact', CONTACT), 502);
+  portalStatus = 201;
+  await resendQueued({
+    portalUrl: `http://127.0.0.1:${portal.address().port}`,
+    apiKey: API_KEY,
+    outboxDir,
+    log: (l) => logs.push(l),
+    now: () => NOW + 3 * 60 * 60 * 1000,
+  });
+  assert.equal(portalRequests.length, 2);
+  assert.deepEqual(portalRequests[1].body, portalRequests[0].body);
+  assert.equal(portalRequests[1].body.consentAt, '2026-09-29T12:00:00.000Z');
+  assert.deepEqual(await queued(), []);
 });
 
 test('requires a submission ID and consent on contact and pitch', async () => {

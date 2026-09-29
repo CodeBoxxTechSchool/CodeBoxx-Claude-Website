@@ -50,7 +50,8 @@ drawer) → the portal's `POST /api/v1/form-submissions`, with the same honeypot
 enroll, except that only a portal 201 answers 200 (a 409, an ID already used on another endpoint,
 answers 502 and is not queued). Both require `first`, `last`, `email`, `phone` (as typed: digits,
 spaces, `+ - ( ) .`, 7 to 15 digits), `lang` (`en`/`fr`), `consent` (`true`) and `submissionId`,
-and take an optional `pageUrl` (http(s), 500 characters max).
+and take an optional `pageUrl` (http(s), 500 characters max). The relay adds `consentAt`, when it
+received the submission, which a queued resend keeps.
 
 - Contact also requires `division` (`codeboxx`/`solutions`/`academy`/`ventures`), `mobile`
   (`yes`/`no`) and `country` (ISO 3166-1 alpha-2), and takes an optional `message` (2000 max).

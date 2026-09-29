@@ -4,13 +4,14 @@ import { toContact, toPitch, validateContact, validatePitch } from '../forms.js'
 import { CONTACT, PITCH } from './fixtures.js';
 
 const ID = '3f2b8c1e-9a4d-4e6f-8b7a-1c2d3e4f5a6b';
+const NOW = Date.parse('2026-09-29T12:00:00Z');
 const contactErrors = (changes) => validateContact({ ...CONTACT, ...changes }).errors ?? [];
 const pitchErrors = (changes) => validatePitch({ ...PITCH, ...changes }).errors ?? [];
 
 test('maps a valid contact submission to a form submission', () => {
   const result = validateContact({ ...CONTACT, extra: 'ignored' });
   assert.equal(result.ok, true);
-  assert.deepEqual(toContact(result.data), {
+  assert.deepEqual(toContact(result.data, NOW), {
     submissionId: ID,
     form: 'contact',
     firstName: 'Ada',
@@ -19,6 +20,7 @@ test('maps a valid contact submission to a form submission', () => {
     phone: '+1 (555) 555-0100',
     language: 'fr',
     consent: true,
+    consentAt: '2026-09-29T12:00:00.000Z',
     pageUrl: 'https://codeboxx.com/fr/#contact',
     division: 'solutions',
     isMobilePhone: false,
@@ -33,7 +35,7 @@ test('maps a valid contact submission to a form submission', () => {
 test('maps a valid pitch to a Ventures form submission', () => {
   const result = validatePitch(PITCH);
   assert.equal(result.ok, true);
-  assert.deepEqual(toPitch(result.data), {
+  assert.deepEqual(toPitch(result.data, NOW), {
     submissionId: ID,
     form: 'pitch',
     firstName: 'Ada',
@@ -42,6 +44,7 @@ test('maps a valid pitch to a Ventures form submission', () => {
     phone: '555-555-0100',
     language: 'en',
     consent: true,
+    consentAt: '2026-09-29T12:00:00.000Z',
     pageUrl: 'https://codeboxx.com/ventures/',
     division: 'ventures',
     message: 'An app for engines.',

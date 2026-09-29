@@ -27,7 +27,7 @@ function submission(kind, validate, toPortal) {
     if (isHoneypot(body)) return { status: 200, note: 'honeypot' };
     const result = validate(body);
     if (!result.ok) return { status: 400, note: `invalid=${result.errors.join(',')}` };
-    return forward(kind, toPortal(result.data), result.data.submissionId, config);
+    return forward(kind, toPortal(result.data, config.now?.()), result.data.submissionId, config);
   };
 }
 
