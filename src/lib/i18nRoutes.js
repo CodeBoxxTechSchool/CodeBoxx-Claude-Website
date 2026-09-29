@@ -20,6 +20,7 @@ export const ROUTE_TABLE = [
   { en: '/case-studies', fr: '/fr/etudes-de-cas' },
   { en: '/privacy-policy', fr: '/fr/politique-de-confidentialite' },
   { en: '/terms-conditions', fr: '/fr/conditions-generales' },
+  { en: '/crewkit-forge-20', fr: '/fr/crewkit-forge-20' },
 ];
 
 export const HASH_TABLE = {

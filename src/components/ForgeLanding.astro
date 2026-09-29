@@ -1,0 +1,204 @@
+---
+// Body of the CodeBoxx w/ CrewKit Forge 20 landing page, shared by
+// src/pages/crewkit-forge-20.astro (EN) and src/pages/fr/crewkit-forge-20.astro
+// (FR) — the two pages only pick the locale and the contact link. Static HTML, no
+// islands: every call to action is a plain link, most of them to the public order
+// configurator at buildorder.codeboxx.com. Styles in src/styles/_forge.scss.
+import HeroVideo from './HeroVideo.astro';
+import ForgeCube from './ForgeCube.astro';
+
+const { t, contactHref } = Astro.props;
+const order = { href: t.buildOrderUrl, target: '_blank', rel: 'noopener' };
+---
+
+<section class="band-dark fg-hero">
+  <HeroVideo
+    webm="/assets/crewkit-forge.webm"
+    mp4="/assets/crewkit-forge.mp4"
+    poster="/assets/crewkit-forge-poster.webp"
+    overlay="linear-gradient(90deg, rgba(0, 14, 20, 0.92) 0%, rgba(0, 14, 20, 0.7) 55%, rgba(0, 14, 20, 0.35) 100%)"
+  />
+  <div class="wrap fg-hero-inner">
+    <img src="/assets/crewkit_wh.webp" alt="" width="210" height="100" class="fg-hero-logo" />
+    <span class="pill">{t.hero.pill}</span>
+    <h1 class="fg-hero-title">{t.hero.title}</h1>
+    <p class="fg-hero-lede">{t.hero.lede}</p>
+    <div class="fg-actions">
+      <a class="btn btn-primary btn-lg" {...order}>
+        {t.hero.ctaPrimary}
+      </a>
+      <a class="btn btn-outline-light btn-lg" href="#inside">
+        {t.hero.ctaSecondary}
+      </a>
+    </div>
+    <p class="fg-note">{t.hero.note}</p>
+  </div>
+</section>
+
+<section class="fg-manifesto">
+  <div class="wrap d-flex flex-column gap-5">
+    <div class="d-flex flex-column gap-3">
+      <p class="eyebrow eyebrow-brand">{t.manifesto.eyebrow}</p>
+      <h2 class="fg-manifesto-line">{t.manifesto.line}</h2>
+    </div>
+    <div class="grid3 fg-pillars">
+      {t.manifesto.pillars.map(([title, body]) => (
+        <div class="fg-pillar">
+          <h3 class="fg-pillar-title">{title}</h3>
+          <p class="fg-pillar-body">{body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="sect fg-dc" id="inside">
+  <div class="wrap grid2 fg-dc-grid">
+    <div class="d-flex flex-column gap-4">
+      <p class="eyebrow">{t.dataCenter.eyebrow}</p>
+      <h2 class="h2 fg-h2">{t.dataCenter.title}</h2>
+      <p class="lede lede-640">{t.dataCenter.body}</p>
+      <dl class="fg-specs">
+        {t.dataCenter.specs.map(([value, unit, detail]) => (
+          <div class="fg-spec">
+            <dt>
+              <span class="fg-spec-value">{value}</span>
+              <span class="fg-spec-unit">{unit}</span>
+            </dt>
+            <dd>{detail}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+    <figure class="fg-cube-figure">
+      <ForgeCube labels={t.dataCenter.cubeLabels} title={t.dataCenter.cubeTitle} />
+      <figcaption class="fg-footnote">{t.dataCenter.footnote}</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="sect fg-rhythm">
+  <div class="wrap d-flex flex-column gap-5">
+    <div class="d-flex flex-column gap-3">
+      <p class="eyebrow">{t.rhythm.eyebrow}</p>
+      <h2 class="h2 fg-h2">{t.rhythm.title}</h2>
+    </div>
+    <ol class="grid4 fg-steps">
+      {t.rhythm.steps.map(([word, body]) => (
+        <li class="fg-step">
+          <span class="fg-step-word">{word}</span>
+          <p class="pbody">{body}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<section class="sect sect-navy fg-local">
+  <div class="wrap grid2 fg-local-grid">
+    <div class="d-flex flex-column gap-4">
+      <p class="eyebrow eyebrow-brand">{t.local.eyebrow}</p>
+      <h2 class="h2 h2-inverse fg-h2">{t.local.title}</h2>
+      {t.local.body.map((p) => (
+        <p class="fg-local-body">{p}</p>
+      ))}
+    </div>
+    <ul class="fg-lanes">
+      {t.local.lanes.map(([label, body], i) => (
+        <li class={'fg-lane fg-lane-' + i}>
+          <span class="fg-lane-label">{label}</span>
+          <span class="fg-lane-body">{body}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="fg-visible">
+  <img
+    class="fg-visible-img"
+    src="/assets/crewkit-forge-poster.webp"
+    alt={t.visible.imageAlt}
+    loading="lazy"
+    width="1248"
+    height="736"
+  />
+  <div class="fg-visible-scrim" aria-hidden="true"></div>
+  <div class="wrap fg-visible-inner">
+    <p class="eyebrow eyebrow-brand">{t.visible.eyebrow}</p>
+    <blockquote class="fg-quote">{t.visible.quote}</blockquote>
+    <p class="fg-visible-body">{t.visible.body}</p>
+  </div>
+</section>
+
+<section class="sect fg-workload">
+  <div class="wrap d-flex flex-column gap-5">
+    <div class="d-flex flex-column gap-3">
+      <p class="eyebrow">{t.workload.eyebrow}</p>
+      <h2 class="h2 fg-h2">{t.workload.title}</h2>
+    </div>
+    <div class="grid2">
+      {t.workload.plans.map((plan) => (
+        <a class="panel fg-plan" {...order}>
+          <span class="kicker">{plan.kicker}</span>
+          <span class="fg-plan-name">{plan.name}</span>
+          <p class="pbody">{plan.body}</p>
+          <span class="fg-plan-go" aria-hidden="true">
+            →
+          </span>
+        </a>
+      ))}
+    </div>
+    <div class="d-flex flex-column gap-3">
+      <h3 class="fg-options-title">{t.workload.optionsTitle}</h3>
+      <div class="grid3">
+        {t.workload.options.map(([name, body]) => (
+          <div class="fg-option">
+            <span class="fg-option-name">{name}</span>
+            <p class="pbody">{body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sect fg-included">
+  <div class="wrap d-flex flex-column gap-5">
+    <div class="d-flex flex-column gap-3">
+      <p class="eyebrow">{t.included.eyebrow}</p>
+      <h2 class="h2 fg-h2">{t.included.title}</h2>
+    </div>
+    <div class="grid4">
+      {t.included.items.map(([title, body]) => (
+        <div class="fg-included-item">
+          <h3 class="ptitle">{title}</h3>
+          <p class="pbody">{body}</p>
+        </div>
+      ))}
+    </div>
+    <div class="fg-proof">
+      <p class="eyebrow">{t.proof.eyebrow}</p>
+      <h3 class="fg-proof-title">{t.proof.title}</h3>
+      <p class="pbody">{t.proof.body}</p>
+    </div>
+  </div>
+</section>
+
+<section class="fg-cta">
+  <div class="wrap fg-cta-inner">
+    <p class="eyebrow eyebrow-brand">{t.cta.eyebrow}</p>
+    <h2 class="fg-cta-title">{t.cta.title}</h2>
+    <p class="fg-cta-kicker">{t.cta.kicker}</p>
+    <p class="fg-cta-body">{t.cta.body}</p>
+    <div class="fg-actions">
+      <a class="btn btn-primary btn-lg" {...order}>
+        {t.cta.primary}
+      </a>
+      <a class="btn btn-outline-light btn-lg" href={contactHref}>
+        {t.cta.secondary}
+      </a>
+    </div>
+    <p class="fg-note">{t.cta.note}</p>
+  </div>
+</section>
