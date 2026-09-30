@@ -18,6 +18,13 @@ export default {
   },
   coverImage: 'Image de couverture',
   readPost: "Lire l'article",
+  share: {
+    label: 'Partager',
+    linkedin: 'Partager sur LinkedIn',
+    facebook: 'Partager sur Facebook',
+    copy: 'Copier le lien',
+    copied: 'Lien copié',
+  },
   loadMore: 'Charger plus',
   showingOf: '{{shown}} sur {{total}} affichés',
   subscribe: {

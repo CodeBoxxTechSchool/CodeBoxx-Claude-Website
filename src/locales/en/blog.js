@@ -21,6 +21,13 @@ export default {
   },
   coverImage: 'Cover image',
   readPost: 'Read Post',
+  share: {
+    label: 'Share',
+    linkedin: 'Share on LinkedIn',
+    facebook: 'Share on Facebook',
+    copy: 'Copy link',
+    copied: 'Link copied',
+  },
   loadMore: 'Load More',
   showingOf: 'Showing {{shown}} of {{total}}',
   subscribe: {

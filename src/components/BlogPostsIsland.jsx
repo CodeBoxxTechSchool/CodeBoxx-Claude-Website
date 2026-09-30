@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Badge } from 'react-bootstrap';
 import { localizedHref } from '../lib/i18nRoutes';
+import { postUrl } from '../lib/share';
+import ShareButtons from './ShareButtons';
 
 // Astro-native counterpart to the `Posts` component in the old Blog.jsx. Same
 // category-filter + "show N, load more via IntersectionObserver" behavior, but
@@ -87,11 +89,19 @@ export default function BlogPosts({ posts, lang, pathname, strings }) {
                 <h2 className="post-title">{p.title}</h2>
                 <p className="pbody">{p.excerpt}</p>
                 <div className="rule" />
-                <div className="post-meta-row">
+                <div className="post-meta-row post-card-footer">
                   <span className="post-author">{p.author}</span>
-                  <a href={localizedHref('/blog/' + p.slug, lang, pathname)} className="link-tag">
-                    {strings.readPost}
-                  </a>
+                  <div className="post-card-actions">
+                    <ShareButtons url={postUrl(p.slug, lang)} strings={strings.share} />
+                    {/* stretched-link: the whole card is clickable (Bootstrap's
+                    ::after overlay; .post-card is position: relative). */}
+                    <a
+                      href={localizedHref('/blog/' + p.slug, lang, pathname)}
+                      className="link-tag stretched-link"
+                    >
+                      {strings.readPost}
+                    </a>
+                  </div>
                 </div>
               </div>
             </article>

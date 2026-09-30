@@ -1,0 +1,59 @@
+---
+// Share row for the blog post page hero: LinkedIn / Facebook are plain links that
+// work without JS; "Copy link" needs the small script below (the post page ships
+// no other framework JS). Same icons and URLs as the cards' ShareButtons.jsx.
+import { shareHrefs, SHARE_ICONS } from '../lib/share';
+
+const { url, strings } = Astro.props;
+const hrefs = shareHrefs(url);
+---
+
+<div class="share-buttons share-buttons-hero">
+  <span class="share-label">{strings.label}</span>
+  <a
+    class="share-btn"
+    href={hrefs.linkedin}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={strings.linkedin}
+    title={strings.linkedin}
+    set:html={SHARE_ICONS.linkedin}
+  />
+  <a
+    class="share-btn"
+    href={hrefs.facebook}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={strings.facebook}
+    title={strings.facebook}
+    set:html={SHARE_ICONS.facebook}
+  />
+  <button
+    type="button"
+    class="share-btn"
+    data-copy-url={url}
+    data-copied-label={strings.copied}
+    aria-label={strings.copy}
+    title={strings.copy}
+    set:html={SHARE_ICONS.link}
+  />
+  <span class="share-copied" role="status"></span>
+</div>
+
+<script>
+  import { copyToClipboard } from '../lib/share';
+
+  document.addEventListener('click', async (event) => {
+    const btn = (event.target as HTMLElement)?.closest<HTMLElement>('[data-copy-url]');
+    if (!btn) return;
+    const status = btn.parentElement?.querySelector<HTMLElement>('.share-copied');
+    if (!(await copyToClipboard(btn.dataset.copyUrl || ''))) return;
+    if (!status) return;
+    status.textContent = btn.dataset.copiedLabel || '';
+    status.classList.add('is-visible');
+    setTimeout(() => {
+      status.classList.remove('is-visible');
+      status.textContent = '';
+    }, 2000);
+  });
+</script>
