@@ -9,6 +9,7 @@ export default {
     solutions: 'Solutions',
     solutionsServices: 'Services',
     solutionsWorks: 'Works',
+    caseStudies: 'Case Studies',
     academy: 'Academy',
     academyCourses: 'Courses',
     academyCalendar: 'Calendar',

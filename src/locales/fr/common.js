@@ -7,6 +7,7 @@ export default {
     solutions: 'Solutions',
     solutionsServices: 'Services',
     solutionsWorks: 'Réalisations',
+    caseStudies: 'Études de cas',
     academy: 'Académie',
     academyCourses: 'Cours',
     academyCalendar: 'Calendrier',
