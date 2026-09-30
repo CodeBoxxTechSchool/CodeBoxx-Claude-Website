@@ -46,6 +46,7 @@ function toPost(entry) {
     category: entry.category,
     author: entry.author,
     date: (entry.publishedAt || entry.date || '').slice(0, 10),
+    updatedAt: entry._updatedAt || null,
     excerpt: entry.excerpt || entry.summary || '',
     content: entry.content || null,
     featuredImage: entry.featuredImageUrl || null,
