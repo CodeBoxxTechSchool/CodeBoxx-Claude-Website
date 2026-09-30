@@ -213,6 +213,7 @@ function buildFooterColumns(lang, pathname, strings) {
       items: [
         { label: nav.solutionsServices, href: href('#solutions') },
         { label: nav.solutionsWorks, href: href('#works') },
+        { label: nav.caseStudies, href: href('/case-studies') },
       ],
     },
     {
