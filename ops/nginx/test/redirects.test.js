@@ -154,6 +154,15 @@ test('check plan: the apex goes to https over http; the IP fails the handshake o
   for (const host of [ip, 'example.com']) assert.ok(find(https, host, '/').rejected, host);
 });
 
+test('check plan over live DNS (--base https://codeboxx.com): only the unknown name is rejected', () => {
+  const live = plan(table, 'codeboxx.com', true);
+  assert.deepEqual(
+    live.filter((c) => c.rejected).map((c) => c.host),
+    ['example.com']
+  );
+  assert.equal(live.find((c) => c.host === 'codeboxx.com' && c.path === '/').unchanged, 200);
+});
+
 test('rejects malformed lines', () => {
   const head = '[hosts]\na.com\ta\n[redirects]\n';
   assert.throws(() => parse(`${head}a\t/Post\t/blog/`), /bad old path/);

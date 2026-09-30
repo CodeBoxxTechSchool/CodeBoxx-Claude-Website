@@ -156,6 +156,8 @@ node ops/nginx/check-redirects.js --base http://159.223.145.47 --relay
 
 (`ufw` is inactive; if it's ever turned on, it must allow 443.)
 
+The DNS swap itself, once step 3 passes: [../swap-runbook.md](../swap-runbook.md).
+
 **Roll back**, `nginx -t && systemctl reload nginx` after each:
 
 - Step 3: `rm /etc/nginx/sites-enabled/codeboxx-https`.
