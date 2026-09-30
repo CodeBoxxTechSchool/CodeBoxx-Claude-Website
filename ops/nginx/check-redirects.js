@@ -6,7 +6,8 @@ import { OLD_URLS, load, match, resolve } from './redirects.js';
 
 const USAGE =
   'usage: node ops/nginx/check-redirects.js --base http://159.223.145.47 [--relay]\n' +
-  '       node ops/nginx/check-redirects.js --base https://159.223.145.47 [--ca test-ca.pem] [--relay]';
+  '       node ops/nginx/check-redirects.js --base https://159.223.145.47 [--ca test-ca.pem] [--relay]\n' +
+  '       node ops/nginx/check-redirects.js --base https://codeboxx.com --relay   (after the DNS swap)';
 const QUERY = 'gclid=x&utm_source=y';
 const APEX = 'codeboxx.com';
 const PARALLEL = 8;
@@ -69,7 +70,9 @@ export function plan(table, baseHost, secure = false) {
     checks.push({ host, path: upper, location: resolve(table, host, upper) });
     checks.push({ host, path: '/.well-known/acme-challenge/test', unchanged: 404 });
   }
-  for (const host of [baseHost, 'example.com']) {
+  // The IP (or any base that isn't one of the site's names) and an unknown name get no site name.
+  const unknown = table.hosts[baseHost] ? ['example.com'] : [baseHost, 'example.com'];
+  for (const host of unknown) {
     if (secure) checks.push({ host, path: '/', rejected: true });
     else
       for (const path of ['/', '/post/kntv-press-here', '/contact', '/join-our-team'])
