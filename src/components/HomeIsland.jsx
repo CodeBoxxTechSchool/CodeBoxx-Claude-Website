@@ -9,6 +9,7 @@ import { useIntakes } from '../lib/intakes';
 import { localizedHref, localizedId } from '../lib/i18nRoutes';
 import { suggestEmail } from '../lib/emailTypos';
 import { pageUrl, useRelaySubmit } from '../lib/useRelaySubmit';
+import { trackLead } from '../lib/trackLead';
 
 // The homepage (replaced the old react-router Home.jsx).
 //
@@ -1444,6 +1445,7 @@ function Contact({ onEnroll }) {
     const fields = { ...f, division, mobile, lang: lg, consent, pageUrl: pageUrl() };
     // Blank again after a success, so a second click can't send the same message twice.
     if (await submit(fields)) {
+      trackLead({ formId: 'contact', language: lang });
       setF(CONTACT_BLANK);
       setConsent(false);
     }
@@ -1948,7 +1950,10 @@ function EnrollDrawer({ course, onClose }) {
           <Button
             size="lg"
             disabled={!ready || sending}
-            onClick={() => submit({ ...form, mobile, lang, contactBy, heard, program })}
+            onClick={async () => {
+              if (await submit({ ...form, mobile, lang, contactBy, heard, program }))
+                trackLead({ formId: 'enroll', program, language: pageLang });
+            }}
           >
             {sending && <Spinner size="sm" aria-hidden="true" />}
             {sending ? home.enroll.sending : home.enroll.submit}

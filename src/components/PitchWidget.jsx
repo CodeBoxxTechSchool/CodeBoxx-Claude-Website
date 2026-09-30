@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Form, Offcanvas, Spinner } from 'react-bootstrap';
 import { localizedHref } from '../lib/i18nRoutes';
 import { pageUrl, useRelaySubmit } from '../lib/useRelaySubmit';
+import { trackLead } from '../lib/trackLead';
 
 // The one piece of Ventures that needs a React island: the "Pitch us" trigger
 // button and the drawer it opens share local state, so they're one small
@@ -42,6 +43,7 @@ export default function PitchWidget({ ventures, lang, closeLabel }) {
   const send = async () => {
     // Blank again after a success, so a second click can't send the same pitch twice.
     if (await submit({ ...form, consent, lang, pageUrl: pageUrl() })) {
+      trackLead({ formId: 'pitch', language: lang });
       setForm(PITCH_BLANK);
       setConsent(false);
     }
