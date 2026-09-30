@@ -13,7 +13,7 @@ export default {
     academyFinancing: 'Options de financement',
     academyFaq: 'FAQ',
     ventures: 'Ventures',
-    blog: 'Blogue',
+    blog: 'CodeBlog',
     contact: 'Contact',
   },
   actions: {

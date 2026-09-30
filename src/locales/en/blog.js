@@ -21,6 +21,11 @@ export default {
   },
   coverImage: 'Cover image',
   readPost: 'Read Post',
+  search: {
+    label: 'Search posts',
+    placeholder: 'Search posts',
+    noResults: 'No posts match “{{query}}”.',
+  },
   share: {
     label: 'Share',
     linkedin: 'Share on LinkedIn',

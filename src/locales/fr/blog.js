@@ -18,6 +18,11 @@ export default {
   },
   coverImage: 'Image de couverture',
   readPost: "Lire l'article",
+  search: {
+    label: 'Rechercher des articles',
+    placeholder: 'Rechercher',
+    noResults: 'Aucun article ne correspond à « {{query}} ».',
+  },
   share: {
     label: 'Partager',
     linkedin: 'Partager sur LinkedIn',

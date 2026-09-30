@@ -15,7 +15,7 @@ export default {
     academyFinancing: 'Financing Options',
     academyFaq: 'FAQ',
     ventures: 'Ventures',
-    blog: 'Blog',
+    blog: 'CodeBlog',
     contact: 'Contact',
   },
   actions: {

@@ -315,3 +315,51 @@
     color: v.$navy-500;
   }
 }
+
+// ---- Blog list toolbar: category pills + search (BlogPostsIsland.jsx) ----
+.blog-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.blog-search {
+  position: relative;
+  flex: 0 1 280px;
+  margin-left: auto;
+
+  @media (max-width: v.$breakpoint-md) {
+    flex: 1 1 100%;
+  }
+}
+.blog-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  color: v.$color-text-secondary;
+  pointer-events: none;
+}
+.blog-search-input {
+  width: 100%;
+  padding: 9px 16px 9px 40px;
+  border: 0;
+  border-radius: v.$radius-full;
+  background: v.$neutral-0;
+  box-shadow: inset 0 0 0 1px v.$ui-slate-200;
+  font: inherit;
+  font-size: v.$text-body;
+  color: v.$color-text-primary;
+
+  &::placeholder {
+    color: v.$color-text-secondary;
+  }
+  &:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px v.$blue-500;
+  }
+}
+.blog-search-empty {
+  margin: 0;
+}
