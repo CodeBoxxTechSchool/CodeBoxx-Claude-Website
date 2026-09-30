@@ -21,6 +21,18 @@ export default {
   },
   coverImage: 'Cover image',
   readPost: 'Read Post',
+  search: {
+    label: 'Search posts',
+    placeholder: 'Search posts',
+    noResults: 'No posts match “{{query}}”.',
+  },
+  share: {
+    label: 'Share',
+    linkedin: 'Share on LinkedIn',
+    facebook: 'Share on Facebook',
+    copy: 'Copy link',
+    copied: 'Link copied',
+  },
   loadMore: 'Load More',
   showingOf: 'Showing {{shown}} of {{total}}',
   subscribe: {

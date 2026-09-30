@@ -2,6 +2,8 @@
 // FR twin of src/pages/blog/[slug].astro — see that file for the shared rationale.
 import Layout from '../../../layouts/Layout.astro';
 import HeroVideo from '../../../components/HeroVideo.astro';
+import ShareLinks from '../../../components/ShareLinks.astro';
+import { postUrl } from '../../../lib/share';
 import { fetchPostList } from '../../../lib/sanityContent';
 import { SEED_POSTS } from '../../../lib/blogSeed';
 import { portableTextToHtml } from '../../../lib/portableText';
@@ -75,6 +77,7 @@ const contentHtml = post.content ? portableTextToHtml(post.content) : '';
         <span class="band-lede">{post.author}</span>
         {post.date ? <span class="band-lede">{fmt(post.date)}</span> : null}
       </div>
+      <ShareLinks url={postUrl(post.slug, 'fr')} strings={blog.share} />
     </div>
   </section>
   <section class="sect post-content-band">
