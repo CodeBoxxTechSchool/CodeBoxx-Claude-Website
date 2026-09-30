@@ -9,6 +9,8 @@ import { useIntakes } from '../lib/intakes';
 import { localizedHref, localizedId } from '../lib/i18nRoutes';
 import { suggestEmail } from '../lib/emailTypos';
 import { pageUrl, useRelaySubmit } from '../lib/useRelaySubmit';
+import { PORTFOLIO } from '../lib/forgeEvidence';
+import { money } from '../lib/forgeFormat';
 
 // The homepage (replaced the old react-router Home.jsx).
 //
@@ -2050,6 +2052,112 @@ function CodeBlog() {
   );
 }
 
+// "Start here" entry window, right under the hero: one doorway each to the
+// CrewKit Forge 20 page (owned), its Dive Deeper evidence page (proven) and the
+// #AIDoneRight standard (accountable). Each card is one big link (Bootstrap's
+// .stretched-link) with its secondary links raised above it. The evidence bar
+// is to scale and reads the same PORTFOLIO totals the Dive Deeper page uses.
+const BUILD_ORDER_URL = 'https://buildorder.codeboxx.com/';
+
+function Gateway() {
+  const { home, lang, pathname } = useHomeCtx();
+  const g = home.gateway;
+  const factoryShare = (PORTFOLIO.factoryCost / PORTFOLIO.traditionalCost) * 100;
+  return (
+    <section className="gw" aria-labelledby="gw-title">
+      <div className="wrap gw-inner">
+        <div className="gw-head">
+          <span className="gw-eyebrow">{g.eyebrow}</span>
+          <h2 id="gw-title" className="gw-words">
+            {g.words.map((w, i) => (
+              <span key={w} className={'gw-word gw-word-' + i}>
+                {w}
+              </span>
+            ))}
+          </h2>
+          <p className="gw-lede">{g.lede}</p>
+        </div>
+
+        <div className="gw-grid">
+          <article className="gw-card gw-forge">
+            <img
+              className="gw-forge-img"
+              src="/assets/crewkit-forge-poster.webp"
+              alt={g.forge.imageAlt}
+              width={1248}
+              height={736}
+              loading="lazy"
+            />
+            <div className="gw-card-body">
+              <span className="gw-kicker">{g.forge.kicker}</span>
+              <h3 className="gw-title gw-title-lg">{g.forge.title}</h3>
+              <p className="gw-body">{g.forge.body}</p>
+              <div className="gw-links">
+                <a
+                  className="stretched-link gw-cta"
+                  href={localizedHref('/crewkit-forge-20', lang, pathname)}
+                >
+                  {g.forge.cta} →
+                </a>
+                <a className="gw-secondary" href={BUILD_ORDER_URL} target="_blank" rel="noopener">
+                  {g.forge.reserve}
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article className="gw-card gw-deep">
+            <span className="gw-kicker">{g.deep.kicker}</span>
+            <h3 className="gw-title">
+              {g.deep.title.replace('{saved}', money(PORTFOLIO.saved, lang))}
+            </h3>
+            <div className="gw-bars" aria-hidden="true">
+              <div className="gw-bar-row">
+                <span className="gw-bar-label">{g.deep.traditional}</span>
+                <span className="gw-bar gw-bar-trad" style={{ width: '100%' }} />
+                <span className="gw-bar-value">{money(PORTFOLIO.traditionalCost, lang)}</span>
+              </div>
+              <div className="gw-bar-row">
+                <span className="gw-bar-label">{g.deep.factory}</span>
+                <span className="gw-bar gw-bar-fact" style={{ width: factoryShare + '%' }} />
+                <span className="gw-bar-value">{money(PORTFOLIO.factoryCost, lang)}</span>
+              </div>
+            </div>
+            <a
+              className="stretched-link gw-cta"
+              href={localizedHref('/crewkit-forge-20/dive-deeper', lang, pathname)}
+            >
+              {g.deep.cta} →
+            </a>
+          </article>
+
+          <article className="gw-card gw-adr">
+            <span className="gw-kicker">{g.adr.kicker}</span>
+            <span className="gw-adr-tag">{g.adr.tag}</span>
+            <h3 className="gw-title">{g.adr.title}</h3>
+            <p className="gw-body">{g.adr.body}</p>
+            <div className="gw-links">
+              <a
+                className="stretched-link gw-cta"
+                href={localizedHref('/ai-done-right', lang, pathname)}
+              >
+                {g.adr.cta} →
+              </a>
+              <a
+                className="gw-secondary"
+                href="/docs/AI-Done-Right-v2.0.pdf"
+                download="AI-Done-Right-v2.0.pdf"
+              >
+                {g.adr.download}
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ForgeTeaser() {
   const { home, lang, pathname } = useHomeCtx();
   const features = home.forge.features;
@@ -2182,6 +2290,7 @@ export default function HomeIsland({
               </div>
             </div>
           </div>
+          <Gateway />
           <Platform />
           <WSJTeaser />
           <CodeBlog />

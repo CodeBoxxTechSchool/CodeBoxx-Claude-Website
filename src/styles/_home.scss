@@ -866,3 +866,266 @@
   text-transform: uppercase;
   color: v.$color-text-secondary;
 }
+
+// ---- "Start here" entry window (Gateway in HomeIsland.jsx) ----
+// One dark band under the hero with three doorways. Each headline word carries
+// the accent of its card: white = Forge 20 (owned), blue = Dive Deeper (proven),
+// gold = #AIDoneRight (accountable, the standard's own gold). Cards are single
+// big links via Bootstrap's .stretched-link; secondary links sit above it.
+$gw-gold: #c9a46b;
+
+.gw {
+  padding: 96px 0 104px;
+  background:
+    radial-gradient(circle at 92% 8%, rgba(201, 164, 107, 0.14), transparent 40%),
+    radial-gradient(circle at 4% 96%, rgba(67, 180, 240, 0.14), transparent 42%), v.$navy-900;
+}
+.gw-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.gw-head {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.gw-eyebrow {
+  font-size: v.$text-micro;
+  font-weight: v.$weight-semibold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: v.$blue-400;
+}
+.gw-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.3em;
+  margin: 0;
+  font-size: clamp(40px, 6.4vw, 92px);
+  font-weight: v.$weight-black;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.gw-word-0 {
+  color: v.$neutral-0;
+}
+.gw-word-1 {
+  color: v.$blue-400;
+}
+.gw-word-2 {
+  color: $gw-gold;
+}
+.gw-lede {
+  margin: 0;
+  max-width: 620px;
+  font-size: 18px;
+  line-height: 28px;
+  color: rgba(255, 255, 255, 0.76);
+}
+.gw-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: 20px;
+}
+.gw-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 28px;
+  border-radius: v.$radius-xl;
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover,
+  &:focus-within {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  }
+}
+.gw-kicker {
+  font-size: v.$text-micro;
+  font-weight: v.$weight-semibold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.gw-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: v.$weight-black;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.gw-title-lg {
+  font-size: 34px;
+}
+.gw-body {
+  margin: 0;
+  font-size: 15px;
+  line-height: 23px;
+}
+.gw-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+.gw-cta {
+  font-size: 15px;
+  font-weight: v.$weight-bold;
+  text-decoration: none;
+}
+.gw-secondary {
+  position: relative;
+  z-index: 2;
+  font-size: 14px;
+  font-weight: v.$weight-semibold;
+  text-decoration: underline;
+}
+
+// Owned — Forge 20: the appliance image over a dark card.
+.gw-forge {
+  grid-row: span 2;
+  padding: 0;
+  background: v.$navy-700;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  .gw-kicker {
+    color: v.$blue-400;
+  }
+  .gw-title {
+    color: v.$neutral-0;
+  }
+  .gw-body {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  .gw-cta,
+  .gw-secondary {
+    color: v.$neutral-0;
+  }
+}
+.gw-forge-img {
+  width: 100%;
+  aspect-ratio: 1248 / 620;
+  height: auto;
+  object-fit: cover;
+  object-position: center 40%;
+}
+.gw-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 28px;
+}
+
+// Proven — Dive Deeper: light card, to-scale cost bars.
+.gw-deep {
+  background: v.$neutral-0;
+
+  .gw-kicker {
+    color: v.$blue-text;
+  }
+  .gw-title {
+    color: v.$navy-500;
+  }
+  .gw-cta {
+    margin-top: auto;
+    color: v.$blue-text;
+  }
+}
+.gw-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 4px 0 8px;
+}
+.gw-bar-row {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr) 64px;
+  align-items: center;
+  gap: 10px;
+}
+.gw-bar-label {
+  font-size: 12px;
+  color: v.$color-text-secondary;
+}
+.gw-bar {
+  height: 14px;
+  border-radius: 0 4px 4px 0;
+}
+.gw-bar-trad {
+  background: v.$navy-200;
+}
+.gw-bar-fact {
+  background: v.$blue-600;
+}
+.gw-bar-value {
+  font-size: 13px;
+  font-weight: v.$weight-bold;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: v.$navy-500;
+}
+
+// Accountable — #AIDoneRight: warm paper, the standard's gold.
+.gw-adr {
+  background: #fbf9f5;
+  border-top: 4px solid $gw-gold;
+
+  .gw-kicker {
+    color: #7d5f2e;
+  }
+  .gw-title {
+    color: v.$navy-500;
+  }
+  .gw-body {
+    color: v.$color-text-secondary;
+  }
+  .gw-cta,
+  .gw-secondary {
+    color: v.$navy-500;
+  }
+}
+.gw-adr-tag {
+  font-size: 26px;
+  font-weight: v.$weight-black;
+  line-height: 1;
+  color: #a8823f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw-card {
+    transition: none;
+
+    &:hover,
+    &:focus-within {
+      transform: none;
+    }
+  }
+}
+
+@media (max-width: v.$breakpoint-md) {
+  .gw {
+    padding: 64px 0 72px;
+  }
+  .gw-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .gw-forge {
+    grid-row: auto;
+  }
+  .gw-title-lg {
+    font-size: 26px;
+  }
+  .gw-bar-row {
+    grid-template-columns: 96px minmax(0, 1fr) 56px;
+  }
+}
