@@ -437,6 +437,8 @@ export default {
       Waitlist: "Liste d'attente",
       Planned: 'Prévu',
     },
+    // Sanity stores each intake's location in English.
+    place: { Online: 'En ligne', 'St. Pete, Florida': 'St. Pete, Floride' },
   },
   // FR twin of home.corporate (EN) — the Wix source has no French version, so
   // this is a translation.
