@@ -26,6 +26,9 @@ const hostsOf = (group) => Object.keys(table.hosts).filter((host) => table.hosts
 const oldPaths = (group) =>
   lines(read(`old-urls/${OLD_URLS[group]}`)).map((url) => new URL(url).pathname);
 const servedPath = (path) => PAGES.has(path) || PAGES.has(`${path}/`);
+// A target (without its #fragment): a page of the new site, or a file in public/.
+const onSite = (path) =>
+  path.endsWith('/') ? PAGES.has(path) : existsSync(new URL(`.${path}`, PUBLIC + '/'));
 
 test('the generated nginx include is up to date (run node ops/nginx/redirects.js)', () => {
   assert.equal(readFileSync(CONF_FILE, 'utf8'), render(table));
@@ -51,9 +54,10 @@ test('every old URL redirects, except apex paths the new site serves', () => {
 
 test('every target is a page of the new site (or a file in public/)', () => {
   for (const rule of table.rules.filter((rule) => rule.to !== '=')) {
-    const path = rule.to.split('#')[0];
-    const ok = path.endsWith('/') ? PAGES.has(path) : existsSync(new URL(`.${path}`, PUBLIC + '/'));
-    assert.ok(ok, `redirects.tsv:${rule.line}: ${rule.to} is not on the new site`);
+    assert.ok(
+      onSite(rule.to.split('#')[0]),
+      `redirects.tsv:${rule.line}: ${rule.to} is not on the new site`
+    );
   }
 });
 
@@ -67,7 +71,7 @@ test('academie targets are the French academy targets, and exist', () => {
     const [path, hash] = english.get(rule.from).split('#');
     const expected = hash ? localizedHref(`#${hash}`, 'fr') : localizedHref(path, 'fr');
     assert.equal(rule.to, expected, `redirects.tsv:${rule.line}`);
-    assert.ok(PAGES.has(rule.to.split('#')[0]), rule.to);
+    assert.ok(onSite(rule.to.split('#')[0]), rule.to);
   }
 });
 
@@ -92,6 +96,12 @@ test('apex never redirects a path the new site serves', () => {
   for (const page of PAGES) assert.equal(resolve(table, 'codeboxx.com', page), null, page);
   for (const path of ['/', '/api/health', '/api/contact', '/404.html'])
     assert.equal(resolve(table, 'codeboxx.com', path), null, path);
+});
+
+test('the old hosts send /favicon.ico to the icon, not to a section', () => {
+  for (const host of Object.keys(table.hosts).filter((host) => host !== 'codeboxx.com'))
+    assert.equal(resolve(table, host, '/favicon.ico'), `${SITE}/favicon.ico`, host);
+  assert.equal(resolve(table, 'codeboxx.com', '/favicon.ico'), null);
 });
 
 test('keeps the query string, before the fragment', () => {
