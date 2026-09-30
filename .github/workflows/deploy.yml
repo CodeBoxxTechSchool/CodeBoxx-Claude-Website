@@ -11,6 +11,12 @@ on:
   repository_dispatch:
     types: [sanity-publish]
 
+# One deploy at a time: a publish or push during a deploy waits, and GitHub keeps only the
+# newest waiting run, so an older build can never finish last and overwrite newer content.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
