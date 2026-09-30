@@ -344,7 +344,7 @@ export default {
     lede: "Un programme de 16 semaines qui se termine à l'intérieur d'un vrai pod. Les diplômés utilisent les mêmes outils et la même norme de révision que le studio.",
     intro:
       "D'où que vous veniez, l'IA a le pouvoir de propulser votre carrière de développeur. Vous avez besoin d'un partenaire pleinement engagé qui avance à la vitesse de l'innovation. Trouvez un partenaire pour la vie avec CodeBoxx.",
-    nextIntake: 'Prochaine admission : sept. 2026',
+    nextIntake: 'Prochaine admission : {{date}}',
     cohortStructureLabel: 'Structure de la cohorte',
     coursesLabel: 'Cours',
     enrollNow: "S'inscrire",
@@ -356,9 +356,9 @@ export default {
     program: {
       titleLine1: '16 semaines, à temps plein',
       blurb:
-        "Les cohortes débutent chaque mois. Aucun diplôme préalable requis, seulement un test d'admission.",
+        "Les cohortes débutent à dates fixes au cours de l'année. Aucun diplôme préalable requis, seulement un test d'admission.",
       detail:
-        "Douze semaines, cinq jours par semaine. Le test d'admission mesure l'aptitude, pas les diplômes, et le calendrier ci-dessous fixe les admissions.",
+        "Seize semaines, cinq jours par semaine. Le test d'admission mesure l'aptitude, pas les diplômes, et le calendrier ci-dessous fixe les admissions.",
     },
     courses: {
       titleLine1: 'Nos cours',
@@ -424,20 +424,18 @@ export default {
   intake: {
     eyebrow: "Calendrier d'admission",
     title: 'Des programmes IA-first. Pour tous les niveaux.',
-    editable: 'Modifiable dans Sanity',
     fsd: { title: 'FSD AI-Native' },
     aidev: { title: 'Développeur IA avancé' },
     // See common.js (EN) for why fullTime/partTime stay defined and unused.
     cohortStartDate: 'Date de début de cohorte',
     fullTime: 'Temps plein',
     partTime: 'Temps partiel',
-    onDemand: 'Sur demande',
     enroll: "S'inscrire",
+    comingSoon: 'Prochaines dates à venir.',
     status: {
       Open: 'Ouvert',
       Waitlist: "Liste d'attente",
       Planned: 'Prévu',
-      InProgress: 'En cours',
     },
   },
   // FR twin of home.corporate (EN) — the Wix source has no French version, so

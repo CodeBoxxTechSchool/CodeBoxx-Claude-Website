@@ -10,9 +10,11 @@ import React from 'react';
 // Home that fetches client-side), so it needs the client-visible name instead.
 // No token here on purpose: this dataset allows public reads, and a
 // write-capable token must never ship in browser-readable JS.
-const PROJECT_ID = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
-const DATASET = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
-const API_VERSION = import.meta.env.PUBLIC_SANITY_API_VERSION || '2024-01-01';
+// `|| {}` lets plain Node (src/lib/test, via intakes.js) import this file.
+const env = import.meta.env || {};
+const PROJECT_ID = env.PUBLIC_SANITY_PROJECT_ID;
+const DATASET = env.PUBLIC_SANITY_DATASET || 'production';
+const API_VERSION = env.PUBLIC_SANITY_API_VERSION || '2024-01-01';
 
 // Lets other modules (e.g. intakes.js) skip a doomed fetch quietly instead of
 // hitting the same "not configured" warning fetchCollection already throws.

@@ -5,7 +5,7 @@ import { TopBar, Footer } from './ChromeIsland';
 import Avatar from './Avatar';
 import CountryCombobox from './CountryCombobox';
 import Logo from './Logo';
-import { useIntakes } from '../lib/intakes';
+import { formatIntakeDate, nextFsdIntake, useIntakes } from '../lib/intakes';
 import { localizedHref, localizedId } from '../lib/i18nRoutes';
 import { suggestEmail } from '../lib/emailTypos';
 import { pageUrl, useRelaySubmit } from '../lib/useRelaySubmit';
@@ -38,9 +38,9 @@ import { trackLead } from '../lib/trackLead';
 // lib/sanityContent.js) all come in as props from src/pages/index.astro and flow
 // through this context instead of react-i18next/useSanity* hooks, so every
 // sub-component below just calls useHomeCtx() instead of useTranslation()/a
-// useSanity* hook. The intake calendar is the one exception that still fetches
-// client-side (see IntakeCalendar below) — its "InProgress" status is derived from
-// today's date, which build time can't know in advance.
+// useSanity* hook. The intakes (calendar and Academy badge) are the one exception
+// that still fetches client-side (see Academy below) — which cohorts show depends
+// on today's date, which build time can't know in advance.
 const HomeCtx = React.createContext(null);
 function useHomeCtx() {
   return React.useContext(HomeCtx);
@@ -862,54 +862,16 @@ function Solutions() {
   );
 }
 
-// Raw seed rows only — title/meta come from home.intake.<id>, since these predate
-// any Sanity 'program' documents. Each program's seed dates split across both pace
-// columns just to demonstrate the 2-column-per-row layout — no scheduling meaning,
-// same as the rest of this seed.
-const SEED_INTAKES_META = [
-  {
-    id: 'fsd',
-    paces: {
-      'Full Time': [
-        ['Sep 14, 2026', 'Quebec City', 'Open'],
-        ['Jan 11, 2027', 'Remote', 'Waitlist'],
-      ],
-      'Part Time': [
-        ['Oct 26, 2026', 'Montreal', 'Open'],
-        ['Mar 22, 2027', 'Quebec City', 'Planned'],
-      ],
-    },
-  },
-  {
-    id: 'aidev',
-    paces: {
-      'Full Time': [
-        ['Sep 28, 2026', 'Remote', 'Open'],
-        ['Feb 08, 2027', 'Remote', 'Planned'],
-      ],
-      'Part Time': [
-        ['Nov 16, 2026', 'Montreal', 'Waitlist'],
-        ['Apr 19, 2027', 'Quebec City', 'Planned'],
-      ],
-    },
-  },
-];
-
-// programTitle used to be shown once per row, shared by both of that
-// program's pace columns (Full Time / Part Time side by side). Now each
-// column is a *different program* in the same row (FSD left, Advanced
-// AI-Developer right — see IntakeCalendar), so the program name moved down
-// into the column itself, stacked above paceTitle.
 // `hidden` visually hides the column (Bootstrap's `d-none`) without removing
 // it from the tree — used for Part Time below, which still renders (still
 // fetched, still in the DOM/architecture) but isn't shown in the UI.
+// `rows` is null while the intakes are loading: head only, no rows.
 function CalendarColumn({ programTitle, paceTitle, rows, onEnroll, hidden }) {
-  const { home } = useHomeCtx();
+  const { home, lang } = useHomeCtx();
   const tone = {
     Open: 'status-open',
     Waitlist: 'status-waitlist',
     Planned: 'status-planned',
-    InProgress: 'status-in-progress',
   };
   const statusLabel = home.intake.status;
   return (
@@ -918,10 +880,22 @@ function CalendarColumn({ programTitle, paceTitle, rows, onEnroll, hidden }) {
         <span className="calendar-col-title">{programTitle}</span>
         <span className="calendar-col-title calendar-pace-title">{paceTitle}</span>
       </div>
-      {rows.map(([date, place, status], i) => (
+      {rows && !rows.length ? (
+        <div className="calendar-row">
+          <div className="calendar-row-left">
+            <span className="calendar-place">{home.intake.comingSoon}</span>
+          </div>
+          <div className="calendar-row-right">
+            <Button size="sm" variant="outline-primary" onClick={onEnroll}>
+              {home.intake.enroll}
+            </Button>
+          </div>
+        </div>
+      ) : null}
+      {(rows || []).map(([date, place, status], i) => (
         <div key={i} className="calendar-row">
           <div className="calendar-row-left">
-            <span className="calendar-date">{date || home.intake.onDemand}</span>
+            <span className="calendar-date">{formatIntakeDate(date, lang)}</span>
             <span className="calendar-place">{place}</span>
           </div>
           <div className="calendar-row-right">
@@ -940,36 +914,18 @@ function CalendarColumn({ programTitle, paceTitle, rows, onEnroll, hidden }) {
   );
 }
 
-// The intake calendar is the one piece of Home that deliberately keeps fetching
-// client-side (useIntakes(), unchanged from the legacy hook) instead of moving to
-// build time: a cohort's "InProgress" status is derived by comparing its start
-// date to *today*, in the visitor's browser, every time the page loads — build
-// time only knows "today" as of the last deploy, so baking this into the static
-// HTML would let a cohort's status go stale between deploys with no content change
-// at all to trigger a rebuild.
-function IntakeCalendar({ onEnroll }) {
+// `intakes` is useIntakes()'s result, fetched once in Academy (also feeds its
+// next-intake badge).
+function IntakeCalendar({ intakes, onEnroll }) {
   const { home, lang } = useHomeCtx();
   const intakeId = localizedId('intake', lang);
-  const seed = SEED_INTAKES_META.map((p) => ({
-    id: p.id,
-    title: home.intake[p.id].title,
-    paces: p.paces,
+  // Left = AI-Native FSD, right = Advanced AI-Developer; each visibly shows only
+  // its "Full Time" dates (relabeled "Cohort Start Date").
+  const programs = ['fsd', 'aidev'].map((id) => ({
+    id,
+    title: home.intake[id].title,
+    paces: intakes ? intakes[id] : null,
   }));
-  const programs = useIntakes() || seed;
-  // Fixed 2-column layout per request: left = AI-Native FSD, right = Advanced
-  // AI-Developer, each visibly showing only its "Full Time" dates (relabeled
-  // "Cohort Start Date" — see home.intake.cohortStartDate). This replaces the
-  // old data-driven "one row per program, each with its own Full Time/Part
-  // Time columns" layout. Left/right here is just array order — the seed
-  // array is already [fsd, aidev], and live Sanity data is already sorted by
-  // each program's `order` field (see lib/intakes.js), the same assumption
-  // the old row-per-program layout relied on for ordering.
-  //
-  // Part Time is still fetched and rendered below (same paces/schema as
-  // before) — only hidden visually, via CalendarColumn's `hidden` prop — so
-  // the pace data stays live/architecturally present rather than pretending
-  // it doesn't exist. See the comment at that block for how to re-show it.
-  const [fsdProgram, aidevProgram] = programs;
   return (
     <div id={intakeId} className="calendar-band">
       <div className="calendar-head">
@@ -977,50 +933,34 @@ function IntakeCalendar({ onEnroll }) {
           <span className="calendar-eyebrow">{home.intake.eyebrow}</span>
           <span className="calendar-title">{home.intake.title}</span>
         </div>
-        <Badge bg="brand">{home.intake.editable}</Badge>
       </div>
       <div className="calendar-rows">
         <div className="calendar-program-row">
           <div className="calendar-cols calendar-grid">
-            {fsdProgram ? (
+            {programs.map((p) => (
               <CalendarColumn
-                programTitle={fsdProgram.title}
+                key={p.id}
+                programTitle={p.title}
                 paceTitle={home.intake.cohortStartDate}
-                rows={fsdProgram.paces['Full Time']}
-                onEnroll={() => onEnroll(fsdProgram.title)}
+                rows={p.paces && p.paces['Full Time']}
+                onEnroll={() => onEnroll(p.title)}
               />
-            ) : null}
-            {aidevProgram ? (
-              <CalendarColumn
-                programTitle={aidevProgram.title}
-                paceTitle={home.intake.cohortStartDate}
-                rows={aidevProgram.paces['Full Time']}
-                onEnroll={() => onEnroll(aidevProgram.title)}
-              />
-            ) : null}
+            ))}
             {/* Part Time hidden in the UI only (CalendarColumn's `hidden`
             prop -> d-none) — still fetched and rendered here in the
             architecture, per request, so re-showing it later is a CSS-only
             change (drop `hidden` below), not restoring a removed code path
             or re-fetching data that wasn't being retrieved. */}
-            {fsdProgram ? (
+            {programs.map((p) => (
               <CalendarColumn
                 hidden
-                programTitle={fsdProgram.title}
+                key={p.id + '-part-time'}
+                programTitle={p.title}
                 paceTitle={home.intake.partTime}
-                rows={fsdProgram.paces['Part Time']}
-                onEnroll={() => onEnroll(fsdProgram.title)}
+                rows={p.paces && p.paces['Part Time']}
+                onEnroll={() => onEnroll(p.title)}
               />
-            ) : null}
-            {aidevProgram ? (
-              <CalendarColumn
-                hidden
-                programTitle={aidevProgram.title}
-                paceTitle={home.intake.partTime}
-                rows={aidevProgram.paces['Part Time']}
-                onEnroll={() => onEnroll(aidevProgram.title)}
-              />
-            ) : null}
+            ))}
           </div>
         </div>
       </div>
@@ -1189,6 +1129,11 @@ function Academy({ onEnroll }) {
     graduateTestimonialsLive && graduateTestimonialsLive.length
       ? graduateTestimonialsLive
       : home.gradQuotes;
+  // Fetched client-side, not at build time: which cohorts fall in the next
+  // WINDOW_DAYS (lib/intakes.js) depends on the visitor's today, and a build
+  // only knows the day it ran.
+  const intakes = useIntakes();
+  const nextIntake = nextFsdIntake(intakes);
   const academyId = localizedId('academy', lang);
   const coursesHash = '#' + localizedId('academy-courses', lang);
   const academyHash = '#' + localizedId('academy', lang);
@@ -1214,7 +1159,13 @@ function Academy({ onEnroll }) {
       index="05"
       role={home.academy.role}
       name={home.academy.name}
-      badge={<Badge bg="brand">{home.academy.nextIntake}</Badge>}
+      badge={
+        nextIntake ? (
+          <Badge bg="brand">
+            {home.academy.nextIntake.replace('{{date}}', formatIntakeDate(nextIntake, lang))}
+          </Badge>
+        ) : null
+      }
       after={
         <React.Fragment>
           {corpOpen ? (
@@ -1226,7 +1177,7 @@ function Academy({ onEnroll }) {
               }}
             />
           ) : null}
-          <IntakeCalendar onEnroll={onEnroll} />
+          <IntakeCalendar intakes={intakes} onEnroll={onEnroll} />
           <AcademyLogoSlider />
           <GraduateTestimonials
             eyebrow={home.testimonials.gradEyebrow}
