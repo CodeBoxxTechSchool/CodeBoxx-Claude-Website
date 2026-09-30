@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { localizedHref } from '../../../src/lib/i18nRoutes.js';
+import { plan } from '../check-redirects.js';
 import { CONF_FILE, OLD_URLS, SITE, load, match, parse, render, resolve } from '../redirects.js';
 
 const table = load();
@@ -126,6 +127,31 @@ test('never redirects certificate challenges, the IP or unknown hosts', () => {
   }
   for (const host of ['159.223.145.47', 'example.com', ''])
     assert.equal(resolve(table, host, '/post/kntv-press-here'), null);
+});
+
+test('the certificate and the https server cover the eight swap hosts', () => {
+  const [, names] = read('codeboxx-https.conf').match(/server_name ([^;]+);/);
+  assert.deepEqual(names.split(/\s+/).sort(), [...SWAP_HOSTS].sort());
+  const [, issued] = read('issue-cert.sh').match(/^NAMES=\(([^)]+)\)/m);
+  assert.deepEqual(issued.split(/\s+/).filter(Boolean).sort(), [...SWAP_HOSTS].sort());
+});
+
+test('check plan: the apex goes to https over http; the IP fails the handshake over https', () => {
+  const ip = '159.223.145.47';
+  const [http, https] = [plan(table, ip), plan(table, ip, true)];
+  const find = (checks, host, path) => checks.find((c) => c.host === host && c.path === path);
+  const oldHosts = (checks) =>
+    checks.filter((c) => c.host !== 'codeboxx.com' && table.hosts[c.host]);
+  assert.deepEqual(oldHosts(http), oldHosts(https));
+  for (const check of http.filter((c) => c.host === 'codeboxx.com' && !c.unchanged))
+    assert.ok(check.location.startsWith(`${SITE}/`), check.path);
+  assert.equal(find(http, 'codeboxx.com', '/faq/').location, `${SITE}/faq/`);
+  assert.equal(find(https, 'codeboxx.com', '/faq/').unchanged, 200);
+  for (const host of SWAP_HOSTS)
+    for (const checks of [http, https])
+      assert.equal(find(checks, host, '/.well-known/acme-challenge/test').unchanged, 404, host);
+  assert.equal(find(http, ip, '/').unchanged, 200);
+  for (const host of [ip, 'example.com']) assert.ok(find(https, host, '/').rejected, host);
 });
 
 test('rejects malformed lines', () => {

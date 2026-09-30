@@ -4,16 +4,21 @@ import https from 'node:https';
 import { isIP } from 'node:net';
 import { OLD_URLS, load, match, resolve } from './redirects.js';
 
-const USAGE = 'usage: node ops/nginx/check-redirects.js --base http://159.223.145.47 [--relay]';
+const USAGE =
+  'usage: node ops/nginx/check-redirects.js --base http://159.223.145.47 [--relay]\n' +
+  '       node ops/nginx/check-redirects.js --base https://159.223.145.47 [--ca test-ca.pem] [--relay]';
 const QUERY = 'gclid=x&utm_source=y';
 const APEX = 'codeboxx.com';
 const PARALLEL = 8;
 
-/** { status, location } of one request to base with this Host header; redirects not followed. */
-export function send(base, host, path, method = 'HEAD') {
+/**
+ * { status, location } of one request to base with this Host header; redirects not followed.
+ * Over https the certificate is verified for that host (ca: a test CA instead of the system's).
+ */
+export function send(base, host, path, method = 'HEAD', ca = undefined) {
   const url = new URL(path, base);
   const client = url.protocol === 'https:' ? https : http;
-  const options = { method, headers: { host }, servername: isIP(host) ? undefined : host };
+  const options = { method, headers: { host }, servername: isIP(host) ? undefined : host, ca };
   return new Promise((done, fail) => {
     const req = client.request(url, { ...options, timeout: 10_000 }, (res) => {
       res.resume();
@@ -31,9 +36,16 @@ const oldPaths = (group) =>
     .filter(Boolean)
     .map((url) => new URL(url).pathname);
 
-/** Every request to make: { host, path, location } (a 301 there) or { host, path, unchanged }. */
-export function plan(table, baseHost) {
+/**
+ * Every request to make: { host, path, location } (a 301 there), { host, path, unchanged }, or
+ * { host, path, rejected } (no handshake). Over http the apex's own pages go to https.
+ */
+export function plan(table, baseHost, secure = false) {
   const checks = [];
+  const page = (host, path) =>
+    host === APEX && !secure
+      ? { host, path, location: `https://${APEX}${path}` }
+      : { host, path, unchanged: 200 };
   for (const [host, group] of Object.entries(table.hosts)) {
     const paths = new Set();
     for (const path of oldPaths(group)) paths.add(path).add(path.replace(/\/?$/, '/'));
@@ -45,7 +57,7 @@ export function plan(table, baseHost) {
     }
     for (const path of paths) {
       const location = resolve(table, host, path);
-      checks.push(location ? { host, path, location } : { host, path, unchanged: 200 });
+      checks.push(location ? { host, path, location } : page(host, path));
     }
     // The query string must land before the fragment, where the target has one.
     const redirected = [...paths].filter((path) => resolve(table, host, path));
@@ -57,11 +69,22 @@ export function plan(table, baseHost) {
     checks.push({ host, path: upper, location: resolve(table, host, upper) });
     checks.push({ host, path: '/.well-known/acme-challenge/test', unchanged: 404 });
   }
-  for (const host of [baseHost, 'example.com'])
-    for (const path of ['/', '/post/kntv-press-here', '/contact', '/join-our-team'])
-      checks.push({ host, path, unchanged: path === '/' ? 200 : 404 });
-  for (const path of ['/', '/faq/', '/blog', '/blog/', '/crewkit-forge-20', '/fr/blogue/'])
-    checks.push({ host: APEX, path, unchanged: 200 });
+  for (const host of [baseHost, 'example.com']) {
+    if (secure) checks.push({ host, path: '/', rejected: true });
+    else
+      for (const path of ['/', '/post/kntv-press-here', '/contact', '/join-our-team'])
+        checks.push({ host, path, unchanged: path === '/' ? 200 : 404 });
+  }
+  const apexPages = [
+    '/',
+    '/faq/',
+    `/faq/?${QUERY}`,
+    '/blog',
+    '/blog/',
+    '/crewkit-forge-20',
+    '/fr/blogue/',
+  ];
+  for (const path of apexPages) checks.push(page(APEX, path));
   return checks;
 }
 
@@ -80,18 +103,30 @@ export async function main(args, { out = console.log, err = console.error } = {}
     err(USAGE);
     return 2;
   }
+  const caIndex = args.indexOf('--ca');
+  const ca = caIndex >= 0 ? readFileSync(args[caIndex + 1]) : undefined;
+  const secure = base.startsWith('https:');
+  // Over http the apex answers with a redirect: its pages are fetched through the IP.
+  const siteHost = secure ? APEX : new URL(base).hostname;
   const table = load();
-  const checks = plan(table, new URL(base).hostname);
+  const checks = plan(table, new URL(base).hostname, secure);
   const failures = [];
   const fail = (what, got) => failures.push(`${what}: got ${got}`);
   const describe = (res) => `${res.status}${res.location ? ` -> ${res.location}` : ''}`;
   const targets = new Set();
   let redirects = 0;
   let unchanged = 0;
+  let rejected = 0;
 
   await runAll(checks, async (check) => {
     const what = `${check.host}${check.path}`;
-    const res = await send(base, check.host, check.path).catch((error) => error);
+    const res = await send(base, check.host, check.path, 'HEAD', ca).catch((error) => error);
+    if (check.rejected) {
+      if (!/unrecognized name/.test(res.message))
+        return fail(`${what} (want the handshake rejected)`, res.message ?? describe(res));
+      rejected++;
+      return;
+    }
     if (res instanceof Error) return fail(what, res.message);
     if (check.location) {
       if (res.status !== 301 || res.location !== check.location)
@@ -107,22 +142,23 @@ export async function main(args, { out = console.log, err = console.error } = {}
 
   let reached = 0;
   await runAll(targets, async (path) => {
-    const res = await send(base, APEX, path).catch((error) => error);
+    const res = await send(base, siteHost, path, 'HEAD', ca).catch((error) => error);
     if (res instanceof Error || res.status !== 200)
-      return fail(`target ${APEX}${path} (want 200)`, res.message ?? describe(res));
+      return fail(`target ${siteHost}${path} (want 200)`, res.message ?? describe(res));
     reached++;
   });
 
   if (args.includes('--relay')) {
-    const res = await send(base, APEX, '/api/health', 'GET').catch((error) => error);
+    const res = await send(base, siteHost, '/api/health', 'GET', ca).catch((error) => error);
     if (res instanceof Error || res.status !== 200)
-      fail(`relay ${APEX}/api/health (want 200)`, res.message ?? describe(res));
+      fail(`relay ${siteHost}/api/health (want 200)`, res.message ?? describe(res));
   }
 
   for (const failure of failures.sort()) err(`FAIL ${failure}`);
   out(
     `${base}: ${redirects} redirects, ${targets.size} targets (${reached} answered 200), ` +
-      `${unchanged} unredirected requests${args.includes('--relay') ? ', relay health' : ''}; ` +
+      `${unchanged} unredirected requests${secure ? `, ${rejected} rejected handshakes` : ''}` +
+      `${args.includes('--relay') ? ', relay health' : ''}; ` +
       `${failures.length} failure(s)`
   );
   return failures.length ? 1 : 0;
