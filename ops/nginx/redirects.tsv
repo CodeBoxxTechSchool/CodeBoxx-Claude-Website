@@ -256,3 +256,6 @@ solutions	/build-your-own-conversational-agent	/#solutions
 solutions	/product-page/*	/#solutions
 solutions	/category/*	/#solutions
 solutions	*	/#solutions
+
+# The site icon browsers still ask the old hosts for (www keeps the path already).
+academy,academie,solutions	/favicon.ico	/favicon.ico
