@@ -896,7 +896,7 @@ function CalendarColumn({ programTitle, paceTitle, rows, onEnroll, hidden }) {
         <div key={i} className="calendar-row">
           <div className="calendar-row-left">
             <span className="calendar-date">{formatIntakeDate(date, lang)}</span>
-            <span className="calendar-place">{place}</span>
+            <span className="calendar-place">{home.intake.place?.[place] || place}</span>
           </div>
           <div className="calendar-row-right">
             <span className={'calendar-status ' + tone[status]}>
