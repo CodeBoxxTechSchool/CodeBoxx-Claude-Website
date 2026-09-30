@@ -57,9 +57,16 @@
 }
 .post-card-body {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   gap: 12px;
   padding: 0 24px 24px;
+
+  // Pin the rule + author/share/Read Post row to the bottom of the card, so the
+  // footers line up across a row of cards whatever the excerpt length.
+  > .rule {
+    margin-top: auto;
+  }
 }
 .post-meta-row {
   display: flex;
