@@ -1,5 +1,6 @@
 // Number formatting for the Forge "Dive Deeper" islands, EN and FR conventions:
-// "$6.5M" / "6,5 M$", "$335K" / "335 k$", "5.2×" / "5,2×", "82%" / "82 %".
+// "$6.5M" / "6,5 M$", "$335K" / "335 k$", "5.2×" / "5,2×", "82%" / "82 %" (FR
+// with a non-breaking space, \u00a0, as in src/lib/frTypography.js).
 
 const dec = (n, digits, lang, keepZero = false) => {
   const s = keepZero ? n.toFixed(digits) : n.toFixed(digits).replace(/\.0+$/, '');
@@ -14,27 +15,27 @@ export function money(n, lang) {
   if (abs >= 1e6) {
     num = dec(n / 1e6, abs >= 1e8 ? 0 : 1, lang, true);
     unitEn = 'M';
-    unitFr = ' M$';
+    unitFr = '\u00a0M$';
   } else if (abs >= 1e3) {
     num = dec(n / 1e3, abs >= 1e4 ? 0 : 1, lang);
     unitEn = 'K';
-    unitFr = ' k$';
+    unitFr = '\u00a0k$';
   } else {
     num = String(Math.round(n));
     unitEn = '';
-    unitFr = ' $';
+    unitFr = '\u00a0$';
   }
   return lang === 'fr' ? num + unitFr : '$' + num + unitEn;
 }
 
 export function moneyFull(n, lang) {
   const s = Math.round(n).toLocaleString(lang === 'fr' ? 'fr-CA' : 'en-US');
-  return lang === 'fr' ? s + ' $' : '$' + s;
+  return lang === 'fr' ? s + '\u00a0$' : '$' + s;
 }
 
 export const times = (x, lang) => dec(Number(x), 1, lang) + '×';
 
-export const percent = (s, lang) => (lang === 'fr' ? String(s).replace('%', ' %') : String(s));
+export const percent = (s, lang) => (lang === 'fr' ? String(s).replace('%', '\u00a0%') : String(s));
 
 export const pct = (ratio, lang) => percent(Math.round(ratio * 100) + '%', lang);
 

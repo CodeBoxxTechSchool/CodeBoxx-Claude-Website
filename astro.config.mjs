@@ -3,6 +3,7 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import { loadEnv } from 'vite';
 import { fetchPostDates, makeSerialize, includeInSitemap } from './src/lib/sitemap.js';
+import { frTypographyPlugin } from './src/lib/frTypography.js';
 
 // Blog post dates for the sitemap's <lastmod> (see src/lib/sitemap.js). Same
 // VITE_SANITY_* vars the pages use: from .env locally, from CI secrets in deploy.
@@ -25,5 +26,10 @@ export default defineConfig({
   ],
   build: { format: 'directory' },
   // Local dev only: the forms' relay (relay/server.js); nginx does this in production.
-  vite: { server: { proxy: { '/api': 'http://localhost:8787' } } },
+  // French spacing (non-breaking space before : ; ! ?, before $ and %) on all FR
+  // content — see src/lib/frTypography.js.
+  vite: {
+    plugins: [frTypographyPlugin()],
+    server: { proxy: { '/api': 'http://localhost:8787' } },
+  },
 });
