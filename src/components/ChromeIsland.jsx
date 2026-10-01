@@ -25,7 +25,6 @@ const NAV_STRUCTURE = [
       ['aboutTeam', '#about-team'],
       ['aboutHistory', '#about-history'],
       ['aboutVisionMission', '#about-vision'],
-      ['aboutAiDoneRight', '/ai-done-right'],
     ],
   },
   {
@@ -205,7 +204,6 @@ function buildFooterColumns(lang, pathname, strings) {
         { label: nav.ventures, href: href('/ventures') },
         { label: nav.blog, href: href('/blog') },
         { label: nav.about, href: href('#codeboxx') },
-        { label: nav.aboutAiDoneRight, href: href('/ai-done-right') },
         { label: strings.footer.careers, href: href('/careers') },
       ],
     },

@@ -10,46 +10,6 @@ export default {
     titleHighlight: 'AI-Native',
     titleAfter: ' teams and software that outwork the old way.',
   },
-  gateway: {
-    eyebrow: 'Start here',
-    words: ['Owned.', 'Proven.', 'Accountable.'],
-    lede: 'The AI-native software factory you can own, the results it has already delivered, and the standard we hold it to.',
-    forge: {
-      kicker: 'Owned · CrewKit Forge 20',
-      title: 'Take back control of your enterprise software.',
-      body: 'A self-contained, fully owned software factory in one cubic meter. Local-first, cloud when it wins.',
-      cta: 'Discover Forge 20',
-      reserve: 'Reserve yours',
-      imageAlt: 'The CrewKit Forge 20 appliance in a boardroom',
-      // The title cycles: `title` first, then these six headlines of
-      // buildorder.codeboxx.com, in its order.
-      reel: {
-        phrases: [
-          'Meet your very own new Dev Team',
-          'It’s time to re-shore your enterprise software.',
-          'Take back control of your cloud spend.',
-          'Build software on your own terms, at the speed of thought.',
-          'Empower your tech teams with unlimited knowledge and resources.',
-          'Harness the quantum computing revolution.',
-        ],
-      },
-    },
-    deep: {
-      kicker: 'Proven · The evidence',
-      title: '{saved} saved across seven delivered platforms.',
-      traditional: 'Traditional team',
-      factory: 'The factory',
-      cta: 'See the numbers and build your business case',
-    },
-    adr: {
-      kicker: 'Accountable · The standard',
-      tag: '#AIDoneRight',
-      title: 'A human-first standard for artificial intelligence.',
-      body: '13 commitments anyone outside the company can check.',
-      cta: 'Read the standard',
-      download: 'Download the PDF',
-    },
-  },
   platform: {
     eyebrow: 'The Pipeline',
     title: 'Three divisions. One pipeline.',

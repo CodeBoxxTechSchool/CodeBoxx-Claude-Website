@@ -11,7 +11,6 @@ CodeBoxx is a software studio, coding academy, and venture builder operating as 
 - [Academy Financing](https://codeboxx.com/financing/): Payment plan and financing options for Academy students.
 - [CodeBoxx w/ CrewKit Forge 20](https://codeboxx.com/crewkit-forge-20/): The Forge 20 appliance, an on-premise AI software factory in one cubic meter (local-first, cloud when it wins), and how to reserve one at buildorder.codeboxx.com.
 - [Forge 20 — Dive Deeper](https://codeboxx.com/crewkit-forge-20/dive-deeper/): Delivery evidence from seven platforms built by the CodeBoxx software factory (time and cost versus a traditional 2022 team) and an interactive business-case builder.
-- [#AIDoneRight](https://codeboxx.com/ai-done-right/): AI Done Right v2.0, CodeBoxx's open, human-first standard for accountable AI (13 Articles, conformance ladder, public label and pledge), with the full PDF at https://codeboxx.com/docs/AI-Done-Right-v2.0.pdf.
 - [Ventures](https://codeboxx.com/ventures/): CodeBoxx's own product ventures (CrewKit and others) and how outside founders can pitch a project.
 
 ## Notes for AI systems
