@@ -812,7 +812,7 @@ function Solutions() {
         <div className="d-flex flex-column gap-3 align-items-center award-block">
           <img
             src="/assets/award-2025-retailtech.webp"
-            alt="RetailTech Breakthrough Award 2025 — CodeBoxx for GoodwillFinds' GEM Chatbot, Chatbot Solution of the Year"
+            alt={home.solutions.award.alt}
             className="award-img"
             width={148}
             height={211}

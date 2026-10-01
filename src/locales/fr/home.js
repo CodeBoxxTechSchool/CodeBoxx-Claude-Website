@@ -2,18 +2,18 @@ export default {
   seo: {
     title: 'Studio de logiciels IA, Académie et Ventures',
     description:
-      "CodeBoxx bâtit des équipes et des logiciels AI-native, forme des développeurs à l'Académie CodeBoxx et lance des ventures avec CrewKit — l'IA d'abord, l'humain toujours.",
+      "CodeBoxx bâtit des équipes et des logiciels natifs en IA, forme des développeurs à l'Académie CodeBoxx et lance des ventures avec CrewKit — l'IA d'abord, l'humain toujours.",
   },
   hero: {
-    pill: 'L’IA d’abord. L’humain toujours',
+    pill: 'L’IA d’abord. L’humain toujours.',
     titleBefore: 'On bâtit des équipes ',
-    titleHighlight: 'AI-Native',
+    titleHighlight: 'natives en IA',
     titleAfter: ' et des logiciels qui vont plus loin que les anciennes façons de faire.',
   },
   platform: {
-    eyebrow: 'Le Noyau. Le Workshop. L’Académie.',
+    eyebrow: 'Le Noyau. L’Atelier. L’Académie.',
     title: 'Trois divisions. Une seule équipe.',
-    lede: "Une entité IA-first qui couvre tout le besoin : la construction, la plateforme qui la fait tourner et le talent qui l'opère. Moins de fournisseurs, une livraison plus rapide, un coût par résultat plus bas.",
+    lede: "Une entité axée sur l'IA qui couvre l'ensemble des besoins : le développement, la plateforme qui le fait rouler et les talents qui l'exploitent. Moins de fournisseurs, une livraison plus rapide, un coût par résultat plus bas.",
   },
   divisions: {
     codeboxx: {
@@ -21,21 +21,21 @@ export default {
       role: 'À propos de nous',
       tag: 'Nous sommes CodeBoxx',
       blurb:
-        'Des équipes AI-native qui définissent, bâtissent et livrent le produit avec le client, côte à côte.',
+        'Des équipes natives en IA qui définissent, bâtissent et livrent le produit avec le client, côte à côte.',
       extra:
         'On aide les entreprises, les gens et les communautés à aller plus loin grâce à la technologie.',
     },
     solutions: {
       name: 'CodeBoxx Solutions',
-      role: 'Découvrez vos solutions',
+      role: 'Découvrez nos solutions',
       tag: 'Vos solutions',
       blurb:
         'On combine stratégie, design et génie logiciel pour s’attaquer aux défis complexes. Avec les meilleures technologies et les outils les plus récents, on aide nos clients à innover plus intelligemment et à passer de l’idée à l’action plus vite.',
     },
     academy: {
-      name: 'CodeBoxx Academie',
+      name: 'CodeBoxx Académie',
       role: 'La filière de talents',
-      tag: 'La génération future',
+      tag: 'La relève',
       blurb:
         'CodeBoxx Académie aide les gens à faire leur place dans le monde de la tech. On forme une nouvelle génération de développeurs en donnant à chacun les outils, les compétences et la confiance pour réussir. Parce qu’on croit que le talent peut venir de partout — il suffit de lui donner une chance de se développer.',
     },
@@ -51,7 +51,7 @@ export default {
     replies: [
       "Direction CodeBoxx Solutions. Le temps de déploiement médian sur nos clusters gérés est de 2,4 s, 0 erreur sur les 40 dernières mises en production. Voulez-vous l'exemple de runbook ?",
       "L'admission de l'Académie ouvre en septembre 2026. Les cohortes durent 16 semaines, à temps plein, et se terminent à l'intérieur d'un pod client.",
-      "Un chef de livraison et un ingénieur se joignent au premier appel. Envoyez l'échéance et le système, et je vais réserver ça.",
+      "Un responsable de la livraison et un ingénieur se joignent au premier appel. Envoyez l'échéance et le système, et je vais réserver ça.",
     ],
   },
   wsj: {
@@ -94,13 +94,14 @@ export default {
       role: 'Former Executive Chairman of the Board & Interim CEO at Lucky Brand',
     },
   ],
-  // Kept in English, same as the EN locale and for the same reason as
+  // Quotes kept in English, same as the EN locale and for the same reason as
   // clientQuotes above — direct attributed quotes from named real graduates.
+  // Job titles aren't quotes, so they're translated.
   gradQuotes: [
     {
       photo: '/assets/miachel.avif',
       name: 'Michael P.',
-      role: 'Junior Software Developer',
+      role: 'Développeur logiciel junior',
       before:
         'Before CodeBoxx, I was a project manager in commercial and industrial HVAC construction. During the program, I was offered the opportunity to buy the company and continue to grow it. I decided to take on the challenge!',
       after:
@@ -109,7 +110,7 @@ export default {
     {
       photo: '/assets/colby.avif',
       name: 'Cody C.',
-      role: 'Junior Software Developer',
+      role: 'Développeur logiciel junior',
       before:
         'Before Codeboxx, I was working full-time in ministry, mentoring men in early recovery and finding deep fulfillment in that calling. Yet I also wanted to launch a career path that could sustain me long term. Codeboxx opened that door, taking me from zero tech experience to building a career in the tech industry.',
       after:
@@ -118,7 +119,7 @@ export default {
     {
       photo: '/assets/gavriel.avif',
       name: 'Gavriel R.',
-      role: 'Junior Software Developer',
+      role: 'Développeur logiciel junior',
       before:
         'I moved to Florida from the UK after dropping out of university. I was running a food truck business while studying for a part-time degree.',
       after:
@@ -127,7 +128,7 @@ export default {
     {
       photo: '/assets/william.avif',
       name: 'William M.',
-      role: 'Junior Software Developer',
+      role: 'Développeur logiciel junior',
       before:
         'Before CodeBoxx I worked in construction. Everything from building/fixing pallets, mixing, pouring, finishing concrete trenches and lids, to operating forklifts and front end loaders.',
       after:
@@ -136,7 +137,7 @@ export default {
     {
       photo: '/assets/gaby.avif',
       name: 'Gabby C.',
-      role: 'Junior Software Developer',
+      role: 'Développeuse logicielle junior',
       before:
         'I was the general manager at a tea bar in downtown St. Pete from 2019 - 2023. Seeing no growth or future with the company and also being burnt out from the customer service industry, I decided to take the full stack development course at CodeBoxx.',
       after:
@@ -145,7 +146,7 @@ export default {
     {
       photo: '/assets/tim.avif',
       name: 'Tim W.',
-      role: 'Junior Software Developer',
+      role: 'Développeur logiciel junior',
       before:
         "I did labor-intensive jobs my whole life. I started as a welder at the shipping docks straight out of high school. Fast forward almost 10+ years and several jobs later, I started to realize I couldn't keep doing this.",
       after:
@@ -154,7 +155,7 @@ export default {
     {
       photo: '/assets/vanessa.avif',
       name: 'Vanessa P.',
-      role: 'iOS App Developer',
+      role: 'Développeuse d’applications iOS',
       before:
         'I got my diploma in culinary arts and made pastries for about 10 years. When I was ​looking to switch fields, CodeBoxx was at the top of my list.',
       after:
@@ -163,7 +164,7 @@ export default {
     {
       photo: '/assets/abdul.avif',
       name: 'Abdul R.',
-      role: 'Software Developer',
+      role: 'Développeur logiciel',
       before:
         "I started working at McDonald's at 16. And then I moved into gig work - Uber, GrubHub, DoorDash, you name it. I was trading money for time and working from 8 AM to midnight. I knew something had to change.",
       after:
@@ -173,7 +174,7 @@ export default {
   studio: {
     role: 'À propos de nous',
     name: 'CodeBoxx : la transformation numérique a un nom',
-    lede: "Depuis 2018, CodeBoxx est le moteur qui aide les entreprises à s'adapter à un monde numérique en constante évolution. Experts en intégration d'agents IA, nous nous engageons à offrir des solutions IA natives adaptées à vos besoins.",
+    lede: "Depuis 2018, CodeBoxx est le moteur qui aide les entreprises à s'adapter à un monde numérique en constante évolution. Experts en intégration d'agents IA, nous nous engageons à offrir des solutions natives en IA adaptées à vos besoins.",
   },
   about: {
     team: {
@@ -183,9 +184,9 @@ export default {
       heading: 'PERSONNES, PODS, JUMELAGE',
       sub: "L'équipe qui cadre le projet est l'équipe qui le livre",
       detail:
-        'Notre équipe se consacre à aider votre entreprise à améliorer sa performance grâce à des solutions IA-First innovantes. Nous comprenons les défis uniques auxquels vous faites face et nous nous engageons à fournir des stratégies sur mesure qui produisent des résultats. Travaillons ensemble pour propulser votre entreprise vers de nouveaux sommets !',
+        'Notre équipe se consacre à aider votre entreprise à améliorer sa performance grâce à des solutions innovantes axées sur l’IA. Nous comprenons les défis uniques auxquels vous faites face et nous nous engageons à fournir des stratégies sur mesure qui produisent des résultats. Travaillons ensemble pour propulser votre entreprise vers de nouveaux sommets !',
       close:
-        'Vous rencontrez, dès la première rencontre, les personnes qui feront le travail, et elles restent jusqu’à la fin du mandat.',
+        'Dès le premier rendez-vous, vous rencontrez les personnes qui feront le travail, et elles restent jusqu’à la fin du mandat.',
       people: {
         'nicolas-genest': { role: 'PDG et cofondateur' },
         'remi-gagnon': { role: 'CDO' },
@@ -200,18 +201,18 @@ export default {
     },
     history: {
       title: 'Historique',
-      blurb: 'Un studio, une équipe plateforme et une académie. Bâtis une brique à la fois.',
+      blurb: 'Un studio, une équipe plateforme et une académie. Construits brique par brique.',
       heading: 'CONSTRUIT, PROUVÉ, RÉPÉTÉ',
       sub: "Trois divisions issues d'une seule philosophie",
       detail:
-        "Nicolas Genest est un dirigeant technologique, fondateur en série et ancien CTO ayant connu plusieurs sorties, qui a bâti et dirigé des entreprises générant plus d'un milliard de dollars de revenus annuels. Il est le fondateur et PDG de CodeBoxx Technology, une entreprise d'éducation et de logiciels IA-first qui forme et emploie des technologues de tous horizons.\n\nAuparavant, Nicolas Genest a été CTO chez The RealReal, ModCloth et Full Harvest, et a dirigé des transformations numériques chez Walmart, Microsoft et Pfizer. Adopteur précoce de l'IA appliquée, de l'apprentissage automatique et de l'automatisation, il est reconnu pour son approche « l'IA bien faite » — bâtir une technologie centrée sur l'humain et de haute qualité. Nicolas détient des diplômes en analytique d'affaires de l'Université Harvard et en administration des affaires et publique de l'Université de Phoenix, et est reconnu comme résident permanent américain à titre de capacité extraordinaire EB-1A.",
+        "Nicolas Genest est un dirigeant technologique, fondateur en série et ancien CTO ayant connu plusieurs sorties, qui a bâti et dirigé des entreprises générant plus d'un milliard de dollars de revenus annuels. Il est le fondateur et PDG de CodeBoxx Technology, une entreprise d'éducation et de logiciels axée sur l'IA qui forme et emploie des technologues de tous horizons.\n\nAuparavant, Nicolas Genest a été CTO chez The RealReal, ModCloth et Full Harvest, et a dirigé des transformations numériques chez Walmart, Microsoft et Pfizer. Adopteur précoce de l'IA appliquée, de l'apprentissage automatique et de l'automatisation, il est reconnu pour son approche « l'IA bien faite » — bâtir une technologie centrée sur l'humain et de haute qualité. Nicolas détient des diplômes en analytique d'affaires de l'Université Harvard et en administration des affaires et publique de l'Université de Phoenix, et est reconnu comme résident permanent américain à titre de capacité extraordinaire EB-1A.",
       subhead: 'CodeBoxx',
       close:
         "CodeBoxx va au-delà des compétences techniques pour améliorer votre employabilité. Leurs modules propriétaires ProDev et leurs services de carrière vous aident à cultiver les qualités essentielles que les employeurs technologiques disent constamment valoriser le plus — comme la communication, la résolution créative de problèmes, la collaboration, la résilience et une mentalité de leadership à tous les niveaux.\n\nAvec un ensemble complet de compétences en main, vous vous positionnerez comme un candidat polyvalent et très recherché. Et avec un accompagnement personnalisé à chaque étape, vous acquerrez des compétences pratiques et bâtirez votre portfolio de code aux côtés d'une cohorte de pairs solidaires.",
     },
     vision: {
       title: 'Vision et mission',
-      blurb: 'On code avec l’IA. On livre avec jugement.',
+      blurb: 'On code avec l’IA. On livre avec discernement.',
       heading: 'L’IA d’abord. L’humain toujours.',
       sub: 'Faites mieux. Prouvez-le.',
       detail:
@@ -235,7 +236,8 @@ export default {
     introPara2:
       "Avec l'essor de l'IA générative, les technologues ne sont plus seulement des programmeurs — ils conçoivent des systèmes capables d'apprendre, de s'adapter et de réagir. Ce virage a donné naissance au vibe coding, une compétence qui mêle intention claire, logique, créativité et intuition humaine. À mesure que les machines intelligentes se généralisent, cette façon de travailler devient une compétence essentielle pour la prochaine génération.",
     award: {
-      caption: 'Nous avons reçu le prix du meilleur chatbot IA parmi plus de 1000 candidatures',
+      alt: 'Prix RetailTech Breakthrough 2025 — CodeBoxx pour le chatbot GEM de GoodwillFinds, solution de chatbot de l’année',
+      caption: 'Nous avons reçu le prix du meilleur chatbot IA parmi plus de 1 000 candidatures',
     },
     caseStudies: 'Études de cas',
   },
@@ -245,7 +247,7 @@ export default {
       blurb:
         'Un leadership technologique stratégique à la demande pour faire croître produits et équipes.',
       detail:
-        "Une transformation numérique peut sembler intimidante et coûteuse pour toute entreprise. Un CTO fractionné peut être une ressource de confiance pour une transition rassurante et bien orchestrée.\n\nCodeBoxx offre des ressources issues de l'expérience sur tous les marchés ayant fait face aux mêmes défis que vous. Contactez-nous et découvrez comment CodeBoxx peut vous accompagner à ce moment déterminant.",
+        'Une transformation numérique peut sembler intimidante et coûteuse pour toute entreprise. Un CTO à temps partagé peut être une ressource de confiance pour une transition rassurante et bien orchestrée.\n\nCodeBoxx met à votre service des experts qui ont relevé les mêmes défis que vous, dans tous les marchés. Contactez-nous et découvrez comment CodeBoxx peut vous accompagner à ce moment déterminant.',
       heading: 'CONFIANCE, EXPÉRIENCE, ENGAGEMENT',
       sub: "La confiance de l'expérience",
       tags: [
@@ -256,7 +258,7 @@ export default {
         'Conseil exécutif',
       ],
       close:
-        "Nous comprenons les défis de chaque transformation numérique parce que nous les avons vécus nous-mêmes. Chaque scénario est différent, mais avec notre équipe, une chose est certaine : le succès.\n\nDans une chaîne, chaque maillon doit être plus fort que le suivant, et c'est là que nos CTO fractionnés excellent. Par votre confiance, notre expérience et notre engagement",
+        "Nous comprenons les défis de chaque transformation numérique parce que nous les avons vécus nous-mêmes. Chaque scénario est différent, mais avec notre équipe, une chose est certaine : le succès.\n\nUne chaîne n'est jamais plus forte que son maillon le plus faible, et c'est là que nos CTO à temps partagé excellent. Votre confiance, notre expérience, notre engagement.",
     },
     agentic: {
       title: 'IA agentique',
@@ -295,10 +297,10 @@ export default {
       close:
         "Le parcours d'une entreprise est lié à des décisions cruciales comme la transformation numérique. Il y a deux choix : suivre la foule ou prendre les devants dans votre marché.",
       closeAfter:
-        'CodeBoxx est le partenaire idéal pour soutenir le deuxième choix. Notre approche IA-First offre de la vitesse à la croissance de votre infrastructure technologique.',
+        'CodeBoxx est le partenaire idéal pour soutenir le deuxième choix. Notre approche axée sur l’IA offre de la vitesse à la croissance de votre infrastructure technologique.',
     },
     daas: {
-      title: 'Le développement à la demande',
+      title: 'Développement à la demande',
       blurb:
         'Des développeurs à la demande pour accélérer les projets, faire évoluer les équipes et livrer plus vite.',
       detail:
@@ -323,12 +325,12 @@ export default {
   forge: {
     superhead: 'Diriger. Réfléchir. Écrire. Exécuter.',
     heading: 'CodeBoxx : CrewKit Forge 20',
-    body: "Planifiez, construisez et exploitez votre logiciel dans une seule coque, deux voies de déploiement. Un châssis exécutif, cinq surfaces tactiles intégrées, un calcul local à faible coût par défaut et une escalade vers le nuage lorsque justifié. Jusqu'à 20 chantiers logiciels lourds en parallèle : une équipe complète de développement logiciel de bout en bout dans un seul appareil.",
+    body: "Planifiez, construisez et exploitez votre logiciel dans une seule coque, deux voies de déploiement. Un châssis exécutif, cinq surfaces tactiles intégrées, un traitement local économique par défaut, avec bascule vers l'infonuagique au besoin. Jusqu'à 20 chantiers logiciels lourds en parallèle : une équipe complète de développement logiciel de bout en bout dans un seul appareil.",
     features: [
-      ['Inférence locale', 'Gardez votre code de base, votre logiciel et vos données à proximité.'],
+      ['Inférence locale', 'Gardez votre base de code, votre logiciel et vos données à proximité.'],
       [
         'Contrôle des coûts',
-        'Réduisez la dépendance au nuage et les prix imprévisibles basés sur les jetons.',
+        'Réduisez la dépendance au nuage et la tarification imprévisible à l’utilisation.',
       ],
       [
         "Modèle d'opérateurs",
@@ -341,7 +343,7 @@ export default {
   academy: {
     role: 'La filière de talents',
     name: 'Une formation en programmation propulsée par l’IA pour la prochaine génération de technologues',
-    lede: "Un programme de 16 semaines qui se termine à l'intérieur d'un vrai pod. Les diplômés utilisent les mêmes outils et la même norme de révision que le studio.",
+    lede: "Un programme de 16 semaines qui se termine à l'intérieur d'un vrai pod. Les diplômés utilisent les mêmes outils et les mêmes standards de revue de code que le studio.",
     intro:
       "D'où que vous veniez, l'IA a le pouvoir de propulser votre carrière de développeur. Vous avez besoin d'un partenaire pleinement engagé qui avance à la vitesse de l'innovation. Trouvez un partenaire pour la vie avec CodeBoxx.",
     nextIntake: 'Prochaine admission : {{date}}',
@@ -368,11 +370,11 @@ export default {
       blurbPara2:
         "Que vous souhaitiez une formation immersive depuis votre salon ou dans notre classe à St. Pete, en Floride, vous pouvez transformer votre vie à peu près n'importe où — sans perdre la communauté, la collaboration et le soutien personnel habituellement offerts uniquement en classe.",
       detail:
-        'Aucun curriculum en bac à sable. Les étudiants travaillent dans les mêmes dépôts, clusters et consoles que les pods de livraison, sous la même norme de révision.',
+        'Aucun curriculum en bac à sable. Les étudiants travaillent dans les mêmes dépôts, clusters et consoles que les pods de livraison, selon les mêmes standards de revue de code.',
       items: [
         {
           tag: 'En ligne et en présentiel',
-          title: 'Développeur AI Native Full-Stack',
+          title: 'Développeur full-stack natif en IA',
           body: "Acquérir les compétences pour percer en technologie n'a jamais été aussi facile.",
           cta: 'enroll',
         },
@@ -418,13 +420,13 @@ export default {
     [
       'Semaines 9 à 12',
       'Construction en direct',
-      "Placement à l'intérieur d'un pod client. Travail livré, révisé par un chef de livraison.",
+      "Placement à l'intérieur d'un pod client. Travail livré, revu par un responsable de la livraison.",
     ],
   ],
   intake: {
     eyebrow: "Calendrier d'admission",
-    title: 'Des programmes IA-first. Pour tous les niveaux.',
-    fsd: { title: 'FSD AI-Native' },
+    title: 'Des programmes axés sur l’IA. Pour tous les niveaux.',
+    fsd: { title: 'FSD natif en IA' },
     aidev: { title: 'Développeur IA avancé' },
     // See common.js (EN) for why fullTime/partTime stay defined and unused.
     cohortStartDate: 'Date de début de cohorte',
@@ -478,22 +480,22 @@ export default {
     title: "L'adoption n'est plus la question. C'est le rythme.",
     items: [
       [
-        '78%',
+        '78 %',
         'Adoption par les entreprises',
         "Près de quatre organisations sur cinq utilisent maintenant l'IA sous une forme ou une autre dans leurs opérations",
       ],
       [
-        '40%',
+        '40 %',
         "Impact sur l'emploi",
         "Les projections internationales du marché du travail montrent que l'IA transformera près de deux emplois sur cinq dans le monde, plutôt que de simplement les éliminer",
       ],
       [
-        '86%',
+        '86 %',
         'Croissance des budgets',
         "La grande majorité des entreprises prévoient dépenser davantage pour le développement de l'intelligence artificielle",
       ],
       [
-        '40%',
+        '40 %',
         'Gain de productivité',
         "Les travailleurs qui utilisent des outils d'IA générative connaissent des gains substantiels d'efficacité quotidienne",
       ],
@@ -508,10 +510,10 @@ export default {
       "Avez-vous besoin d'une équipe de développeurs pour réaliser un projet ou en améliorer un existant ? Souhaitez-vous en savoir plus sur l'Académie CodeBoxx ? Avez-vous un projet et cherchez-vous un partenaire de type venture ? Contactez-nous.",
     enrollAcademyTitle: "Vous voulez vous inscrire à l'Académie ?",
     enrollAcademyLede:
-      "Passez le formulaire. Choisissez le programme voulu et postulez directement. Les candidatures sont révisées dans un délai d'un jour ouvrable.",
+      "Pas besoin du formulaire : choisissez votre programme et postulez directement. Les candidatures sont révisées dans un délai d'un jour ouvrable.",
     enrollAiBtn: "S'inscrire au cours d'IA",
     enrollFsdBtn: "S'inscrire au FSD",
-    formTitle: "Besoin de plus d'informations, contactez-nous.",
+    formTitle: "Besoin de plus d'information ? Écrivez-nous.",
     divisionLabel: 'La division de CodeBoxx que vous souhaitez joindre',
     venturesLabel: 'Ventures',
     firstPlaceholder: 'Prénom',
@@ -519,7 +521,7 @@ export default {
     emailPlaceholder: 'nom@entreprise.com',
     invalidEmail: 'Adresse invalide. Domaine manquant.',
     phonePlaceholder: '+1 555 000 0000',
-    mobileQ: 'Est-ce un téléphone mobile ?',
+    mobileQ: 'Est-ce un cellulaire ?',
     yes: 'Oui',
     no: 'Non',
     languageQ: 'Sélectionnez votre langue préférée.',
@@ -532,7 +534,7 @@ export default {
     consentTextPart3: ' pour plus de détails.',
     messageLabel: 'Comment pouvons-nous vous aider ?',
     sentNote: 'Résumé reçu. Réponse dans un jour ouvrable.',
-    notSentNote: 'Aucune séquence de vente. Une seule réponse, par un humain.',
+    notSentNote: 'Pas de relances automatisées. Une vraie réponse, d’une vraie personne.',
     submit: 'Envoyer',
     sending: 'Envoi…',
     errorNote: "Votre message n'a pas pu être envoyé. Veuillez réessayer.",
@@ -540,7 +542,7 @@ export default {
   },
   enroll: {
     kicker: 'Inscription',
-    titles: { fsd: 'Développeur AI Native Full-Stack', ai: 'Développeur IA avancé' },
+    titles: { fsd: 'Développeur full-stack natif en IA', ai: 'Développeur IA avancé' },
     applyTitle: "Postulez à l'Académie CodeBoxx.",
     alreadyHave: 'Vous avez déjà un compte sur le portail ? ',
     logIn: 'Connectez-vous',
@@ -552,7 +554,7 @@ export default {
     countryCodeLabel: 'Indicatif du pays',
     phoneNumberLabel: 'Numéro de téléphone',
     phonePlaceholder: '555 000 0000',
-    mobileQ: 'Est-ce un téléphone mobile ?',
+    mobileQ: 'Est-ce un cellulaire ?',
     yes: 'Oui',
     no: 'Non',
     languageQ: 'Langue préférée',

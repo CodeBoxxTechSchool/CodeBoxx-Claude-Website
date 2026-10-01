@@ -228,7 +228,10 @@ export default {
       'In the past, young people learned how to speak the language of computers by following strict rules and writing precise instructions. That era is fading.',
     introPara2:
       'With the rise of generative AI, technologists are no longer just coders—they design systems that can learn, adapt, and respond. This shift has given rise to vibe coding, a skill that blends clear intent, logic, creativity, and human intuition. As intelligent machines become more common, this way of working is becoming an essential skill for the next generation.',
-    award: { caption: 'We were awarded Best AI Chatbot from over a 1000 entries' },
+    award: {
+      alt: "RetailTech Breakthrough Award 2025 — CodeBoxx for GoodwillFinds' GEM Chatbot, Chatbot Solution of the Year",
+      caption: 'We were awarded Best AI Chatbot from over a 1000 entries',
+    },
     caseStudies: 'Case Studies',
   },
   services: {
