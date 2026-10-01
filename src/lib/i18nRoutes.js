@@ -22,6 +22,7 @@ export const ROUTE_TABLE = [
   { en: '/privacy-policy', fr: '/fr/politique-de-confidentialite' },
   { en: '/terms-conditions', fr: '/fr/conditions-generales' },
   { en: '/crewkit-forge-20', fr: '/fr/crewkit-forge-20' },
+  { en: '/ai-done-right', fr: '/fr/ai-done-right' },
   { en: '/crewkit-forge-20/dive-deeper', fr: '/fr/crewkit-forge-20/approfondir' },
 ];
 
