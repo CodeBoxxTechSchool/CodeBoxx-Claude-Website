@@ -2,8 +2,11 @@
 // FR twin of src/pages/blog/[slug].astro — see that file for the shared rationale.
 import Layout from '../../../layouts/Layout.astro';
 import HeroVideo from '../../../components/HeroVideo.astro';
+import ShareLinks from '../../../components/ShareLinks.astro';
+import { postUrl } from '../../../lib/share';
 import { fetchPostList } from '../../../lib/sanityContent';
 import { SEED_POSTS } from '../../../lib/blogSeed';
+import { blogPostingSchema } from '../../../lib/schemaOrg';
 import { portableTextToHtml } from '../../../lib/portableText';
 import { localizedHref } from '../../../lib/i18nRoutes';
 import common from '../../../locales/fr/common';
@@ -34,17 +37,13 @@ const ogImage = post.featuredImage
   ? sanityImageUrl(post.featuredImage, { w: 1200 })
   : DEFAULT_OG_IMAGE;
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: post.title,
-  description: post.excerpt,
-  image: [ogImage],
-  datePublished: post.date || undefined,
-  author: { '@type': 'Organization', name: post.author || 'CodeBoxx' },
-  publisher: { '@type': 'Organization', name: 'CodeBoxx' },
-  mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://codeboxx.com' + pathname },
-};
+const articleSchema = blogPostingSchema({
+  post,
+  url: 'https://codeboxx.com' + Astro.url.pathname,
+  image: ogImage,
+  // Posts are written in English only; this page translates just the chrome.
+  inLanguage: 'en',
+});
 
 const heroStyle = post.featuredImage
   ? 'background-image: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url(' +
@@ -75,6 +74,7 @@ const contentHtml = post.content ? portableTextToHtml(post.content) : '';
         <span class="band-lede">{post.author}</span>
         {post.date ? <span class="band-lede">{fmt(post.date)}</span> : null}
       </div>
+      <ShareLinks url={postUrl(post.slug, 'fr')} strings={blog.share} />
     </div>
   </section>
   <section class="sect post-content-band">

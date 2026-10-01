@@ -23,15 +23,50 @@
 }
 
 .post-card {
+  // Containing block for the "Read Post" .stretched-link overlay, which makes the
+  // whole card clickable (see BlogPostsIsland.jsx).
+  position: relative;
   gap: 16px;
   padding: 0;
   overflow: hidden;
+  transition: box-shadow 0.15s ease;
+
+  &:hover {
+    box-shadow:
+      inset 0 0 0 1px v.$ui-slate-200,
+      0 6px 20px rgba(0, 47, 67, 0.1);
+  }
+  // Keyboard focus lands on the stretched link; ring the whole card.
+  &:has(.stretched-link:focus-visible) {
+    outline: 2px solid v.$blue-500;
+    outline-offset: 2px;
+  }
+  .stretched-link:focus-visible {
+    outline: none;
+  }
+}
+.post-card-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 12px;
+
+  .link-tag {
+    white-space: nowrap;
+  }
 }
 .post-card-body {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   gap: 12px;
   padding: 0 24px 24px;
+
+  // Pin the rule + author/share/Read Post row to the bottom of the card, so the
+  // footers line up across a row of cards whatever the excerpt length.
+  > .rule {
+    margin-top: auto;
+  }
 }
 .post-meta-row {
   display: flex;
@@ -196,4 +231,135 @@
   font-size: v.$text-micro;
   font-weight: v.$weight-medium;
   color: v.$color-text-secondary;
+}
+
+// ---- Share buttons (ShareButtons.jsx on cards, ShareLinks.astro in the post hero) ----
+.share-buttons {
+  // Above the card's stretched-link overlay (Bootstrap gives it z-index: 1).
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: v.$color-text-secondary;
+  cursor: pointer;
+
+  &:hover {
+    background: v.$blue-50;
+    color: v.$blue-text;
+  }
+  &:focus-visible {
+    outline: 2px solid v.$blue-500;
+    outline-offset: 1px;
+  }
+}
+// "Link copied" confirmation: a small bubble above the buttons, announced via
+// role="status".
+.share-copied {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  right: 0;
+  padding: 4px 8px;
+  border-radius: v.$radius-sm;
+  background: v.$navy-500;
+  color: v.$neutral-0;
+  font-size: v.$text-micro;
+  font-weight: v.$weight-semibold;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+
+  &.is-visible {
+    opacity: 1;
+  }
+}
+.share-buttons-hero {
+  gap: 4px;
+
+  .share-label {
+    margin-right: 6px;
+    font-size: v.$text-caption;
+    font-weight: v.$weight-semibold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .share-btn {
+    color: v.$neutral-0;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.14);
+      color: v.$neutral-0;
+    }
+  }
+  // Beside the buttons, not above them: above would cover the author/date line.
+  .share-copied {
+    top: 50%;
+    bottom: auto;
+    left: calc(100% + 8px);
+    right: auto;
+    transform: translateY(-50%);
+    background: v.$neutral-0;
+    color: v.$navy-500;
+  }
+}
+
+// ---- Blog list toolbar: category pills + search (BlogPostsIsland.jsx) ----
+.blog-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.blog-search {
+  position: relative;
+  flex: 0 1 280px;
+  margin-left: auto;
+
+  @media (max-width: v.$breakpoint-md) {
+    flex: 1 1 100%;
+  }
+}
+.blog-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  color: v.$color-text-secondary;
+  pointer-events: none;
+}
+.blog-search-input {
+  width: 100%;
+  padding: 9px 16px 9px 40px;
+  border: 0;
+  border-radius: v.$radius-full;
+  background: v.$neutral-0;
+  box-shadow: inset 0 0 0 1px v.$ui-slate-200;
+  font: inherit;
+  font-size: v.$text-body;
+  color: v.$color-text-primary;
+
+  &::placeholder {
+    color: v.$color-text-secondary;
+  }
+  &:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px v.$blue-500;
+  }
+}
+.blog-search-empty {
+  margin: 0;
 }

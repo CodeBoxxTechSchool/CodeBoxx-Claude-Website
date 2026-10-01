@@ -268,7 +268,10 @@ export default {
       'In the past, young people learned how to speak the language of computers by following strict rules and writing precise instructions. That era is fading.',
     introPara2:
       'With the rise of generative AI, technologists are no longer just coders—they design systems that can learn, adapt, and respond. This shift has given rise to vibe coding, a skill that blends clear intent, logic, creativity, and human intuition. As intelligent machines become more common, this way of working is becoming an essential skill for the next generation.',
-    award: { caption: 'We were awarded Best AI Chatbot from over a 1000 entries' },
+    award: {
+      alt: "RetailTech Breakthrough Award 2025 — CodeBoxx for GoodwillFinds' GEM Chatbot, Chatbot Solution of the Year",
+      caption: 'We were awarded Best AI Chatbot from over a 1000 entries',
+    },
     caseStudies: 'Case Studies',
   },
   services: {
@@ -366,7 +369,7 @@ export default {
     lede: 'A 16-week program that ends inside a real pod. Graduates carry the same tooling and the same review standard as the studio.',
     intro:
       'Wherever you come from, AI has the power to jumpstart your career as a developer. You need a fully committed partner moving at the speed of innovation. Find a partner for life with CodeBoxx.',
-    nextIntake: 'Next intake: Sept 2026',
+    nextIntake: 'Next intake: {{date}}',
     cohortStructureLabel: 'Cohort Structure',
     coursesLabel: 'Courses',
     enrollNow: 'Enroll Now',
@@ -377,9 +380,10 @@ export default {
   academyTopics: {
     program: {
       titleLine1: '16 weeks, full time',
-      blurb: 'Cohorts start monthly. No prior degree required, entrance assessment only.',
+      blurb:
+        'Cohorts start on fixed dates through the year. No prior degree required, entrance assessment only.',
       detail:
-        'Twelve weeks, five days a week. The entrance assessment measures aptitude, not credentials, and the calendar below sets the intakes.',
+        'Sixteen weeks, five days a week. The entrance assessment measures aptitude, not credentials, and the calendar below sets the intakes.',
     },
     courses: {
       titleLine1: 'Our Courses',
@@ -441,7 +445,6 @@ export default {
   intake: {
     eyebrow: 'Intake Calendar',
     title: 'AI-First programs. For all levels.',
-    editable: 'Editable in Sanity',
     fsd: { title: 'AI-Native FSD' },
     aidev: { title: 'Advanced AI-Developer' },
     // Currently the only column title shown — see the "Part Time hidden" note
@@ -450,9 +453,9 @@ export default {
     cohortStartDate: 'Cohort Start Date',
     fullTime: 'Full Time',
     partTime: 'Part Time',
-    onDemand: 'On Demand',
     enroll: 'Enroll',
-    status: { Open: 'Open', Waitlist: 'Waitlist', Planned: 'Planned', InProgress: 'In Progress' },
+    comingSoon: 'Next start dates coming soon.',
+    status: { Open: 'Open', Waitlist: 'Waitlist', Planned: 'Planned' },
   },
   // Corporate-training panel, revealed by "Learn More" on the Tailor-Made
   // Corporate Training course item. Content from

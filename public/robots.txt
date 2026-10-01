@@ -1,41 +1,61 @@
+# robots.txt for codeboxx.com
+# Everything public is crawlable. /api/ is the forms' submission relay (POST
+# only): nothing to index there.
+
 User-agent: *
+Disallow: /api/
 Allow: /
 
 # Explicit allow for the major AI answer-engine/AEO crawlers, so a future
 # stricter rule under `User-agent: *` can't accidentally start blocking them —
 # a tracker like ChatRank only reflects visibility these crawlers can actually
 # achieve, which requires them being able to fetch the site at all.
+# A crawler obeys only the most specific group that names it, so each group
+# repeats the /api/ rule, listed before Allow for crawlers that use the first
+# matching rule rather than the longest.
+
 User-agent: GPTBot
+Disallow: /api/
 Allow: /
 
 User-agent: ChatGPT-User
+Disallow: /api/
 Allow: /
 
 User-agent: OAI-SearchBot
+Disallow: /api/
 Allow: /
 
 User-agent: ClaudeBot
+Disallow: /api/
 Allow: /
 
 User-agent: Claude-Web
+Disallow: /api/
 Allow: /
 
 User-agent: anthropic-ai
+Disallow: /api/
 Allow: /
 
 User-agent: PerplexityBot
+Disallow: /api/
 Allow: /
 
 User-agent: Perplexity-User
+Disallow: /api/
 Allow: /
 
 User-agent: Google-Extended
+Disallow: /api/
 Allow: /
 
 User-agent: Applebot-Extended
+Disallow: /api/
 Allow: /
 
 User-agent: CCBot
+Disallow: /api/
 Allow: /
 
 Sitemap: https://codeboxx.com/sitemap-index.xml

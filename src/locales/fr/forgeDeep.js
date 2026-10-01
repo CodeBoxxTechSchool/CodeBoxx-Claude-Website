@@ -1,7 +1,7 @@
 // FR twin of src/locales/en/forgeDeep.js — see that file for the rationale.
 export default {
   seo: {
-    title: 'Approfondir — L’usine logicielle IA-native, en chiffres',
+    title: 'Approfondir — L’usine logicielle native en IA, en chiffres',
     description:
       'Sept plateformes livrées par l’usine logicielle CodeBoxx : 5,2× plus vite et 78 % moins cher qu’une équipe traditionnelle, 14,9 M$ économisés. Bâtissez l’analyse de rentabilité de votre CrewKit Forge 20.',
   },
@@ -9,7 +9,7 @@ export default {
   hero: {
     pill: 'Approfondir · Les preuves',
     title: 'L’usine a déjà livré. Voici les reçus.',
-    lede: 'Avant d’être un appareil, l’usine logicielle IA-native de CodeBoxx a livré de vraies plateformes pour de vrais clients. Sept d’entre elles, projet par projet, comparées à ce que le même travail coûtait à une équipe traditionnelle en 2022.',
+    lede: 'Avant d’être un appareil, l’usine logicielle native en IA de CodeBoxx a livré de vraies plateformes pour de vrais clients. Sept d’entre elles, projet par projet, comparées à ce que le même travail coûtait à une équipe traditionnelle en 2022.',
     stats: [
       ['5,2×', 'plus vite', 'Moyenne des quatre études de référence'],
       ['78 %', 'moins cher', 'Qu’une équipe traditionnelle, mêmes études'],
@@ -125,7 +125,7 @@ export default {
         'Inférence sur l’appareil avec un modèle Gemma local',
       ],
       basis:
-        'Coût réel de l’usine avec 3 ressources IA-natives. Traditionnel : 75 mois-personnes estimés.',
+        'Coût réel de l’usine avec 3 ressources natives en IA. Traditionnel : 75 mois-personnes estimés.',
     },
     military: {
       name: 'Application d’avantages militaires',
@@ -226,7 +226,7 @@ export default {
   bridge: {
     eyebrow: 'Des preuves à vos locaux',
     title: 'La même usine, dans un mètre cube qui vous appartient.',
-    body: 'Chaque résultat de cette page vient de CrewKit orchestrant une livraison IA-native. Le CrewKit Forge 20 installe cette usine chez vous : local d’abord, entièrement à vous, gouvernée, avec votre code et vos données qui restent dans l’édifice.',
+    body: 'Chaque résultat de cette page vient de CrewKit orchestrant une livraison native en IA. Le CrewKit Forge 20 installe cette usine chez vous : local d’abord, entièrement à vous, gouvernée, avec votre code et vos données qui restent dans l’édifice.',
     primary: 'Réservez votre usine',
     secondary: 'Retour au CrewKit Forge 20',
   },

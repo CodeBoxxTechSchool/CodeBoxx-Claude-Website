@@ -46,45 +46,51 @@ const contactHref = localizedHref('#contact', 'en', pathname);
       {cs.cases.map((c) => (
         <article class="panel case-study">
           <div class="panel-header-row">
-            <img class="case-logo" src={c.logo} alt={c.client} loading="lazy" />
+            {c.logo ? (
+              <img class="case-logo" src={c.logo} alt={c.client} loading="lazy" />
+            ) : (
+              <span />
+            )}
             <span class="badge bg-brand">{cs.badge}</span>
           </div>
           <div class="grid2 case-grid">
             <div class="d-flex flex-column gap-3">
               <h3 class="ptitle">{c.client}</h3>
+              {c.project && <p class="panel-subtitle">{c.project}</p>}
               {c.body.map((p) => (
                 <p class="pbody">{p}</p>
               ))}
             </div>
             <dl class="case-facts">
-              <div>
-                <dt>{cs.labels.mandate}</dt>
-                <dd>{c.mandate}</dd>
-              </div>
-              <div>
-                <dt>{cs.labels.duration}</dt>
-                <dd>{c.duration}</dd>
-              </div>
-              <div>
-                <dt>{cs.labels.resources}</dt>
-                <dd>{c.resources}</dd>
-              </div>
-              <div>
-                <dt>{cs.labels.solution}</dt>
-                <dd>
-                  <div class="bullet-list">
-                    {c.solution.map((s) => (
-                      <div class="bullet">
-                        <span>{s}</span>
-                      </div>
-                    ))}
-                  </div>
-                </dd>
-              </div>
-              <div>
-                <dt>{cs.labels.technology}</dt>
-                <dd>{c.technology}</dd>
-              </div>
+              {['mandate', 'duration', 'resources'].map(
+                (k) =>
+                  c[k] && (
+                    <div>
+                      <dt>{cs.labels[k]}</dt>
+                      <dd>{c[k]}</dd>
+                    </div>
+                  )
+              )}
+              {c.solution && (
+                <div>
+                  <dt>{cs.labels.solution}</dt>
+                  <dd>
+                    <div class="bullet-list">
+                      {c.solution.map((s) => (
+                        <div class="bullet">
+                          <span>{s}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </dd>
+                </div>
+              )}
+              {c.technology && (
+                <div>
+                  <dt>{cs.labels.technology}</dt>
+                  <dd>{c.technology}</dd>
+                </div>
+              )}
             </dl>
           </div>
         </article>
