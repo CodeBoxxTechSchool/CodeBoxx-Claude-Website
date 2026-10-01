@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { localizedHref } from '../../../src/lib/i18nRoutes.js';
-import { plan } from '../check-redirects.js';
+import { headerProblems, plan, stylesheet } from '../check-redirects.js';
 import { CONF_FILE, OLD_URLS, SITE, load, match, parse, render, resolve } from '../redirects.js';
 
 const table = load();
@@ -182,4 +182,24 @@ test('rejects malformed lines', () => {
   assert.throws(() => parse(`${head}a\t/x\t/blog/\na\t/x\t/`), /repeated/);
   assert.throws(() => parse(`${head}a\t/.well-known/acme-challenge/x\t/`), /bad old path/);
   assert.throws(() => parse(`${head}a /x /blog/`), /unexpected line/);
+});
+
+test('finds the page stylesheet and checks compression and caching', () => {
+  assert.equal(
+    stylesheet('<link rel="stylesheet" href="/_astro/ChromeIsland.BMBRr28j.css">'),
+    '/_astro/ChromeIsland.BMBRr28j.css'
+  );
+  assert.equal(stylesheet('<link rel="icon" href="/favicon.svg">'), null);
+  const res = (encoding, cache) => ({
+    headers: { 'content-encoding': encoding, 'cache-control': cache },
+  });
+  const page = res('gzip', 'no-cache');
+  const asset = res('gzip', 'public, max-age=31536000, immutable');
+  assert.deepEqual(headerProblems(page, asset), []);
+  assert.deepEqual(headerProblems({ headers: {} }, { headers: {} }), [
+    'page not gzipped (none)',
+    'page Cache-Control none (want no-cache)',
+    '/_astro/ CSS not gzipped (none)',
+    '/_astro/ CSS Cache-Control none (want a year, immutable)',
+  ]);
 });

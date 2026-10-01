@@ -379,6 +379,8 @@ export default {
     ],
     buildYourOwn: 'Construisez le vôtre',
     learnMore: 'En savoir plus',
+    // See learnMoreAbout in the EN locale.
+    learnMoreAbout: ' sur CrewKit Forge 20',
   },
   academy: {
     role: 'La filière de talents',

@@ -2172,6 +2172,7 @@ function ForgeTeaser() {
             href={localizedHref('/crewkit-forge-20', lang, pathname)}
           >
             {home.forge.learnMore}
+            <span className="visually-hidden">{home.forge.learnMoreAbout}</span>
           </Button>
         </div>
       </div>

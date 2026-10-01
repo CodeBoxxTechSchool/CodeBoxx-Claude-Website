@@ -362,6 +362,8 @@ export default {
     ],
     buildYourOwn: 'Build Your Own',
     learnMore: 'Learn More',
+    // Screen-reader-only end of the link text, so the link says where it goes.
+    learnMoreAbout: ' about CrewKit Forge 20',
   },
   academy: {
     role: 'The Talent Pipeline',
