@@ -21,6 +21,18 @@ export default {
       cta: 'Découvrir le Forge 20',
       reserve: 'Réserver le vôtre',
       imageAlt: 'L’appareil CrewKit Forge 20 dans une salle du conseil',
+      // Le titre défile : `title` d’abord, puis ces six titres de
+      // buildorder.codeboxx.com, dans son ordre.
+      reel: {
+        phrases: [
+          'Rencontrez votre toute nouvelle équipe de développement',
+          'Il est temps de rapatrier vos logiciels d’entreprise.',
+          'Reprenez le contrôle de vos dépenses infonuagiques.',
+          'Développez vos logiciels à vos conditions, à la vitesse de la pensée.',
+          'Donnez à vos équipes techniques un savoir et des ressources sans limites.',
+          'Saisissez la révolution de l’informatique quantique.',
+        ],
+      },
     },
     deep: {
       kicker: 'Éprouvée · Les preuves',

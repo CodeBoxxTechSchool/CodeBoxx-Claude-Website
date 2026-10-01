@@ -1018,6 +1018,67 @@ $gw-gold: #c9a46b;
   object-fit: cover;
   object-position: center 40%;
 }
+// The cycling title (CyclingHeadline.jsx): the thesis, then the funnel's six
+// headlines, in the funnel's white-to-blue gradient and its six effects. The
+// line reserves two rows so the card never jumps between a one- and a
+// two-line headline; every animated fragment paints its own gradient (see the
+// component) and the paint box is padded past the descenders.
+.gw-title-cycling {
+  perspective: 900px;
+}
+.gw-cycle {
+  display: flex;
+  align-items: center;
+  min-height: 2.2em;
+  text-wrap: balance;
+}
+.gw-cycle-phrase {
+  display: block;
+  will-change: transform, opacity, filter;
+}
+.gw-cycle-phrase-fragments {
+  display: inline-flex;
+  flex-wrap: wrap;
+  column-gap: 0.28em;
+}
+.gw-cycle-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.gw-cycle-letter {
+  display: inline-block;
+  backface-visibility: hidden;
+}
+.gw-cycle-grad {
+  color: transparent;
+  background: linear-gradient(120deg, #fff, v.$blue-200 45%, v.$blue-400);
+  -webkit-background-clip: text;
+  background-clip: text;
+  // background-clip:text paints only inside the box; at a tight line-height the
+  // descenders of the last line fell outside it. Grow the paint box, give the
+  // space back: layout unchanged.
+  padding: 0.14em 0.04em 0.22em;
+  margin: -0.14em -0.04em -0.22em;
+}
+.gw-cycle-phrase.gw-cycle-grad {
+  filter: drop-shadow(0 2px 24px rgba(67, 180, 240, 0.25));
+}
+.gw-cycle-shimmer {
+  background-image: linear-gradient(
+    110deg,
+    v.$blue-400 0%,
+    #fff 18%,
+    v.$blue-200 32%,
+    v.$blue-400 50%,
+    #fff 68%,
+    v.$blue-200 82%,
+    v.$blue-400 100%
+  );
+  background-size: 250% 100%;
+}
+.gw-cycle-flip {
+  transform-origin: bottom left;
+}
 .gw-card-body {
   flex: 1;
   display: flex;
