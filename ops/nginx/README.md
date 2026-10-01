@@ -88,7 +88,8 @@ query string, in capitals and under each prefix) with its old `Host:` header, ex
 `redirects.tsv` target, then expects 200 from each target. It also checks that certificate
 challenges aren't redirected. Over http, the apex's own pages must be one 301 to the same URL on
 https, the targets are fetched through the IP, and the IP and an unknown host must get the site.
-Over https, every request checks the certificate against its host name (`--ca`: a test CA
+On both, the homepage must come gzipped with `Cache-Control: no-cache`, and its `/_astro/`
+stylesheet gzipped and cached for a year (`immutable`). Over https, every request checks the certificate against its host name (`--ca`: a test CA
 instead of the system's), the apex's own pages must answer 200, and the IP and an unknown name
 must fail the handshake. It prints the failures and a summary, and exits 1 on any failure.
 
@@ -158,6 +159,19 @@ node ops/nginx/check-redirects.js --base http://159.223.145.47 --relay
 
 The DNS swap itself, once step 3 passes: [../swap-runbook.md](../swap-runbook.md).
 
+**Compression and caching** (`snippets/codeboxx-site.conf`: gzip for CSS, JS, SVG, JSON and text;
+a year for `/_astro/`, whose file names carry a content hash; a day for images, video and fonts;
+`no-cache` for pages), once step 1 is in place:
+
+```sh
+cp /etc/nginx/snippets/codeboxx-site.conf /root/codeboxx-site.conf.bak-$(date +%Y%m%d-%H%M)
+install -m 0644 snippets/codeboxx-site.conf /etc/nginx/snippets/
+nginx -t && systemctl reload nginx
+```
+
+Then `node ops/nginx/check-redirects.js --base http://159.223.145.47 --relay` must print
+`compression and caching ok`.
+
 **Roll back**, `nginx -t && systemctl reload nginx` after each:
 
 - Step 3: `rm /etc/nginx/sites-enabled/codeboxx-https`.
@@ -165,5 +179,7 @@ The DNS swap itself, once step 3 passes: [../swap-runbook.md](../swap-runbook.md
   the certificate.
 - Step 1: `cp /root/codeboxx.nginx.bak-YYYYMMDD-HHMM /etc/nginx/sites-available/codeboxx` (the
   new snippets can stay, nothing else includes them).
+- Compression and caching: `cp /root/codeboxx-site.conf.bak-YYYYMMDD-HHMM
+/etc/nginx/snippets/codeboxx-site.conf`.
 - The redirects: put the pre-CLP-1342 backup (`/root/codeboxx.nginx.bak-YYYYMMDD`) back and
   `rm /etc/nginx/conf.d/codeboxx-redirects.conf /etc/nginx/snippets/codeboxx-redirects.conf`.

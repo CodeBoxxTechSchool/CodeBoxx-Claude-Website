@@ -38,6 +38,53 @@ export function send(base, host, path, method = 'HEAD', ca = undefined) {
   });
 }
 
+/**
+ * { status, headers, body } of a GET to base with this Host header, asking for gzip when gzip is
+ * set (the body is then left compressed, only the headers matter).
+ */
+export function get(base, host, path, { gzip = false, ca = undefined } = {}) {
+  const url = new URL(path, base);
+  const client = url.protocol === 'https:' ? https : http;
+  const headers = { host, 'user-agent': USER_AGENT, ...(gzip && { 'accept-encoding': 'gzip' }) };
+  const options = { headers, servername: isIP(host) ? undefined : host, ca, timeout: 10_000 };
+  return new Promise((done, fail) => {
+    const req = client.request(url, options, (res) => {
+      const chunks = [];
+      res.on('data', (chunk) => chunks.push(chunk));
+      res.on('end', () =>
+        done({
+          status: res.statusCode,
+          headers: res.headers,
+          body: Buffer.concat(chunks).toString(),
+        })
+      );
+    });
+    req.on('timeout', () => req.destroy(new Error('timeout')));
+    req.on('error', fail);
+    req.end();
+  });
+}
+
+/** The first /_astro/ stylesheet a page links to, or null. */
+export const stylesheet = (html) => /href="(\/_astro\/[^"]+\.css)"/.exec(html)?.[1] ?? null;
+
+/**
+ * What's wrong with the compression and caching headers of a page and of one of its /_astro/
+ * files (both fetched asking for gzip), as a list of messages; empty when both are right.
+ */
+export function headerProblems(page, asset) {
+  const problems = [];
+  const encoding = (res) => res.headers['content-encoding'] ?? 'none';
+  const cache = (res) => res.headers['cache-control'] ?? 'none';
+  if (encoding(page) !== 'gzip') problems.push(`page not gzipped (${encoding(page)})`);
+  if (cache(page) !== 'no-cache')
+    problems.push(`page Cache-Control ${cache(page)} (want no-cache)`);
+  if (encoding(asset) !== 'gzip') problems.push(`/_astro/ CSS not gzipped (${encoding(asset)})`);
+  if (!/max-age=31536000/.test(cache(asset)) || !/immutable/.test(cache(asset)))
+    problems.push(`/_astro/ CSS Cache-Control ${cache(asset)} (want a year, immutable)`);
+  return problems;
+}
+
 const oldPaths = (group) =>
   readFileSync(new URL(`old-urls/${OLD_URLS[group]}`, import.meta.url), 'utf8')
     .split('\n')
@@ -158,6 +205,22 @@ export async function main(args, { out = console.log, err = console.error } = {}
     reached++;
   });
 
+  // Compression and caching (ops/nginx/snippets/codeboxx-site.conf), on the homepage and its CSS.
+  let headers = 'unchecked';
+  try {
+    const css = stylesheet((await get(base, siteHost, '/', { ca })).body);
+    if (!css) fail(`headers ${siteHost}/`, 'no /_astro/ stylesheet in the page');
+    else {
+      const page = await get(base, siteHost, '/', { gzip: true, ca });
+      const asset = await get(base, siteHost, css, { gzip: true, ca });
+      const problems = headerProblems(page, asset);
+      for (const problem of problems) fail(`headers ${siteHost}`, problem);
+      headers = problems.length ? 'wrong' : 'ok';
+    }
+  } catch (error) {
+    fail(`headers ${siteHost}/`, error.message);
+  }
+
   if (args.includes('--relay')) {
     const res = await send(base, siteHost, '/api/health', 'GET', ca).catch((error) => error);
     if (res instanceof Error || res.status !== 200)
@@ -167,7 +230,8 @@ export async function main(args, { out = console.log, err = console.error } = {}
   for (const failure of failures.sort()) err(`FAIL ${failure}`);
   out(
     `${base}: ${redirects} redirects, ${targets.size} targets (${reached} answered 200), ` +
-      `${unchanged} unredirected requests${secure ? `, ${rejected} rejected handshakes` : ''}` +
+      `${unchanged} unredirected requests${secure ? `, ${rejected} rejected handshakes` : ''}, ` +
+      `compression and caching ${headers}` +
       `${args.includes('--relay') ? ', relay health' : ''}; ` +
       `${failures.length} failure(s)`
   );
