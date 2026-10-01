@@ -35,7 +35,7 @@ export default {
       logo: '/assets/case-studies/full-harvest.png',
       body: [
         'Full Harvest est un exemple de client Ventures pour qui nous avons évalué les besoins technologiques, opérationnels et en personnel afin de répondre à ses besoins immédiats et à long terme. Après avoir obtenu son financement de série B, le client devait rapidement mettre sur pied une équipe TI interne. Il s’est associé à CodeBoxx pour bâtir un programme de formation personnalisé de 4 mois ciblant ses besoins précis, et notre Académie a repéré, formé et livré 9 développeurs qualifiés pour constituer son équipe.',
-        'CodeBoxx a fourni les services d’un CTO fractionnel pour la conception, la mise en condition et la définition technologiques. Notre modèle de services fractionnels convient parfaitement aux ventures et startups qui doivent bâtir des équipes TI rapidement et à moindre coût selon leurs besoins uniques.',
+        'CodeBoxx a fourni les services d’un CTO à temps partagé pour la conception, la mise en condition et la définition technologiques. Notre modèle de services à temps partagé convient parfaitement aux ventures et startups qui doivent bâtir des équipes TI rapidement et à moindre coût selon leurs besoins uniques.',
       ],
       mandate:
         'Créer une équipe d’opérations technologiques pour soutenir la plateforme en continu.',

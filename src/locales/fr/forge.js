@@ -72,7 +72,7 @@ export default {
       ],
       [
         'Écrire.',
-        'Des modèles locaux écrivent, révisent et testent le code sur l’appareil. Le travail sur les dépôts, les compilations et la première révision ne quittent jamais l’édifice.',
+        'Des modèles locaux écrivent, révisent et testent le code sur l’appareil. Le travail sur les dépôts, les compilations et la première revue de code ne quittent jamais l’édifice.',
       ],
       [
         'Exécuter.',
@@ -84,14 +84,14 @@ export default {
     eyebrow: 'Local d’abord. Le nuage quand c’est avantageux.',
     title: 'Cessez de louer votre intelligence au jeton.',
     body: [
-      'Le travail courant reste sur l’appareil : miroirs de dépôts, compilations, tests, révision de code, plongements et surveillance, avec des modèles ouverts résidents.',
+      'Le travail courant reste sur l’appareil : miroirs de dépôts, compilations, tests, revue de code, plongements et surveillance, avec des modèles ouverts résidents.',
       'Quand une tâche exige vraiment un raisonnement de pointe ou un très long contexte, CrewKit l’achemine par une passerelle gérée et consigne la décision. Les fournisseurs sont interchangeables, jamais codés en dur.',
       'Vous échangez une facture infonuagique et de jetons imprévisible contre un actif fixe qui vous appartient.',
     ],
     lanes: [
       [
         'Sur l’appareil',
-        'Miroirs de dépôts, compilations, tests, révision de code, plongements, surveillance',
+        'Miroirs de dépôts, compilations, tests, revue de code, plongements, surveillance',
       ],
       ['Acheminé et consigné', 'Raisonnement de pointe, synthèse de long contexte, architecture'],
       ['Jamais', 'Votre code, vos données ou votre PI qui sortent sans décision consignée'],

@@ -38,7 +38,7 @@ export default {
         'Des engagements en argent pour les startups financées qui doivent avancer maintenant.',
         [
           'Sprints à portée fixe',
-          'Même norme de révision que le studio',
+          'Mêmes standards de revue de code que le studio',
           'Transfert à votre propre équipe à la sortie',
         ],
       ],
