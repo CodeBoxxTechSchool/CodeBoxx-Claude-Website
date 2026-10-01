@@ -176,7 +176,7 @@ $adr-paper: #fbf9f5;
 // ---- Concern explorer + Articles ----
 .adr-standard {
   background: v.$neutral-0;
-  scroll-margin-top: 72px;
+  scroll-margin-top: calc(72px + var(--social-bar-h));
 }
 .adr-explorer {
   display: flex;
@@ -498,7 +498,7 @@ $adr-paper: #fbf9f5;
 // ---- Press ----
 .adr-press {
   background: $adr-paper;
-  scroll-margin-top: 72px;
+  scroll-margin-top: calc(72px + var(--social-bar-h));
 }
 .adr-press-grid {
   display: grid;
@@ -539,7 +539,7 @@ $adr-paper: #fbf9f5;
 }
 .adr-quotes {
   position: sticky;
-  top: 96px;
+  top: calc(96px + var(--social-bar-h));
   display: flex;
   flex-direction: column;
   gap: 16px;

@@ -2,6 +2,7 @@ import React from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import Logo from './Logo';
 import { localizedHref } from '../lib/i18nRoutes';
+import { SOCIAL_LINKS } from '../lib/social';
 
 // Site-wide top menu and footer (replaced the old react-router/react-i18next
 // Chrome.jsx). Props-driven instead of reading a router context or i18next:
@@ -68,6 +69,32 @@ function LanguageToggle({ lang, pathname, hrefOverride }) {
     >
       {next.toUpperCase()}
     </a>
+  );
+}
+
+// Blue strip under the top bar with the social icons, like codeboxx.com's (Wix) header:
+// six icons don't fit next to the FR/EN button at every width. Part of the sticky header.
+function SocialBar({ strings }) {
+  return (
+    <nav className="social-bar" aria-label={strings.social.label}>
+      <ul className="social-bar-list">
+        {SOCIAL_LINKS.map((link) => (
+          <li key={link.key}>
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={link.name + strings.social.newTab}
+              title={link.name}
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d={link.path} />
+              </svg>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }
 
@@ -177,6 +204,7 @@ export function TopBar({ lang, pathname, strings, onCodi, langHref }) {
             </div>
           </Container>
         </Navbar>
+        <SocialBar strings={strings} />
       </header>
       <div className="mobile-cta-bar d-lg-none">
         <Button variant="outline-primary" href={enrollHref}>
