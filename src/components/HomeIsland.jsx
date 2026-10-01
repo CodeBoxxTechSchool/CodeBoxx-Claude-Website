@@ -5,6 +5,7 @@ import { TopBar, Footer } from './ChromeIsland';
 import Avatar from './Avatar';
 import CountryCombobox from './CountryCombobox';
 import Logo from './Logo';
+import ForgeReel from './ForgeReel';
 import { useIntakes } from '../lib/intakes';
 import { localizedHref, localizedId } from '../lib/i18nRoutes';
 import { suggestEmail } from '../lib/emailTypos';
@@ -2054,7 +2055,9 @@ function CodeBlog() {
 
 // "Start here" entry window, right under the hero: one doorway each to the
 // CrewKit Forge 20 page (owned), its Dive Deeper evidence page (proven) and the
-// #AIDoneRight standard (accountable). Each card is one big link (Bootstrap's
+// #AIDoneRight standard (accountable). The Owned card opens on the reel: the
+// six headlines of the build-order funnel cycling over the Forge poster with the
+// funnel's own transitions (ForgeReel). Each card is one big link (Bootstrap's
 // .stretched-link) with its secondary links raised above it. The evidence bar
 // is to scale and reads the same PORTFOLIO totals the Dive Deeper page uses.
 const BUILD_ORDER_URL = 'https://buildorder.codeboxx.com/';
@@ -2080,13 +2083,11 @@ function Gateway() {
 
         <div className="gw-grid">
           <article className="gw-card gw-forge">
-            <img
-              className="gw-forge-img"
-              src="/assets/crewkit-forge-poster.webp"
-              alt={g.forge.imageAlt}
-              width={1248}
-              height={736}
-              loading="lazy"
+            <ForgeReel
+              phrases={g.forge.reel.phrases}
+              labels={g.forge.reel}
+              poster="/assets/crewkit-forge-poster.webp"
+              posterAlt={g.forge.imageAlt}
             />
             <div className="gw-card-body">
               <span className="gw-kicker">{g.forge.kicker}</span>

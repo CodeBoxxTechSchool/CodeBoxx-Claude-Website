@@ -21,6 +21,20 @@ export default {
       cta: 'Discover Forge 20',
       reserve: 'Reserve yours',
       imageAlt: 'The CrewKit Forge 20 appliance in a boardroom',
+      // The reel: the six headlines of buildorder.codeboxx.com, in its order.
+      reel: {
+        phrases: [
+          'Meet your very own new Dev Team',
+          'It’s time to re-shore your enterprise software.',
+          'Take back control of your cloud spend.',
+          'Build software on your own terms, at the speed of thought.',
+          'Empower your tech teams with unlimited knowledge and resources.',
+          'Harness the quantum computing revolution.',
+        ],
+        phrasesLabel: 'Headlines',
+        pause: 'Pause',
+        play: 'Play',
+      },
     },
     deep: {
       kicker: 'Proven · The evidence',
