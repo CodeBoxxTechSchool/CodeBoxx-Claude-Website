@@ -21,7 +21,8 @@ export default {
       cta: 'Découvrir le Forge 20',
       reserve: 'Réserver le vôtre',
       imageAlt: 'L’appareil CrewKit Forge 20 dans une salle du conseil',
-      // Le reel : les six titres de buildorder.codeboxx.com, dans son ordre.
+      // Le titre défile : `title` d’abord, puis ces six titres de
+      // buildorder.codeboxx.com, dans son ordre.
       reel: {
         phrases: [
           'Rencontrez votre toute nouvelle équipe de développement',
@@ -31,9 +32,6 @@ export default {
           'Donnez à vos équipes techniques un savoir et des ressources sans limites.',
           'Saisissez la révolution de l’informatique quantique.',
         ],
-        phrasesLabel: 'Titres',
-        pause: 'Pause',
-        play: 'Lecture',
       },
     },
     deep: {

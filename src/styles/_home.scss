@@ -1011,212 +1011,73 @@ $gw-gold: #c9a46b;
     color: v.$neutral-0;
   }
 }
-// The reel (ForgeReel.jsx): the Forge poster, dimmed under a drifting aurora,
-// and the funnel's headlines cycling in its white-to-blue gradient. Everything
-// animated paints its own gradient (see the component), the pills are the
-// funnel's step pills, the pause button is the slider's. The card's
-// stretched-link sits above the poster; the pills and the pause button are
-// raised over it like the card's secondary links.
-.gw-reel {
-  position: relative;
+.gw-forge-img {
   width: 100%;
-  aspect-ratio: 1248 / 760;
-  overflow: hidden;
-  isolation: isolate;
-  background: v.$navy-800;
-  container-type: inline-size;
-}
-.gw-reel-poster {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  aspect-ratio: 1248 / 620;
+  height: auto;
   object-fit: cover;
   object-position: center 40%;
-  opacity: 0.42;
-  filter: saturate(0.6);
 }
-.gw-reel-scrim {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0, 14, 20, 0.35) 0%,
-      rgba(0, 14, 20, 0.15) 45%,
-      rgba(0, 23, 33, 0.92) 100%
-    ),
-    radial-gradient(80% 60% at 50% 50%, rgba(0, 14, 20, 0.1), rgba(0, 14, 20, 0.55));
-}
-.gw-reel-aurora {
-  position: absolute;
-  inset: -20%;
-  opacity: 0.5;
-  filter: blur(60px);
-  background:
-    radial-gradient(40% 40% at 20% 30%, rgba(67, 180, 240, 0.55), transparent 60%),
-    radial-gradient(38% 38% at 80% 25%, rgba(169, 107, 255, 0.35), transparent 60%),
-    radial-gradient(45% 45% at 60% 80%, rgba(45, 120, 160, 0.55), transparent 60%);
-  animation: gw-aurora-drift 22s ease-in-out infinite alternate;
-  pointer-events: none;
-}
-@keyframes gw-aurora-drift {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(3%, -2%) scale(1.08);
-  }
-  100% {
-    transform: translate(-3%, 2%) scale(1.04);
-  }
-}
-.gw-reel-stage {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(8px, 2cqw, 16px);
-  padding: clamp(16px, 6cqw, 48px) clamp(16px, 7cqw, 56px) clamp(44px, 10cqw, 64px);
-  text-align: center;
-}
-.gw-reel-source {
-  font-size: v.$text-micro;
-  font-weight: v.$weight-semibold;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
-}
-.gw-reel-slot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 2.4em;
-  font-size: clamp(22px, 5.4cqw, 44px);
-  font-weight: v.$weight-black;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
+// The cycling title (CyclingHeadline.jsx): the thesis, then the funnel's six
+// headlines, in the funnel's white-to-blue gradient and its six effects. The
+// line reserves two rows so the card never jumps between a one- and a
+// two-line headline; every animated fragment paints its own gradient (see the
+// component) and the paint box is padded past the descenders.
+.gw-title-cycling {
   perspective: 900px;
 }
-.gw-reel-phrase {
+.gw-cycle {
+  display: flex;
+  align-items: center;
+  min-height: 2.2em;
+  text-wrap: balance;
+}
+.gw-cycle-phrase {
   display: block;
-  max-width: 18ch;
   will-change: transform, opacity, filter;
 }
-.gw-reel-phrase-fragments {
+.gw-cycle-phrase-fragments {
   display: inline-flex;
   flex-wrap: wrap;
-  justify-content: center;
   column-gap: 0.28em;
 }
-.gw-reel-word {
+.gw-cycle-word {
   display: inline-block;
   white-space: nowrap;
 }
-.gw-reel-letter {
+.gw-cycle-letter {
   display: inline-block;
   backface-visibility: hidden;
 }
-.gw-reel-grad {
+.gw-cycle-grad {
   color: transparent;
-  background: linear-gradient(120deg, #fff, v.$blue-200 45%, v.$blue-500);
+  background: linear-gradient(120deg, #fff, v.$blue-200 45%, v.$blue-400);
   -webkit-background-clip: text;
   background-clip: text;
-  // background-clip:text paints only inside the box; at line-height 1.08 the
+  // background-clip:text paints only inside the box; at a tight line-height the
   // descenders of the last line fell outside it. Grow the paint box, give the
   // space back: layout unchanged.
   padding: 0.14em 0.04em 0.22em;
   margin: -0.14em -0.04em -0.22em;
 }
-.gw-reel-phrase.gw-reel-grad {
-  filter: drop-shadow(0 2px 30px rgba(67, 180, 240, 0.3));
+.gw-cycle-phrase.gw-cycle-grad {
+  filter: drop-shadow(0 2px 24px rgba(67, 180, 240, 0.25));
 }
-.gw-reel-shimmer {
+.gw-cycle-shimmer {
   background-image: linear-gradient(
     110deg,
-    v.$blue-500 0%,
+    v.$blue-400 0%,
     #fff 18%,
     v.$blue-200 32%,
-    v.$blue-500 50%,
+    v.$blue-400 50%,
     #fff 68%,
     v.$blue-200 82%,
-    v.$blue-500 100%
+    v.$blue-400 100%
   );
   background-size: 250% 100%;
 }
-.gw-reel-flip {
-  transform-origin: bottom center;
-}
-.gw-reel-controls {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: clamp(12px, 3cqw, 22px);
-  z-index: 2; // above the card's stretched-link, like .gw-secondary
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  padding: 0 16px;
-}
-.gw-reel-pills {
-  display: flex;
-  gap: 8px;
-}
-.gw-reel-pill {
-  width: 18px;
-  height: 6px;
-  padding: 0;
-  border: 0;
-  border-radius: v.$radius-full;
-  background: rgba(255, 255, 255, 0.22);
-  cursor: pointer;
-  transition:
-    width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    background 0.3s ease,
-    box-shadow 0.3s ease,
-    transform 0.25s ease;
-
-  &:hover {
-    transform: scaleY(1.6);
-  }
-  &.is-current {
-    width: 30px;
-    background: linear-gradient(90deg, v.$blue-300, v.$blue-500);
-    box-shadow: 0 0 14px rgba(67, 180, 240, 0.7);
-  }
-  &:focus-visible {
-    outline: 2px solid v.$blue-300;
-    outline-offset: 3px;
-  }
-}
-.gw-reel-pause {
-  font-size: 11px;
-  font-weight: v.$weight-semibold;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: v.$radius-full;
-  padding: 4px 10px;
-  cursor: pointer;
-  backdrop-filter: blur(6px);
-
-  &:hover,
-  &[aria-pressed='true'] {
-    background: rgba(67, 180, 240, 0.22);
-    border-color: rgba(108, 197, 243, 0.5);
-    color: #fff;
-  }
-  &:focus-visible {
-    outline: 2px solid v.$blue-300;
-    outline-offset: 2px;
-  }
+.gw-cycle-flip {
+  transform-origin: bottom left;
 }
 .gw-card-body {
   flex: 1;
@@ -1310,12 +1171,6 @@ $gw-gold: #c9a46b;
       transform: none;
     }
   }
-  .gw-reel-aurora {
-    animation: none;
-  }
-  .gw-reel-pill {
-    transition: none;
-  }
 }
 
 @media (max-width: v.$breakpoint-md) {
@@ -1327,9 +1182,6 @@ $gw-gold: #c9a46b;
   }
   .gw-forge {
     grid-row: auto;
-  }
-  .gw-reel {
-    aspect-ratio: 4 / 3;
   }
   .gw-title-lg {
     font-size: 26px;

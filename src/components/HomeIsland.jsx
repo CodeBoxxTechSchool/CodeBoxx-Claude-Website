@@ -5,7 +5,7 @@ import { TopBar, Footer } from './ChromeIsland';
 import Avatar from './Avatar';
 import CountryCombobox from './CountryCombobox';
 import Logo from './Logo';
-import ForgeReel from './ForgeReel';
+import CyclingHeadline from './CyclingHeadline';
 import { useIntakes } from '../lib/intakes';
 import { localizedHref, localizedId } from '../lib/i18nRoutes';
 import { suggestEmail } from '../lib/emailTypos';
@@ -2055,9 +2055,9 @@ function CodeBlog() {
 
 // "Start here" entry window, right under the hero: one doorway each to the
 // CrewKit Forge 20 page (owned), its Dive Deeper evidence page (proven) and the
-// #AIDoneRight standard (accountable). The Owned card opens on the reel: the
-// six headlines of the build-order funnel cycling over the Forge poster with the
-// funnel's own transitions (ForgeReel). Each card is one big link (Bootstrap's
+// #AIDoneRight standard (accountable). The Owned card's title cycles: it opens
+// on the thesis, then runs the six headlines of the build-order funnel with the
+// funnel's own transitions (CyclingHeadline). Each card is one big link (Bootstrap's
 // .stretched-link) with its secondary links raised above it. The evidence bar
 // is to scale and reads the same PORTFOLIO totals the Dive Deeper page uses.
 const BUILD_ORDER_URL = 'https://buildorder.codeboxx.com/';
@@ -2083,15 +2083,19 @@ function Gateway() {
 
         <div className="gw-grid">
           <article className="gw-card gw-forge">
-            <ForgeReel
-              phrases={g.forge.reel.phrases}
-              labels={g.forge.reel}
-              poster="/assets/crewkit-forge-poster.webp"
-              posterAlt={g.forge.imageAlt}
+            <img
+              className="gw-forge-img"
+              src="/assets/crewkit-forge-poster.webp"
+              alt={g.forge.imageAlt}
+              width={1248}
+              height={736}
+              loading="lazy"
             />
             <div className="gw-card-body">
               <span className="gw-kicker">{g.forge.kicker}</span>
-              <h3 className="gw-title gw-title-lg">{g.forge.title}</h3>
+              <h3 className="gw-title gw-title-lg gw-title-cycling">
+                <CyclingHeadline phrases={[g.forge.title, ...g.forge.reel.phrases]} />
+              </h3>
               <p className="gw-body">{g.forge.body}</p>
               <div className="gw-links">
                 <a
