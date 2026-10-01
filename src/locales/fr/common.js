@@ -25,6 +25,7 @@ export default {
     language: 'Langue',
     skipToContent: 'Passer au contenu principal',
   },
+  social: { label: 'Réseaux sociaux', newTab: ' (s’ouvre dans un nouvel onglet)' },
   footer: {
     tagline:
       'On bâtit des équipes natives en IA et des logiciels qui vont plus loin que les anciennes façons de faire.',

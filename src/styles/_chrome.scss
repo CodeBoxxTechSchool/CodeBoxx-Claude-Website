@@ -16,11 +16,65 @@
     .wrap {
       padding: 24px;
     }
+  }
 
+  // The open mobile menu's height, below Bootstrap's lg breakpoint where the Navbar
+  // (expand="lg") collapses. At $breakpoint-md (1000px) it also hit the 992-1000px
+  // desktop menu, making the header 85vh tall there.
+  @media (max-width: 991.98px) {
     .navbar {
       .navbar-collapse {
         height: 85vh;
       }
+    }
+  }
+}
+
+// Social bar under the top bar (ChromeIsland.jsx SocialBar), inside the sticky header.
+// --social-bar-h is added to every offset that clears the header (scroll-margin-top,
+// sticky top), so anchors and sticky panels don't slide under it.
+:root {
+  --social-bar-h: 40px;
+
+  @media (max-width: v.$breakpoint-md) {
+    --social-bar-h: 36px;
+  }
+}
+
+.social-bar {
+  // $blue-600: white icons on it reach 3.2:1 (WCAG 1.4.11), the lighter Wix blue only 2.3:1.
+  background: v.$blue-600;
+  height: var(--social-bar-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-bar-list {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    color: v.$neutral-0;
+    transition: background-color 0.15s ease-in-out;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    &:focus-visible {
+      outline: 2px solid v.$neutral-0;
+      outline-offset: 1px;
     }
   }
 }

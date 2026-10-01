@@ -406,7 +406,7 @@
   gap: 20px;
 }
 .calendar-band {
-  scroll-margin-top: 96px;
+  scroll-margin-top: calc(96px + var(--social-bar-h));
   margin-top: 64px;
   background: v.$navy-500;
   border-radius: v.$radius-xl;
@@ -520,7 +520,7 @@
 // Same boxy shape as .calendar-band, in a light steel colorway so it reads as
 // secondary to the navy calendar right below it.
 .corp-band {
-  scroll-margin-top: 96px;
+  scroll-margin-top: calc(96px + var(--social-bar-h));
   margin-top: 64px;
   padding: 48px;
   border-radius: v.$radius-xl;
@@ -733,7 +733,7 @@
 }
 .panel-sticky {
   position: sticky;
-  top: 104px;
+  top: calc(104px + var(--social-bar-h));
 }
 .service-subhead {
   margin: 0;

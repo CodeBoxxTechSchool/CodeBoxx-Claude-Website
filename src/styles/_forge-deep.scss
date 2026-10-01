@@ -366,7 +366,7 @@ $fd-surface: v.$neutral-0;
   flex-direction: column;
   gap: 10px;
   position: sticky;
-  top: 96px;
+  top: calc(96px + var(--social-bar-h));
 }
 .fd-detail-group {
   width: fit-content;
@@ -514,7 +514,7 @@ $fd-surface: v.$neutral-0;
 // ---- Business-case builder ----
 .fd-builder-sect {
   background: v.$neutral-50;
-  scroll-margin-top: 80px;
+  scroll-margin-top: calc(80px + var(--social-bar-h));
 }
 .fb {
   display: grid;

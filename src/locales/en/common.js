@@ -27,6 +27,9 @@ export default {
     language: 'Language',
     skipToContent: 'Skip to main content',
   },
+  // Header social bar: the nav's name, and what follows each network's name in its
+  // link label (the links open in a new tab).
+  social: { label: 'Social media', newTab: ' (opens in a new tab)' },
   footer: {
     tagline: 'We build AI-Native teams and software that outwork the old way.',
     columns: {

@@ -106,7 +106,7 @@ $fg-ink: v.$navy-900;
 // ---- Who needs a Data Center? ----
 .fg-dc {
   background: v.$neutral-50;
-  scroll-margin-top: 80px;
+  scroll-margin-top: calc(80px + var(--social-bar-h));
 }
 .fg-dc-grid {
   align-items: center;
