@@ -11,6 +11,8 @@ const USAGE =
 const QUERY = 'gclid=x&utm_source=y';
 const APEX = 'codeboxx.com';
 const PARALLEL = 8;
+// Its own user agent, so ops/nginx-report leaves out the 404s it asks for on purpose.
+export const USER_AGENT = 'codeboxx-check-redirects';
 
 /**
  * { status, location } of one request to base with this Host header; redirects not followed.
@@ -19,7 +21,12 @@ const PARALLEL = 8;
 export function send(base, host, path, method = 'HEAD', ca = undefined) {
   const url = new URL(path, base);
   const client = url.protocol === 'https:' ? https : http;
-  const options = { method, headers: { host }, servername: isIP(host) ? undefined : host, ca };
+  const options = {
+    method,
+    headers: { host, 'user-agent': USER_AGENT },
+    servername: isIP(host) ? undefined : host,
+    ca,
+  };
   return new Promise((done, fail) => {
     const req = client.request(url, { ...options, timeout: 10_000 }, (res) => {
       res.resume();

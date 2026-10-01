@@ -14,6 +14,12 @@ export const OWN_HOSTS = ['codeboxx.com', 'www.codeboxx.com', '159.223.145.47'];
 export const CRAWLERS = /Googlebot|bingbot|DuckDuckBot|YandexBot|Applebot|Baiduspider/i;
 
 /**
+ * ops/nginx/check-redirects.js's user agent (USER_AGENT there): its 404s are expected, it asks
+ * for them on purpose (an unredirected path on the IP, /.well-known/acme-challenge/test).
+ */
+export const OWN_CHECK = /^codeboxx-check-redirects\b/;
+
+/**
  * 404 paths (percent-decoded) that are scanner probes, ignored even with a referrer or many hits.
  * Old Wix URLs (/post/some-title, /blog, /fr/...) must never match: finding those is the point of
  * the report.
@@ -24,6 +30,9 @@ export const PROBES = [
   /\/wp-/i,
   /\/(cgi-bin|vendor|phpunit)(\/|$)/i,
   /^\/(SDK|containers|actuator|boaform|HNAP1|webui)(\/|$)/i,
+  // Sitemap name guesses (/sitemap_index.xml, /sitemap1.xml, /sitemap.txt, ...); ours are
+  // /sitemap.xml, /sitemap-index.xml and /sitemap-0.xml, so a 404 on those still shows.
+  /^\/sitemap(?!(-index|-0)?\.xml$)[\w-]*\.(xml|xml\.gz|txt)$/i,
 ];
 
 // nginx's combined format; a quoted field holds no raw quote (nginx logs it as \x22).
@@ -84,7 +93,11 @@ export function summarize(text) {
       row.count++;
       errors.set(key, row);
     } else if (hit.status === 404) {
-      if (!['GET', 'HEAD'].includes(hit.method) || isProbe(hit.path)) {
+      if (
+        !['GET', 'HEAD'].includes(hit.method) ||
+        isProbe(hit.path) ||
+        OWN_CHECK.test(hit.userAgent)
+      ) {
         ignored++;
         continue;
       }
@@ -155,7 +168,7 @@ export function formatEmail({ day, total, errors, missing, ignored }) {
     lines.push(...table(missing, (row) => `${row.path}${mark(row)}`), '');
   }
   lines.push(
-    `${plural(ignored, '404 hit', '404 hits')} ignored (scanner probes and one-off requests).`
+    `${plural(ignored, '404 hit', '404 hits')} ignored (scanner probes, our redirect checks and one-off requests).`
   );
   lines.push(`${plural(total, 'request', 'requests')} in total.`);
   return {

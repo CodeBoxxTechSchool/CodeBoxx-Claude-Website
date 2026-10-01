@@ -77,6 +77,12 @@ test('ignores scanner probes, never a normal-looking path', () => {
     '/actuator/health',
     '/HNAP1',
     '/webui/',
+    '/sitemap_index.xml',
+    '/sitemap1.xml',
+    '/sitemap-1.xml',
+    '/sitemap.txt',
+    '/sitemap.xml.gz',
+    '/sitemapindex.xml',
   ]) {
     assert.ok(isProbe(path), path);
   }
@@ -88,9 +94,28 @@ test('ignores scanner probes, never a normal-looking path', () => {
     '/favicon.ico',
     '/.well-known/security.txt',
     '/login',
+    '/sitemap.xml',
+    '/sitemap-index.xml',
+    '/sitemap-0.xml',
   ]) {
     assert.ok(!isProbe(path), path);
   }
+});
+
+test('ignores the 404s our redirect check asks for', () => {
+  const CHECK = 'codeboxx-check-redirects';
+  const summary = summarize(
+    [
+      ...Array(3).fill(line('HEAD /contact HTTP/1.1', 404, '-', CHECK)),
+      ...Array(3).fill(line('HEAD /.well-known/acme-challenge/test HTTP/1.1', 404, '-', CHECK)),
+      ...Array(3).fill(line('GET /contact HTTP/1.1', 404)),
+    ].join('\n')
+  );
+  assert.deepEqual(
+    summary.missing.map((row) => [row.path, row.count]),
+    [['/contact', 3]]
+  );
+  assert.equal(summary.ignored, 6);
 });
 
 test('keeps a 404 with a referrer, a crawler or 3 hits, not a one-off request', () => {
@@ -174,7 +199,10 @@ test('words the subject and body, marking why each 404 is listed', () => {
   assert.match(email.text, /^ {5}1 {2}\/fr\/programmes {2}<- linked from another site$/m);
   assert.match(email.text, /^ {5}1 {2}\/programs {2}<- crawled by a search engine$/m);
   assert.match(email.text, /^ {5}8 {2}\/favicon\.ico$/m);
-  assert.match(email.text, /950 404 hits ignored \(scanner probes and one-off requests\)\./);
+  assert.match(
+    email.text,
+    /950 404 hits ignored \(scanner probes, our redirect checks and one-off requests\)\./
+  );
   assert.match(email.text, /1091 requests in total/);
   const only404 = formatEmail({
     day: '2026-09-28',
