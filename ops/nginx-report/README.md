@@ -13,6 +13,9 @@ when there is something to report, sends a plain-text email through SendGrid.
   search engine crawler (`CRAWLERS`), or the path got at least 3 hits that day. Scanner probes
   (`PROBES` in `report.js`, matched on the percent-decoded path: dotfiles, `.php` and similar
   extensions, `wp-`, `cgi-bin`, `vendor/`, …) never count, whatever their referrer or hits.
+- The 404s that `ops/nginx/check-redirects.js` asks for on purpose (user agent
+  `codeboxx-check-redirects`) never count either, nor do sitemap name guesses such as
+  `/sitemap_index.xml`.
 - How many 404 hits were ignored (probes, one-off requests with no referrer, and methods other
   than GET and HEAD), and the day's request count.
 
