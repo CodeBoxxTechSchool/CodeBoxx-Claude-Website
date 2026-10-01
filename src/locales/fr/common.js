@@ -3,7 +3,6 @@ export default {
     about: 'À propos',
     aboutTeam: 'Équipe',
     aboutHistory: 'Historique',
-    aboutAiDoneRight: '#AIDoneRight',
     aboutVisionMission: 'Vision et mission',
     solutions: 'Solutions',
     solutionsServices: 'Services',

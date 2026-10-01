@@ -10,46 +10,6 @@ export default {
     titleHighlight: 'natives en IA',
     titleAfter: ' et des logiciels qui vont plus loin que les anciennes façons de faire.',
   },
-  gateway: {
-    eyebrow: 'Commencez ici',
-    words: ['À vous.', 'Éprouvée.', 'Responsable.'],
-    lede: 'L’usine logicielle IA-native qui peut vous appartenir, les résultats qu’elle a déjà livrés, et la norme à laquelle nous la soumettons.',
-    forge: {
-      kicker: 'À vous · CrewKit Forge 20',
-      title: 'Reprenez le contrôle de vos logiciels d’entreprise.',
-      body: 'Une usine logicielle autonome et entièrement à vous, dans un mètre cube. Local d’abord, le nuage quand c’est avantageux.',
-      cta: 'Découvrir le Forge 20',
-      reserve: 'Réserver le vôtre',
-      imageAlt: 'L’appareil CrewKit Forge 20 dans une salle du conseil',
-      // Le titre défile : `title` d’abord, puis ces six titres de
-      // buildorder.codeboxx.com, dans son ordre.
-      reel: {
-        phrases: [
-          'Rencontrez votre toute nouvelle équipe de développement',
-          'Il est temps de rapatrier vos logiciels d’entreprise.',
-          'Reprenez le contrôle de vos dépenses infonuagiques.',
-          'Développez vos logiciels à vos conditions, à la vitesse de la pensée.',
-          'Donnez à vos équipes techniques un savoir et des ressources sans limites.',
-          'Saisissez la révolution de l’informatique quantique.',
-        ],
-      },
-    },
-    deep: {
-      kicker: 'Éprouvée · Les preuves',
-      title: '{saved} économisés sur sept plateformes livrées.',
-      traditional: 'Équipe traditionnelle',
-      factory: 'L’usine',
-      cta: 'Voir les chiffres et bâtir votre analyse de rentabilité',
-    },
-    adr: {
-      kicker: 'Responsable · La norme',
-      tag: '#AIDoneRight',
-      title: 'Une norme d’intelligence artificielle centrée sur l’humain.',
-      body: '13 engagements que n’importe qui à l’extérieur de l’entreprise peut vérifier.',
-      cta: 'Lire la norme',
-      download: 'Télécharger le PDF',
-    },
-  },
   platform: {
     eyebrow: 'Le Noyau. L’Atelier. L’Académie.',
     title: 'Trois divisions. Une seule équipe.',
