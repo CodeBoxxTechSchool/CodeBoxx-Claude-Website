@@ -3,6 +3,8 @@
 // Applied to every FR locale/data module at build time (see frTypographyPlugin
 // in astro.config.mjs), so the source files stay plain and new copy follows
 // the rule without anyone having to remember it.
+import { fileURLToPath } from 'node:url';
+
 const NBSP = ' ';
 
 export function frTypographyString(s) {
@@ -39,7 +41,10 @@ export function frTypography(value) {
 // Vite plugin: runs frTypography over the default export of every FR content
 // module — src/locales/fr/*.js and src/data/legal/*.fr.json.
 export function frTypographyPlugin() {
-  const helper = new URL(import.meta.url).pathname;
+  // A real path, not the URL's pathname: on Windows the latter is
+  // "/C:/Source%20Code/…" (leading slash, percent-encoded space) and Vite
+  // cannot resolve the injected import from a checkout whose path has a space.
+  const helper = fileURLToPath(import.meta.url).replace(/\\/g, '/');
   return {
     name: 'fr-typography',
     enforce: 'pre',
