@@ -58,4 +58,10 @@ User-agent: CCBot
 Disallow: /api/
 Allow: /
 
+# ChatRank's own crawler (the AEO tracker), allowed by name as on
+# academy.codeboxx.com.
+User-agent: ChatRankBot
+Disallow: /api/
+Allow: /
+
 Sitemap: https://codeboxx.com/sitemap-index.xml
