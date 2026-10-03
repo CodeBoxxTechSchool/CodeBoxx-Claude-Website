@@ -51,7 +51,7 @@ export default {
             name: 'VideoAmp',
             logo: 'https://cdn.sanity.io/images/zagi8xr3/production/bb1491c24211580ea849530ca94a681d3463c2ec-359x139.svg',
           },
-          { name: 'Industrielle Alliance' },
+          { name: 'Industrielle Alliance', logo: '/assets/logos/ia-groupe-financier.webp' },
         ],
       },
     ],
