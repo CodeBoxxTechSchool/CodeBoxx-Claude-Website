@@ -8,6 +8,7 @@ export default {
     solutions: 'Solutions',
     solutionsServices: 'Services',
     solutionsWorks: 'Réalisations',
+    corporateTraining: 'Formation en entreprise',
     caseStudies: 'Études de cas',
     academy: 'Académie',
     academyCourses: 'Cours',

@@ -1,0 +1,324 @@
+---
+// The CodeBoxx Academy page, shared by /academy (EN) and /fr/academie (FR) so the
+// two never drift: each page passes its own locale modules. academy.codeboxx.com
+// (every path) 301s to /academy, academie.codeboxx.com to /fr/academie
+// (ops/nginx/redirects.tsv). Content and sources: src/locales/en/academy.js. One
+// island, the apply buttons and their drawer (AcademyApply.jsx); everything else
+// is static.
+import Layout from '../layouts/Layout.astro';
+import HeroVideo from './HeroVideo.astro';
+import FaqAccordion from './FaqAccordion.astro';
+import AcademyApply from './AcademyApply';
+import { fetchGraduateTestimonials, fetchTeam, sanityImageUrl } from '../lib/sanityContent';
+import { faqSchema } from '../lib/faqSchema';
+
+const { a, common, home, lang } = Astro.props;
+const fr = lang === 'fr';
+const [graduates, academyTeam] = await Promise.all([
+  fetchGraduateTestimonials(),
+  fetchTeam('academy'),
+]);
+
+// Graduate stories: Sanity's, else the seed; the named ones lead. Sanity's
+// testimonials are in English only, so the French page uses its translated seed.
+const source = !fr && graduates && graduates.length ? graduates : a.stories.seed;
+const stories = [...source].sort((x, y) => rank(x) - rank(y));
+function rank(t) {
+  const i = a.stories.lead.indexOf(t.name);
+  return i === -1 ? a.stories.lead.length : i;
+}
+
+const director = (academyTeam || []).find((p) => /brian peret/i.test(p.name));
+const directorPhoto = director?.photo ? sanityImageUrl(director.photo, { w: 480, q: 75 }) : null;
+
+// Start dates already past on build day are dropped; a deploy runs at least on
+// every Sanity publish, and the next date stays listed until it has passed.
+const today = new Date().toISOString().slice(0, 10);
+const fmtDate = (iso) =>
+  new Date(iso + 'T12:00:00Z').toLocaleDateString(fr ? 'fr-CA' : 'en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+const programs = a.programs.items.map((p) => ({
+  ...p,
+  upcoming: (p.starts || []).filter((d) => d >= today).map(fmtDate),
+}));
+
+const courseSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: fr ? 'CodeBoxx Académie' : 'CodeBoxx Academy',
+  url: fr ? 'https://codeboxx.com/fr/academie/' : 'https://codeboxx.com/academy/',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '1101 4th St S',
+    addressLocality: 'St. Petersburg',
+    addressRegion: 'FL',
+    postalCode: '33701',
+    addressCountry: 'US',
+  },
+};
+---
+
+<Layout
+  lang={lang}
+  title={a.seo.title}
+  description={a.seo.description}
+  strings={common}
+  structuredData={[courseSchema, faqSchema(a.faq.items)]}
+>
+  {/* 1. One sentence. */}
+  <section class="band-dark">
+    <HeroVideo />
+    <div class="wrap d-flex flex-column gap-4 align-items-start">
+      <span class="pill">{a.pill}</span>
+      <h1 class="band-title">{a.title}</h1>
+      <a class="btn btn-primary" href="#apply">
+        {a.applyCta}
+      </a>
+    </div>
+  </section>
+
+  {/* 2. The hero fact, with its source. */}
+  <section class="sect">
+    <div class="wrap d-flex flex-column gap-3">
+      <p class="eyebrow">{a.proof.eyebrow}</p>
+      <h2 class="h2">{a.proof.fact}</h2>
+      <p class="pbody">
+        <a class="link-tag" href={a.proof.sourceHref} target="_blank" rel="noopener">
+          {a.proof.sourceLabel}
+        </a>
+      </p>
+    </div>
+  </section>
+
+  {/* 3. Who runs it. */}
+  <section class="sect sect-alt">
+    <div class="wrap d-flex flex-column gap-4">
+      <p class="eyebrow">{a.director.eyebrow}</p>
+      <div class="person academy-director">
+        {directorPhoto && (
+          <div class="person-photo person-photo-gray">
+            <img src={directorPhoto} alt={a.director.name} loading="lazy" />
+          </div>
+        )}
+        <div class="d-flex flex-column gap-2">
+          <h2 class="h2 h2-tight">{a.director.name}</h2>
+          <span class="person-role">{a.director.role}</span>
+          <div class="d-flex gap-4 flex-wrap">
+            <a class="link-tag" href={a.director.profileHref} target="_blank" rel="noopener">
+              {a.director.profileLabel}
+            </a>
+            <a class="link-tag" href={a.director.linkedin} target="_blank" rel="noopener">
+              {a.director.linkedinLabel}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* 4. The offer. */}
+  <section class="sect sect-navy">
+    <div class="wrap band-dark-left">
+      <p class="eyebrow eyebrow-brand">{a.offer.eyebrow}</p>
+      <h2 class="h2 h2-inverse">{a.offer.title}</h2>
+      <p class="band-body">{a.offer.contrast}</p>
+    </div>
+  </section>
+
+  {/* 5. Who it is for, schedule, price, apply. */}
+  <section id="programs" class="sect">
+    <div class="wrap d-flex flex-column gap-5">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{a.programs.eyebrow}</p>
+        <h2 class="h2">{a.programs.title}</h2>
+      </div>
+      <div id="dates" class="grid2">
+        {programs.map((p) => (
+          <div class="panel">
+            <h3 class="ptitle">{p.title}</h3>
+            <div class="d-flex flex-column gap-1">
+              <span class="field-label">{a.programs.whoLabel}</span>
+              <p class="pbody">{p.who}</p>
+            </div>
+            <div class="d-flex flex-column gap-1">
+              <span class="field-label">{a.programs.scheduleLabel}</span>
+              {p.schedule.map((line) => (
+                <p class="pbody">{line}</p>
+              ))}
+            </div>
+            <div class="d-flex flex-column gap-1">
+              <span class="field-label">{a.programs.startsLabel}</span>
+              {p.startsText ? (
+                <p class="pbody">{p.startsText}</p>
+              ) : p.upcoming.length ? (
+                p.upcoming.map((d) => <p class="cohort-title">{d}</p>)
+              ) : (
+                <p class="pbody">{p.noDates}</p>
+              )}
+            </div>
+            <div class="d-flex flex-column gap-1">
+              <span class="field-label">{a.programs.tuitionLabel}</span>
+              <p class="cohort-title">{p.tuition}</p>
+            </div>
+            <div class="rule" />
+            <a class="btn btn-outline-primary align-self-start" href="#apply">
+              {p.apply}
+            </a>
+          </div>
+        ))}
+      </div>
+      <div class="grid2">
+        <div class="panel">
+          <h3 class="ptitle">{a.programs.price.title}</h3>
+          <dl class="tuition-list">
+            {a.programs.price.lines.map(([name, amount]) => (
+              <div class="tuition-row">
+                <dt class="pbody">{name}</dt>
+                <dd class="cohort-title">{amount}</dd>
+              </div>
+            ))}
+          </dl>
+          <p class="pbody">{a.programs.price.body}</p>
+          <a
+            class="btn btn-outline-primary align-self-start"
+            href={a.programs.price.href}
+            target="_blank"
+            rel="noopener"
+          >
+            {a.programs.price.cta}
+          </a>
+        </div>
+        <div class="panel">
+          <h3 class="ptitle">{a.programs.riskFree.title}</h3>
+          <p class="pbody">{a.programs.riskFree.body}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="apply" class="sect sect-contact">
+    <div class="wrap d-flex flex-column gap-4 align-items-start">
+      <p class="eyebrow">{a.apply.eyebrow}</p>
+      <h2 class="h2">{a.apply.title}</h2>
+      <p class="lede lede-640">{a.apply.body}</p>
+      <AcademyApply
+        client:load
+        programs={programs.map(({ title, apply }) => ({ title, apply }))}
+        enroll={home.enroll}
+        heardAbout={home.heardAbout}
+        common={common}
+        lang={lang}
+      />
+      <p class="pbody">
+        {a.apply.portalPrompt}
+        <a href={a.apply.portalHref} target="_blank" rel="noopener">
+          {a.apply.portalLabel}
+        </a>
+      </p>
+    </div>
+  </section>
+
+  {/* 6. Graduate stories. */}
+  <section id="stories" class="sect sect-alt">
+    <div class="wrap d-flex flex-column gap-5">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{a.stories.eyebrow}</p>
+        <h2 class="h2">{a.stories.title}</h2>
+      </div>
+      <div class="grid3">
+        {stories.map((t) => (
+          <figure class="panel testimonial grad-testimonial">
+            <blockquote class="testimonial-quote grad-testimonial-quote">
+              <div>
+                <span class="testimonial-label">{a.stories.whereIWas}</span>
+                {t.before.split('\n\n').map((para) => (
+                  <p>{para}</p>
+                ))}
+              </div>
+              <div>
+                <span class="testimonial-label">{a.stories.whereIAm}</span>
+                {t.after.split('\n\n').map((para) => (
+                  <p>{para}</p>
+                ))}
+              </div>
+            </blockquote>
+            <figcaption class="testimonial-byline">
+              <div class="rule" />
+              <div class="testimonial-person">
+                <span class="avatar avatar-md">
+                  <img src={t.photo} alt={t.name} loading="lazy" />
+                </span>
+                <div class="d-flex flex-column gap-1">
+                  <span class="testimonial-name">{t.name}</span>
+                  <span class="testimonial-role">{t.role}</span>
+                </div>
+              </div>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* 7. Employers: Academy placements only. */}
+  <section id="employers" class="sect">
+    <div class="wrap d-flex flex-column gap-5">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{a.employers.eyebrow}</p>
+        <h2 class="h2">{a.employers.title}</h2>
+      </div>
+      <div class="grid4">
+        {a.employers.items.map(([name, line]) => (
+          <div class="d-flex flex-column gap-2">
+            <h3 class="ptitle">{name}</h3>
+            <p class="pbody">{line}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* 8. FAQ and funding. */}
+  <section id="faq" class="sect sect-alt">
+    <div class="wrap d-flex flex-column gap-5">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{a.faq.eyebrow}</p>
+        <h2 class="h2">{a.faq.title}</h2>
+      </div>
+      <FaqAccordion items={a.faq.items} lang={lang} />
+    </div>
+  </section>
+
+  <section id="funding" class="sect">
+    <div class="wrap d-flex flex-column gap-5">
+      <div class="d-flex flex-column gap-3">
+        <p class="eyebrow">{a.funding.eyebrow}</p>
+        <h2 class="h2">{a.funding.title}</h2>
+      </div>
+      <div class="grid2">
+        {a.funding.items.map((f) => (
+          <div class="panel">
+            <h3 class="ptitle">{f.title}</h3>
+            <p class="pbody">{f.body}</p>
+            {f.href && (
+              <a
+                class="btn btn-outline-primary align-self-start"
+                href={f.href}
+                {...(/^https?:/.test(f.href) ? { target: '_blank', rel: 'noopener' } : {})}
+              >
+                {f.cta}
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+      <a class="btn btn-primary align-self-start" href={a.funding.moreHref}>
+        {a.funding.more}
+      </a>
+    </div>
+  </section>
+</Layout>

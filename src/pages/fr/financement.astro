@@ -3,11 +3,8 @@
 import Layout from '../../layouts/Layout.astro';
 import HeroVideo from '../../components/HeroVideo.astro';
 import RichParagraph from '../../components/RichParagraph.astro';
-import { localizedHref } from '../../lib/i18nRoutes';
 import common from '../../locales/fr/common';
 import financing from '../../locales/fr/financing';
-
-const pathname = Astro.url.pathname;
 ---
 
 <Layout
@@ -112,10 +109,7 @@ const pathname = Astro.url.pathname;
       </div>
       <div class="panel align-self-start">
         <h3 class="ptitle">{financing.ask.investTitle}</h3>
-        <a
-          class="btn btn-outline-primary align-self-start"
-          href={localizedHref('#academy-courses', 'fr', pathname)}
-        >
+        <a class="btn btn-outline-primary align-self-start" href="/academy/#apply">
           {financing.ask.enroll}
         </a>
       </div>

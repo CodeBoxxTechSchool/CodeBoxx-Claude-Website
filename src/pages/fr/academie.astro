@@ -1,0 +1,10 @@
+---
+// /fr/academie: FR twin of src/pages/academy.astro (same component, French
+// locale modules). Content: src/locales/fr/academy.js.
+import AcademyPage from '../../components/AcademyPage.astro';
+import common from '../../locales/fr/common';
+import home from '../../locales/fr/home';
+import academy from '../../locales/fr/academy';
+---
+
+<AcademyPage a={academy} common={common} home={home} lang="fr" />

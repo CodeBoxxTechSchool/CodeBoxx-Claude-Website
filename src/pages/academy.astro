@@ -1,0 +1,11 @@
+---
+// /academy: the one CodeBoxx Academy page (FR twin: /fr/academie). Layout and
+// logic live in src/components/AcademyPage.astro; content in
+// src/locales/en/academy.js.
+import AcademyPage from '../components/AcademyPage.astro';
+import common from '../locales/en/common';
+import home from '../locales/en/home';
+import academy from '../locales/en/academy';
+---
+
+<AcademyPage a={academy} common={common} home={home} lang="en" />

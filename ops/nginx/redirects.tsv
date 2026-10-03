@@ -136,7 +136,10 @@ www	/terms-conditions	/terms-conditions/
 www	*	=
 
 # academy.codeboxx.com; /enroll, /faq, /contact, /pinellas, /financing-options and
-# /technology-training-for-businesses are the Wix site's own shortcuts.
+# /technology-training-for-businesses are the Wix site's own shortcuts. /academy is
+# the one Academy page: the homepage and every Academy page land on it (or its
+# section); blog posts, Pinellas and contact keep their own page.
+# academie gets the French twin of each target (/fr/academie, /fr/formation-entreprise).
 academy	/post/ai-vs-traditional-tech-roles-which-career-path-is-right-for-you	/blog/ai-vs-traditional-tech-roles-which-career-path-is-right-for-you/
 academy	/post/best-corporate-ai-bootcamps	/blog/best-corporate-ai-bootcamps/
 academy	/post/codeboxx-academy-empowering-communities-through-tech-education	/blog/codeboxx-academy-empowering-communities-through-tech-education/
@@ -164,27 +167,26 @@ academy	/post/what-to-look-for-in-an-artificial-intelligence-ai-program	/blog/wh
 academy	/post/where-to-find-developers-other-than-upwork-or-toptal	/blog/where-to-find-developers-other-than-upwork-or-toptal/
 academy	/post/*	/blog/
 academy	/codeblog/*	/blog/
-academy	/programs	/#academy-courses
-academy	/full-stack-development	/#academy-courses
-academy	/artificial-intelligence	/#academy-courses
+academy	/programs	/academy/#programs
+academy	/full-stack-development	/academy/#programs
+academy	/artificial-intelligence	/academy/#programs
 academy	/launch	/#contact
-academy	/enroll-in-our-coding-school-programs	/#academy-courses
-academy	/enroll	/#academy-courses
-academy	/frequently-asked-questions	/faq/
-academy	/faq	/faq/
-academy	/coding-school-financing-options	/financing/
-academy	/financing-options	/financing/
+academy	/enroll-in-our-coding-school-programs	/academy/#apply
+academy	/enroll	/academy/#apply
+academy	/frequently-asked-questions	/academy/#faq
+academy	/faq	/academy/#faq
+academy	/coding-school-financing-options	/academy/#funding
+academy	/financing-options	/academy/#funding
 academy	/local-support-for-pinellas-residents	/pinellas-residents/
 academy	/pinellas	/pinellas-residents/
 academy	/contact-codeboxx	/#contact
 academy	/contact	/#contact
-# Where the site links "Corporate Training".
-academy	/corporate-training	/#academy-courses
-academy	/technology-training-for-businesses	/#academy-courses
-academy	/codeboxx-locations	/#academy
-academy	/event-details/*	/#academy
-academy	/subscribe	/#academy
-academy	*	/#academy
+academy	/corporate-training	/corporate-training/
+academy	/technology-training-for-businesses	/corporate-training/
+academy	/codeboxx-locations	/academy/
+academy	/event-details/*	/academy/
+academy	/subscribe	/academy/
+academy	*	/academy/
 
 # academie.codeboxx.com (Wix sent it to academy): the academy list, in French.
 academie	/post/ai-vs-traditional-tech-roles-which-career-path-is-right-for-you	/fr/blogue/ai-vs-traditional-tech-roles-which-career-path-is-right-for-you/
@@ -214,27 +216,27 @@ academie	/post/what-to-look-for-in-an-artificial-intelligence-ai-program	/fr/blo
 academie	/post/where-to-find-developers-other-than-upwork-or-toptal	/fr/blogue/where-to-find-developers-other-than-upwork-or-toptal/
 academie	/post/*	/fr/blogue/
 academie	/codeblog/*	/fr/blogue/
-academie	/programs	/fr/#academie-cours
-academie	/full-stack-development	/fr/#academie-cours
-academie	/artificial-intelligence	/fr/#academie-cours
+academie	/programs	/fr/academie/#programs
+academie	/full-stack-development	/fr/academie/#programs
+academie	/artificial-intelligence	/fr/academie/#programs
 academie	/launch	/fr/#contact
-academie	/enroll-in-our-coding-school-programs	/fr/#academie-cours
-academie	/enroll	/fr/#academie-cours
-academie	/frequently-asked-questions	/fr/faq/
-academie	/faq	/fr/faq/
-academie	/coding-school-financing-options	/fr/financement/
-academie	/financing-options	/fr/financement/
+academie	/enroll-in-our-coding-school-programs	/fr/academie/#apply
+academie	/enroll	/fr/academie/#apply
+academie	/frequently-asked-questions	/fr/academie/#faq
+academie	/faq	/fr/academie/#faq
+academie	/coding-school-financing-options	/fr/academie/#funding
+academie	/financing-options	/fr/academie/#funding
 academie	/local-support-for-pinellas-residents	/fr/residents-pinellas/
 academie	/pinellas	/fr/residents-pinellas/
 academie	/contact-codeboxx	/fr/#contact
 academie	/contact	/fr/#contact
 # Where the site links "Corporate Training".
-academie	/corporate-training	/fr/#academie-cours
-academie	/technology-training-for-businesses	/fr/#academie-cours
-academie	/codeboxx-locations	/fr/#academie
-academie	/event-details/*	/fr/#academie
-academie	/subscribe	/fr/#academie
-academie	*	/fr/#academie
+academie	/corporate-training	/fr/formation-entreprise/
+academie	/technology-training-for-businesses	/fr/formation-entreprise/
+academie	/codeboxx-locations	/fr/academie/
+academie	/event-details/*	/fr/academie/
+academie	/subscribe	/fr/academie/
+academie	*	/fr/academie/
 
 # solutions.codeboxx.com; the store (/product-page/*, /category/*) is gone.
 solutions	/case-studies	/case-studies/

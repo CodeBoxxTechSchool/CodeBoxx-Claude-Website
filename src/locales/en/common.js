@@ -10,6 +10,7 @@ export default {
     solutions: 'Solutions',
     solutionsServices: 'Services',
     solutionsWorks: 'Works',
+    corporateTraining: 'Corporate Training',
     caseStudies: 'Case Studies',
     academy: 'Academy',
     academyCourses: 'Courses',

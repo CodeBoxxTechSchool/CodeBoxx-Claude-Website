@@ -1,0 +1,19 @@
+---
+// /corporate-training: CodeBoxx for Businesses, its own SKU (FR twin:
+// /fr/formation-entreprise). academy.codeboxx.com/corporate-training and
+// /technology-training-for-businesses 301 here. Body:
+// src/components/CorporateTraining.astro; content: src/locales/en/corporate.js.
+import Layout from '../layouts/Layout.astro';
+import CorporateTraining from '../components/CorporateTraining.astro';
+import common from '../locales/en/common';
+import corporate from '../locales/en/corporate';
+---
+
+<Layout
+  lang="en"
+  title={corporate.seo.title}
+  description={corporate.seo.description}
+  strings={common}
+>
+  <CorporateTraining t={corporate} lang="en" />
+</Layout>

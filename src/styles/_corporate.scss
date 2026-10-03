@@ -1,0 +1,129 @@
+@use 'variables' as v;
+
+// /corporate-training (src/components/CorporateTraining.astro). Builds on the
+// Forge landing's fg- classes; everything page-specific is prefixed ct-.
+
+$ct-ink: v.$navy-900;
+
+.ct-hero {
+  padding: 128px 0 120px;
+}
+.ct-hero-title {
+  max-width: 15ch;
+}
+
+// ---- Proof strip under the hero ----
+.ct-stats {
+  background: $ct-ink;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.ct-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+  margin: 0;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.ct-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ct-stat-value {
+  font-size: 56px;
+  font-weight: v.$weight-black;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: v.$blue-400;
+}
+.ct-stat-label {
+  margin: 0;
+  max-width: 28ch;
+  font-size: 15px;
+  line-height: 22px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.ct-manifesto-line {
+  max-width: 20ch;
+}
+.ct-h2-wide {
+  max-width: 24ch;
+}
+
+// ---- Learning areas: numbered rules ----
+.ct-index {
+  font-size: v.$text-caption;
+  font-weight: v.$weight-bold;
+  letter-spacing: 1px;
+  color: v.$blue-text;
+}
+
+// ---- Formats ----
+.ct-format-name {
+  font-size: 30px;
+}
+div.ct-format:hover {
+  transform: none;
+  border-color: v.$neutral-200;
+}
+
+// ---- Secret sauce ----
+.ct-sauce {
+  align-items: start;
+}
+
+// ---- Testimonial ----
+.ct-quote {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 auto;
+  max-width: 980px;
+}
+.ct-quote-text {
+  margin: 0;
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: v.$weight-bold;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: v.$navy-500;
+  text-wrap: pretty;
+}
+.ct-quote-by {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 16px;
+  border-left: 4px solid v.$blue-500;
+}
+.ct-quote-name {
+  font-weight: v.$weight-bold;
+  color: v.$navy-500;
+}
+.ct-quote-role {
+  color: v.$color-text-tertiary;
+}
+
+.ct-cta-title {
+  max-width: 16ch;
+  font-size: clamp(40px, 6vw, 80px);
+}
+
+@media (max-width: v.$breakpoint-md) {
+  .ct-hero {
+    padding: 88px 0 80px;
+  }
+  .ct-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .ct-stat-value {
+    font-size: 44px;
+  }
+  .ct-format-name {
+    font-size: 26px;
+  }
+}

@@ -92,11 +92,6 @@ export default {
       'A delivery lead and an engineer join the first call. Send the deadline and the system, and I will book it.',
     ],
   },
-  wsj: {
-    heading: 'How Five Americans Made It to the Middle Class',
-    body: 'We are proud to be part of this success story, as featured in the Wall Street Journal. Tim Weaver is highlighted in this truly fascinating article. Congratulations, Tim—CodeBoxx for life.',
-    cta: 'Read the Article',
-  },
   codeBlog: {
     title: 'What we ship, we write down.',
     lede: 'Field notes from the studio and the Academy: what the agents took over, what the engineers kept, and what the results were. Written by the people who did the work.',
@@ -105,9 +100,6 @@ export default {
   clientSlider: { trustedBy: 'Trusted By' },
   testimonials: {
     clientEyebrow: 'Client Testimonials',
-    gradEyebrow: 'Graduate Testimonials',
-    whereIWas: 'Where I was',
-    whereIAm: 'Where I Am',
   },
   clientQuotes: [
     {
@@ -127,82 +119,6 @@ export default {
         'CodeBoxx became an extension of the Lucky Brands team. They bring highly capable, business-ready developers from senior to junior level. CodeBoxx is great to work with and because of them, we were able to get more out of our technology investment.',
       name: 'Matt Kaness',
       role: 'Former Executive Chairman of the Board & Interim CEO at Lucky Brand',
-    },
-  ],
-  // First 3 render as the always-visible cards; the rest (index 3+) go into
-  // the one-at-a-time slider — see GraduateTestimonials in HomeIsland.jsx.
-  gradQuotes: [
-    {
-      photo: '/assets/miachel.avif',
-      name: 'Michael P.',
-      role: 'Junior Software Developer',
-      before:
-        'Before CodeBoxx, I was a project manager in commercial and industrial HVAC construction. During the program, I was offered the opportunity to buy the company and continue to grow it. I decided to take on the challenge!',
-      after:
-        "For me, CodeBoxx is a team of people who are passionate about the field and who helped me acquire knowledge that I didn't have before, while having fun doing it. It's a great gateway into the tech field!",
-    },
-    {
-      photo: '/assets/colby.avif',
-      name: 'Cody C.',
-      role: 'Junior Software Developer',
-      before:
-        'Before Codeboxx, I was working full-time in ministry, mentoring men in early recovery and finding deep fulfillment in that calling. Yet I also wanted to launch a career path that could sustain me long term. Codeboxx opened that door, taking me from zero tech experience to building a career in the tech industry.',
-      after:
-        'Now I serve as a coach at CodeBoxx, guiding new students while still continuing my ministry work. For me, Codeboxx is more than just a training program — it’s the bridge between purpose and sustainability, and a place where I can pay it forward.',
-    },
-    {
-      photo: '/assets/gavriel.avif',
-      name: 'Gavriel R.',
-      role: 'Junior Software Developer',
-      before:
-        'I moved to Florida from the UK after dropping out of university. I was running a food truck business while studying for a part-time degree.',
-      after:
-        'I became a coach specializing in AI, ML, and DS, and now I’m the lead software engineer at Journey Viral, a rapidly growing and exciting start-up, developing AI integrations, GCloud infra, React FED, Python, and PostgreSQL BED.\n\nCodeBoxx provided a flexible, supportive space to hone my craft, push myself, and redefine my limits. It taught me a lot about leadership in tech.',
-    },
-    {
-      photo: '/assets/william.avif',
-      name: 'William M.',
-      role: 'Junior Software Developer',
-      before:
-        'Before CodeBoxx I worked in construction. Everything from building/fixing pallets, mixing, pouring, finishing concrete trenches and lids, to operating forklifts and front end loaders.',
-      after:
-        'Today I help coach the same Full Stack Development program that I went through. Help facilitate an AI Literacy class through partnerships CodeBoxx has. I continue to sharpen my development skills by working on various projects. CodeBoxx has transcended the core pillars into a way of life for me. It has been completely life changing! No more manual labor beating up my body that gave little meaning to my life. CodeBoxx has become a second family to me.',
-    },
-    {
-      photo: '/assets/gaby.avif',
-      name: 'Gabby C.',
-      role: 'Junior Software Developer',
-      before:
-        'I was the general manager at a tea bar in downtown St. Pete from 2019 - 2023. Seeing no growth or future with the company and also being burnt out from the customer service industry, I decided to take the full stack development course at CodeBoxx.',
-      after:
-        'Right after graduating, I got a job offer from RevStar (my top choice).\n\nIn 4 months, I took a 16-week coding course, changed my career to software development, and got my dream job!\n\nThis career change shaped me into the individual I am proud to be today.',
-    },
-    {
-      photo: '/assets/tim.avif',
-      name: 'Tim W.',
-      role: 'Junior Software Developer',
-      before:
-        "I did labor-intensive jobs my whole life. I started as a welder at the shipping docks straight out of high school. Fast forward almost 10+ years and several jobs later, I started to realize I couldn't keep doing this.",
-      after:
-        "I found CodeBoxx and discovered that my passion for building things could be applied to coding. Now, I'm furthering my learning as a Full Stack Developer while becoming a part of a great community of like-minded coders, who are always collaborating and growing.",
-    },
-    {
-      photo: '/assets/vanessa.avif',
-      name: 'Vanessa P.',
-      role: 'iOS App Developer',
-      before:
-        'I got my diploma in culinary arts and made pastries for about 10 years. When I was ​looking to switch fields, CodeBoxx was at the top of my list.',
-      after:
-        "My first placement out of CodeBoxx was for Bond, a fashion company. Today I am a mobile developer at eBay. There are plenty of options for me now, as opposed to the service industry. I'm very grateful that I decided to go with CodeBoxx.",
-    },
-    {
-      photo: '/assets/abdul.avif',
-      name: 'Abdul R.',
-      role: 'Software Developer',
-      before:
-        "I started working at McDonald's at 16. And then I moved into gig work - Uber, GrubHub, DoorDash, you name it. I was trading money for time and working from 8 AM to midnight. I knew something had to change.",
-      after:
-        "I'm in another part of my career. And that's the key word - career. It's not the clock-in, clock-out work from before. It's a career I can be in and grow into as I get older.",
     },
   ],
   studio: {
@@ -371,13 +287,13 @@ export default {
     lede: 'A 16-week program that ends inside a real pod. Graduates carry the same tooling and the same review standard as the studio.',
     intro:
       'Wherever you come from, AI has the power to jumpstart your career as a developer. You need a fully committed partner moving at the speed of innovation. Find a partner for life with CodeBoxx.',
-    nextIntake: 'Next intake: {{date}}',
     cohortStructureLabel: 'Cohort Structure',
     coursesLabel: 'Courses',
-    enrollNow: 'Enroll Now',
     contactUs: 'Contact Us',
     learnMore: 'Learn More',
     logosLabel: 'Academy Partners',
+    goToAcademy: 'Go to CodeBoxx Academy',
+    applyOnAcademy: 'Apply on the Academy page',
   },
   academyTopics: {
     program: {
@@ -385,7 +301,7 @@ export default {
       blurb:
         'Cohorts start on fixed dates through the year. No prior degree required, entrance assessment only.',
       detail:
-        'Sixteen weeks, five days a week. The entrance assessment measures aptitude, not credentials, and the calendar below sets the intakes.',
+        'Sixteen weeks, five days a week. The entrance assessment measures aptitude, not credentials, and the Academy page lists the start dates.',
     },
     courses: {
       titleLine1: 'Our Courses',
@@ -444,56 +360,6 @@ export default {
       'Placement inside a client pod. Shipped work, reviewed by a delivery lead.',
     ],
   ],
-  intake: {
-    eyebrow: 'Intake Calendar',
-    title: 'AI-First programs. For all levels.',
-    fsd: { title: 'AI-Native FSD' },
-    aidev: { title: 'Advanced AI-Developer' },
-    // Currently the only column title shown — see the "Part Time hidden" note
-    // in IntakeCalendar (HomeIsland.jsx) for why fullTime/partTime below stay
-    // defined and unused rather than being deleted.
-    cohortStartDate: 'Cohort Start Date',
-    fullTime: 'Full Time',
-    partTime: 'Part Time',
-    enroll: 'Enroll',
-    comingSoon: 'Next start dates coming soon.',
-    status: { Open: 'Open', Waitlist: 'Waitlist', Planned: 'Planned' },
-  },
-  // Corporate-training panel, revealed by "Learn More" on the Tailor-Made
-  // Corporate Training course item. Content from
-  // https://academy.codeboxx.com/corporate-training.
-  corporate: {
-    eyebrow: 'CodeBoxx for Businesses',
-    title: 'Technology Training for Businesses',
-    lede: 'Build up your workforce with tailor-made technology training programs and exclusive access to our coding school’s pool of tech talent.',
-    close: 'Close',
-    sections: [
-      {
-        title: 'Our Secret Sauce',
-        body: [
-          'Beyond teaching the necessary technical skills, we cultivate a set of invaluable professional qualities, including effective communication, unwavering resiliency, and exceptional leadership. Our proprietary Pro Dev modules, designed in collaboration with top tech employers, help program participants develop these traits so they know how to work well individually and within a team, delivering results quickly and effectively.',
-          'And we’re constantly working to innovate in this space and develop new programs that address modern challenges faced by today’s businesses.',
-        ],
-      },
-      {
-        title: 'Stay Ahead in the Digital Race',
-        body: [
-          'Understanding the challenges that employers face when recruiting top-tier technology talent inspired us to create the ultimate solution: tailor-made training programs that take participants on a journey from limited tech experience to confidently developing technology solutions in just a few weeks.',
-          'From technical sales to software development to prompt engineering, we empower people with the skills needed to achieve rewarding careers in technology. The insights we gain from our clientele in our Solutions Division powers our academy, ensuring our programs incorporate the latest trends and industry advancements.',
-        ],
-      },
-    ],
-    statsTitle: 'The best kept secret in North America',
-    // [value, description] — value runs through CountUp (prefix/suffix kept).
-    stats: [
-      ['+300', 'Graduates make their marks at many renowned companies.'],
-      ['+100', 'Companies have employed our Business-First technologists.'],
-      [
-        '+55K',
-        'Salaries over 100K offered to many of our graduates after 3 years in the industry.',
-      ],
-    ],
-  },
   metrics: {
     eyebrow: 'The AI in 2026',
     title: 'Adoption is no longer the question. Pace is.',
@@ -529,9 +395,8 @@ export default {
       'Do you need a team of developers to carry out a project or improve an existing one? Would you like to learn more about the CodeBoxx Academy? Do you have a project and are looking for a venture-style partner? Contact us.',
     enrollAcademyTitle: 'You want to Enroll the Academy?',
     enrollAcademyLede:
-      'Skip the form. Pick the program you want and apply directly. Applications are reviewed within one business day.',
-    enrollAiBtn: 'Enroll Now to AI Course',
-    enrollFsdBtn: 'Enroll Now to FSD',
+      'Programs, start dates and the application are on the Academy page. Applications are reviewed within one business day.',
+    applyBtn: 'Apply to CodeBoxx Academy',
     formTitle: 'Need more info, contact us.',
     divisionLabel: "CodeBoxx's Division you want to reach",
     venturesLabel: 'Ventures',

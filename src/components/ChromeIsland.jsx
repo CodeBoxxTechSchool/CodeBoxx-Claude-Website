@@ -34,17 +34,20 @@ const NAV_STRUCTURE = [
     href: '#solutions',
     items: [
       ['solutionsServices', '#solutions'],
+      ['corporateTraining', '/corporate-training'],
       ['solutionsWorks', '#works'],
     ],
   },
   {
     key: 'academy',
-    href: '#academy',
+    // /academy is the one Academy page; localizedHref sends French pages to its
+    // twin, /fr/academie.
+    href: '/academy/',
     items: [
-      ['academyCourses', '#academy-courses'],
-      ['academyCalendar', '#intake'],
+      ['academyCourses', '/academy/#programs'],
+      ['academyCalendar', '/academy/#dates'],
       ['academyFinancing', '/financing'],
-      ['academyFaq', '/faq'],
+      ['academyFaq', '/academy/#faq'],
     ],
   },
   { key: 'ventures', href: '/ventures' },
@@ -169,9 +172,8 @@ export function TopBar({ lang, pathname, strings, onCodi, langHref }) {
   // homepage's #contact section instead.
   const contactHref = localizedHref('#contact', lang, pathname);
   const handleCodi = onCodi || (() => (window.location.href = contactHref));
-  // Same target as the Academy > Courses menu link: HomeIsland's Academy listens
-  // for this hash to scroll there and open the Courses tab.
-  const enrollHref = localizedHref('#academy-courses', lang, pathname);
+  // Students apply on the Academy page only (/academy or /fr/academie).
+  const enrollHref = localizedHref('/academy/#apply', lang, pathname);
   return (
     <React.Fragment>
       <a className="skip-link" href="#main">
@@ -242,6 +244,7 @@ function buildFooterColumns(lang, pathname, strings) {
       title: strings.footer.columns.solutions.title,
       items: [
         { label: nav.solutionsServices, href: href('#solutions') },
+        { label: nav.corporateTraining, href: href('/corporate-training') },
         { label: nav.solutionsWorks, href: href('#works') },
         { label: nav.caseStudies, href: href('/case-studies') },
       ],
@@ -250,10 +253,10 @@ function buildFooterColumns(lang, pathname, strings) {
       key: 'academy',
       title: strings.footer.columns.academy.title,
       items: [
-        { label: nav.academyCourses, href: href('#academy-courses') },
-        { label: nav.academyCalendar, href: href('#intake') },
+        { label: nav.academyCourses, href: href('/academy/#programs') },
+        { label: nav.academyCalendar, href: href('/academy/#dates') },
         { label: nav.academyFinancing, href: href('/financing') },
-        { label: nav.academyFaq, href: href('/faq') },
+        { label: nav.academyFaq, href: href('/academy/#faq') },
       ],
     },
   ];

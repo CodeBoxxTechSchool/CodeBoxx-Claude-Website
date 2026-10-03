@@ -23,6 +23,8 @@ export const ROUTE_TABLE = [
   { en: '/terms-conditions', fr: '/fr/conditions-generales' },
   { en: '/crewkit-forge-20', fr: '/fr/crewkit-forge-20' },
   { en: '/ai-done-right', fr: '/fr/ai-done-right' },
+  { en: '/academy', fr: '/fr/academie' },
+  { en: '/corporate-training', fr: '/fr/formation-entreprise' },
   { en: '/crewkit-forge-20/dive-deeper', fr: '/fr/crewkit-forge-20/approfondir' },
 ];
 
@@ -94,6 +96,17 @@ function fillPattern(pattern, params) {
 const withTrailingSlash = (p) => (p.endsWith('/') ? p : p + '/');
 
 export function localizedHref(path, lang, currentPathname = '/') {
+  // "/academy/#faq": localize the path, keep the fragment (page-local ids are
+  // the same in both languages). "/#contact" is a homepage section: its id is
+  // translated like a bare "#contact".
+  const hashAt = path.indexOf('#');
+  if (hashAt > 0) {
+    const page = path.slice(0, hashAt);
+    if (page === '/' || page === '/fr' || page === '/fr/') {
+      return localizedHref(path.slice(hashAt), lang, '');
+    }
+    return localizedHref(page, lang, currentPathname) + path.slice(hashAt);
+  }
   if (path.charAt(0) === '#') {
     const home = lang === 'fr' ? '/fr/' : '/';
     const hash = '#' + translateHash(path.slice(1), lang);

@@ -1,0 +1,154 @@
+---
+// Body of the Corporate Training page (CodeBoxx for Businesses), shared by
+// src/pages/corporate-training.astro (EN) and src/pages/fr/formation-entreprise.astro
+// (FR). Static HTML, no islands. Borrows the Forge landing's fg- type and card
+// styles (src/styles/_forge.scss) so the two business offers read as one brand;
+// page-only styles are ct- in src/styles/_corporate.scss.
+import HeroVideo from './HeroVideo.astro';
+import { localizedHref } from '../lib/i18nRoutes';
+
+const { t, lang } = Astro.props;
+const contactHref = localizedHref('#contact', lang, '');
+---
+
+<section class="band-dark ct-hero">
+  <HeroVideo overlay="linear-gradient(90deg, rgba(0, 14, 20, 0.94) 0%, rgba(0, 14, 20, 0.78) 55%, rgba(0, 14, 20, 0.45) 100%)" />
+  <div class="wrap fg-hero-inner">
+    <span class="pill">{t.hero.pill}</span>
+    <h1 class="fg-hero-title ct-hero-title">{t.hero.title}</h1>
+    <p class="fg-hero-lede">{t.hero.lede}</p>
+    <div class="fg-actions">
+      <a class="btn btn-primary btn-lg" href={contactHref}>
+        {t.hero.ctaPrimary}
+      </a>
+      <a class="btn btn-outline-light btn-lg" href="#how-it-works">
+        {t.hero.ctaSecondary}
+      </a>
+    </div>
+    <p class="fg-note">{t.hero.note}</p>
+  </div>
+</section>
+
+<section class="ct-stats" aria-label={t.hero.pill}>
+  <dl class="wrap ct-stats-grid">
+    {t.stats.map(([value, label]) => (
+      <div class="ct-stat">
+        <dt class="ct-stat-value">{value}</dt>
+        <dd class="ct-stat-label">{label}</dd>
+      </div>
+    ))}
+  </dl>
+</section>
+
+<section class="fg-manifesto">
+  <div class="wrap d-flex flex-column gap-5">
+    <div class="d-flex flex-column gap-3">
+      <p class="eyebrow eyebrow-brand">{t.manifesto.eyebrow}</p>
+      <h2 class="fg-manifesto-line ct-manifesto-line">{t.manifesto.line}</h2>
+    </div>
+    <div class="grid3 fg-pillars">
+      {t.manifesto.pillars.map(([title, body]) => (
+        <div class="fg-pillar">
+          <h3 class="fg-pillar-title">{title}</h3>
+          <p class="fg-pillar-body">{body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="sect">
+  <div class="wrap d-flex flex-column gap-5">
+    <div class="d-flex flex-column gap-3">
+      <p class="eyebrow">{t.learn.eyebrow}</p>
+      <h2 class="h2 fg-h2 ct-h2-wide">{t.learn.title}</h2>
+      <p class="lede lede-640">{t.learn.body}</p>
+    </div>
+    <div class="grid3">
+      {t.learn.items.map(([title, body], i) => (
+        <div class="fg-included-item ct-learn-item">
+          <span class="ct-index">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="ptitle">{title}</h3>
+          <p class="pbody">{body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="sect fg-workload">
+  <div class="wrap d-flex flex-column gap-5">
+    <div class="d-flex flex-column gap-3">
+      <p class="eyebrow">{t.formats.eyebrow}</p>
+      <h2 class="h2 fg-h2 ct-h2-wide">{t.formats.title}</h2>
+    </div>
+    <div class="grid2">
+      {t.formats.items.map((f) => {
+        const Tag = f.href ? 'a' : 'div';
+        return (
+          <Tag class="panel fg-plan ct-format" {...(f.href ? { href: f.href } : {})}>
+            <span class="kicker">{f.kicker}</span>
+            <span class="fg-plan-name ct-format-name">{f.name}</span>
+            <p class="pbody">{f.body}</p>
+            {f.href && <span class="fg-plan-go">{f.cta} →</span>}
+          </Tag>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<section class="sect" id="how-it-works">
+  <div class="wrap d-flex flex-column gap-5">
+    <div class="d-flex flex-column gap-3">
+      <p class="eyebrow">{t.process.eyebrow}</p>
+      <h2 class="h2 fg-h2 ct-h2-wide">{t.process.title}</h2>
+    </div>
+    <ol class="grid4 fg-steps">
+      {t.process.steps.map(([word, body]) => (
+        <li class="fg-step">
+          <span class="fg-step-word">{word}</span>
+          <p class="pbody">{body}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<section class="sect sect-navy">
+  <div class="wrap grid2 ct-sauce">
+    <div class="d-flex flex-column gap-4">
+      <p class="eyebrow eyebrow-brand">{t.sauce.eyebrow}</p>
+      <h2 class="h2 h2-inverse fg-h2">{t.sauce.title}</h2>
+    </div>
+    <div class="d-flex flex-column gap-3">
+      {t.sauce.body.map((p) => (
+        <p class="fg-local-body">{p}</p>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="sect">
+  <figure class="wrap ct-quote">
+    <p class="eyebrow">{t.quote.eyebrow}</p>
+    <blockquote class="ct-quote-text">“{t.quote.text}”</blockquote>
+    <figcaption class="ct-quote-by">
+      <span class="ct-quote-name">{t.quote.name}</span>
+      <span class="ct-quote-role">{t.quote.role}</span>
+    </figcaption>
+  </figure>
+</section>
+
+<section class="fg-cta">
+  <div class="wrap fg-cta-inner">
+    <p class="eyebrow eyebrow-brand">{t.cta.eyebrow}</p>
+    <h2 class="fg-cta-title ct-cta-title">{t.cta.title}</h2>
+    <p class="fg-cta-body">{t.cta.body}</p>
+    <div class="fg-actions">
+      <a class="btn btn-primary btn-lg" href={contactHref}>
+        {t.cta.primary}
+      </a>
+    </div>
+  </div>
+</section>

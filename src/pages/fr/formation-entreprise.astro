@@ -1,0 +1,16 @@
+---
+// /fr/formation-entreprise: FR twin of src/pages/corporate-training.astro.
+import Layout from '../../layouts/Layout.astro';
+import CorporateTraining from '../../components/CorporateTraining.astro';
+import common from '../../locales/fr/common';
+import corporate from '../../locales/fr/corporate';
+---
+
+<Layout
+  lang="fr"
+  title={corporate.seo.title}
+  description={corporate.seo.description}
+  strings={common}
+>
+  <CorporateTraining t={corporate} lang="fr" />
+</Layout>
