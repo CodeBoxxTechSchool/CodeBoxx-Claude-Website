@@ -123,11 +123,11 @@ export default {
     options: [
       [
         'Socle d’autonomie longue durée',
-        'Conditionnement électrique et surveillance de l’état en direct, avec onduleur et batteries prolongées. Baisse de tension ou arrêt en douceur : vos flux conservent leur état.',
+        'Recommandé. Conditionnement électrique et surveillance de l’état en direct, avec onduleur et batteries prolongées. Baisse de tension ou arrêt en douceur : vos flux conservent leur état.',
       ],
       [
         'Passerelle d’inférence avancée',
-        'Le meilleur des modèles de pointe pour le travail qui l’exige, avec intervention humaine sur demande.',
+        'Recommandée. Le meilleur des modèles de pointe pour le travail qui l’exige, avec intervention humaine sur demande.',
       ],
       [
         'Passerelle quantique',
@@ -167,7 +167,7 @@ export default {
     eyebrow: 'Il est temps de rapatrier vos logiciels d’entreprise.',
     title: 'Réservez votre usine.',
     kicker: 'Laissez les économies payer l’usine.',
-    body: 'Achetez-la comptant à la livraison, ou regroupez-la en un seul paiement mensuel et laissez vos économies d’infonuagique et de jetons le couvrir. Un dépôt de 2 500 $ entièrement remboursable réserve votre configuration et votre place dans la file de déploiement.',
+    body: 'Achetez-la comptant à la livraison, ou regroupez-la en un seul paiement mensuel et laissez vos économies d’infonuagique et de jetons le couvrir. Chaque prix est détaillé avant que vous vous engagiez, y compris le coût total du financement. Un dépôt de 2 500 $ entièrement remboursable réserve votre configuration et votre place dans la file de déploiement.',
     primary: 'Configurer et réserver',
     secondary: 'Parler à notre équipe',
     note: 'Livraison offerte aux États-Unis et au Canada.',

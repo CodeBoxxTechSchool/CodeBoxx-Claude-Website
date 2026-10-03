@@ -123,11 +123,11 @@ export default {
     options: [
       [
         'Long-Life Autonomy Pedestal',
-        'Power conditioning and live health monitoring with ride-through UPS and extended batteries. Brownout or clean shutdown, your workstreams keep their state.',
+        'Recommended. Power conditioning and live health monitoring with ride-through UPS and extended batteries. Brownout or clean shutdown, your workstreams keep their state.',
       ],
       [
         'Advanced Inference Gateway',
-        'Best-of-breed frontier escalation for the work that demands it, with human-in-the-loop on demand.',
+        'Recommended. Best-of-breed frontier escalation for the work that demands it, with human-in-the-loop on demand.',
       ],
       [
         'Quantum Gateway',
@@ -167,7 +167,7 @@ export default {
     eyebrow: 'It’s time to re-shore your enterprise software.',
     title: 'Reserve your Factory.',
     kicker: 'Let the savings buy the factory.',
-    body: 'Own it outright on delivery, or roll it into one monthly payment and let your cloud and token savings cover it. A fully refundable $2,500 deposit holds your configuration and your place in the deployment queue.',
+    body: 'Own it outright on delivery, or roll it into one monthly payment and let your cloud and token savings cover it. Every price is itemized before you commit, including the full cost of financing. A fully refundable $2,500 deposit holds your configuration and your place in the deployment queue.',
     primary: 'Configure and reserve',
     secondary: 'Talk to our team',
     note: 'Delivery available in the United States and Canada.',
