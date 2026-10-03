@@ -2,7 +2,7 @@ export default {
   seo: {
     title: 'AI-First Software Studio, Academy & Ventures',
     description:
-      'CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit — AI-first, human-built.',
+      'CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit — AI-native, for humans, by humans.',
   },
   hero: {
     pill: 'AI-Native, For Humans, By Humans',
@@ -247,7 +247,7 @@ export default {
     vision: {
       title: 'Vision & Mission',
       blurb: 'AI-first delivery, human accountability on every release.',
-      heading: 'AI-FIRST, HUMAN-BUILT',
+      heading: 'AI-NATIVE, FOR HUMANS, BY HUMANS',
       sub: 'Outwork the old way, and show the receipts',
       detail:
         'The mission is to put applied AI to work inside real delivery: agents carrying the repetitive load, engineers carrying the judgment, and attribution on every action either way. Innovation only counts here once it ships and holds in production.\n\nThe vision sits one step ahead of that. We build the practice before the market asks for it, so that when a technology becomes unavoidable our clients are already running it — not evaluating it.',
