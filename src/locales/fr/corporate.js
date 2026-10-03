@@ -22,8 +22,21 @@ export default {
   trust: {
     label: 'Ils nous font confiance',
     groups: [
-      { title: 'Client en formation d’entreprise', names: ['Loto-Québec'] },
-      { title: 'Partenaires de placement', names: ['VideoAmp', 'Industrielle Alliance'] },
+      {
+        title: 'Client en formation d’entreprise',
+        names: [{ name: 'Loto-Québec', logo: '/assets/logos/loto-quebec.webp' }],
+      },
+      {
+        title: 'Partenaires de placement',
+        names: [
+          // Sanity partnerLogo "VideoAmp" (same file the homepage slider uses).
+          {
+            name: 'VideoAmp',
+            logo: 'https://cdn.sanity.io/images/zagi8xr3/production/bb1491c24211580ea849530ca94a681d3463c2ec-359x139.svg',
+          },
+          { name: 'Industrielle Alliance' },
+        ],
+      },
     ],
   },
   manifesto: {

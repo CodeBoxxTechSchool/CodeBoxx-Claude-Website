@@ -48,8 +48,10 @@ const contactHref = localizedHref('#contact', lang, '');
         <div class="ct-trust-group">
           <span class="ct-trust-title">{g.title}</span>
           <ul class="ct-trust-names">
-            {g.names.map((n) => (
-              <li>{n}</li>
+            {g.names.map(({ name, logo }) => (
+              <li class="ct-trust-tile">
+                {logo ? <img src={logo} alt={name} loading="lazy" /> : <span>{name}</span>}
+              </li>
             ))}
           </ul>
         </div>
