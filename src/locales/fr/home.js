@@ -2,10 +2,10 @@ export default {
   seo: {
     title: 'Studio de logiciels IA, Académie et Ventures',
     description:
-      "CodeBoxx bâtit des équipes et des logiciels natifs en IA, forme des développeurs à l'Académie CodeBoxx et lance des ventures avec CrewKit — natif en IA, par et pour les humains.",
+      "CodeBoxx bâtit des équipes et des logiciels natifs en IA, forme des développeurs à l'Académie CodeBoxx et lance des ventures avec CrewKit — natif IA, par et pour les humains.",
   },
   hero: {
-    pill: 'Natif en IA. Par et pour les humains.',
+    pill: 'Natif IA, par et pour les humains',
     titleBefore: 'On bâtit des équipes ',
     titleHighlight: 'natives en IA',
     titleAfter: ' et des logiciels qui vont plus loin que les anciennes façons de faire.',
@@ -253,7 +253,7 @@ export default {
     vision: {
       title: 'Vision et mission',
       blurb: 'On code avec l’IA. On livre avec discernement.',
-      heading: 'Natif en IA. Par et pour les humains.',
+      heading: 'NATIF IA, PAR ET POUR LES HUMAINS',
       sub: 'Faites mieux. Prouvez-le.',
       detail:
         'Mettre l’IA au travail, pour vrai.\n\nOn intègre l’IA directement dans de vraies livraisons : les agents prennent en charge le travail répétitif, les ingénieurs gardent le jugement et la responsabilité, et chaque action reste traçable.\n\nPour nous, une innovation ne compte pas parce qu’elle est nouvelle. Elle compte quand elle est en production, qu’elle fonctionne et qu’elle tient la route dans le temps.',
