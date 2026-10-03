@@ -1,6 +1,6 @@
 # CodeBoxx
 
-> CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit — AI-first, human-built.
+> CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit — AI-native, for humans, by humans.
 
 CodeBoxx is a software studio, coding academy, and venture builder operating as one platform across three divisions: the Studio (AI-native software delivery for clients), the Academy (AI Native Full-Stack Developer and Advanced AI Developer training programs, on campus in St. Petersburg, Florida, or online), and Ventures (CrewKit and other in-house product launches).
 
