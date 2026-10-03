@@ -5,7 +5,7 @@ export default {
       'CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit — AI-first, human-built.',
   },
   hero: {
-    pill: 'AI-First, Human-Built',
+    pill: 'AI-Native, For Humans, By Humans',
     titleBefore: 'We build ',
     titleHighlight: 'AI-Native',
     titleAfter: ' teams and software that outwork the old way.',
