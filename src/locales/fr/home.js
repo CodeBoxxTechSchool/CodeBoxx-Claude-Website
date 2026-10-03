@@ -214,7 +214,7 @@ export default {
   studio: {
     role: 'À propos de nous',
     name: 'CodeBoxx : la transformation numérique a un nom',
-    lede: "Depuis 2018, CodeBoxx est le moteur qui aide les entreprises à s'adapter à un monde numérique en constante évolution. Experts en intégration d'agents IA, nous nous engageons à offrir des solutions natives en IA adaptées à vos besoins.",
+    lede: "Depuis 2018, CodeBoxx est le moteur sur lequel les entreprises s'appuient pour tirer davantage de leurs investissements technologiques. Nous avons toujours eu à cœur d'aider les dirigeants à s'adapter à un monde numérique en constante évolution, d'une révolution à l'autre. Experts en intelligence artificielle appliquée, nous nous engageons à offrir des solutions natives IA toujours adaptées à vos besoins. Des logiciels d'entreprise aux agents hautement qualifiés et performants, jusqu'aux produits numériques qui placent enfin l'expérience humaine au premier plan.",
   },
   about: {
     team: {
