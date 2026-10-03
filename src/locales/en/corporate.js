@@ -13,6 +13,8 @@
 //   playbooks), the-challenges-and-solutions-of-tech-training-for-tampa-bay-
 //   corporations-… (tailored modules, flexible on-site schedules, CaseGlide quote),
 //   unlock-your-own-future-… (4-day Vibe Coding & Agentic AI workshop).
+// - Loto-Québec (corporate training client), VideoAmp and Industrielle Alliance
+//   (placement partners): confirmed by CodeBoxx leadership, Oct 2026.
 // Left out on purpose (sources conflict or aren't about training clients): any
 // placement rate, the +55K salary stat, named "training clients", USF CTPE.
 export default {
@@ -34,6 +36,13 @@ export default {
     ['+100', 'companies have employed our Business-First technologists'],
     ['2', 'divisions in one: a training academy and a working software and AI studio'],
   ],
+  trust: {
+    label: 'Trusted by',
+    groups: [
+      { title: 'Corporate training client', names: ['Loto-Québec'] },
+      { title: 'Placement partners', names: ['VideoAmp', 'Industrielle Alliance'] },
+    ],
+  },
   manifesto: {
     eyebrow: 'Why CodeBoxx',
     line: 'Training built inside a software studio, not a classroom.',

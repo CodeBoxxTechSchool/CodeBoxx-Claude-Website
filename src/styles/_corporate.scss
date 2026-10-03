@@ -46,6 +46,55 @@ $ct-ink: v.$navy-900;
   color: rgba(255, 255, 255, 0.72);
 }
 
+// ---- Clients and partners, by name ----
+.ct-trust {
+  background: $ct-ink;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.ct-trust-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 16px 56px;
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+.ct-trust-label {
+  margin: 0;
+  font-size: v.$text-caption;
+  font-weight: v.$weight-bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+.ct-trust-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 56px;
+}
+.ct-trust-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ct-trust-title {
+  font-size: v.$text-caption;
+  letter-spacing: 0.4px;
+  color: v.$blue-400;
+}
+.ct-trust-names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 24px;
+  font-weight: v.$weight-black;
+  letter-spacing: -0.01em;
+  color: v.$neutral-0;
+}
+
 .ct-manifesto-line {
   max-width: 20ch;
 }

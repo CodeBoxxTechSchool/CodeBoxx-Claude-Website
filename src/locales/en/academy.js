@@ -201,9 +201,13 @@ export default {
   // Meta or Amazon, and never studio clients.
   employers: {
     eyebrow: 'Employers',
-    title: 'Where graduates were hired',
+    title: 'Placement partners and employers',
+    // [name, line, tag?]. VideoAmp and Industrielle Alliance are placement partners
+    // (confirmed by CodeBoxx leadership, Oct 2026).
+    partnerTag: 'Placement partner',
     items: [
-      ['VideoAmp', 'Asked for CodeBoxx graduates and hired seven of them full-time.'],
+      ['VideoAmp', 'Asked for CodeBoxx graduates and hired seven of them full-time.', 'partner'],
+      ['Industrielle Alliance', 'Hires CodeBoxx graduates.', 'partner'],
       ['Coveo', 'Has hired CodeBoxx graduates.'],
       ['TD Synnex', 'Has hired CodeBoxx graduates.'],
       ['Cybercat', 'Has hired CodeBoxx graduates.'],

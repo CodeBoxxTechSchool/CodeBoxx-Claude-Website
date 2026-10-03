@@ -172,9 +172,15 @@ export default {
   },
   employers: {
     eyebrow: 'Employeurs',
-    title: 'Où nos diplômés ont été embauchés',
+    title: 'Partenaires de placement et employeurs',
+    partnerTag: 'Partenaire de placement',
     items: [
-      ['VideoAmp', 'A demandé des diplômés de CodeBoxx et en a embauché sept à temps plein.'],
+      [
+        'VideoAmp',
+        'A demandé des diplômés de CodeBoxx et en a embauché sept à temps plein.',
+        'partner',
+      ],
+      ['Industrielle Alliance', 'Embauche des diplômés de CodeBoxx.', 'partner'],
       ['Coveo', 'A embauché des diplômés de CodeBoxx.'],
       ['TD Synnex', 'A embauché des diplômés de CodeBoxx.'],
       ['Cybercat', 'A embauché des diplômés de CodeBoxx.'],

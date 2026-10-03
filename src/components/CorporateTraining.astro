@@ -40,6 +40,24 @@ const contactHref = localizedHref('#contact', lang, '');
   </dl>
 </section>
 
+<section class="ct-trust" aria-label={t.trust.label}>
+  <div class="wrap ct-trust-inner">
+    <p class="ct-trust-label">{t.trust.label}</p>
+    <div class="ct-trust-groups">
+      {t.trust.groups.map((g) => (
+        <div class="ct-trust-group">
+          <span class="ct-trust-title">{g.title}</span>
+          <ul class="ct-trust-names">
+            {g.names.map((n) => (
+              <li>{n}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
 <section class="fg-manifesto">
   <div class="wrap d-flex flex-column gap-5">
     <div class="d-flex flex-column gap-3">

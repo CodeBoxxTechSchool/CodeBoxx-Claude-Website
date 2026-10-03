@@ -19,6 +19,13 @@ export default {
     ['+100', 'entreprises ont embauché nos technologues axés sur les affaires'],
     ['2', 'divisions en une : une académie de formation et un vrai studio logiciel et IA'],
   ],
+  trust: {
+    label: 'Ils nous font confiance',
+    groups: [
+      { title: 'Client en formation d’entreprise', names: ['Loto-Québec'] },
+      { title: 'Partenaires de placement', names: ['VideoAmp', 'Industrielle Alliance'] },
+    ],
+  },
   manifesto: {
     eyebrow: 'Pourquoi CodeBoxx',
     line: 'Une formation conçue dans un studio logiciel, pas dans une salle de classe.',

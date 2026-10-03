@@ -271,9 +271,10 @@ const courseSchema = {
         <p class="eyebrow">{a.employers.eyebrow}</p>
         <h2 class="h2">{a.employers.title}</h2>
       </div>
-      <div class="grid4">
-        {a.employers.items.map(([name, line]) => (
+      <div class="grid4 employers-grid">
+        {a.employers.items.map(([name, line, tag]) => (
           <div class="d-flex flex-column gap-2">
+            {tag === 'partner' && <span class="partner-tag">{a.employers.partnerTag}</span>}
             <h3 class="ptitle">{name}</h3>
             <p class="pbody">{line}</p>
           </div>
