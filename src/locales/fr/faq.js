@@ -39,7 +39,7 @@ export default {
     {
       q: 'Combien ça coûte?',
       a: [
-        'Que vous choisissiez en ligne, sur le campus, à temps plein ou à temps partiel, notre programme de développement Full-Stack coûte 9 800 $. Nos programmes basés sur la simulation vous donnent les compétences et les connaissances nécessaires pour lancer votre nouvelle carrière, mieux rémunérée, en une fraction du temps et du coût d’un diplôme universitaire traditionnel.',
+        'Que vous choisissiez en ligne, sur le campus, à temps plein ou à temps partiel, notre programme Développeur full-stack natif en IA coûte 12 000 $, et le programme Développeur IA avancé, 9 800 $. Nos programmes basés sur la simulation vous donnent les compétences et les connaissances nécessaires pour lancer votre nouvelle carrière, mieux rémunérée, en une fraction du temps et du coût d’un diplôme universitaire traditionnel.',
         'Et nous voulons nous assurer que nous vous convenons avant que vous vous engagiez financièrement. C’est pourquoi nous sommes la seule académie de programmation qui vous permet de commencer le programme et de nous évaluer pendant deux semaines (temps plein) ou quatre semaines (temps partiel) avant que vos frais de scolarité soient exigibles.',
       ],
     },

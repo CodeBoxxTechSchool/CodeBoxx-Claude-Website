@@ -68,18 +68,23 @@ test('academie targets are the French academy targets, and exist', () => {
   const french = table.rules.filter((rule) => rule.groups.includes('academie'));
   assert.equal(french.length, english.size);
   for (const rule of french) {
-    const [path, hash] = english.get(rule.from).split('#');
-    const expected = hash ? localizedHref(`#${hash}`, 'fr') : localizedHref(path, 'fr');
+    const expected = localizedHref(english.get(rule.from), 'fr');
     assert.equal(rule.to, expected, `redirects.tsv:${rule.line}`);
     assert.ok(onSite(rule.to.split('#')[0]), rule.to);
   }
 });
 
-test('catch-alls land on a section, never on the bare homepage; apex has none', () => {
+test('catch-alls land on a section or the Academy page, never on the bare homepage; apex has none', () => {
   const rest = table.rules.filter((rule) => rule.kind === 'rest');
   for (const rule of rest) {
     assert.ok(!rule.groups.includes('apex'), 'apex must keep serving the new site');
-    assert.ok(rule.to === '=' || /\/#[a-z-]+$/.test(rule.to), `redirects.tsv:${rule.line}`);
+    assert.ok(
+      rule.to === '=' ||
+        rule.to === '/academy/' ||
+        rule.to === '/fr/academie/' ||
+        /\/#[a-z-]+$/.test(rule.to),
+      `redirects.tsv:${rule.line}`
+    );
     assert.ok(rule.to !== '=' || rule.groups.join() === 'www', 'only www keeps the path');
   }
   for (const group of new Set(Object.values(table.hosts)))
@@ -110,10 +115,33 @@ test('keeps the query string, before the fragment', () => {
     ['academy.codeboxx.com', '/contact-codeboxx/', `${SITE}/?${query}#contact`],
     ['www.codeboxx.com', '/join-our-team', `${SITE}/careers/?${query}`],
     ['www.codeboxx.com', '/fr/faq/', `${SITE}/fr/faq/?${query}`],
-    ['academie.codeboxx.com', '/anything', `${SITE}/fr/?${query}#academie`],
+    ['academie.codeboxx.com', '/anything', `${SITE}/fr/academie/?${query}`],
+    ['academie.codeboxx.com', '/faq', `${SITE}/fr/academie/?${query}#faq`],
   ];
   for (const [host, path, expected] of cases)
     assert.equal(resolve(table, host, path, query), expected);
+});
+
+test('academy.codeboxx.com lands on /academy, its section, or its own page', () => {
+  const cases = [
+    ['/', '/academy/'],
+    ['/full-stack-development', '/academy/#programs'],
+    ['/artificial-intelligence', '/academy/#programs'],
+    ['/programs', '/academy/#programs'],
+    ['/frequently-asked-questions', '/academy/#faq'],
+    ['/coding-school-financing-options', '/academy/#funding'],
+    ['/enroll-in-our-coding-school-programs', '/academy/#apply'],
+    ['/no-such-page', '/academy/'],
+    ['/corporate-training', '/corporate-training/'],
+    ['/technology-training-for-businesses', '/corporate-training/'],
+    ['/post/coming-soon-at-codeboxx', '/blog/coming-soon-at-codeboxx/'],
+  ];
+  for (const host of ['academy.codeboxx.com', 'www.academy.codeboxx.com'])
+    for (const [path, to] of cases) assert.equal(resolve(table, host, path), `${SITE}${to}`, path);
+  assert.equal(
+    resolve(table, 'academy.codeboxx.com', '/full-stack-development', 'utm_source=x'),
+    `${SITE}/academy/?utm_source=x#programs`
+  );
 });
 
 test('matches with or without a trailing slash, ignoring case, prefixes included', () => {

@@ -138,7 +138,7 @@ export default {
     title: 'Other Services at CodeBoxx',
     // [label, href] — hrefs go through localizedHref (homepage sections).
     items: [
-      ['Corporate Training', '#academy-courses'],
+      ['Corporate Training', '/corporate-training'],
       ['CTO as a Service', '#solutions'],
       ['Advisory Service', '#solutions'],
       ['Custom Software Development', '#solutions'],

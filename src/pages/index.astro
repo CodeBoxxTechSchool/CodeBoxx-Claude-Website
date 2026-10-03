@@ -2,8 +2,7 @@
 // Natively-migrated / (EN). See src/pages/fr/index.astro for the FR twin, and
 // HomeIsland.jsx for why this mounts one big island instead of Blog's
 // many-small-islands approach. studioTeam/academyTeam/logos are fetched at build
-// time (like Blog's posts) and passed in already-resolved; the intake calendar is
-// the one exception — HomeIsland.jsx explains why it still fetches client-side.
+// time (like Blog's posts) and passed in already-resolved.
 import SeoHead from '../layouts/SeoHead.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import DeferredVideos from '../components/DeferredVideos.astro';
@@ -13,7 +12,6 @@ import {
   fetchLogos,
   fetchPostList,
   fetchClientTestimonials,
-  fetchGraduateTestimonials,
   toPostCard,
 } from '../lib/sanityContent';
 import { LATEST_POSTS } from '../lib/homeSeed';
@@ -22,23 +20,15 @@ import common from '../locales/en/common';
 import home from '../locales/en/home';
 
 const pathname = Astro.url.pathname;
-const [
-  studioTeam,
-  academyTeam,
-  logos,
-  academyLogos,
-  latestPosts,
-  clientTestimonials,
-  graduateTestimonials,
-] = await Promise.all([
-  fetchTeam('studio'),
-  fetchTeam('academy'),
-  fetchLogos(),
-  fetchLogos('academyPartnerLogo'),
-  fetchPostList(LATEST_POSTS),
-  fetchClientTestimonials(),
-  fetchGraduateTestimonials(),
-]);
+const [studioTeam, academyTeam, logos, academyLogos, latestPosts, clientTestimonials] =
+  await Promise.all([
+    fetchTeam('studio'),
+    fetchTeam('academy'),
+    fetchLogos(),
+    fetchLogos('academyPartnerLogo'),
+    fetchPostList(LATEST_POSTS),
+    fetchClientTestimonials(),
+  ]);
 ---
 
 <html lang="en">
@@ -61,7 +51,6 @@ const [
       academyLogos={academyLogos}
       latestPosts={latestPosts.slice(0, 3).map(toPostCard)}
       clientTestimonials={clientTestimonials}
-      graduateTestimonials={graduateTestimonials}
     />
     <ScrollReveal />
     <DeferredVideos />

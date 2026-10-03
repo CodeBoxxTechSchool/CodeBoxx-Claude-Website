@@ -44,6 +44,19 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
+// Posts in Sanity still link the old homepage Academy anchors as their "apply" call
+// to action; /academy is now the one Academy page, so those links go there instead
+// (the French anchors too: /academy has no French twin yet).
+const ACADEMY_LINKS = {
+  '/#academy': '/academy/',
+  '/#academy-courses': '/academy/#programs',
+  '/#intake': '/academy/#dates',
+  '/fr/#academie': '/academy/',
+  '/fr/#academie-cours': '/academy/#programs',
+  '/fr/#admission': '/academy/#dates',
+};
+export const academyHref = (href) => ACADEMY_LINKS[href] || href;
+
 // Renders one span's text with its marks (strong/em, plus link marks resolved
 // against the block's `markDefs`) as nested HTML, innermost mark last-applied —
 // matches Portable Text's documented mark order (a mark closer to the front of
@@ -63,7 +76,7 @@ function renderSpan(span, markDefs) {
       if (def && def._type === 'link' && def.href) {
         html =
           '<a href="' +
-          escapeHtml(def.href) +
+          escapeHtml(academyHref(def.href)) +
           '" target="_blank" rel="noopener noreferrer">' +
           html +
           '</a>';

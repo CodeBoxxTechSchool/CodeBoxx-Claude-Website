@@ -1,4 +1,5 @@
 /
+/academy/
 /blog/
 /blog/ai-agents-are-breaking-the-foundations-of-software-engineering-and-most-enterprises-aren-t-ready/
 /blog/ai-can-do-the-work-so-what-are-employers-actually-hiring-for/
@@ -100,11 +101,13 @@
 /blog/will-ai-make-accountants-expendable-here-s-the-better-question-to-ask/
 /careers/
 /case-studies/
+/corporate-training/
 /crewkit-forge-20/
 /crewkit-forge-20/dive-deeper/
 /faq/
 /financing/
 /fr/
+/fr/academie/
 /fr/blogue/
 /fr/blogue/ai-agents-are-breaking-the-foundations-of-software-engineering-and-most-enterprises-aren-t-ready/
 /fr/blogue/ai-can-do-the-work-so-what-are-employers-actually-hiring-for/
@@ -211,6 +214,7 @@
 /fr/etudes-de-cas/
 /fr/faq/
 /fr/financement/
+/fr/formation-entreprise/
 /fr/politique-de-confidentialite/
 /fr/residents-pinellas/
 /fr/ventures/

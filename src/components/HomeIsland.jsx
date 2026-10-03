@@ -1,14 +1,11 @@
 import React from 'react';
-import { flushSync } from 'react-dom';
 import { Button, Badge, Form, Offcanvas, Spinner } from 'react-bootstrap';
 import { TopBar, Footer } from './ChromeIsland';
 import Avatar from './Avatar';
 import CountryCombobox from './CountryCombobox';
 import Logo from './Logo';
 import CyclingHeadline from './CyclingHeadline';
-import { formatIntakeDate, nextFsdIntake, useIntakes } from '../lib/intakes';
 import { localizedHref, localizedId } from '../lib/i18nRoutes';
-import { suggestEmail } from '../lib/emailTypos';
 import { pageUrl, useRelaySubmit } from '../lib/useRelaySubmit';
 import { trackLead } from '../lib/trackLead';
 import { PORTFOLIO } from '../lib/forgeEvidence';
@@ -18,11 +15,11 @@ import { money } from '../lib/forgeFormat';
 //
 // Unlike Blog/BlogPost, this is NOT decomposed into a dozen fine-grained islands.
 // Home is overwhelmingly *interactive* content — Studio/Solutions/Academy are
-// tab-switchers, there's a chat drawer, a full enrollment form, a contact form, a
-// carousel, a count-up animation — so hand-splitting it wouldn't buy much, and the
-// Codi/Enroll drawers need to share state with both TopBar (top of the page) and
-// several buttons deep inside the content (Academy, Contact), which only works
-// cleanly if they're all one React tree. So this whole component mounts as ONE
+// tab-switchers, there's a chat drawer, a contact form, a carousel, a count-up
+// animation — so hand-splitting it wouldn't buy much, and the Codi drawer needs to
+// share state with both TopBar (top of the page) and the content, which only works
+// cleanly if they're all one React tree. (The enroll drawer moved to /academy, see
+// EnrollDrawer.jsx.) So this whole component mounts as ONE
 // `client:load` island from src/pages/index.astro — but Astro still server-renders
 // its first pass into real HTML same as any other island, which already fixes the
 // two real problems this migration exists to fix: (1) real SEO/OG tags (via
@@ -41,10 +38,14 @@ import { money } from '../lib/forgeFormat';
 // lib/sanityContent.js) all come in as props from src/pages/index.astro and flow
 // through this context instead of react-i18next/useSanity* hooks, so every
 // sub-component below just calls useHomeCtx() instead of useTranslation()/a
-// useSanity* hook. The intakes (calendar and Academy badge) are the one exception
-// that still fetches client-side (see Academy below) — which cohorts show depends
-// on today's date, which build time can't know in advance.
+// useSanity* hook.
 const HomeCtx = React.createContext(null);
+// The Academy and Corporate Training live on their own pages; localizedHref sends
+// French visitors to /fr/academie and /fr/formation-entreprise.
+const ACADEMY_HREF = '/academy/';
+const ACADEMY_APPLY_HREF = '/academy/#apply';
+const ACADEMY_DATES_HREF = '/academy/#dates';
+const CORPORATE_HREF = '/corporate-training/';
 function useHomeCtx() {
   return React.useContext(HomeCtx);
 }
@@ -132,8 +133,8 @@ function ClientCard({ t }) {
 
 // 3 or fewer: the static 3-up grid, as before. More than 3 (e.g. once an
 // editor adds a 4th client testimonial in Sanity): the same horizontal
-// scroll-track + nudge-button slider GraduateTestimonials uses below, for
-// the same reason — no auto-scroll, since these are read, not glanced at.
+// scroll-track + nudge-button slider pattern ClientSlider uses below, minus
+// the auto-scroll, since these are read, not glanced at.
 const SLIDER_LABELS = {
   en: { prev: 'Previous', next: 'Next', pause: 'Pause', play: 'Play' },
   fr: { prev: 'Précédent', next: 'Suivant', pause: 'Pause', play: 'Lecture' },
@@ -199,79 +200,6 @@ function Testimonials({ eyebrow, items }) {
       <div className="grid3">
         {items.map((t) => (
           <ClientCard key={t.name} t={t} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// Graduate testimonials get a different card from Testimonials above: a real
-// photo (not the placeholder Avatar glyph) and a two-part "Where I was" /
-// "Where I Am" quote instead of one flat blockquote. `before`/`after` may
-// each contain a blank-line-separated paragraph break (some of these run
-// long) — split the same way ServiceDetail's multi-paragraph fields already
-// do elsewhere in this file, rather than relying on CSS to preserve newlines.
-function GradCard({ t, labels }) {
-  return (
-    <figure className="panel testimonial grad-testimonial">
-      <blockquote className="testimonial-quote grad-testimonial-quote">
-        <div>
-          <span className="testimonial-label">{labels.whereIWas}</span>
-          {t.before.split('\n\n').map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
-        </div>
-        <div>
-          <span className="testimonial-label">{labels.whereIAm}</span>
-          {t.after.split('\n\n').map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
-        </div>
-      </blockquote>
-      <figcaption className="testimonial-byline">
-        <div className="rule" />
-        <div className="testimonial-person">
-          <span className="avatar avatar-md">
-            <img src={t.photo} alt={t.name} loading="lazy" />
-          </span>
-          <div className="d-flex flex-column gap-1">
-            <span className="testimonial-name">{t.name}</span>
-            <span className="testimonial-role">{t.role}</span>
-          </div>
-        </div>
-      </figcaption>
-    </figure>
-  );
-}
-
-// All 8 render as GradCard — same look as before, but every one of them now
-// lives inside one horizontal slider (none pinned outside it as a static
-// "featured 3"). Mechanically the same horizontal-scroll-track + nudge-button
-// pattern as ClientSlider below, just carrying full testimonial cards instead
-// of small logo tiles — and deliberately no auto-scroll (unlike
-// ClientSlider's), since these have enough text that auto-advancing mid-read
-// would be actively unhelpful.
-function GraduateTestimonials({ eyebrow, items, labels }) {
-  const ref = React.useRef(null);
-  const nudge = (d) => {
-    const el = ref.current;
-    if (el) el.scrollBy({ left: d * el.clientWidth * 0.8, behavior: 'smooth' });
-  };
-  return (
-    <div className="testimonials">
-      <div className="testimonial-slider-head">
-        <p className="eyebrow">{eyebrow}</p>
-        <SliderButtons onNudge={nudge} />
-      </div>
-      <div
-        ref={ref}
-        className="noscroll testimonial-track"
-        tabIndex={0}
-        role="region"
-        aria-label={eyebrow}
-      >
-        {items.map((t) => (
-          <GradCard key={t.name} t={t} labels={labels} />
         ))}
       </div>
     </div>
@@ -865,112 +793,6 @@ function Solutions() {
   );
 }
 
-// `hidden` visually hides the column (Bootstrap's `d-none`) without removing
-// it from the tree — used for Part Time below, which still renders (still
-// fetched, still in the DOM/architecture) but isn't shown in the UI.
-// `rows` is null while the intakes are loading: head only, no rows.
-function CalendarColumn({ programTitle, paceTitle, rows, onEnroll, hidden }) {
-  const { home, lang } = useHomeCtx();
-  const tone = {
-    Open: 'status-open',
-    Waitlist: 'status-waitlist',
-    Planned: 'status-planned',
-  };
-  const statusLabel = home.intake.status;
-  return (
-    <div className={'calendar-col' + (hidden ? ' d-none' : '')}>
-      <div className="calendar-col-head">
-        <span className="calendar-col-title">{programTitle}</span>
-        <span className="calendar-col-title calendar-pace-title">{paceTitle}</span>
-      </div>
-      {rows && !rows.length ? (
-        <div className="calendar-row">
-          <div className="calendar-row-left">
-            <span className="calendar-place">{home.intake.comingSoon}</span>
-          </div>
-          <div className="calendar-row-right">
-            <Button size="sm" variant="outline-primary" onClick={onEnroll}>
-              {home.intake.enroll}
-            </Button>
-          </div>
-        </div>
-      ) : null}
-      {(rows || []).map(([date, place, status], i) => (
-        <div key={i} className="calendar-row">
-          <div className="calendar-row-left">
-            <span className="calendar-date">{formatIntakeDate(date, lang)}</span>
-            <span className="calendar-place">{home.intake.place?.[place] || place}</span>
-          </div>
-          <div className="calendar-row-right">
-            <span className={'calendar-status ' + tone[status]}>
-              {statusLabel[status] || status}
-            </span>
-            {status === 'Open' ? (
-              <Button size="sm" variant="outline-primary" onClick={onEnroll}>
-                {home.intake.enroll}
-              </Button>
-            ) : null}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// `intakes` is useIntakes()'s result, fetched once in Academy (also feeds its
-// next-intake badge).
-function IntakeCalendar({ intakes, onEnroll }) {
-  const { home, lang } = useHomeCtx();
-  const intakeId = localizedId('intake', lang);
-  // Left = AI-Native FSD, right = Advanced AI-Developer; each visibly shows only
-  // its "Full Time" dates (relabeled "Cohort Start Date").
-  const programs = ['fsd', 'aidev'].map((id) => ({
-    id,
-    title: home.intake[id].title,
-    paces: intakes ? intakes[id] : null,
-  }));
-  return (
-    <div id={intakeId} className="calendar-band">
-      <div className="calendar-head">
-        <div className="d-flex flex-column gap-3">
-          <span className="calendar-eyebrow">{home.intake.eyebrow}</span>
-          <span className="calendar-title">{home.intake.title}</span>
-        </div>
-      </div>
-      <div className="calendar-rows">
-        <div className="calendar-program-row">
-          <div className="calendar-cols calendar-grid">
-            {programs.map((p) => (
-              <CalendarColumn
-                key={p.id}
-                programTitle={p.title}
-                paceTitle={home.intake.cohortStartDate}
-                rows={p.paces && p.paces['Full Time']}
-                onEnroll={() => onEnroll(p.title)}
-              />
-            ))}
-            {/* Part Time hidden in the UI only (CalendarColumn's `hidden`
-            prop -> d-none) — still fetched and rendered here in the
-            architecture, per request, so re-showing it later is a CSS-only
-            change (drop `hidden` below), not restoring a removed code path
-            or re-fetching data that wasn't being retrieved. */}
-            {programs.map((p) => (
-              <CalendarColumn
-                hidden
-                key={p.id + '-part-time'}
-                programTitle={p.title}
-                paceTitle={home.intake.partTime}
-                rows={p.paces && p.paces['Part Time']}
-                onEnroll={() => onEnroll(p.title)}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // Structural-only: id, and `team`'s people id/name/linkedin. Text (titles, blurbs,
 // course items, roles) comes from home.academyTopics.<id>, reshaped from tuples
 // into named fields (titleLines/blurbParagraphs/items/kicker/people) so Academy()
@@ -1045,103 +867,27 @@ function useAcademyTopics(home) {
   });
 }
 
-// Corporate-training panel (home.corporate), revealed by "Learn More" on the
-// Tailor-Made Corporate Training course item and rendered between the Academy
-// grid and the intake calendar. Same boxy shape as .calendar-band, in a lighter,
-// lower-contrast colorway; stats reuse the Metrics band's CountUp animation.
-function CorporateTraining({ id, onClose }) {
-  const { home } = useHomeCtx();
-  const c = home.corporate;
-  const ref = React.useRef(null);
-  React.useEffect(() => {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    ref.current?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-    ref.current?.focus({ preventScroll: true });
-  }, []);
-  return (
-    <section id={id} ref={ref} tabIndex={-1} className="corp-band" aria-labelledby={id + '-title'}>
-      <div className="corp-head">
-        <div className="d-flex flex-column gap-3 corp-head-text">
-          <span className="corp-eyebrow">{c.eyebrow}</span>
-          <h3 id={id + '-title'} className="corp-title">
-            {c.title}
-          </h3>
-          <p className="lede corp-lede">{c.lede}</p>
-        </div>
-        <button type="button" className="corp-close" onClick={onClose} aria-label={c.close}>
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            aria-hidden="true"
-          >
-            <line x1="6" y1="6" x2="18" y2="18" />
-            <line x1="18" y1="6" x2="6" y2="18" />
-          </svg>
-        </button>
-      </div>
-      <div className="grid2 corp-sections">
-        {c.sections.map((sec) => (
-          <div key={sec.title} className="d-flex flex-column gap-3">
-            <h4 className="corp-section-title">{sec.title}</h4>
-            {sec.body.map((para, k) => (
-              <p key={k} className="pbody">
-                {para}
-              </p>
-            ))}
-          </div>
-        ))}
-      </div>
-      <div className="corp-stats">
-        <h4 className="corp-section-title">{c.statsTitle}</h4>
-        <div className="grid3">
-          {c.stats.map(([n, desc]) => (
-            <div key={n} className="metric">
-              <span className="metric-value corp-metric-value">
-                <CountUp value={n} />
-              </span>
-              <span className="corp-metric-desc">{desc}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Academy({ onEnroll }) {
-  const {
-    home,
-    lang,
-    pathname,
-    academyTeam: academyTeamLive,
-    graduateTestimonials: graduateTestimonialsLive,
-  } = useHomeCtx();
+// The homepage's Academy section is a jump to /academy, the only place a student
+// applies: no enroll drawer, intake calendar or graduate stories here any more
+// (they live on /academy). The #academy anchor stays, so old links still land on
+// this section and its link onward; the old calendar anchor (#intake) goes straight
+// to /academy's dates.
+function Academy() {
+  const { home, lang, pathname, academyTeam: academyTeamLive } = useHomeCtx();
   const topics = useAcademyTopics(home);
   const [active, setActive] = React.useState(0);
-  const [corpOpen, setCorpOpen] = React.useState(false);
-  const learnMoreRef = React.useRef(null);
-  const corpId = 'corporate-training';
   const academyTeam =
     academyTeamLive && academyTeamLive.length ? academyTeamLive : topics[2].people;
-  const gradQuotes =
-    graduateTestimonialsLive && graduateTestimonialsLive.length
-      ? graduateTestimonialsLive
-      : home.gradQuotes;
-  // Fetched client-side, not at build time: which cohorts fall in the next
-  // WINDOW_DAYS (lib/intakes.js) depends on the visitor's today, and a build
-  // only knows the day it ran.
-  const intakes = useIntakes();
-  const nextIntake = nextFsdIntake(intakes);
   const academyId = localizedId('academy', lang);
   const coursesHash = '#' + localizedId('academy-courses', lang);
   const academyHash = '#' + localizedId('academy', lang);
+  const intakeHash = '#' + localizedId('intake', lang);
   React.useEffect(() => {
     const apply = () => {
+      if (location.hash === intakeHash) {
+        location.replace(localizedHref(ACADEMY_DATES_HREF, lang, pathname));
+        return;
+      }
       if (location.hash === coursesHash) {
         setActive(1);
       } else if (location.hash === academyHash) {
@@ -1154,7 +900,7 @@ function Academy({ onEnroll }) {
     apply();
     window.addEventListener('hashchange', apply);
     return () => window.removeEventListener('hashchange', apply);
-  }, [academyId, coursesHash, academyHash]);
+  }, [academyId, coursesHash, academyHash, intakeHash, lang, pathname]);
   return (
     <DivisionBand
       alt
@@ -1162,37 +908,20 @@ function Academy({ onEnroll }) {
       index="05"
       role={home.academy.role}
       name={home.academy.name}
-      badge={
-        nextIntake ? (
-          <Badge bg="brand">
-            {home.academy.nextIntake.replace('{{date}}', formatIntakeDate(nextIntake, lang))}
-          </Badge>
-        ) : null
-      }
       after={
         <React.Fragment>
-          {corpOpen ? (
-            <CorporateTraining
-              id={corpId}
-              onClose={() => {
-                setCorpOpen(false);
-                learnMoreRef.current?.focus();
-              }}
-            />
-          ) : null}
-          <IntakeCalendar intakes={intakes} onEnroll={onEnroll} />
           <AcademyLogoSlider />
-          <GraduateTestimonials
-            eyebrow={home.testimonials.gradEyebrow}
-            items={gradQuotes}
-            labels={home.testimonials}
-          />
         </React.Fragment>
       }
       lede={home.academy.lede}
       intro={
         <div className="d-flex flex-column gap-3 division-intro">
           <p className="lede lede-wide">{home.academy.intro}</p>
+          <div className="d-flex">
+            <Button href={localizedHref(ACADEMY_HREF, lang, pathname)}>
+              {home.academy.goToAcademy}
+            </Button>
+          </div>
         </div>
       }
       left={
@@ -1266,19 +995,17 @@ function Academy({ onEnroll }) {
               <span className="cohort-title">{tt}</span>
               <span className="pbody">{b}</span>
               {cta === 'enroll' ? (
-                <Button size="sm" className="mt-1" onClick={() => onEnroll(tt)}>
-                  {home.academy.enrollNow}
+                <Button
+                  size="sm"
+                  className="mt-1 align-self-start"
+                  href={localizedHref(ACADEMY_APPLY_HREF, lang, pathname)}
+                >
+                  {home.academy.applyOnAcademy}
                 </Button>
               ) : null}
               {cta === 'contact' ? (
                 <div className="d-flex gap-2 flex-wrap mt-1">
-                  <Button
-                    ref={learnMoreRef}
-                    size="sm"
-                    aria-expanded={corpOpen}
-                    aria-controls={corpId}
-                    onClick={() => setCorpOpen((o) => !o)}
-                  >
+                  <Button size="sm" href={localizedHref(CORPORATE_HREF, lang, pathname)}>
                     {home.academy.learnMore}
                   </Button>
                   <Button
@@ -1381,7 +1108,7 @@ const CONTACT_BLANK = {
   website: '',
 };
 
-function Contact({ onEnroll }) {
+function Contact() {
   const { home, lang } = useHomeCtx();
   const divisions = useDivisions(home);
   const contactId = localizedId('contact', lang);
@@ -1421,15 +1148,7 @@ function Contact({ onEnroll }) {
           <h2 className="h2">{home.contact.enrollAcademyTitle}</h2>
           <p className="lede">{home.contact.enrollAcademyLede}</p>
           <div className="d-flex gap-3 flex-wrap">
-            <Button
-              variant="outline-primary"
-              onClick={() => onEnroll('AI Native Full-Stack Developer')}
-            >
-              {home.contact.enrollFsdBtn}
-            </Button>
-            <Button onClick={() => onEnroll('Advanced AI Developer')}>
-              {home.contact.enrollAiBtn}
-            </Button>
+            <Button href={localizedHref(ACADEMY_APPLY_HREF, lang)}>{home.contact.applyBtn}</Button>
           </div>
         </div>
         <div className="panel">
@@ -1584,367 +1303,6 @@ function Contact({ onEnroll }) {
             </Button>
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-// Phone country codes/abbreviations — not translated (not prose).
-const DIAL_CODES = [
-  ['+1', 'US/CA'],
-  ['+33', 'FR'],
-  ['+44', 'UK'],
-  ['+52', 'MX'],
-  ['+55', 'BR'],
-  ['+61', 'AU'],
-  ['+91', 'IN'],
-  ['+234', 'NG'],
-];
-
-// options: [{ value, label }] — value is a stable, language-independent key so a
-// language switch mid-form can't leave `value` holding a now-nonexistent old-language
-// option string (which is what plain-string options did before, and which is why
-// EnrollDrawer's radios below pass value/label pairs instead of the display text).
-function RadioRow({ label, options, value, onChange }) {
-  const id = React.useId();
-  return (
-    <div className="d-flex flex-column gap-2" role="group" aria-labelledby={id}>
-      <Form.Label className="mb-0" id={id}>
-        {label}
-      </Form.Label>
-      <div className="d-flex gap-3 flex-wrap">
-        {options.map((o) => (
-          <Form.Check
-            key={o.value}
-            id={`${id}-${o.value}`}
-            type="checkbox"
-            checked={value === o.value}
-            onChange={() => onChange(o.value)}
-            label={o.label}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-const ENROLL_BLANK = {
-  first: '',
-  last: '',
-  birth: '',
-  email: '',
-  dial: '+1',
-  phone: '',
-  street: '',
-  city: '',
-  region: '',
-  country: '',
-  postal: '',
-  website: '',
-};
-
-function EnrollDrawer({ course, onClose }) {
-  const { home, common, lang: pageLang } = useHomeCtx();
-  const [form, setForm] = React.useState(ENROLL_BLANK);
-  const [mobile, setMobile] = React.useState('yes');
-  // The portal emails the applicant in this language, so it starts as the page's.
-  const [lang, setLang] = React.useState(pageLang === 'fr' ? 'fr' : 'en');
-  const [contactBy, setContactBy] = React.useState('email');
-  const [heard, setHeard] = React.useState('');
-  const { status, setStatus, submit } = useRelaySubmit('/api/enroll');
-  const [emailHint, setEmailHint] = React.useState(null);
-  const [renderCourse, setRenderCourse] = React.useState(course);
-  const emailRef = React.useRef(null);
-  const sentRef = React.useRef(null);
-  React.useEffect(() => {
-    if (course) {
-      setRenderCourse(course);
-      setStatus((s) => (s === 'sending' ? s : 'idle'));
-    }
-  }, [course]);
-  React.useEffect(() => {
-    if (status === 'sent') sentRef.current?.focus();
-  }, [status]);
-  const set = (k) => (e) => setForm((f) => Object.assign({}, f, { [k]: e.target.value }));
-  const invalid = form.email.length > 0 && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email);
-  const ready =
-    form.first &&
-    form.last &&
-    form.birth &&
-    form.email &&
-    !invalid &&
-    form.phone &&
-    form.street &&
-    form.city &&
-    form.region &&
-    form.country &&
-    form.postal;
-  // Matches both the legacy hyphenated "Full-Stack" and Sanity's real Program
-  // title "Full Stack" (space-separated) — a real cohort's title now comes
-  // straight from a live Program document, not just this file's own hardcoded
-  // strings, so the space form has to match too.
-  const program = renderCourse && /full[\s-]?stack|fsd/i.test(renderCourse) ? 'fsd' : 'ai';
-  const title = home.enroll.titles[program];
-  const heardAbout = home.heardAbout;
-  const submitAgain = () => {
-    flushSync(() => setStatus('idle'));
-    emailRef.current?.focus();
-  };
-  const sending = status === 'sending';
-  const note = { error: home.enroll.errorNote, busy: home.enroll.busyNote }[status];
-  return (
-    <Offcanvas show={!!course} onHide={onClose} placement="end" className="enroll-offcanvas">
-      <Offcanvas.Header className="site-header">
-        <div className="d-flex flex-column gap-3 align-items-start">
-          <span className="kicker">{home.enroll.kicker}</span>
-          <h3 className="ptitle">{title}</h3>
-        </div>
-        <Button size="sm" variant="ghost" onClick={onClose}>
-          {common.actions.close}
-        </Button>
-      </Offcanvas.Header>
-      {status === 'sent' && (
-        <Offcanvas.Body className="d-flex flex-column gap-3">
-          <h3 className="ptitle" ref={sentRef} tabIndex={-1}>
-            {home.enroll.receivedNote}
-          </h3>
-          <p className="pbody">
-            {home.enroll.linkSentBefore}
-            <strong>{form.email.trim()}</strong>
-            {home.enroll.linkSentAfter}
-          </p>
-          <p className="pbody">
-            {home.enroll.wrongAddress}{' '}
-            <button type="button" className="inline-link" onClick={submitAgain}>
-              {home.enroll.submitAgain}
-            </button>
-          </p>
-        </Offcanvas.Body>
-      )}
-      {/* Hidden rather than unmounted after sending, so "Submit again" finds it as it was. */}
-      <Offcanvas.Body className={status === 'sent' ? 'd-none' : 'd-flex flex-column gap-4'}>
-        <h3 className="ptitle">{home.enroll.applyTitle}</h3>
-        <p className="pbody">
-          {home.enroll.alreadyHave}
-          <a
-            href="https://portal.codeboxx.dev/Identity/Account/Login"
-            target="_blank"
-            rel="noopener"
-          >
-            {home.enroll.logIn}
-          </a>
-        </p>
-        <div className="form-row-2">
-          <Form.Control
-            placeholder={home.enroll.firstPlaceholder}
-            value={form.first}
-            onChange={set('first')}
-          />
-          <Form.Control
-            placeholder={home.enroll.lastPlaceholder}
-            value={form.last}
-            onChange={set('last')}
-          />
-        </div>
-        <Form.Group>
-          <Form.Label>{home.enroll.birthdate}</Form.Label>
-          <Form.Control
-            type="date"
-            aria-label={home.enroll.birthdate}
-            value={form.birth}
-            onChange={set('birth')}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Control
-            ref={emailRef}
-            placeholder={home.enroll.emailPlaceholder}
-            value={form.email}
-            isInvalid={invalid}
-            onChange={(e) => {
-              set('email')(e);
-              setEmailHint(null);
-            }}
-            onBlur={() => setEmailHint(suggestEmail(form.email))}
-          />
-          <Form.Control.Feedback type="invalid">{home.enroll.invalidEmail}</Form.Control.Feedback>
-          {emailHint && (
-            <Form.Text as="p" className="mb-0">
-              {home.enroll.didYouMean}
-              <button
-                type="button"
-                className="inline-link"
-                onClick={() => {
-                  setForm((f) => ({ ...f, email: emailHint }));
-                  setEmailHint(null);
-                }}
-              >
-                {emailHint}
-              </button>
-              {home.enroll.didYouMeanEnd}
-            </Form.Text>
-          )}
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>{home.enroll.phoneNumberLabel}</Form.Label>
-          <div className="phone-row">
-            <Form.Select
-              aria-label={home.enroll.countryCodeLabel}
-              value={form.dial}
-              onChange={set('dial')}
-            >
-              {DIAL_CODES.map(([c, n]) => (
-                <option key={c} value={c}>
-                  {c} {n}
-                </option>
-              ))}
-            </Form.Select>
-            <Form.Control
-              aria-label={home.enroll.phoneNumberLabel}
-              placeholder={home.enroll.phonePlaceholder}
-              value={form.phone}
-              onChange={set('phone')}
-            />
-          </div>
-        </Form.Group>
-        <RadioRow
-          label={home.enroll.mobileQ}
-          options={[
-            { value: 'yes', label: home.enroll.yes },
-            { value: 'no', label: home.enroll.no },
-          ]}
-          value={mobile}
-          onChange={setMobile}
-        />
-        <RadioRow
-          label={home.enroll.languageQ}
-          options={[
-            { value: 'en', label: home.enroll.english },
-            { value: 'fr', label: home.enroll.french },
-          ]}
-          value={lang}
-          onChange={setLang}
-        />
-        <RadioRow
-          label={home.enroll.contactMethodQ}
-          options={[
-            { value: 'phone', label: home.enroll.phone },
-            { value: 'sms', label: home.enroll.sms },
-            { value: 'email', label: home.enroll.email },
-          ]}
-          value={contactBy}
-          onChange={setContactBy}
-        />
-        <Form.Control
-          placeholder={home.enroll.streetPlaceholder}
-          value={form.street}
-          onChange={set('street')}
-        />
-        <div className="form-row-2">
-          <Form.Control
-            placeholder={home.enroll.cityPlaceholder}
-            value={form.city}
-            onChange={set('city')}
-          />
-          <Form.Control
-            placeholder={home.enroll.regionPlaceholder}
-            value={form.region}
-            onChange={set('region')}
-          />
-        </div>
-        <div className="form-row-2">
-          <CountryCombobox
-            id="enroll-country"
-            label={home.enroll.countryLabel}
-            lang={pageLang}
-            value={form.country}
-            onChange={(country) => setForm((f) => ({ ...f, country }))}
-            strings={home.enroll}
-          />
-          <Form.Control
-            className="align-self-end"
-            placeholder={home.enroll.postalPlaceholder}
-            value={form.postal}
-            onChange={set('postal')}
-          />
-        </div>
-        <Form.Group>
-          <Form.Label>{home.enroll.heardAboutQ}</Form.Label>
-          <Form.Select
-            aria-label={home.enroll.heardAboutQ}
-            value={heard}
-            onChange={(e) => setHeard(e.target.value)}
-          >
-            <option value="">{home.enroll.selectPlaceholder}</option>
-            {heardAbout.map((o) => (
-              <option key={o} value={o}>
-                {o}
-              </option>
-            ))}
-          </Form.Select>
-        </Form.Group>
-        <p className="pbody">{home.enroll.nextStepNote}</p>
-        {/* Honeypot: off-screen rather than display:none, which some bots skip. */}
-        <div className="enroll-hp" aria-hidden="true">
-          <input
-            type="text"
-            name="website"
-            tabIndex={-1}
-            autoComplete="off"
-            aria-hidden="true"
-            value={form.website}
-            onChange={set('website')}
-          />
-        </div>
-        <div className="rule" />
-        <div className="form-actions">
-          <span className={'form-actions-note' + (note ? ' error' : '')} aria-live="polite">
-            {note}
-          </span>
-          <Button
-            size="lg"
-            disabled={!ready || sending}
-            onClick={async () => {
-              if (await submit({ ...form, mobile, lang, contactBy, heard, program }))
-                trackLead({ formId: 'enroll', program, language: pageLang });
-            }}
-          >
-            {sending && <Spinner size="sm" aria-hidden="true" />}
-            {sending ? home.enroll.sending : home.enroll.submit}
-          </Button>
-        </div>
-      </Offcanvas.Body>
-    </Offcanvas>
-  );
-}
-
-function WSJTeaser() {
-  const { home } = useHomeCtx();
-  return (
-    <section className="band-dark">
-      <div className="wrap band-dark-inner">
-        <img
-          id="wsj-logo"
-          alt="Wall Street Journal logo"
-          src="/assets/the-wall-street-journal.webp"
-          width={320}
-          height={132}
-          style={{ width: 320, height: 'auto' }}
-          loading="lazy"
-        />
-        <h2 className="band-heading">{home.wsj.heading}</h2>
-        <p className="band-body">{home.wsj.body}</p>
-        <Button
-          onClick={() =>
-            window.open(
-              'https://www.wsj.com/lifestyle/careers/how-five-americans-made-it-to-the-middle-class-e9649f8b',
-              '_blank',
-              'noopener'
-            )
-          }
-        >
-          {home.wsj.cta}
-        </Button>
       </div>
     </section>
   );
@@ -2191,10 +1549,8 @@ export default function HomeIsland({
   academyLogos,
   latestPosts,
   clientTestimonials,
-  graduateTestimonials,
 }) {
   const [codi, setCodi] = React.useState(false);
-  const [enroll, setEnroll] = React.useState(null);
   React.useEffect(() => {
     // Arriving here from another page (e.g. clicking "Contact" on /blog) lands on
     // "/#contact" via a full page load. The browser's own anchor-scroll fires before
@@ -2218,7 +1574,6 @@ export default function HomeIsland({
         academyLogos,
         latestPosts,
         clientTestimonials,
-        graduateTestimonials,
       }}
     >
       <div id="top">
@@ -2254,18 +1609,16 @@ export default function HomeIsland({
           </div>
           <Gateway />
           <Platform />
-          <WSJTeaser />
           <CodeBlog />
           <Studio />
           <Solutions />
           <ForgeTeaser />
-          <Academy onEnroll={setEnroll} />
+          <Academy />
           <Metrics />
-          <Contact onEnroll={setEnroll} />
+          <Contact />
         </main>
         <Footer lang={lang} pathname={pathname} strings={common} />
         <Codi open={codi} onClose={() => setCodi(false)} />
-        <EnrollDrawer course={enroll} onClose={() => setEnroll(null)} />
       </div>
     </HomeCtx.Provider>
   );

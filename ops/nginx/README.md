@@ -9,7 +9,8 @@ single 301 to its page on `https://codeboxx.com` (CLP-1342). Node 24, no npm dep
 - `codeboxx.com`: the same old paths, but only those the new site doesn't serve; everything else is
   the new site, as before.
 - academy, academie (in French) and solutions: old pages to their page or homepage section, anything
-  else to the Academy (`/#academy`, `/fr/#academie`) or Solutions (`/#solutions`) section.
+  else to the Academy page (`/academy/`, `/fr/academie/`); corporate-training pages to
+  `/corporate-training/` (`/fr/formation-entreprise/`) or Solutions (`/#solutions`) section.
 - The query string (`gclid`, `utm_*`) is kept, before the fragment. `/.well-known/acme-challenge/`,
   the bare IP and unknown hosts are never redirected.
 

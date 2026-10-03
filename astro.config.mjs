@@ -25,6 +25,12 @@ export default defineConfig({
     sitemap({ filter: includeInSitemap, serialize: makeSerialize(postDates) }),
   ],
   build: { format: 'directory' },
+  // The French Academy's accented spelling, as people type it. Static output makes
+  // these tiny redirect pages; the real page is /fr/academie (ASCII, like every FR slug).
+  redirects: {
+    '/académie': '/fr/academie/',
+    '/fr/académie': '/fr/academie/',
+  },
   // Local dev only: the forms' relay (relay/server.js); nginx does this in production.
   // French spacing (non-breaking space before : ; ! ?, before $ and %) on all FR
   // content — see src/lib/frTypography.js.

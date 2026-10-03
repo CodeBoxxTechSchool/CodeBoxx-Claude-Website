@@ -135,7 +135,7 @@ export default {
     eyebrow: 'SERVICES',
     title: 'Autres services de CodeBoxx',
     items: [
-      ['Formation corporative', '#academy-courses'],
+      ['Formation en entreprise', '/corporate-training'],
       ['CTO en tant que service', '#solutions'],
       ['Services-conseils', '#solutions'],
       ['Développement de logiciels sur mesure', '#solutions'],
