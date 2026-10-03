@@ -208,7 +208,7 @@ export default {
   studio: {
     role: 'About Us',
     name: 'CodeBoxx: Digital Transformation Has a Name',
-    lede: 'Since 2018, CodeBoxx has been the guiding force helping companies adapt to an ever-evolving digital world. As experts in AI agent integration, we are committed to providing native AI solutions tailored to your needs.',
+    lede: 'Since 2018, CodeBoxx has been the guiding force companies use to get more from their technology investments. We always prioritized helping leaders adapt to an ever-evolving digital world from one revolution to the next. As experts in applied Artificial Intelligence, we are committed to providing AI-Native solutions always tailored to your needs. From enterprise software to highly skilled and capable agents, all the way to digital products that finally put the human experience front and center.',
   },
   about: {
     team: {
