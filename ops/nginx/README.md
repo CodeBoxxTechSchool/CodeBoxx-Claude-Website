@@ -2,7 +2,7 @@
 
 On the droplet, nginx answers every old Wix URL of `codeboxx.com`, `www.codeboxx.com`,
 `academy.codeboxx.com`, `academie.codeboxx.com`, `solutions.codeboxx.com` (and their `www.`) with a
-single 301 to its page on `https://codeboxx.com` (CLP-1342). Node 24, no npm dependencies.
+single 301 to its page on `https://codeboxx.ai`, the main domain (`SITE` in `redirects.js`; CLP-1342). Node 24, no npm dependencies.
 
 - `www.codeboxx.com`: blog posts to `/blog/<slug>/`, a few old pages to their new page, anything
   else to the same path on the apex.
@@ -14,7 +14,7 @@ single 301 to its page on `https://codeboxx.com` (CLP-1342). Node 24, no npm dep
 - The query string (`gclid`, `utm_*`) is kept, before the fragment. `/.well-known/acme-challenge/`,
   the bare IP and unknown hosts are never redirected.
 
-Port 80 answers every host: old URLs go straight to their `https://codeboxx.com` page, other
+Port 80 answers every host: old URLs go straight to their `https://codeboxx.ai` page, other
 `http://codeboxx.com` URLs to the same URL over https (one 301 either way), certificate challenges
 are served from `/var/www/letsencrypt`, and the IP and unknown hosts get the site as before (the
 uptime checks use the IP). Port 443 answers the eight names with one Let's Encrypt certificate

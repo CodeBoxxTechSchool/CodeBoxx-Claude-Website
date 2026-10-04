@@ -200,7 +200,9 @@ async function checkTls(name, expectIp) {
 
 async function checkHttp(name, expectIp) {
   const res = await request(`http://${name}/`);
-  const redirected = res.status === 301 && res.location?.startsWith(`https://${SITE}/`);
+  // Old hosts go to the site (codeboxx.ai), the apex to https on itself.
+  const redirected =
+    res.status === 301 && /^https:\/\/codeboxx\.(ai|com)\//.test(res.location ?? '');
   const wrong = elsewhere(res.address, expectIp) || (redirected ? '' : 'wrong answer');
   return [wrong, `${res.status} ${res.location ?? ''}`];
 }
@@ -295,7 +297,7 @@ export async function main(argv, { out = console.log, err = console.error } = {}
   const jobs = options.names.flatMap((name) => [
     byServer(sources, (s) => addresses(s, name)).then((a) => dnsResult(name, a, options.expectIp)),
     probe(`https ${name} certificate`, checkTls(name, options.expectIp)),
-    probe(`http://${name}/ -> 301 https://${SITE}/`, checkHttp(name, options.expectIp)),
+    probe(`http://${name}/ -> 301 https`, checkHttp(name, options.expectIp)),
   ]);
   const health = `https://${SITE}/api/health -> 200 ok:true`;
   if (options.names.includes(SITE)) jobs.push(probe(health, checkHealth(options.expectIp)));

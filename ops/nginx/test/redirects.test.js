@@ -181,9 +181,10 @@ test('check plan: the apex goes to https over http; the IP fails the handshake o
   const oldHosts = (checks) =>
     checks.filter((c) => c.host !== 'codeboxx.com' && table.hosts[c.host]);
   assert.deepEqual(oldHosts(http), oldHosts(https));
+  // Old Wix paths go to the site (codeboxx.ai); the apex's own pages to https on the apex.
   for (const check of http.filter((c) => c.host === 'codeboxx.com' && !c.unchanged))
-    assert.ok(check.location.startsWith(`${SITE}/`), check.path);
-  assert.equal(find(http, 'codeboxx.com', '/faq/').location, `${SITE}/faq/`);
+    assert.ok(/^https:\/\/codeboxx\.(ai|com)\//.test(check.location), check.path);
+  assert.equal(find(http, 'codeboxx.com', '/faq/').location, 'https://codeboxx.com/faq/');
   assert.equal(find(https, 'codeboxx.com', '/faq/').unchanged, 200);
   for (const host of SWAP_HOSTS)
     for (const checks of [http, https])
