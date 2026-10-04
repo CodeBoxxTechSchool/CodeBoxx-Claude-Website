@@ -34,9 +34,9 @@ export default {
     eyebrow: 'Qui la dirige',
     name: 'Brian Peret',
     role: 'Directeur de l’Académie',
-    profileLabel: 'Lire son portrait dans American Banker',
+    profileLabel: 'Voir sa conférence TEDx St. Pete',
     profileHref:
-      'https://www.americanbanker.com/news/how-brian-peret-went-from-inmate-to-ai-academy-director',
+      '/fr/blogue/tedx-st-pete-palladium-explores-redefining-education-for-the-next-generation-with-insights-from-b/',
     linkedin: 'https://www.linkedin.com/in/brian-peret-b62636101/',
     linkedinLabel: 'LinkedIn',
   },
