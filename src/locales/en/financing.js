@@ -88,7 +88,7 @@ export default {
     title: 'Coding bootcamps overpromise and underdeliver',
     body: [
       'Bootcamps are failing their students. They teach people how to code, but leave them hanging after graduation. That’s why we’ve evolved past the bootcamp model. We’re committed to helping you change your life with a new career.',
-      'People who finish our programs have gone on to work for some pretty big names — eBay, Lucky Brands, Cybercat, and Coveo, to drop just a few. But we’re not going to oversell it to you. The odds of jumping straight from a bootcamp into a coding job at Google, Meta, or Amazon are pretty slim — and if someone promises you that, take it with a pinch of salt, okay?',
+      'People who finish our programs have gone on to work for some pretty big names — eBay, Lucky Brands, and Coveo, to drop just a few. But we’re not going to oversell it to you. The odds of jumping straight from a bootcamp into a coding job at Google, Meta, or Amazon are pretty slim — and if someone promises you that, take it with a pinch of salt, okay?',
       'But here’s the real deal — enrolling in a coding program like ours is like a shortcut into the tech world. It’s a great way to get your hands dirty in different areas and see what clicks with you. We personalize our programs to help you find your specialty within tech. Think of it as a head start in finding your niche, the one you’re really passionate about and where you thrive!',
     ],
   },

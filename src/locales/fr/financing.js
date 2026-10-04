@@ -89,7 +89,7 @@ export default {
     title: 'Les bootcamps de programmation promettent trop et livrent trop peu',
     body: [
       "Les bootcamps laissent tomber leurs étudiants. Ils enseignent à programmer, mais abandonnent les gens après la diplomation. C'est pourquoi nous avons dépassé le modèle du bootcamp. Nous nous engageons à vous aider à changer votre vie grâce à une nouvelle carrière.",
-      "Les personnes qui terminent nos programmes travaillent aujourd'hui pour de très grands noms — eBay, Lucky Brands, Cybercat et Coveo, pour n'en nommer que quelques-uns. Mais nous n'allons pas vous en mettre plein la vue. Les chances de passer directement d'un bootcamp à un poste de développeur chez Google, Meta ou Amazon sont plutôt minces — et si quelqu'un vous le promet, prenez-le avec un grain de sel, d'accord?",
+      "Les personnes qui terminent nos programmes travaillent aujourd'hui pour de très grands noms — eBay, Lucky Brands et Coveo, pour n'en nommer que quelques-uns. Mais nous n'allons pas vous en mettre plein la vue. Les chances de passer directement d'un bootcamp à un poste de développeur chez Google, Meta ou Amazon sont plutôt minces — et si quelqu'un vous le promet, prenez-le avec un grain de sel, d'accord?",
       "Mais voici la vraie affaire : s'inscrire à un programme comme le nôtre, c'est un raccourci vers le monde de la techno. C'est une excellente façon de mettre la main à la pâte dans différents domaines et de voir ce qui vous allume. Nous personnalisons nos programmes pour vous aider à trouver votre spécialité en technologie. Voyez-le comme une longueur d'avance pour trouver votre créneau, celui qui vous passionne vraiment et où vous vous épanouissez!",
     ],
   },
