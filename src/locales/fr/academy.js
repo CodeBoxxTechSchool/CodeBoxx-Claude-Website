@@ -183,7 +183,6 @@ export default {
       ['Industrielle Alliance', 'Embauche des diplômés de CodeBoxx.', 'partner'],
       ['Coveo', 'A embauché des diplômés de CodeBoxx.'],
       ['TD Synnex', 'A embauché des diplômés de CodeBoxx.'],
-      ['Cybercat', 'A embauché des diplômés de CodeBoxx.'],
     ],
   },
   faq: {

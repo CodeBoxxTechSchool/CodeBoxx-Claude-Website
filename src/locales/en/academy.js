@@ -198,9 +198,10 @@ export default {
     ],
   },
   // 7. Academy placements only, one sentence each. Coveo and TD Synnex are named on
-  // academy.codeboxx.com/frequently-asked-questions, Cybercat (and Coveo) on
-  // /coding-school-financing-options (see faq.js and financing.js). Never Google,
-  // Meta or Amazon, and never studio clients.
+  // academy.codeboxx.com/frequently-asked-questions (see faq.js). Cybercat was on
+  // /coding-school-financing-options but never hired a graduate (CodeBoxx
+  // leadership, Oct 2026): don't list it. Never Google, Meta or Amazon, and never
+  // studio clients.
   employers: {
     eyebrow: 'Employers',
     title: 'Placement partners and employers',
@@ -212,7 +213,6 @@ export default {
       ['Industrielle Alliance', 'Hires CodeBoxx graduates.', 'partner'],
       ['Coveo', 'Has hired CodeBoxx graduates.'],
       ['TD Synnex', 'Has hired CodeBoxx graduates.'],
-      ['Cybercat', 'Has hired CodeBoxx graduates.'],
     ],
   },
   // 8. FAQ and funding. Answers use the same paragraph shape as faq.js.
