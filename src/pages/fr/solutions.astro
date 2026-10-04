@@ -1,0 +1,11 @@
+---
+// /fr/solutions: CodeBoxx Solutions in French (EN twin: /solutions). Body:
+// src/components/SolutionsPage.astro; content: src/locales/fr/solutions.js and
+// home.services.
+import SolutionsPage from '../../components/SolutionsPage.astro';
+import common from '../../locales/fr/common';
+import home from '../../locales/fr/home';
+import solutions from '../../locales/fr/solutions';
+---
+
+<SolutionsPage t={solutions} common={common} home={home} lang="fr" />

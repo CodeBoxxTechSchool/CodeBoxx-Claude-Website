@@ -31,9 +31,9 @@ const NAV_STRUCTURE = [
   },
   {
     key: 'solutions',
-    href: '#solutions',
+    href: '/solutions/',
     items: [
-      ['solutionsServices', '#solutions'],
+      ['solutionsServices', '/solutions/#services'],
       ['corporateTraining', '/corporate-training'],
       ['solutionsWorks', '#works'],
     ],
@@ -247,7 +247,7 @@ function buildFooterColumns(lang, pathname, strings) {
       key: 'solutions',
       title: strings.footer.columns.solutions.title,
       items: [
-        { label: nav.solutionsServices, href: href('#solutions') },
+        { label: nav.solutionsServices, href: href('/solutions/#services') },
         { label: nav.corporateTraining, href: href('/corporate-training') },
         { label: nav.solutionsWorks, href: href('#works') },
         { label: nav.caseStudies, href: href('/case-studies') },
