@@ -48,9 +48,11 @@ export default {
     eyebrow: 'Who runs it',
     name: 'Brian Peret',
     role: 'Director of Academy',
-    profileLabel: 'Read his profile in American Banker',
+    // His TEDx St. Pete talk, on the CodeBlog. Not the American Banker profile on purpose:
+    // leadership asked for it to stay off this first page (Oct 2026).
+    profileLabel: 'Watch his TEDx St. Pete talk',
     profileHref:
-      'https://www.americanbanker.com/news/how-brian-peret-went-from-inmate-to-ai-academy-director',
+      '/blog/tedx-st-pete-palladium-explores-redefining-education-for-the-next-generation-with-insights-from-b/',
     linkedin: 'https://www.linkedin.com/in/brian-peret-b62636101/',
     linkedinLabel: 'LinkedIn',
   },
