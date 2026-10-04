@@ -58,7 +58,7 @@ export default {
       },
       {
         id: 'ai',
-        title: 'Développeur IA avancé',
+        title: 'Technologue IA avancé',
         who: 'Les personnes qui programment déjà. Expérience en programmation et en SQL requise.',
         schedule: ['Temps plein : 12 semaines.', 'Temps partiel : 24 semaines.'],
         startsText: 'Sur demande',
@@ -70,7 +70,7 @@ export default {
       title: 'Frais de scolarité et dépôt',
       lines: [
         ['Développeur full-stack natif en IA', '12 000 $'],
-        ['Développeur IA avancé', '9 800 $'],
+        ['Technologue IA avancé', '9 800 $'],
       ],
       body: 'Renseignez-vous auprès des admissions sur le dépôt et le calendrier de paiement avant de vous engager.',
       cta: 'Planifier un appel',
@@ -194,20 +194,20 @@ export default {
         q: 'Ai-je besoin d’expérience préalable?',
         a: [
           'Pas pour le programme full-stack : il part de zéro.',
-          'Le parcours Développeur IA avancé exige une expérience en programmation et en SQL.',
+          'Le parcours Technologue IA avancé exige une expérience en programmation et en SQL.',
         ],
       },
       {
         q: 'Combien de temps durent les programmes?',
         a: [
           'Full-stack : 16 semaines à temps plein, à raison de 35 à 40 heures par semaine, ou 32 semaines à temps partiel.',
-          'Développeur IA avancé : 12 semaines à temps plein ou 24 semaines à temps partiel.',
+          'Technologue IA avancé : 12 semaines à temps plein ou 24 semaines à temps partiel.',
         ],
       },
       {
         q: 'Combien ça coûte?',
         a: [
-          'Développeur full-stack natif en IA : 12 000 $. Développeur IA avancé : 9 800 $.',
+          'Développeur full-stack natif en IA : 12 000 $. Technologue IA avancé : 9 800 $.',
           [
             'Des paiements échelonnés et du financement local peuvent couvrir tout ou partie de ces frais; voir ',
             { label: 'Financement', href: '/fr/academie/#funding' },
@@ -221,7 +221,7 @@ export default {
           [
             'Les cohortes full-stack commencent à dates fixes, indiquées sous ',
             { label: 'Programmes', href: '/fr/academie/#programs' },
-            '. Les cohortes Développeur IA avancé commencent sur demande.',
+            '. Les cohortes Technologue IA avancé commencent sur demande.',
           ],
         ],
       },

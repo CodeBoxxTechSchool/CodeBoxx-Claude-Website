@@ -72,7 +72,7 @@ export default {
       },
       {
         id: 'ai',
-        title: 'Advanced AI Developer',
+        title: 'Advanced AI Technologist',
         // academy.codeboxx.com/artificial-intelligence. Not "we accept everyone":
         // this track has prerequisites.
         who: 'People who already program. Requires prior programming experience and SQL.',
@@ -80,7 +80,7 @@ export default {
         schedule: ['Full-time: 12 weeks.', 'Part-time: 24 weeks.'],
         startsText: 'On Demand',
         tuition: '$9,800',
-        apply: 'Apply to AI Developer',
+        apply: 'Apply to AI Technologist',
       },
     ],
     price: {
@@ -90,7 +90,7 @@ export default {
       // (academy.codeboxx.com said $1,000), so it isn't published.
       lines: [
         ['AI Native Full-Stack Developer', '$12,000'],
-        ['Advanced AI Developer', '$9,800'],
+        ['Advanced AI Technologist', '$9,800'],
       ],
       body: 'Ask admissions about the deposit and payment schedule before you commit.',
       cta: 'Schedule a call',
@@ -224,20 +224,20 @@ export default {
         q: 'Do I need prior experience?',
         a: [
           'Not for Full-Stack: it starts from no experience.',
-          'The Advanced AI Developer track requires prior programming experience and SQL.',
+          'The Advanced AI Technologist track requires prior programming experience and SQL.',
         ],
       },
       {
         q: 'How long are the programs?',
         a: [
           'Full-Stack: 16 weeks full-time, at 35–40 hours a week, or 32 weeks part-time.',
-          'Advanced AI Developer: 12 weeks full-time or 24 weeks part-time.',
+          'Advanced AI Technologist: 12 weeks full-time or 24 weeks part-time.',
         ],
       },
       {
         q: 'How much does it cost?',
         a: [
-          'AI Native Full-Stack Developer: $12,000. Advanced AI Developer: $9,800.',
+          'AI Native Full-Stack Developer: $12,000. Advanced AI Technologist: $9,800.',
           [
             'Installment plans and local funding can cover all or part of it; see ',
             { label: 'Funding', href: '/academy/#funding' },
@@ -251,7 +251,7 @@ export default {
           [
             'Full-Stack cohorts start on fixed dates, listed under ',
             { label: 'Programs', href: '/academy/#programs' },
-            '. Advanced AI Developer cohorts start on demand.',
+            '. Advanced AI Technologist cohorts start on demand.',
           ],
         ],
       },

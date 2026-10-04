@@ -67,6 +67,7 @@ test('assigns columns by program title, whichever duplicate document it comes fr
       intake('2026-10-06', 'AI Native Full-Stack Development', 'St. Pete'),
       intake('2026-10-07', AI, 'Online'),
       intake('2026-10-08', '  advanced ai-developer ', 'St. Pete'),
+      intake('2026-10-09', 'Advanced AI Technologist', 'Online'),
     ],
     TODAY
   );
@@ -77,6 +78,7 @@ test('assigns columns by program title, whichever duplicate document it comes fr
   assert.deepEqual(groups.aidev['Full Time'], [
     ['2026-10-07', 'Online', 'Open'],
     ['2026-10-08', 'St. Pete', 'Open'],
+    ['2026-10-09', 'Online', 'Open'],
   ]);
   assert.deepEqual(warnings, []);
 });
