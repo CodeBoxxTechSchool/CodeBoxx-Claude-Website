@@ -2,7 +2,7 @@
 // program). Sources, so every claim can be traced:
 // - academy.codeboxx.com/corporate-training (its copy in this repo: home.js
 //   `corporate`): the lede, "Our Secret Sauce", "Stay Ahead in the Digital Race",
-//   the +300 / +100 figures, technical sales → software development → prompt
+//   the +100 figure (graduates updated to 340+ by CodeBoxx leadership, Oct 2026), technical sales → software development → prompt
 //   engineering.
 // - Sanity posts: best-corporate-ai-bootcamps (engagement focus areas, Solutions +
 //   Academy model, fractional CTO), top-ai-native-developer-training-programs-for-
@@ -32,7 +32,7 @@ export default {
     note: 'On-site or online · United States and Canada',
   },
   stats: [
-    ['+300', 'graduates making their mark at renowned companies'],
+    ['+340', 'graduates making their mark at renowned companies'],
     ['+100', 'companies have employed our Business-First technologists'],
     ['2', 'divisions in one: a training academy and a working software and AI studio'],
   ],

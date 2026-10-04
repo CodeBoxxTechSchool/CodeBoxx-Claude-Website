@@ -5,11 +5,11 @@ export default {
   seo: {
     title: 'CodeBoxx Académie : école de programmation à St. Petersburg, en Floride',
     description:
-      'Une école agréée de St. Petersburg qui place déjà ses diplômés dans des postes en ingénierie. Un programme full-stack de 16 semaines sans expérience préalable, et un parcours IA pour les programmeurs.',
+      'Une école agréée qui enseigne l’IA et la technologie au service des affaires, avec plus de 340 diplômés déjà placés dans des emplois en technologie. Un programme full-stack de 16 semaines sans expérience préalable, et un parcours IA pour les programmeurs.',
   },
   pill: 'CodeBoxx Académie',
   title:
-    'Une école agréée de St. Petersburg qui place déjà ses diplômés dans des postes en ingénierie.',
+    'Une école agréée qui enseigne l’IA et la technologie au service des affaires. Plus de 340 diplômés, forts d’une nouvelle forme d’intelligence, déjà placés dans des emplois en technologie.',
   applyCta: 'Postuler',
   proof: {
     eyebrow: 'Placement',

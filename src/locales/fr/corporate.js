@@ -15,7 +15,7 @@ export default {
     note: 'En présentiel ou en ligne · États-Unis et Canada',
   },
   stats: [
-    ['+300', 'diplômés qui se démarquent dans des entreprises reconnues'],
+    ['+340', 'diplômés qui se démarquent dans des entreprises reconnues'],
     ['+100', 'entreprises ont embauché nos technologues axés sur les affaires'],
     ['2', 'divisions en une : une académie de formation et un vrai studio logiciel et IA'],
   ],
