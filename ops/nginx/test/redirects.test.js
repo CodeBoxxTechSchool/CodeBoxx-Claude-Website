@@ -74,7 +74,7 @@ test('academie targets are the French academy targets, and exist', () => {
   }
 });
 
-test('catch-alls land on a section or the Academy page, never on the bare homepage; apex has none', () => {
+test('catch-alls land on a section or the Academy or Solutions page, never on the bare homepage; apex has none', () => {
   const rest = table.rules.filter((rule) => rule.kind === 'rest');
   for (const rule of rest) {
     assert.ok(!rule.groups.includes('apex'), 'apex must keep serving the new site');
@@ -82,6 +82,7 @@ test('catch-alls land on a section or the Academy page, never on the bare homepa
       rule.to === '=' ||
         rule.to === '/academy/' ||
         rule.to === '/fr/academie/' ||
+        rule.to === '/solutions/' ||
         /\/#[a-z-]+$/.test(rule.to),
       `redirects.tsv:${rule.line}`
     );
@@ -149,8 +150,8 @@ test('matches with or without a trailing slash, ignoring case, prefixes included
   assert.equal(resolve(table, 'www.codeboxx.com', '/Blog/Categories/X'), `${SITE}/blog/`);
   assert.equal(resolve(table, 'www.codeboxx.com', '/About'), `${SITE}/About`);
   assert.equal(resolve(table, 'www.codeboxx.com', '/contact/'), `${SITE}/#contact`);
-  assert.equal(resolve(table, 'Solutions.codeboxx.com', '/product-page'), `${SITE}/#solutions`);
-  assert.equal(resolve(table, 'solutions.codeboxx.com', '/product-page/x/'), `${SITE}/#solutions`);
+  assert.equal(resolve(table, 'Solutions.codeboxx.com', '/product-page'), `${SITE}/solutions/`);
+  assert.equal(resolve(table, 'solutions.codeboxx.com', '/product-page/x/'), `${SITE}/solutions/`);
   assert.equal(
     resolve(table, 'academy.codeboxx.com', '/codeblog/categories/workshop'),
     `${SITE}/blog/`

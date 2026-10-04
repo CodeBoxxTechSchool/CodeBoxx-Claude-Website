@@ -1,0 +1,444 @@
+---
+// The CodeBoxx Solutions page, shared by /solutions (EN) and /fr/solutions (FR).
+// Content: src/locales/{en,fr}/solutions.js (from the solutions.codeboxx.com
+// homepage, whose URLs all 301 here) and home.services for the four services. Page
+// styles are sol- in src/styles/_solutions.scss; videos and logos in
+// public/assets/solutions/ (carried over from the Wix site).
+//
+// One island, the services tabs (SolutionsServices.jsx). Everything else is static
+// HTML; the script at the bottom adds the motion: the hero's rotating tool name, the
+// cards' videos playing while on screen, the reveal on scroll and the cursor
+// spotlight. None of it runs under prefers-reduced-motion, and the page reads the
+// same without it.
+import Layout from '../layouts/Layout.astro';
+import HeroVideo from './HeroVideo.astro';
+import SolutionsServices from './SolutionsServices';
+import { localizedHref } from '../lib/i18nRoutes';
+
+const { t, common, home, lang } = Astro.props;
+const href = (path) => localizedHref(path, lang, '');
+const contactHref = href('#contact');
+
+const services = [
+  { id: 'cto' },
+  { id: 'agentic' },
+  { id: 'custom', logos: ['Crewkit', 'Optigo', 'Catalog Crafter', 'Soumigo'] },
+  { id: 'daas' },
+].map((s) => ({ ...s, ...home.services[s.id] }));
+
+const media = (name) => ({
+  webm: `/assets/solutions/${name}.webm`,
+  mp4: `/assets/solutions/${name}.mp4`,
+  poster: `/assets/solutions/${name}-poster.webp`,
+});
+
+// They gave their trust: shown white on the dark band. The wall: their own colors.
+const trusted = [
+  ['VideoAmp', 'videoamp'],
+  ['Raymond James', 'raymond-james'],
+  ['Coveo', 'coveo-sq'],
+  ['eBay', 'ebay-sq'],
+  ['Full Harvest', 'full-harvest'],
+];
+const clients = [
+  ['Coveo', 'coveo'],
+  ['eBay', 'ebay'],
+  ['La Capitale', 'lacapitale'],
+  ['Desjardins', 'desjardins'],
+  ['Lucky Brand', 'lucky-brand'],
+  ['Quebec Mining Association', 'quebec-mining-association'],
+  ['Madaluxe Group', 'madaluxe'],
+  ['iDimension', 'idimension'],
+  ['The Product Consult', 'the-product-consult'],
+  ['Spontivly', 'spontivly'],
+  ['RevStar', 'revstar'],
+  ['Unique IT Pro', 'unique-it-pro'],
+  ['Sneakercon', 'sneakercon'],
+  ['Bedrock', 'bedrock'],
+];
+const logo = (file) => `/assets/solutions/logos/${file}.webp`;
+const mailto = `mailto:info@codeboxx.com?subject=${encodeURIComponent(t.lead.mailSubject)}`;
+const hero = media('hero-network');
+const coaching = media('vibe-coaching');
+const academy = media('academy-keyboard');
+---
+
+<Layout lang={lang} title={t.seo.title} description={t.seo.description} strings={common}>
+  <div class="sol-page">
+    {/* Hero */}
+    <section class="band-dark sol-hero">
+      <HeroVideo
+        webm={hero.webm}
+        mp4={hero.mp4}
+        poster={hero.poster}
+        overlay="linear-gradient(100deg, rgba(0, 14, 20, 0.92) 0%, rgba(0, 14, 20, 0.7) 55%, rgba(0, 14, 20, 0.35) 100%)"
+      />
+      <div class="wrap sol-hero-inner">
+        <span class="pill">{t.hero.pill}</span>
+        <h1 class="sol-hero-title">{t.hero.title}</h1>
+        <p class="sol-hero-lede">
+          {t.hero.lede} <span class="visually-hidden">{t.hero.tools.join(', ')}</span>
+          <span class="sol-rotator" data-rotate aria-hidden="true">
+            {t.hero.tools.map((tool, i) => (
+              <span class={i === 0 ? 'is-on' : ''}>{tool}</span>
+            ))}
+          </span>
+        </p>
+        <div class="fg-actions">
+          <a class="btn btn-primary btn-lg" href={contactHref}>
+            {t.hero.ctaPrimary}
+          </a>
+          <a class="btn btn-outline-light btn-lg" href="#services">
+            {t.hero.ctaSecondary}
+          </a>
+        </div>
+      </div>
+    </section>
+
+    {/* The tools, as a ticker */}
+    <div class="sol-ticker" aria-hidden="true">
+      <div class="sol-ticker-track">
+        {[0, 1].map(() => (
+          <ul>
+            {[...t.stack, ...t.stack].map((name) => (
+              <li>{name}</li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
+
+    {/* Award */}
+    <section class="sect sol-award">
+      <div class="wrap sol-award-grid">
+        <figure class="sol-award-art sol-spot" data-reveal>
+          <img
+            src="/assets/award-2025-retailtech.webp"
+            alt={t.award.alt}
+            loading="lazy"
+            width="440"
+            height="626"
+          />
+        </figure>
+        <div class="d-flex flex-column gap-4" data-reveal>
+          <p class="eyebrow eyebrow-brand">{t.award.eyebrow}</p>
+          <h2 class="sol-h2">{t.award.title}</h2>
+          <ul class="sol-award-tags">
+            {t.award.ticker.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+          <p class="lede lede-640">{t.award.body}</p>
+          <div>
+            <a
+              class="btn btn-primary btn-lg"
+              href="/assets/agentic-ai-blueprint.pdf"
+              target="_blank"
+              rel="noopener"
+            >
+              {t.award.cta} ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* A new kind of smart, the age of vibe coding */}
+    <section class="sect sol-smart">
+      <div class="wrap sol-smart-grid">
+        <div class="d-flex flex-column gap-4" data-reveal>
+          <p class="eyebrow eyebrow-brand">{t.smart.eyebrow}</p>
+          <h2 class="sol-h2 sol-h2-inverse">{t.smart.title}</h2>
+          <p class="sol-body-inverse">{t.smart.body}</p>
+        </div>
+        <div class="sol-vibe sol-spot" data-reveal>
+          <h3 class="sol-vibe-title">{t.smart.vibeTitle}</h3>
+          {t.smart.vibe.map((p) => (
+            <p class="sol-body-inverse">{p}</p>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Services */}
+    <section class="sect" id="services">
+      <div class="wrap d-flex flex-column gap-5">
+        <div class="d-flex flex-column gap-3">
+          <p class="eyebrow">{t.services.eyebrow}</p>
+          <h2 class="sol-h2">{t.services.title}</h2>
+          <p class="lede">{t.services.hint}</p>
+        </div>
+        <SolutionsServices client:visible services={services} label={t.services.eyebrow} />
+      </div>
+    </section>
+
+    {/* Innovate, create, adapt */}
+    <section class="sol-lead">
+      <div class="wrap sol-lead-inner" data-reveal>
+        <p class="eyebrow eyebrow-brand">{t.lead.eyebrow}</p>
+        <h2 class="sol-lead-title">{t.lead.title}</h2>
+        <div class="sol-lead-body">
+          {t.lead.body.map((p) => (
+            <p>{p}</p>
+          ))}
+        </div>
+        <a class="btn btn-primary btn-lg" href={mailto}>
+          {t.lead.cta}
+        </a>
+      </div>
+    </section>
+
+    {/* Building your future, ensure sustainability */}
+    <section class="sect">
+      <div class="wrap grid2 sol-pillars">
+        {t.pillars.map((p) => {
+          const m = media(p.video);
+          return (
+            <article class="sol-pillar sol-spot" data-reveal>
+              <div class="sol-pillar-media">
+                <video
+                  class="sol-video"
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  poster={m.poster}
+                  aria-hidden="true"
+                  data-inview
+                >
+                  <source src={m.webm} type="video/webm" />
+                  <source src={m.mp4} type="video/mp4" />
+                </video>
+              </div>
+              <div class="sol-pillar-body">
+                <span class="kicker">{p.kicker}</span>
+                <h3 class="sol-pillar-title">{p.title}</h3>
+                <p class="pbody">{p.body}</p>
+                <a class="sol-link" href={href(p.href)}>
+                  {p.cta} <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    {/* Vibe coaching */}
+    <section class="band-dark sol-coaching" id="vibe-coaching">
+      <HeroVideo
+        webm={coaching.webm}
+        mp4={coaching.mp4}
+        poster={coaching.poster}
+        overlay="linear-gradient(90deg, rgba(0, 14, 20, 0.95) 0%, rgba(0, 14, 20, 0.75) 50%, rgba(0, 14, 20, 0.2) 100%)"
+      />
+      <div class="wrap sol-coaching-inner" data-reveal>
+        <p class="eyebrow eyebrow-brand">{t.coaching.eyebrow}</p>
+        <h2 class="sol-h2 sol-h2-inverse">{t.coaching.title}</h2>
+        <div>
+          <a class="btn btn-primary btn-lg" href={contactHref}>
+            {t.coaching.cta}
+          </a>
+        </div>
+      </div>
+    </section>
+
+    {/* Leadership */}
+    <section class="sect">
+      <div class="wrap d-flex flex-column gap-5">
+        <div class="d-flex flex-column gap-3">
+          <p class="eyebrow">{t.leadership.eyebrow}</p>
+          <h2 class="sol-h2">{t.leadership.title}</h2>
+          <p class="lede">{t.leadership.lede}</p>
+        </div>
+        <div class="grid3 sol-people">
+          {t.leadership.people.map((p) => (
+            <article class="sol-person sol-spot" data-reveal>
+              <div class="sol-person-photo">
+                <img src={p.photo} alt={p.name} loading="lazy" width="480" height="398" />
+              </div>
+              <div class="sol-person-body">
+                <div class="d-flex flex-column gap-1">
+                  <h3 class="sol-person-name">{p.name}</h3>
+                  <span class="sol-person-role">{p.role}</span>
+                </div>
+                {p.facts && (
+                  <dl class="sol-facts">
+                    {p.facts.map(([k, v]) => (
+                      <div>
+                        <dt>{k}</dt>
+                        <dd>{v}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+                <p class="pbody">{p.body}</p>
+                {p.tags && (
+                  <ul class="sol-chips sol-chips-sm">
+                    {p.tags.map((tag) => (
+                      <li>{tag}</li>
+                    ))}
+                  </ul>
+                )}
+                <a class="sol-link" href={p.linkedin} target="_blank" rel="noopener noreferrer">
+                  LinkedIn <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Quote */}
+    <section class="sect sol-quote-band">
+      <figure class="wrap sol-quote" data-reveal>
+        <p class="eyebrow">{t.quote.eyebrow}</p>
+        <blockquote class="sol-quote-text" lang={lang === 'fr' ? 'en' : undefined}>
+          “{t.quote.text}”
+        </blockquote>
+        <figcaption class="sol-quote-by">
+          <span class="sol-quote-name">{t.quote.name}</span>
+          <span class="sol-quote-role">{t.quote.role}</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    {/* Trust */}
+    <section class="sol-trust" id="clients">
+      <div class="wrap d-flex flex-column gap-5">
+        <div class="d-flex flex-column gap-3" data-reveal>
+          <p class="eyebrow eyebrow-brand">{t.trust.eyebrow}</p>
+          <h2 class="sol-h2 sol-h2-inverse">{t.trust.title}</h2>
+        </div>
+        <ul class="sol-trusted">
+          {trusted.map(([name, file]) => (
+            <li data-reveal>
+              <img src={logo(file)} alt={name} loading="lazy" />
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="sol-marquee" data-marquee>
+        <div class="sol-marquee-track">
+          {[0, 1].map((copy) => (
+            <ul aria-hidden={copy === 1 ? 'true' : undefined}>
+              {clients.map(([name, file]) => (
+                <li>
+                  <img src={logo(file)} alt={copy === 1 ? '' : name} loading="lazy" />
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+        <button
+          type="button"
+          class="sol-marquee-toggle"
+          data-pause={t.trust.pause}
+          data-play={t.trust.play}
+          aria-pressed="false"
+        >
+          {t.trust.pause}
+        </button>
+      </div>
+    </section>
+
+    {/* Academy */}
+    <section class="band-dark sol-academy">
+      <HeroVideo
+        webm={academy.webm}
+        mp4={academy.mp4}
+        poster={academy.poster}
+        overlay="linear-gradient(0deg, rgba(0, 14, 20, 0.85), rgba(0, 47, 67, 0.55))"
+      />
+      <div class="wrap sol-academy-inner" data-reveal>
+        <p class="eyebrow eyebrow-brand">{t.academy.eyebrow}</p>
+        <h2 class="sol-h2 sol-h2-inverse">{t.academy.title}</h2>
+        <a class="btn btn-outline-light btn-lg" href={href('/academy/')}>
+          {t.academy.cta}
+        </a>
+      </div>
+    </section>
+
+    {/* Closing call to action */}
+    <section class="fg-cta">
+      <div class="wrap fg-cta-inner">
+        <p class="eyebrow eyebrow-brand">{t.cta.eyebrow}</p>
+        <h2 class="fg-cta-title">{t.cta.title}</h2>
+        <div class="fg-actions">
+          <a class="btn btn-primary btn-lg" href={contactHref}>
+            {t.cta.primary}
+          </a>
+          <a class="btn btn-outline-light btn-lg" href={href('/case-studies')}>
+            {t.cta.secondary}
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<script>
+  const motion = window.matchMedia('(prefers-reduced-motion: no-preference)');
+  const page = document.querySelector('.sol-page');
+
+  // Marquee pause button (also the only control under reduced motion: none needed).
+  for (const marquee of document.querySelectorAll('[data-marquee]')) {
+    const button = marquee.querySelector('.sol-marquee-toggle');
+    button?.addEventListener('click', () => {
+      const paused = marquee.classList.toggle('is-paused');
+      button.setAttribute('aria-pressed', String(paused));
+      button.textContent = paused ? button.dataset.play : button.dataset.pause;
+    });
+  }
+
+  if (page && motion.matches && 'IntersectionObserver' in window) {
+    // Reveal on scroll: hidden only once this runs, so the page reads without JS.
+    page.classList.add('sol-reveal-ready');
+    const reveal = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-revealed');
+          reveal.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+    );
+    page.querySelectorAll('[data-reveal]').forEach((el) => reveal.observe(el));
+
+    // The cards' videos play while on screen (tablet and up, like the hero videos).
+    const wide = window.matchMedia('(min-width: 768px)');
+    const videos = new IntersectionObserver(
+      (entries) => {
+        for (const { target, isIntersecting } of entries) {
+          if (isIntersecting && wide.matches) target.play().catch(() => {});
+          else target.pause();
+        }
+      },
+      { threshold: 0.25 }
+    );
+    page.querySelectorAll('video[data-inview]').forEach((v) => videos.observe(v));
+
+    // The hero's tool name changes every 2.2 s.
+    const rotator = page.querySelector('[data-rotate]');
+    const words = rotator ? [...rotator.children] : [];
+    let i = 0;
+    if (words.length > 1)
+      setInterval(() => {
+        words[i].classList.remove('is-on');
+        i = (i + 1) % words.length;
+        words[i].classList.add('is-on');
+      }, 2200);
+
+    // Cursor spotlight on cards (pointer devices only).
+    if (window.matchMedia('(hover: hover)').matches)
+      page.addEventListener('pointermove', (e) => {
+        const card = e.target.closest?.('.sol-spot');
+        if (!card) return;
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        card.style.setProperty('--my', `${e.clientY - r.top}px`);
+      });
+  }
+</script>

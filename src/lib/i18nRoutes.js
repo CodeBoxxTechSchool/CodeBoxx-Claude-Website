@@ -25,6 +25,7 @@ export const ROUTE_TABLE = [
   { en: '/ai-done-right', fr: '/fr/ai-done-right' },
   { en: '/academy', fr: '/fr/academie' },
   { en: '/corporate-training', fr: '/fr/formation-entreprise' },
+  { en: '/solutions', fr: '/fr/solutions' },
   { en: '/crewkit-forge-20/dive-deeper', fr: '/fr/crewkit-forge-20/approfondir' },
 ];
 

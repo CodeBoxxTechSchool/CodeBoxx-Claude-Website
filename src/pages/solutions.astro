@@ -1,0 +1,11 @@
+---
+// /solutions: CodeBoxx Solutions (FR twin: /fr/solutions). solutions.codeboxx.com
+// (every path) 301s here. Body: src/components/SolutionsPage.astro; content:
+// src/locales/en/solutions.js and home.services.
+import SolutionsPage from '../components/SolutionsPage.astro';
+import common from '../locales/en/common';
+import home from '../locales/en/home';
+import solutions from '../locales/en/solutions';
+---
+
+<SolutionsPage t={solutions} common={common} home={home} lang="en" />

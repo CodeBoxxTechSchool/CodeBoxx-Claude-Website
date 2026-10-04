@@ -1,0 +1,885 @@
+@use 'variables' as v;
+
+// /solutions (src/components/SolutionsPage.astro and SolutionsServices.jsx). Uses
+// the Forge landing's fg- actions and closing band; everything page-specific is sol-.
+// Motion lives under prefers-reduced-motion: no-preference only.
+
+$sol-ink: v.$navy-900;
+$sol-line: rgba(255, 255, 255, 0.1);
+
+.sol-h2 {
+  margin: 0;
+  max-width: 20ch;
+  font-size: 44px;
+  font-weight: v.$weight-black;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: v.$navy-500;
+  text-wrap: balance;
+}
+.sol-h2-inverse {
+  color: v.$neutral-0;
+}
+.sol-body-inverse {
+  margin: 0;
+  max-width: 620px;
+  font-size: 17px;
+  line-height: 28px;
+  color: rgba(255, 255, 255, 0.78);
+}
+.sol-link {
+  display: inline-flex;
+  gap: 6px;
+  width: fit-content;
+  font-weight: v.$weight-bold;
+  text-decoration: none;
+
+  span {
+    transition: transform 0.2s ease;
+  }
+  &:hover span {
+    transform: translateX(4px);
+  }
+}
+
+// Cursor spotlight: a soft glow following the pointer on cards (set by the page
+// script as --mx/--my; invisible until the pointer is over the card).
+.sol-spot {
+  position: relative;
+  isolation: isolate;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(67, 180, 240, 0.16),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  &:hover::after {
+    opacity: 1;
+  }
+}
+
+// ---- Hero ----
+.sol-hero {
+  padding: 152px 0 136px;
+  background:
+    linear-gradient(rgba(0, 14, 20, 0.8), rgba(0, 14, 20, 0.8)),
+    url('/assets/solutions/hero-network-poster.webp') center / cover no-repeat,
+    $sol-ink;
+}
+.sol-hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+.sol-hero-title {
+  margin: 0;
+  max-width: 14ch;
+  font-size: clamp(44px, 6.4vw, 84px);
+  font-weight: v.$weight-black;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: v.$neutral-0;
+  text-wrap: balance;
+}
+.sol-hero-lede {
+  margin: 0;
+  max-width: 640px;
+  font-size: 20px;
+  line-height: 30px;
+  color: rgba(255, 255, 255, 0.82);
+}
+// The tool names, stacked in one grid cell; only .is-on shows.
+.sol-rotator {
+  display: inline-grid;
+  vertical-align: bottom;
+
+  > span {
+    grid-area: 1 / 1;
+    font-weight: v.$weight-bold;
+    color: v.$blue-400;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(0.4em);
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+  }
+  > span.is-on {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// ---- Tools ticker ----
+.sol-ticker {
+  overflow: hidden;
+  background: v.$blue-500;
+  color: $sol-ink;
+}
+.sol-ticker-track {
+  display: flex;
+  width: max-content;
+
+  ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: v.$weight-black;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    &::after {
+      content: '✦';
+      margin-left: 56px;
+      opacity: 0.55;
+    }
+  }
+}
+
+// ---- Award ----
+.sol-award-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 72px;
+  align-items: center;
+}
+.sol-award-art {
+  margin: 0;
+  padding: 32px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(67, 180, 240, 0.35), transparent 60%), $sol-ink;
+  text-align: center;
+
+  img {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.45));
+    transition: transform 0.5s ease;
+  }
+  &:hover img {
+    transform: rotate(-2deg) scale(1.03);
+  }
+}
+.sol-award-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 6px 14px;
+    border-radius: v.$radius-full;
+    background: rgba(67, 180, 240, 0.12);
+    font-size: v.$text-caption;
+    font-weight: v.$weight-bold;
+    color: v.$navy-500;
+  }
+}
+
+// ---- A new kind of smart ----
+.sol-smart {
+  background:
+    radial-gradient(circle at 85% 10%, rgba(67, 180, 240, 0.18), transparent 45%), $sol-ink;
+}
+.sol-smart-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 64px;
+  align-items: start;
+}
+.sol-vibe {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 40px;
+  border: 1px solid $sol-line;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+}
+.sol-vibe-title {
+  margin: 0;
+  font-size: 30px;
+  font-weight: v.$weight-black;
+  letter-spacing: -0.01em;
+  background: linear-gradient(90deg, v.$neutral-0, v.$blue-400);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+// ---- Services tabs (SolutionsServices.jsx) ----
+.sol-services {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 32px;
+  align-items: start;
+}
+.sol-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sol-tab {
+  position: relative;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  width: 100%;
+  padding: 22px 24px;
+  overflow: hidden;
+  border: 0;
+  border-radius: v.$radius-xl;
+  background: v.$neutral-0;
+  box-shadow: inset 0 0 0 1px v.$ui-slate-200;
+  text-align: left;
+  color: inherit;
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+
+  &:hover {
+    transform: translateX(4px);
+    box-shadow: inset 0 0 0 1px v.$blue-500;
+  }
+  &.is-active {
+    background: $sol-ink;
+    box-shadow: none;
+    transform: none;
+
+    .sol-tab-index {
+      color: v.$blue-400;
+    }
+    .sol-tab-title {
+      color: v.$neutral-0;
+    }
+    .sol-tab-blurb {
+      color: rgba(255, 255, 255, 0.72);
+    }
+  }
+}
+.sol-tab-index {
+  font-size: 15px;
+  font-weight: v.$weight-black;
+  line-height: 26px;
+  color: v.$blue-500;
+}
+.sol-tab-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sol-tab-title {
+  font-size: 20px;
+  font-weight: v.$weight-black;
+  line-height: 26px;
+  color: v.$navy-500;
+}
+.sol-tab-blurb {
+  font-size: 15px;
+  line-height: 22px;
+  color: v.$color-text-secondary;
+}
+.sol-tab-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: v.$blue-500;
+  transform-origin: left;
+  animation: sol-progress linear forwards;
+}
+@keyframes sol-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.sol-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 40px;
+  border-radius: 24px;
+  background: v.$neutral-0;
+  box-shadow:
+    inset 0 0 0 1px v.$ui-slate-200,
+    0 24px 48px -32px rgba(0, 47, 67, 0.35);
+}
+.sol-panel-heading {
+  margin: 0;
+  font-size: 30px;
+  font-weight: v.$weight-black;
+  letter-spacing: -0.01em;
+  color: v.$navy-500;
+}
+.sol-panel-sub {
+  margin: -6px 0 6px;
+  font-size: 18px;
+  font-weight: v.$weight-semibold;
+  color: v.$blue-500;
+}
+.sol-panel-close {
+  padding-top: 16px;
+  border-top: 1px solid v.$ui-slate-200;
+
+  & + & {
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+.sol-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 6px 14px;
+    border-radius: v.$radius-full;
+    background: v.$ui-slate-200;
+    font-size: v.$text-caption;
+    font-weight: v.$weight-semibold;
+    color: v.$navy-500;
+  }
+}
+.sol-chips-sm li {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+.sol-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: sol-step;
+
+  li {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 4px 16px;
+    counter-increment: sol-step;
+
+    &::before {
+      content: counter(sol-step);
+      grid-row: span 2;
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: v.$blue-500;
+      font-weight: v.$weight-black;
+      color: v.$neutral-0;
+    }
+  }
+}
+.sol-step-title {
+  font-weight: v.$weight-bold;
+  color: v.$navy-500;
+}
+.sol-products {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  a {
+    display: grid;
+    place-items: center;
+    height: 72px;
+    padding: 10px;
+    border-radius: v.$radius-lg;
+    box-shadow: inset 0 0 0 1px v.$ui-slate-200;
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: inset 0 0 0 1px v.$blue-500;
+    }
+  }
+  img {
+    max-width: 100%;
+    max-height: 48px;
+    object-fit: contain;
+  }
+}
+.sol-products-title {
+  font-weight: v.$weight-bold;
+  color: v.$navy-500;
+}
+
+// ---- Innovate, create, adapt ----
+.sol-lead {
+  padding: 136px 0;
+  background:
+    radial-gradient(circle at 15% 85%, rgba(67, 180, 240, 0.2), transparent 45%),
+    linear-gradient(135deg, v.$navy-500, $sol-ink);
+}
+.sol-lead-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 28px;
+}
+.sol-lead-title {
+  margin: 0;
+  max-width: 16ch;
+  font-size: clamp(40px, 6vw, 80px);
+  font-weight: v.$weight-black;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: v.$neutral-0;
+  text-wrap: balance;
+}
+.sol-lead-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  max-width: 960px;
+
+  p {
+    margin: 0;
+    font-size: 17px;
+    line-height: 28px;
+    color: rgba(255, 255, 255, 0.78);
+  }
+}
+
+// ---- Pillars (video cards) ----
+.sol-pillars {
+  gap: 32px;
+  align-items: stretch;
+}
+.sol-pillar {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 24px;
+  background: v.$neutral-0;
+  box-shadow: inset 0 0 0 1px v.$ui-slate-200;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      inset 0 0 0 1px v.$ui-slate-200,
+      0 32px 64px -32px rgba(0, 47, 67, 0.45);
+  }
+}
+.sol-pillar-media {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: $sol-ink;
+}
+.sol-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+
+  .sol-pillar:hover & {
+    transform: scale(1.04);
+  }
+}
+.sol-pillar-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 32px;
+}
+.sol-pillar-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: v.$weight-black;
+  letter-spacing: -0.01em;
+  color: v.$navy-500;
+}
+
+// ---- Vibe coaching, Academy (full-bleed video bands) ----
+.sol-coaching {
+  padding: 152px 0;
+  background:
+    linear-gradient(rgba(0, 14, 20, 0.75), rgba(0, 14, 20, 0.75)),
+    url('/assets/solutions/vibe-coaching-poster.webp') center / cover no-repeat,
+    $sol-ink;
+}
+.sol-coaching-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.sol-academy {
+  padding: 136px 0;
+  background:
+    linear-gradient(rgba(0, 14, 20, 0.8), rgba(0, 14, 20, 0.8)),
+    url('/assets/solutions/academy-keyboard-poster.webp') center / cover no-repeat,
+    $sol-ink;
+}
+.sol-academy-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+
+  .sol-h2 {
+    max-width: 22ch;
+  }
+}
+
+// ---- Leadership ----
+.sol-people {
+  gap: 32px;
+}
+.sol-person {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 24px;
+  background: v.$neutral-0;
+  box-shadow: inset 0 0 0 1px v.$ui-slate-200;
+}
+.sol-person-photo {
+  aspect-ratio: 480 / 398;
+  overflow: hidden;
+  background: v.$ui-slate-200;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1);
+    transition:
+      filter 0.5s ease,
+      transform 0.5s ease;
+  }
+  .sol-person:hover & img {
+    filter: none;
+    transform: scale(1.04);
+  }
+}
+.sol-person-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px;
+}
+.sol-person-name {
+  margin: 0;
+  font-size: 24px;
+  font-weight: v.$weight-black;
+  color: v.$navy-500;
+}
+.sol-person-role {
+  font-size: v.$text-caption;
+  font-weight: v.$weight-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: v.$blue-500;
+}
+.sol-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+
+  dt {
+    font-size: 13px;
+    font-weight: v.$weight-bold;
+    color: v.$navy-500;
+  }
+  dd {
+    margin: 0;
+    font-size: 15px;
+    line-height: 22px;
+    color: v.$color-text-secondary;
+  }
+}
+
+// ---- Quote ----
+.sol-quote-band {
+  background: v.$ui-slate-200;
+}
+.sol-quote {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+.sol-quote-text {
+  margin: 0;
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: v.$weight-semibold;
+  line-height: 1.45;
+  color: v.$navy-500;
+}
+.sol-quote-by {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sol-quote-name {
+  font-weight: v.$weight-black;
+  color: v.$navy-500;
+}
+.sol-quote-role {
+  color: v.$color-text-secondary;
+}
+
+// ---- Trust ----
+.sol-trust {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  padding: 112px 0 0;
+  background: $sol-ink;
+
+  > .wrap {
+    width: 100%;
+  }
+}
+.sol-trusted {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: grid;
+    place-items: center;
+    height: 140px;
+    padding: 20px;
+    border: 1px solid $sol-line;
+    border-radius: v.$radius-xl;
+    transition:
+      border-color 0.25s ease,
+      background 0.25s ease;
+
+    &:hover {
+      border-color: v.$blue-500;
+      background: rgba(67, 180, 240, 0.08);
+    }
+  }
+  // Every logo in white, whatever its own colors, so the row reads as one.
+  img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 96px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+  }
+}
+.sol-marquee {
+  position: relative;
+  overflow: hidden;
+  padding: 32px 0 40px;
+  border-top: 1px solid $sol-line;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.sol-marquee-track {
+  display: flex;
+  width: max-content;
+
+  ul {
+    display: flex;
+    gap: 16px;
+    margin: 0;
+    padding: 0 8px;
+    list-style: none;
+  }
+  li {
+    display: grid;
+    place-items: center;
+    width: 200px;
+    height: 88px;
+    padding: 14px 20px;
+    border-radius: v.$radius-lg;
+    background: v.$neutral-0;
+  }
+  img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 58px;
+    object-fit: contain;
+  }
+}
+.sol-marquee-toggle {
+  position: absolute;
+  right: 48px;
+  bottom: 6px;
+  padding: 2px 10px;
+  border: 1px solid $sol-line;
+  border-radius: v.$radius-full;
+  background: transparent;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+
+  &:hover {
+    color: v.$neutral-0;
+  }
+}
+
+// ---- Motion ----
+@media (prefers-reduced-motion: no-preference) {
+  .sol-ticker-track {
+    animation: sol-scroll 40s linear infinite;
+  }
+  .sol-marquee-track {
+    animation: sol-scroll 60s linear infinite;
+  }
+  .sol-marquee:hover .sol-marquee-track,
+  .sol-marquee:focus-within .sol-marquee-track,
+  .sol-marquee.is-paused .sol-marquee-track {
+    animation-play-state: paused;
+  }
+  .sol-reveal-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.7s ease-out,
+      transform 0.7s ease-out;
+
+    &.is-revealed {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .sol-panel {
+    animation: sol-fade 0.45s ease-out;
+  }
+}
+@keyframes sol-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes sol-fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+// Reduced motion: no scrolling, so the client logos wrap instead and the extra copy
+// and the pause button go.
+@media (prefers-reduced-motion: reduce) {
+  .sol-marquee {
+    mask-image: none;
+  }
+  .sol-marquee-track {
+    width: auto;
+    justify-content: center;
+
+    ul {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    ul + ul {
+      display: none;
+    }
+  }
+  .sol-marquee-toggle {
+    display: none;
+  }
+  .sol-rotator > span {
+    transition: none;
+  }
+}
+
+@media (max-width: v.$breakpoint-md) {
+  .sol-h2 {
+    font-size: 32px;
+  }
+  .sol-hero {
+    padding: 104px 0 88px;
+  }
+  .sol-award-grid,
+  .sol-smart-grid,
+  .sol-services,
+  .sol-lead-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+  .sol-award-art {
+    order: 2;
+  }
+  .sol-vibe,
+  .sol-panel {
+    padding: 28px 24px;
+  }
+  .sol-lead,
+  .sol-coaching,
+  .sol-academy {
+    padding: 88px 0;
+  }
+  .sol-trust {
+    padding-top: 80px;
+  }
+  .sol-trusted {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    li {
+      height: 104px;
+    }
+  }
+  .sol-products ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sol-marquee-toggle {
+    right: 24px;
+  }
+  .sol-marquee-track {
+    li {
+      width: 150px;
+      height: 72px;
+      padding: 10px 14px;
+    }
+    img {
+      max-height: 48px;
+    }
+  }
+}

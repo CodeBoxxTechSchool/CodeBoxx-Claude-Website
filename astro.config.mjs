@@ -30,9 +30,6 @@ export default defineConfig({
   redirects: {
     '/académie': '/fr/academie/',
     '/fr/académie': '/fr/academie/',
-    // Solutions is a homepage section, not a page: people type /solutions like /academy.
-    '/solutions': '/#solutions',
-    '/fr/solutions': '/fr/#solutions',
   },
   // Local dev only: the forms' relay (relay/server.js); nginx does this in production.
   // French spacing (non-breaking space before : ; ! ?, before $ and %) on all FR

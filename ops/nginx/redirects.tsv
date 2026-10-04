@@ -245,19 +245,19 @@ solutions	/blog	/blog/
 solutions	/contact	/#contact
 solutions	/agentic-ai-blueprint	/assets/agentic-ai-blueprint.pdf
 solutions	/_files/ugd/c3a713_5f7bf770a5dc4f29b377ee4b28a136e3.pdf	/assets/agentic-ai-blueprint.pdf
-solutions	/agentic-ai	/#solutions
-solutions	/services	/#solutions
-solutions	/developer-as-a-service	/#solutions
-solutions	/fractional-cto	/#solutions
-solutions	/taylor-made-softwares	/#solutions
-solutions	/for-partners	/#solutions
-solutions	/portfolio	/#solutions
-solutions	/vibe-coaching	/#solutions
-solutions	/thank-you	/#solutions
-solutions	/build-your-own-conversational-agent	/#solutions
-solutions	/product-page/*	/#solutions
-solutions	/category/*	/#solutions
-solutions	*	/#solutions
+solutions	/agentic-ai	/solutions/#services
+solutions	/services	/solutions/#services
+solutions	/developer-as-a-service	/solutions/#services
+solutions	/fractional-cto	/solutions/#services
+solutions	/taylor-made-softwares	/solutions/#services
+solutions	/for-partners	/solutions/#clients
+solutions	/portfolio	/case-studies/
+solutions	/vibe-coaching	/solutions/#vibe-coaching
+solutions	/thank-you	/solutions/
+solutions	/build-your-own-conversational-agent	/assets/agentic-ai-blueprint.pdf
+solutions	/product-page/*	/solutions/
+solutions	/category/*	/solutions/
+solutions	*	/solutions/
 
 # The site icon browsers still ask the old hosts for (www keeps the path already).
 academy,academie,solutions	/favicon.ico	/favicon.ico

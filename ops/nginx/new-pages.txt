@@ -217,8 +217,10 @@
 /fr/formation-entreprise/
 /fr/politique-de-confidentialite/
 /fr/residents-pinellas/
+/fr/solutions/
 /fr/ventures/
 /pinellas-residents/
 /privacy-policy/
+/solutions/
 /terms-conditions/
 /ventures/
