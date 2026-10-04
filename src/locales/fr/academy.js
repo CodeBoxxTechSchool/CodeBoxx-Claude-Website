@@ -33,7 +33,7 @@ export default {
     title:
       'Un programme de 16 semaines qui se termine au sein d’une vraie équipe de livraison. Le placement est le critère de sortie, pas un babillard d’emplois.',
     contrast:
-      'Eux sélectionnent 50 personnes qui ont déjà bâti quelque chose, à San Francisco, en 2027. Nous partons de zéro, à St. Pete, à une date que vous pouvez inscrire à votre agenda.',
+      'Eux sélectionnent 50 personnes qui ont déjà bâti quelque chose, à San Francisco, en 2027. Nous partons de zéro, avec ce qui se fait de mieux en IA appliquée. Nous le faisons depuis 2018, et nous pouvons vous donner une date de départ à inscrire à votre agenda.',
   },
   programs: {
     eyebrow: 'Programmes',
