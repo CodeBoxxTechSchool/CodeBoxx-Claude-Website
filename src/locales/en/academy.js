@@ -9,7 +9,8 @@
 // Street Journal banner, and studio proof (Forge, Lucky Brand, Suitely).
 export default {
   seo: {
-    title: 'CodeBoxx Academy: Coding School in St. Petersburg, FL',
+    title:
+      'AI-Native Software Factory, Services and Business-First Academy for the new Digital Age',
     description:
       'A licensed school that teaches AI and technology for business readiness, with over 340 graduates already placed into technology jobs. A 16-week full-stack program from no experience, and an AI track for programmers.',
   },
