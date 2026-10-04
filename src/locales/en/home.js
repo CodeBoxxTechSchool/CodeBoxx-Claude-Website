@@ -233,7 +233,7 @@ export default {
         "Three non-negotiable qualities for delivering a customer experience worthy of the name. We understand that such a change can be stressful. That's why we support you throughout the process.",
     },
     custom: {
-      title: 'Tailor-Made Softwares',
+      title: 'Tailor-Made Software',
       blurb: 'Custom-built software designed to fit your workflows, goals, and growth.',
       detail:
         'There are many solutions on the market, each with its own strengths and weaknesses. However, the compromise is always on your side. Why not build THE solution as you see it in your ecosystem?',
