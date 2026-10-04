@@ -19,6 +19,39 @@ export default {
   title:
     'A licensed school that teaches AI and Technology for business readiness. Over 340 graduates strong with the new kind of smart already placed into technology jobs.',
   applyCta: 'Apply',
+  // Codi, the admissions assistant (src/components/CodiChat.jsx, relay/codi.js).
+  codi: {
+    cta: 'Ask Codi',
+    name: 'Codi',
+    role: 'Admissions assistant',
+    active: 'Online',
+    greeting:
+      'Hi, I’m Codi, CodeBoxx Academy’s admissions assistant. Ask me about the programs, tuition, start dates or funding, and I’ll help you find the right fit.',
+    suggestions: [
+      'Which program fits me?',
+      'How much does it cost?',
+      'When is the next start?',
+      'Can I pay in installments?',
+    ],
+    placeholder: 'Ask Codi about the Academy',
+    send: 'Send',
+    close: 'Close',
+    typing: 'Codi is typing…',
+    apply: 'Apply',
+    call: 'Book a call',
+    restart: 'Start over',
+    full: 'That’s a long conversation! To go further, apply or book a call with an admissions advisor.',
+    notices: {
+      offline:
+        'Codi is offline right now. You can still apply, or book a call with an admissions advisor.',
+      busy: 'Codi is busy for a moment. Try again in a minute, or book a call with an admissions advisor.',
+      error:
+        'Your message didn’t go through. Try again, or book a call with an admissions advisor.',
+      refusal: 'Codi can’t help with that one. An admissions advisor can: book a call.',
+    },
+    disclaimer:
+      'Codi is an AI assistant and can make mistakes. Admissions confirms every detail. Please don’t share personal information in the chat.',
+  },
   // 2. The hero fact, and only this one.
   proof: {
     eyebrow: 'Placement',

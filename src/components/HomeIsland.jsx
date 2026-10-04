@@ -917,9 +917,16 @@ function Academy() {
       intro={
         <div className="d-flex flex-column gap-3 division-intro">
           <p className="lede lede-wide">{home.academy.intro}</p>
-          <div className="d-flex">
+          <div className="d-flex gap-3 flex-wrap">
             <Button href={localizedHref(ACADEMY_HREF, lang, pathname)}>
               {home.academy.goToAcademy}
+            </Button>
+            {/* Codi lives on the Academy page; #codi opens it there. */}
+            <Button
+              variant="outline-primary"
+              href={localizedHref(ACADEMY_HREF, lang, pathname) + '#codi'}
+            >
+              {home.academy.askCodi}
             </Button>
           </div>
         </div>

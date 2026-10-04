@@ -309,6 +309,7 @@ export default {
     learnMore: 'En savoir plus',
     logosLabel: 'Partenaires de l’Académie',
     goToAcademy: 'Découvrir CodeBoxx Académie',
+    askCodi: 'Demander à Codi, notre assistant aux admissions',
     applyOnAcademy: "Postuler sur la page de l'Académie",
   },
   academyTopics: {

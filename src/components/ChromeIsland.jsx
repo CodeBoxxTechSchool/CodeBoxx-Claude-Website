@@ -155,12 +155,12 @@ function NavItem({ item, onNavigate }) {
   );
 }
 
-// "Talk With Codi" is hidden for now, not removed: flip to true to bring the
-// button back in the top bar and the mobile CTA bar. The Codi drawer and its
-// handlers stay wired up.
+// "Talk With Codi" site-wide is hidden for now: flip to true to bring the button back in the
+// top bar and the mobile CTA bar everywhere. Pages that mount the live assistant (the Academy
+// pages, via Layout's `codi` prop) show it regardless.
 const SHOW_CODI_BUTTON = false;
 
-export function TopBar({ lang, pathname, strings, onCodi, langHref }) {
+export function TopBar({ lang, pathname, strings, onCodi, langHref, codi = false }) {
   const [expanded, setExpanded] = React.useState(false);
   const nav = NAV_STRUCTURE.map((n) => ({
     key: n.key,
@@ -171,7 +171,11 @@ export function TopBar({ lang, pathname, strings, onCodi, langHref }) {
   // Pages without an on-page Codi drawer (Blog, BlogPost) send the visitor to the
   // homepage's #contact section instead.
   const contactHref = localizedHref('#contact', lang, pathname);
-  const handleCodi = onCodi || (() => (window.location.href = contactHref));
+  // `codi`: the page mounts the live admissions assistant (CodiChat.jsx), opened by its event.
+  const handleCodi = codi
+    ? () => window.dispatchEvent(new Event('codi:open'))
+    : onCodi || (() => (window.location.href = contactHref));
+  const showCodi = SHOW_CODI_BUTTON || codi;
   // Students apply on the Academy page only (/academy or /fr/academie).
   const enrollHref = localizedHref('/academy/#apply', lang, pathname);
   return (
@@ -198,7 +202,7 @@ export function TopBar({ lang, pathname, strings, onCodi, langHref }) {
               <Button size="sm" variant="outline-primary" href={enrollHref}>
                 {strings.actions.enrollNow}
               </Button>
-              {SHOW_CODI_BUTTON && (
+              {showCodi && (
                 <Button size="sm" onClick={handleCodi}>
                   {strings.actions.talkWithCodi}
                 </Button>
@@ -212,7 +216,7 @@ export function TopBar({ lang, pathname, strings, onCodi, langHref }) {
         <Button variant="outline-primary" href={enrollHref}>
           {strings.actions.enrollNow}
         </Button>
-        {SHOW_CODI_BUTTON && <Button onClick={handleCodi}>{strings.actions.talkWithCodi}</Button>}
+        {showCodi && <Button onClick={handleCodi}>{strings.actions.talkWithCodi}</Button>}
       </div>
     </React.Fragment>
   );
