@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 
-export const SITE = 'https://codeboxx.com';
+export const SITE = 'https://codeboxx.ai';
 export const DATA_FILE = new URL('redirects.tsv', import.meta.url);
 export const CONF_FILE = new URL('conf.d/codeboxx-redirects.conf', import.meta.url);
 
