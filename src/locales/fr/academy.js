@@ -11,6 +11,39 @@ export default {
   title:
     'Une école agréée qui enseigne l’IA et la technologie au service des affaires. Plus de 340 diplômés, forts d’une nouvelle forme d’intelligence, déjà placés dans des emplois en technologie.',
   applyCta: 'Postuler',
+  codi: {
+    cta: 'Demander à Codi',
+    name: 'Codi',
+    role: 'Assistant aux admissions',
+    active: 'En ligne',
+    greeting:
+      'Bonjour, je suis Codi, l’assistant aux admissions de CodeBoxx Académie. Posez-moi vos questions sur les programmes, les frais, les dates de départ ou le financement, et je vous aiderai à trouver le bon parcours.',
+    suggestions: [
+      'Quel programme me convient?',
+      'Combien ça coûte?',
+      'Quand commence la prochaine cohorte?',
+      'Puis-je payer en plusieurs versements?',
+    ],
+    placeholder: 'Posez votre question à Codi',
+    send: 'Envoyer',
+    close: 'Fermer',
+    typing: 'Codi écrit…',
+    apply: 'Postuler',
+    call: 'Planifier un appel',
+    restart: 'Recommencer',
+    full: 'Toute une conversation! Pour aller plus loin, postulez ou planifiez un appel avec un conseiller aux admissions.',
+    notices: {
+      offline:
+        'Codi est hors ligne pour le moment. Vous pouvez quand même postuler, ou planifier un appel avec un conseiller aux admissions.',
+      busy: 'Codi est occupé pour un instant. Réessayez dans une minute, ou planifiez un appel avec un conseiller aux admissions.',
+      error:
+        'Votre message n’est pas passé. Réessayez, ou planifiez un appel avec un conseiller aux admissions.',
+      refusal:
+        'Codi ne peut pas vous aider avec cette question. Un conseiller aux admissions le peut : planifiez un appel.',
+    },
+    disclaimer:
+      'Codi est un assistant IA et peut se tromper. Les admissions confirment chaque détail. Merci de ne pas partager de renseignements personnels dans la conversation.',
+  },
   proof: {
     eyebrow: 'Placement',
     fact: 'VideoAmp a embauché sept diplômés de CodeBoxx à temps plein, à 60 000 $ avec avantages sociaux, et c’est l’entreprise qui a demandé des diplômés de CodeBoxx.',

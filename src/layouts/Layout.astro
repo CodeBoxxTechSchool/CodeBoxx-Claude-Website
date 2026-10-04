@@ -25,6 +25,8 @@ const {
   // path isn't in i18nRoutes.js's ROUTE_TABLE (e.g. a landingPage document,
   // whose EN/FR slugs are per-document and unrelated to each other).
   langHref,
+  // The page mounts Codi (CodiChat.jsx): TopBar's "Talk With Codi" opens it.
+  codi = false,
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
@@ -45,7 +47,14 @@ const pathname = Astro.url.pathname;
   <body>
     <div id="top">
       {!hideTopBar && (
-        <TopBar client:load lang={lang} pathname={pathname} strings={strings} langHref={langHref} />
+        <TopBar
+          client:load
+          lang={lang}
+          pathname={pathname}
+          strings={strings}
+          langHref={langHref}
+          codi={codi}
+        />
       )}
       <main id="main" tabindex="-1">
         <slot />

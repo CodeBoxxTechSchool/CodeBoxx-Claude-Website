@@ -1,0 +1,196 @@
+{
+  "en": {
+    "academy": {
+      "page": "https://codeboxx.com/academy/",
+      "apply": "https://codeboxx.com/academy/#apply",
+      "pitch": "A licensed school that teaches AI and Technology for business readiness. Over 340 graduates strong with the new kind of smart already placed into technology jobs.",
+      "proof": "VideoAmp hired seven CodeBoxx graduates full-time at $60,000 with benefits, and they asked for CodeBoxx graduates. (Tampa Bay Business Journal Inno, week of January 30, 2026)",
+      "director": "Brian Peret, Director of Academy",
+      "offer": "A 16-week program that ends inside a real pod. Placement is the exit criterion, not a job board. They are selecting 50 people who already built something, in San Francisco, in 2027. We start from no experience, with the latest and greatest in applied AI, we’ve been at it since 2018 and we can give you a start date you can put on a calendar.",
+      "programs": [
+        {
+          "id": "fsd",
+          "title": "AI Native Full-Stack Developer",
+          "who": "People starting from no experience. No prior programming required.",
+          "schedule": [
+            "Full-time: 16 weeks, 35–40 hours a week.",
+            "Part-time: 32 weeks."
+          ],
+          "tuition": "$12,000",
+          "starts": [
+            "2026-09-14",
+            "2026-11-09"
+          ],
+          "startsText": null
+        },
+        {
+          "id": "ai",
+          "title": "Advanced AI Technologist",
+          "who": "People who already program. Requires prior programming experience and SQL.",
+          "schedule": [
+            "Full-time: 12 weeks.",
+            "Part-time: 24 weeks."
+          ],
+          "tuition": "$9,800",
+          "starts": [],
+          "startsText": "On Demand"
+        }
+      ],
+      "tuitionNote": "Ask admissions about the deposit and payment schedule before you commit.",
+      "callHref": "https://calendly.com/raina-dejute-codeboxx/30min",
+      "riskFree": "The first 12% of the program is risk-free: if you leave during it, your deposit is refunded.",
+      "applySteps": "Pick your program and apply. We then email you a link to create your student portal account and continue your admission.",
+      "portal": "https://portal.codeboxx.dev/Identity/Account/Login",
+      "employers": [
+        "VideoAmp (Placement partner): Asked for CodeBoxx graduates and hired seven of them full-time.",
+        "Industrielle Alliance (Placement partner): Hires CodeBoxx graduates.",
+        "Coveo: Has hired CodeBoxx graduates.",
+        "TD Synnex: Has hired CodeBoxx graduates."
+      ],
+      "faq": [
+        {
+          "q": "Do I need prior experience?",
+          "a": "Not for Full-Stack: it starts from no experience. The Advanced AI Technologist track requires prior programming experience and SQL."
+        },
+        {
+          "q": "How long are the programs?",
+          "a": "Full-Stack: 16 weeks full-time, at 35–40 hours a week, or 32 weeks part-time. Advanced AI Technologist: 12 weeks full-time or 24 weeks part-time."
+        },
+        {
+          "q": "How much does it cost?",
+          "a": "AI Native Full-Stack Developer: $12,000. Advanced AI Technologist: $9,800. Installment plans and local funding can cover all or part of it; see Funding (https://codeboxx.com/academy/#funding)."
+        },
+        {
+          "q": "When is the next cohort?",
+          "a": "Full-Stack cohorts start on fixed dates, listed under Programs (https://codeboxx.com/academy/#programs). Advanced AI Technologist cohorts start on demand."
+        },
+        {
+          "q": "How do I apply?",
+          "a": "Registration reserves a seat. Apply here (https://codeboxx.com/academy/#apply), then create your student portal account from the link we email you to continue your admission."
+        },
+        {
+          "q": "Is there a risk-free period?",
+          "a": "Yes. The first 12% of the program is risk-free: if you leave during it, your deposit is refunded."
+        },
+        {
+          "q": "What do CodeBoxx students do after graduation?",
+          "a": "During the program, we provide career coaching and guide you through creating a resume, LinkedIn, GitHub, and acing interviews so you can confidently start your job search as soon as (or even before!) you complete the program. And with CodeBoxx for Life, you'll have lifelong access to a community of employers, coaches, and alumni to lean on for career-building strategies, advice on complex technical projects, and more."
+        }
+      ],
+      "funding": [
+        "MiaShare: Installment plans at 0% interest that do not affect your credit score. US-based students only. (https://codeboxxtechnology.mia-share.com/apply/programs)",
+        "Desjardins: Financing for residents of Canada.",
+        "Windmill Microcredits: Affordable career loans for qualified newcomers.",
+        "CareerSource Pinellas: Pinellas County, Florida residents: local funding through CareerSource can cover all or part of your tuition. (https://codeboxx.com/pinellas-residents/)"
+      ],
+      "fundingPage": "https://codeboxx.com/financing/"
+    },
+    "corporate": {
+      "page": "https://codeboxx.com/corporate-training/",
+      "summary": "Build up your workforce with tailor-made technology training programs and exclusive access to our coding school’s pool of tech talent.",
+      "formats": [
+        "Enterprise cohorts: A tailored program for your team, custom in scope and schedule, online or on-site. Training modules are built around the specific needs and goals of your company.",
+        "Intensive workshops: Hands-on crash courses, like our 4-day Vibe Coding and Agentic AI workshop, attended virtually or in our dedicated classroom in St. Petersburg, FL.",
+        "Fractional CTO & advisory: Senior-level AI strategy alongside workforce development, for organizations that need direction as well as skills.",
+        "Hire from the Academy: Exclusive access to our coding school’s pool of AI-native technologists, trained on the same standard as your team."
+      ]
+    }
+  },
+  "fr": {
+    "academy": {
+      "page": "https://codeboxx.com/fr/academie/",
+      "apply": "https://codeboxx.com/fr/academie/#apply",
+      "pitch": "Une école agréée qui enseigne l’IA et la technologie au service des affaires. Plus de 340 diplômés, forts d’une nouvelle forme d’intelligence, déjà placés dans des emplois en technologie.",
+      "proof": "VideoAmp a embauché sept diplômés de CodeBoxx à temps plein, à 60 000 $ avec avantages sociaux, et c’est l’entreprise qui a demandé des diplômés de CodeBoxx. (Tampa Bay Business Journal Inno, semaine du 30 janvier 2026)",
+      "director": "Brian Peret, Directeur de l’Académie",
+      "offer": "Un programme de 16 semaines qui se termine au sein d’une vraie équipe de livraison. Le placement est le critère de sortie, pas un babillard d’emplois. Eux sélectionnent 50 personnes qui ont déjà bâti quelque chose, à San Francisco, en 2027. Nous partons de zéro, avec ce qui se fait de mieux en IA appliquée. Nous le faisons depuis 2018, et nous pouvons vous donner une date de départ à inscrire à votre agenda.",
+      "programs": [
+        {
+          "id": "fsd",
+          "title": "Développeur full-stack natif en IA",
+          "who": "Les personnes qui partent de zéro. Aucune expérience en programmation requise.",
+          "schedule": [
+            "Temps plein : 16 semaines, 35 à 40 heures par semaine.",
+            "Temps partiel : 32 semaines."
+          ],
+          "tuition": "12 000 $",
+          "starts": [
+            "2026-09-14",
+            "2026-11-09"
+          ],
+          "startsText": null
+        },
+        {
+          "id": "ai",
+          "title": "Technologue IA avancé",
+          "who": "Les personnes qui programment déjà. Expérience en programmation et en SQL requise.",
+          "schedule": [
+            "Temps plein : 12 semaines.",
+            "Temps partiel : 24 semaines."
+          ],
+          "tuition": "9 800 $",
+          "starts": [],
+          "startsText": "Sur demande"
+        }
+      ],
+      "tuitionNote": "Renseignez-vous auprès des admissions sur le dépôt et le calendrier de paiement avant de vous engager.",
+      "callHref": "https://calendly.com/raina-dejute-codeboxx/30min",
+      "riskFree": "Les premiers 12 % du programme sont sans risque : si vous partez pendant cette période, votre dépôt vous est remboursé.",
+      "applySteps": "Choisissez votre programme et postulez. Nous vous enverrons ensuite par courriel un lien pour créer votre compte sur le portail étudiant et poursuivre votre admission.",
+      "portal": "https://portal.codeboxx.dev/Identity/Account/Login",
+      "employers": [
+        "VideoAmp (Partenaire de placement): A demandé des diplômés de CodeBoxx et en a embauché sept à temps plein.",
+        "Industrielle Alliance (Partenaire de placement): Embauche des diplômés de CodeBoxx.",
+        "Coveo: A embauché des diplômés de CodeBoxx.",
+        "TD Synnex: A embauché des diplômés de CodeBoxx."
+      ],
+      "faq": [
+        {
+          "q": "Ai-je besoin d’expérience préalable?",
+          "a": "Pas pour le programme full-stack : il part de zéro. Le parcours Technologue IA avancé exige une expérience en programmation et en SQL."
+        },
+        {
+          "q": "Combien de temps durent les programmes?",
+          "a": "Full-stack : 16 semaines à temps plein, à raison de 35 à 40 heures par semaine, ou 32 semaines à temps partiel. Technologue IA avancé : 12 semaines à temps plein ou 24 semaines à temps partiel."
+        },
+        {
+          "q": "Combien ça coûte?",
+          "a": "Développeur full-stack natif en IA : 12 000 $. Technologue IA avancé : 9 800 $. Des paiements échelonnés et du financement local peuvent couvrir tout ou partie de ces frais; voir Financement (https://codeboxx.com/fr/academie/#funding)."
+        },
+        {
+          "q": "Quand commence la prochaine cohorte?",
+          "a": "Les cohortes full-stack commencent à dates fixes, indiquées sous Programmes (https://codeboxx.com/fr/academie/#programs). Les cohortes Technologue IA avancé commencent sur demande."
+        },
+        {
+          "q": "Comment postuler?",
+          "a": "L’inscription réserve votre place. Postulez ici (https://codeboxx.com/fr/academie/#apply), puis créez votre compte sur le portail étudiant à partir du lien que nous vous envoyons par courriel pour poursuivre votre admission."
+        },
+        {
+          "q": "Y a-t-il une période sans risque?",
+          "a": "Oui. Les premiers 12 % du programme sont sans risque : si vous partez pendant cette période, votre dépôt vous est remboursé."
+        },
+        {
+          "q": "Que font les étudiants de CodeBoxx après leur diplôme?",
+          "a": "Pendant le programme, nous offrons un accompagnement de carrière et vous guidons dans la création de votre CV, de vos profils LinkedIn et GitHub, et dans la préparation aux entrevues, pour que vous puissiez commencer votre recherche d’emploi en toute confiance dès la fin du programme (ou même avant!). Et avec CodeBoxx pour la vie, vous avez accès à vie à une communauté d’employeurs, de coachs et d’anciens pour obtenir des stratégies de carrière, des conseils sur des projets techniques complexes et plus encore."
+        }
+      ],
+      "funding": [
+        "MiaShare: Paiements échelonnés à 0 % d’intérêt, sans effet sur votre cote de crédit. Étudiants établis aux États-Unis seulement. (https://codeboxxtechnology.mia-share.com/apply/programs)",
+        "Desjardins: Financement pour les résidents du Canada.",
+        "Microcrédits Windmill: Prêts de carrière abordables pour les nouveaux arrivants admissibles.",
+        "CareerSource Pinellas: Résidents du comté de Pinellas, en Floride : le financement local de CareerSource peut couvrir tout ou partie de vos frais de scolarité. (https://codeboxx.com/fr/residents-pinellas/)"
+      ],
+      "fundingPage": "https://codeboxx.com/fr/financement/"
+    },
+    "corporate": {
+      "page": "https://codeboxx.com/fr/formation-entreprise/",
+      "summary": "Développez votre main-d’œuvre grâce à des programmes de formation technologique sur mesure et à un accès exclusif au bassin de talents techno de notre école de programmation.",
+      "formats": [
+        "Cohortes d’entreprise: Un programme sur mesure pour votre équipe, adapté en contenu et en horaire, en ligne ou en présentiel. Les modules sont bâtis autour des besoins et des objectifs précis de votre entreprise.",
+        "Ateliers intensifs: Des formations accélérées et pratiques, comme notre atelier de 4 jours sur le vibe coding et l’IA agentique, en virtuel ou dans notre salle de classe de St. Petersburg, en Floride.",
+        "CTO fractionnel et services-conseils: Une stratégie IA de niveau senior en parallèle du développement de la main-d’œuvre, pour les organisations qui ont besoin d’une direction autant que de compétences.",
+        "Recruter à l’Académie: Un accès exclusif au bassin de technologues natifs en IA de notre école, formés selon les mêmes standards que votre équipe."
+      ]
+    }
+  }
+}

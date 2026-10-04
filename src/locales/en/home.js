@@ -293,6 +293,7 @@ export default {
     learnMore: 'Learn More',
     logosLabel: 'Academy Partners',
     goToAcademy: 'Go to CodeBoxx Academy',
+    askCodi: 'Ask Codi, our admissions assistant',
     applyOnAcademy: 'Apply on the Academy page',
   },
   academyTopics: {

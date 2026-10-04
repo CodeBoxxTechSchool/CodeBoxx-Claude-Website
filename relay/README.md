@@ -1,8 +1,10 @@
 # Website relay
 
 A small Node server that takes the site's forms and forwards them to the school portal, so the
-portal's API key never reaches the browser. nginx proxies `/api/` to it. Node 24, no npm
-dependencies: the folder runs on its own (`node server.js`). Only a submission the portal could not
+portal's API key never reaches the browser, and answers Codi, the Academy's admissions assistant
+(`/api/codi`, with Claude). nginx proxies `/api/` to it. Node 24, one npm dependency (the Anthropic
+SDK, `npm ci --prefix relay`; CI installs it and rsyncs it with the folder): the folder runs on its
+own (`node server.js`). Only a submission the portal could not
 take is saved to disk, in the queue below, and for 72 hours at most (a careers application's CV
 included: it is never written anywhere else); the logs hold status codes, timings and random
 submission IDs only, never a file name or content.
@@ -21,6 +23,7 @@ npm run test:relay
 | `PORT`                  | Listens on `127.0.0.1:PORT`, default 8787                |
 | `STATE_DIRECTORY`       | Set by systemd; the queue is its `outbox/` folder        |
 | `OUTBOX_DIR`            | The queue folder when `STATE_DIRECTORY` is not set       |
+| `ANTHROPIC_API_KEY`     | Claude API key for Codi; without it Codi answers offline |
 
 With neither `STATE_DIRECTORY` nor `OUTBOX_DIR`, nothing is queued (one warning at startup).
 
@@ -72,6 +75,26 @@ as is. The relay decodes the content and refuses (400, `invalid=cv`) anything em
 that is not a PDF (starts with `%PDF-`), a DOC (an OLE compound file) or a DOCX (a zip naming
 `word/document.xml`), judged by the content alone. The portal checks it again, stores it in its
 private bucket, and answers 503 when it could not, which is queued like any 5xx.
+
+`POST /api/codi` (JSON, 64 KB max) → Codi, the Academy's admissions assistant
+(`src/components/CodiChat.jsx` on `/academy` and `/fr/academie`). Body: `lang` (`en`/`fr`) and
+`messages`, the whole conversation: 1 to 24 `{role, content}`, alternating `user` / `assistant`,
+starting and ending with `user`, each 1 to 1500 characters. The relay asks Claude (`codi.js`, model
+and settings there) with a system prompt built from `codi-knowledge.json`, which
+`node scripts/build-codi-knowledge.mjs` generates from the site's Academy and Corporate Training
+copy (`test/drift.test.js` fails when it is stale: regenerate after editing that copy). Nothing is
+stored, and the log has the status, timing and stop reason only, never what was said.
+
+| Answer                                           | When                                           |
+| ------------------------------------------------ | ---------------------------------------------- |
+| `200 {ok: true, reply}`                          | Claude answered                                |
+| `200 {ok: true, reply: null, reason: 'refusal'}` | Declined (after the server-side fallback)      |
+| `400 {ok: false, errors}`                        | Invalid `lang` or `messages`                   |
+| `503 {ok: false, reason: 'offline'}`             | No `ANTHROPIC_API_KEY`, or the key was refused |
+| `503 {ok: false, reason: 'busy'}`                | Claude API rate limit                          |
+| `502 {ok: false}`                                | Any other API error or timeout                 |
+
+The drawer shows the apply and book-a-call buttons whenever it gets no reply.
 
 To add a form, add a route to `routes` in `server.js` and its portal path to `KINDS` in
 `portal.js`, which the queue uses to resend it.
@@ -135,7 +158,16 @@ One-time droplet setup (Ubuntu 24.04, done 2026-09-28, as root):
    }
    ```
 
+   Codi has its own block and zone: copy `ops/nginx/conf.d/codi-ratelimit.conf` to
+   `/etc/nginx/conf.d/` and the updated `ops/nginx/snippets/codeboxx-site.conf` (its
+   `location = /api/codi`: 20 requests a minute per visitor, bursts of 10, 64 KB, 45 s) in the
+   same change, then `nginx -t && systemctl reload nginx`. Until then `/api/codi` falls under
+   `location /api/` (5 a minute, 16 KB, 15 s): Codi works for short conversations.
+
 5. `/etc/sudoers.d/website-relay`: `deploy ALL=(root) NOPASSWD: /usr/bin/systemctl restart website-relay`
    (mode `0440`, checked with `visudo -c`).
+6. Codi: add `ANTHROPIC_API_KEY=...` to `/etc/website-relay/env`, then
+   `systemctl restart website-relay`. Without it the relay starts with a warning and Codi answers
+   offline.
 
 At launch behind Cloudflare, nginx must rate-limit on the visitor's IP (`real_ip`), not Cloudflare's.
