@@ -5,17 +5,19 @@
 // out and a TODO says which sources conflict: pick one source before publishing it.
 //
 // Not on this page on purpose: "The best kept secret in North America", the
-// +300 / +100 / +55K stats, any placement rate, "no upfront costs", ISAs, the Wall
+// +100 / +55K stats (the graduate count is in the title, updated to 340+), any placement rate, "no upfront costs", ISAs, the Wall
 // Street Journal banner, and studio proof (Forge, Lucky Brand, Suitely).
 export default {
   seo: {
     title: 'CodeBoxx Academy: Coding School in St. Petersburg, FL',
     description:
-      'A licensed St. Petersburg school that already places people into engineering jobs. A 16-week full-stack program from no experience, and an AI track for programmers.',
+      'A licensed school that teaches AI and technology for business readiness, with over 340 graduates already placed into technology jobs. A 16-week full-stack program from no experience, and an AI track for programmers.',
   },
   pill: 'CodeBoxx Academy',
   // 1. One sentence.
-  title: 'A licensed St. Petersburg school that already places people into engineering jobs.',
+  // Graduate count (340+) confirmed by CodeBoxx leadership, Oct 2026.
+  title:
+    'A licensed school that teaches AI and Technology for business readiness. Over 340 graduates strong with the new kind of smart already placed into technology jobs.',
   applyCta: 'Apply',
   // 2. The hero fact, and only this one.
   proof: {
