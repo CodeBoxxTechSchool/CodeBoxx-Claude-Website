@@ -33,11 +33,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # The relay's own dependency (the Anthropic SDK, for Codi): installed here and rsynced to the
-      # droplet with relay/, so the droplet never runs npm.
-      - name: Install relay dependencies
-        run: npm ci --omit=dev --prefix relay
-
       # ops/ is installed on the droplet by hand (ops/nginx-report/README.md), never deployed.
       - name: Test src/lib, the relay and ops/
         run: |
