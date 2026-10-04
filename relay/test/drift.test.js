@@ -30,13 +30,3 @@ test('the relay accepts exactly the project types the pitch drawer offers', () =
     assert.deepEqual(values, [...PROJECT_TYPES]);
   }
 });
-
-test('codi-knowledge.json is built from the site copy as it is now', async () => {
-  const { buildKnowledge, OUT } = await import('../../scripts/build-codi-knowledge.mjs');
-  const { readFileSync } = await import('node:fs');
-  assert.deepEqual(
-    JSON.parse(readFileSync(OUT, 'utf8')),
-    buildKnowledge(),
-    'run node scripts/build-codi-knowledge.mjs'
-  );
-});

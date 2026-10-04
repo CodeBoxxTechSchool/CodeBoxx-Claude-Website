@@ -1,6 +1,5 @@
 import http from 'node:http';
 import { join } from 'node:path';
-import { askCodi, validateCodi } from './codi.js';
 import { toLead, validateEnroll } from './enroll.js';
 import { isHoneypot } from './fields.js';
 import {
@@ -16,7 +15,7 @@ import { isRetryable, sendToPortal } from './portal.js';
 
 const MAX_BODY_BYTES = 16 * 1024;
 // A 5 MB CV is about 7 MB in base64, plus the form's fields.
-const BODY_LIMITS = { '/api/careers': 8 * 1024 * 1024, '/api/codi': 64 * 1024 };
+const BODY_LIMITS = { '/api/careers': 8 * 1024 * 1024 };
 
 // Handlers get the parsed JSON body (POST) or the query's URLSearchParams (GET) and the config, and
 // resolve to { status, note?, body? }; body is added to the answer's JSON; note goes to the log, so
@@ -27,7 +26,6 @@ const routes = {
   '/api/contact': { POST: submission('contact', validateContact, toContact) },
   '/api/pitch': { POST: submission('pitch', validatePitch, toPitch) },
   '/api/careers': { POST: submission('careers', validateCareers, toCareers) },
-  '/api/codi': { POST: codi },
 };
 
 /**
@@ -42,19 +40,6 @@ async function health(query, { outboxDir, now }) {
   const queue = outboxDir ? await queueStats(outboxDir, now?.()) : null;
   const late = maxAge !== null && queue?.oldestAgeSeconds > Number(maxAge);
   return { status: late ? 503 : 200, body: { queue } };
-}
-
-// Codi, the Academy's admissions assistant (codi.js). Never logs what was said.
-async function codi(body, config) {
-  const result = validateCodi(body);
-  if (!result.ok) {
-    return {
-      status: 400,
-      note: `invalid=${result.errors.join(',')}`,
-      body: { errors: result.errors },
-    };
-  }
-  return askCodi(result.data, config);
 }
 
 // A form's handler: validate turns the browser's fields into data, toPortal maps it for the portal.
@@ -92,9 +77,8 @@ async function forward(kind, body, id, config) {
 }
 
 /**
- * config: { portalUrl, apiKey, timeoutMs?, fetch?, log?, outboxDir?, now?, anthropicKey?,
- * anthropic? }; without outboxDir, nothing is queued; without anthropicKey (or an injected anthropic
- * client), Codi answers 503 offline. Call .listen() on the result.
+ * config: { portalUrl, apiKey, timeoutMs?, fetch?, log?, outboxDir?, now? }; without outboxDir,
+ * nothing is queued. Call .listen() on the result.
  */
 export function createServer(config) {
   const log = config.log ?? console.log;
@@ -175,15 +159,7 @@ if (import.meta.main) {
   // STATE_DIRECTORY comes from the unit's StateDirectory=; OUTBOX_DIR is for local runs.
   const outboxDir = STATE_DIRECTORY ? join(STATE_DIRECTORY, 'outbox') : OUTBOX_DIR;
   if (!outboxDir) console.warn('website-relay: no STATE_DIRECTORY or OUTBOX_DIR, queue disabled');
-  // Optional: without it the relay runs and Codi answers 503 offline.
-  const { ANTHROPIC_API_KEY } = process.env;
-  if (!ANTHROPIC_API_KEY) console.warn('website-relay: no ANTHROPIC_API_KEY, Codi offline');
-  const config = {
-    portalUrl: PORTAL_URL,
-    apiKey: WEBSITE_LEADS_API_KEY,
-    outboxDir,
-    anthropicKey: ANTHROPIC_API_KEY,
-  };
+  const config = { portalUrl: PORTAL_URL, apiKey: WEBSITE_LEADS_API_KEY, outboxDir };
   const server = createServer(config);
   server.listen(Number(PORT), '127.0.0.1', () => {
     console.log(`website-relay listening on 127.0.0.1:${PORT}`);
