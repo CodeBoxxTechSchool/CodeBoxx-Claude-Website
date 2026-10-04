@@ -46,7 +46,7 @@ export default {
     title:
       'A 16-week program that ends inside a real pod. Placement is the exit criterion, not a job board.',
     contrast:
-      'They are selecting 50 people who already built something, in San Francisco, in 2027. We start from no experience, in St. Pete, on a date you can put on a calendar.',
+      'They are selecting 50 people who already built something, in San Francisco, in 2027. We start from no experience, with the latest and greatest in applied AI, we’ve been at it since 2018 and we can give you a start date you can put on a calendar.',
   },
   // 5. Who it is for, schedule, price, apply.
   programs: {
