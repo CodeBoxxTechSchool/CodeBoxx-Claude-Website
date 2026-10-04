@@ -337,7 +337,7 @@ export default {
         },
         {
           tag: 'En ligne et en présentiel',
-          title: 'Développeur IA avancé',
+          title: 'Technologue IA avancé',
           body: "Acquérir les compétences pour percer en technologie n'a jamais été aussi facile.",
           cta: 'enroll',
         },
@@ -446,7 +446,7 @@ export default {
   },
   enroll: {
     kicker: 'Inscription',
-    titles: { fsd: 'Développeur full-stack natif en IA', ai: 'Développeur IA avancé' },
+    titles: { fsd: 'Développeur full-stack natif en IA', ai: 'Technologue IA avancé' },
     applyTitle: "Postulez à l'Académie CodeBoxx.",
     alreadyHave: 'Vous avez déjà un compte sur le portail ? ',
     logIn: 'Connectez-vous',

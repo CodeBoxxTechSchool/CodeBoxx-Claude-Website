@@ -27,7 +27,9 @@ export function addDaysIso(iso, days) {
 function columnFor(title) {
   const t = (title || '').toLowerCase().replace(/[\s-]+/g, ' ');
   if (t.includes('full stack')) return 'fsd';
-  if (t.includes('ai developer')) return 'aidev';
+  // The program was renamed Advanced AI Technologist (Oct 2026); Sanity may still
+  // say Advanced AI Developer.
+  if (t.includes('ai developer') || t.includes('ai technologist')) return 'aidev';
   return null;
 }
 

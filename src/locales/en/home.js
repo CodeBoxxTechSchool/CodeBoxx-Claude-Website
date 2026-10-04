@@ -321,7 +321,7 @@ export default {
         },
         {
           tag: 'Online & On-site',
-          title: 'Advanced AI Developer',
+          title: 'Advanced AI Technologist',
           body: 'Gaining the Skills to Break into Tech Has Never Been Easier.',
           cta: 'enroll',
         },
@@ -426,7 +426,7 @@ export default {
   },
   enroll: {
     kicker: 'Enroll',
-    titles: { fsd: 'AI Native Full-Stack Developer', ai: 'Advanced AI Developer' },
+    titles: { fsd: 'AI Native Full-Stack Developer', ai: 'Advanced AI Technologist' },
     applyTitle: 'Apply to CodeBoxx Academy.',
     alreadyHave: 'Already have a portal account? ',
     logIn: 'Log in',
