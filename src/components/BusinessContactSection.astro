@@ -1,11 +1,27 @@
 ---
-// The #contact section of the business pages (/solutions, /case-studies, EN and FR): what a
-// company can write about, the autonomy promise (training and coaching built into the delivery),
-// and the form (BusinessContact.jsx). The header's "Contact Us" (Layout's cta="contact") and the
-// pages' buttons link here; a link with data-contact-topic="<value>" also picks the form's topic.
+// The #contact section of every page for companies (Layout cta="contact": Solutions, Case
+// Studies, Corporate Training, Forge 20, Ventures, #AIDoneRight, EN and FR). Academy visitors
+// enroll; Solutions visitors inquire and pitch: the business form (BusinessContact.jsx) for an
+// inquiry, and the Ventures pitch drawer (PitchWidget.jsx) for a venture. The header's "Contact
+// Us" and the pages' buttons link here; a link with data-contact-topic="<value>" also picks the
+// form's topic. `topic`: the page's default (e.g. training on Corporate Training).
 import BusinessContact from './BusinessContact';
+import PitchWidget from './PitchWidget';
+import businessEn from '../locales/en/businessContact';
+import businessFr from '../locales/fr/businessContact';
+import homeEn from '../locales/en/home';
+import homeFr from '../locales/fr/home';
+import venturesEn from '../locales/en/ventures';
+import venturesFr from '../locales/fr/ventures';
+import commonEn from '../locales/en/common';
+import commonFr from '../locales/fr/common';
 
-const { t, home, lang } = Astro.props;
+const { lang, topic = 'project' } = Astro.props;
+const fr = lang === 'fr';
+const t = fr ? businessFr : businessEn;
+const home = fr ? homeFr : homeEn;
+const ventures = fr ? venturesFr : venturesEn;
+const common = fr ? commonFr : commonEn;
 ---
 
 <section id="contact" class="sect biz-contact">
@@ -28,8 +44,21 @@ const { t, home, lang } = Astro.props;
         <h3 class="biz-autonomy-title">{t.autonomy.title}</h3>
         <p>{t.autonomy.body}</p>
       </div>
+      <div class="biz-pitch">
+        <h3 class="biz-pitch-title">{t.pitch.title}</h3>
+        <p>{t.pitch.body}</p>
+        <div>
+          {/* idle, not visible: the drawer must answer the first click, even right after load. */}
+          <PitchWidget
+            client:idle
+            ventures={ventures}
+            lang={lang}
+            closeLabel={common.actions.close}
+          />
+        </div>
+      </div>
     </div>
-    <BusinessContact client:visible t={t} home={home} lang={lang} />
+    <BusinessContact client:visible t={t} home={home} lang={lang} defaultTopic={topic} />
   </div>
 </section>
 

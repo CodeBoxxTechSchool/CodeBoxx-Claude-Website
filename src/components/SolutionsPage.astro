@@ -16,7 +16,7 @@ import SolutionsServices from './SolutionsServices';
 import BusinessContactSection from './BusinessContactSection.astro';
 import { localizedHref } from '../lib/i18nRoutes';
 
-const { t, common, home, business, lang } = Astro.props;
+const { t, common, home, lang } = Astro.props;
 const href = (path) => localizedHref(path, lang, '');
 // The page's own #contact section (BusinessContactSection.astro), not the homepage's form.
 const contactHref = '#contact';
@@ -373,7 +373,7 @@ const academy = media('academy-keyboard');
     </section>
 
     {/* Contact: the business form */}
-    <BusinessContactSection t={business} home={home} lang={lang} />
+    <BusinessContactSection lang={lang} />
   </div>
 </Layout>
 

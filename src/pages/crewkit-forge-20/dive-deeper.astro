@@ -3,6 +3,7 @@
 // case behind the CrewKit Forge 20 appliance, linked from the Forge landing page.
 // FR twin: src/pages/fr/crewkit-forge-20/approfondir.astro.
 import Layout from '../../layouts/Layout.astro';
+import BusinessContactSection from '../../components/BusinessContactSection.astro';
 import ForgeDeep from '../../components/ForgeDeep.astro';
 import { localizedHref } from '../../lib/i18nRoutes';
 import common from '../../locales/en/common';
@@ -18,6 +19,7 @@ const pathname = Astro.url.pathname;
   description={deep.seo.description}
   image="https://codeboxx.com/assets/crewkit-forge-poster.webp"
   strings={common}
+  cta="contact"
 >
   <ForgeDeep
     t={deep}
@@ -25,4 +27,5 @@ const pathname = Astro.url.pathname;
     forgeHref={localizedHref('/crewkit-forge-20', 'en', pathname)}
     buildOrderUrl={forge.buildOrderUrl}
   />
+  <BusinessContactSection lang="en" topic="factory" />
 </Layout>

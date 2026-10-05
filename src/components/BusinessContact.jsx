@@ -5,8 +5,8 @@ import { localizedHref } from '../lib/i18nRoutes';
 import { pageUrl, useRelaySubmit } from '../lib/useRelaySubmit';
 import { trackLead } from '../lib/trackLead';
 
-// The business contact form on /solutions and /case-studies (BusinessContactSection.astro mounts
-// it in the page's #contact section): what a company writes to CodeBoxx about, an issue, a project,
+// The business contact form on the pages for companies (BusinessContactSection.astro mounts it in
+// the page's #contact section): what a company writes to CodeBoxx about, an issue, a project,
 // a quote, the software factory, staff augmentation, or training and coaching built into the
 // delivery. Posts to the relay's /api/contact as the Solutions division, with the topic and the
 // company (sent to the portal in `extra`). A link with data-contact-topic="<value>" anywhere on the
@@ -25,12 +25,12 @@ const BLANK = {
   website: '',
 };
 
-export default function BusinessContact({ t, home, lang }) {
+export default function BusinessContact({ t, home, lang, defaultTopic = 'project' }) {
   const c = home.contact;
   const values = t.topics.map((x) => x.value);
   const initialTopic = () => {
     const picked = typeof window !== 'undefined' && window.__cbxContactTopic;
-    return values.includes(picked) ? picked : 'project';
+    return values.includes(picked) ? picked : defaultTopic;
   };
   const [topic, setTopic] = React.useState(initialTopic);
   const [f, setF] = React.useState(BLANK);

@@ -5,6 +5,7 @@
 // twin at src/pages/fr/crewkit-forge-20.astro. Home's Forge band "Learn More"
 // button links here.
 import Layout from '../layouts/Layout.astro';
+import BusinessContactSection from '../components/BusinessContactSection.astro';
 import ForgeLanding from '../components/ForgeLanding.astro';
 import { localizedHref } from '../lib/i18nRoutes';
 import common from '../locales/en/common';
@@ -19,10 +20,12 @@ const pathname = Astro.url.pathname;
   description={forge.seo.description}
   image="https://codeboxx.com/assets/crewkit-forge-poster.webp"
   strings={common}
+  cta="contact"
 >
   <ForgeLanding
     t={forge}
-    contactHref={localizedHref('#contact', 'en', pathname)}
+    contactHref="#contact"
     deepHref={localizedHref('/crewkit-forge-20/dive-deeper', 'en', pathname)}
   />
+  <BusinessContactSection lang="en" topic="factory" />
 </Layout>

@@ -1,11 +1,19 @@
 ---
 // FR twin of src/pages/ai-done-right.astro. The standard itself is in English.
 import Layout from '../../layouts/Layout.astro';
+import BusinessContactSection from '../../components/BusinessContactSection.astro';
 import AdrLanding from '../../components/AdrLanding.astro';
 import common from '../../locales/fr/common';
 import adr from '../../locales/fr/aiDoneRight';
 ---
 
-<Layout lang="fr" title={adr.seo.title} description={adr.seo.description} strings={common}>
+<Layout
+  lang="fr"
+  title={adr.seo.title}
+  description={adr.seo.description}
+  strings={common}
+  cta="contact"
+>
   <AdrLanding t={adr} pageUrl="https://codeboxx.com/fr/ai-done-right/" />
+  <BusinessContactSection lang="fr" />
 </Layout>

@@ -4,6 +4,7 @@
 // PitchWidget.jsx) — everything else on this page is static, same TopBar/Footer
 // islands as Blog via Layout.astro.
 import Layout from '../layouts/Layout.astro';
+import BusinessContactSection from '../components/BusinessContactSection.astro';
 import HeroVideo from '../components/HeroVideo.astro';
 import PitchWidget from '../components/PitchWidget';
 import common from '../locales/en/common';
@@ -15,6 +16,7 @@ import ventures from '../locales/en/ventures';
   title={ventures.seo.title}
   description={ventures.seo.description}
   strings={common}
+  cta="contact"
 >
   <section class="band-dark">
     <HeroVideo />
@@ -72,4 +74,5 @@ import ventures from '../locales/en/ventures';
       </div>
     </div>
   </section>
+  <BusinessContactSection lang="en" />
 </Layout>

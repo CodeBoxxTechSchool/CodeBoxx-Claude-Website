@@ -1,4 +1,4 @@
-// The business contact form on /solutions and /case-studies (BusinessContact.jsx); FR twin:
+// The business contact form on the pages for companies (BusinessContactSection.astro); FR twin:
 // src/locales/fr/businessContact.js. Topic values are the relay's CONTACT_TOPICS
 // (relay/lists.js; the drift test keeps them in step). Shared form labels, consent and
 // notes come from home.contact.
@@ -9,6 +9,10 @@ export default {
   autonomy: {
     title: 'Delivery that leaves you autonomous.',
     body: 'We embed corporate training and coaching into the delivery of our solutions. Your people learn the tools and the code while we build, so your partners and teams can run it on their own when we hand it over.',
+  },
+  pitch: {
+    title: 'A venture to pitch?',
+    body: 'CodeBoxx Ventures puts the studio’s delivery capacity behind products we believe in. Cash, equity, or both: pitch your project to the Ventures team.',
   },
   topicLabel: 'What can we help you with?',
   topics: [

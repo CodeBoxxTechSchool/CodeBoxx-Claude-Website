@@ -5,10 +5,11 @@
 // styles (src/styles/_forge.scss) so the two business offers read as one brand;
 // page-only styles are ct- in src/styles/_corporate.scss.
 import HeroVideo from './HeroVideo.astro';
-import { localizedHref } from '../lib/i18nRoutes';
+import BusinessContactSection from './BusinessContactSection.astro';
 
 const { t, lang } = Astro.props;
-const contactHref = localizedHref('#contact', lang, '');
+// The page's own #contact section (BusinessContactSection.astro), topic training.
+const contactHref = '#contact';
 ---
 
 <section class="band-dark ct-hero">
@@ -18,7 +19,7 @@ const contactHref = localizedHref('#contact', lang, '');
     <h1 class="fg-hero-title ct-hero-title">{t.hero.title}</h1>
     <p class="fg-hero-lede">{t.hero.lede}</p>
     <div class="fg-actions">
-      <a class="btn btn-primary btn-lg" href={contactHref}>
+      <a class="btn btn-primary btn-lg" href={contactHref} data-contact-topic="training">
         {t.hero.ctaPrimary}
       </a>
       <a class="btn btn-outline-light btn-lg" href="#how-it-works">
@@ -166,9 +167,11 @@ const contactHref = localizedHref('#contact', lang, '');
     <h2 class="fg-cta-title ct-cta-title">{t.cta.title}</h2>
     <p class="fg-cta-body">{t.cta.body}</p>
     <div class="fg-actions">
-      <a class="btn btn-primary btn-lg" href={contactHref}>
+      <a class="btn btn-primary btn-lg" href={contactHref} data-contact-topic="training">
         {t.cta.primary}
       </a>
     </div>
   </div>
 </section>
+
+<BusinessContactSection lang={lang} topic="training" />

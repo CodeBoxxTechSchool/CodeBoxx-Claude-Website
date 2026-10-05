@@ -184,9 +184,10 @@ export function TopBar({
     ? () => window.dispatchEvent(new Event('codi:open'))
     : onCodi || (() => (window.location.href = contactHref));
   const showCodi = SHOW_CODI_BUTTON || codi;
-  // Students apply on the Academy page only (/academy or /fr/academie). The business pages
-  // (Layout's cta="contact": /solutions, /case-studies) ask companies to write instead, in the
-  // page's own #contact section (BusinessContactSection.astro).
+  // Academy visitors enroll, on the Academy page only (/academy or /fr/academie). The pages for
+  // companies (Layout's cta="contact": Solutions, Case Studies, Corporate Training, Forge 20,
+  // Ventures, #AIDoneRight) ask them to inquire or pitch instead, in the page's own #contact
+  // section (BusinessContactSection.astro).
   const ctaButton =
     cta === 'contact'
       ? { href: '#contact', label: strings.actions.contactUs }

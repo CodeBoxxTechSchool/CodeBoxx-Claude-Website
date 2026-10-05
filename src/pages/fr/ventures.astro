@@ -1,6 +1,7 @@
 ---
 // FR twin of src/pages/ventures.astro — see that file for the shared rationale.
 import Layout from '../../layouts/Layout.astro';
+import BusinessContactSection from '../../components/BusinessContactSection.astro';
 import HeroVideo from '../../components/HeroVideo.astro';
 import PitchWidget from '../../components/PitchWidget';
 import common from '../../locales/fr/common';
@@ -12,6 +13,7 @@ import ventures from '../../locales/fr/ventures';
   title={ventures.seo.title}
   description={ventures.seo.description}
   strings={common}
+  cta="contact"
 >
   <section class="band-dark">
     <HeroVideo />
@@ -69,4 +71,5 @@ import ventures from '../../locales/fr/ventures';
       </div>
     </div>
   </section>
+  <BusinessContactSection lang="fr" />
 </Layout>
