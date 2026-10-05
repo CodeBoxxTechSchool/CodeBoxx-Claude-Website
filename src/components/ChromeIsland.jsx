@@ -160,6 +160,31 @@ function NavItem({ item, onNavigate }) {
 // pages, via Layout's `codi` prop) show it regardless.
 const SHOW_CODI_BUTTON = false;
 
+// Academy content on a page that isn't the Academy's own (the homepage's Academy section) carries
+// data-cta="enroll". While one crosses the middle of the screen, TopBar's call to action is Enroll
+// Now instead of Contact Us.
+function useAcademyInView(enabled) {
+  const [inView, setInView] = React.useState(false);
+  React.useEffect(() => {
+    if (!enabled || typeof IntersectionObserver === 'undefined') return;
+    const sections = document.querySelectorAll('[data-cta="enroll"]');
+    if (!sections.length) return;
+    const visible = new Set();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) =>
+          e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)
+        );
+        setInView(visible.size > 0);
+      },
+      { rootMargin: '-45% 0px -45% 0px' }
+    );
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [enabled]);
+  return inView;
+}
+
 export function TopBar({
   lang,
   pathname,
@@ -167,7 +192,7 @@ export function TopBar({
   onCodi,
   langHref,
   codi = false,
-  cta = 'enroll',
+  cta = 'general',
 }) {
   const [expanded, setExpanded] = React.useState(false);
   const nav = NAV_STRUCTURE.map((n) => ({
@@ -184,17 +209,21 @@ export function TopBar({
     ? () => window.dispatchEvent(new Event('codi:open'))
     : onCodi || (() => (window.location.href = contactHref));
   const showCodi = SHOW_CODI_BUTTON || codi;
-  // Academy visitors enroll, on the Academy page only (/academy or /fr/academie). The pages for
-  // companies (Layout's cta="contact": Solutions, Case Studies, Corporate Training, Forge 20,
-  // Ventures, #AIDoneRight) ask them to inquire or pitch instead, in the page's own #contact
-  // section (BusinessContactSection.astro).
+  // Academy visitors enroll; everyone else is asked to get in touch. `cta`:
+  // - 'enroll': the Academy's pages (Academy, Financing, FAQ, Pinellas residents).
+  // - 'contact': the pages for companies (Solutions, Case Studies, Corporate Training, Forge 20,
+  //   Ventures, #AIDoneRight), to inquire or pitch in their own #contact section
+  //   (BusinessContactSection.astro).
+  // - 'general': every other page, the homepage's contact form. On the homepage, Enroll Now
+  //   while its Academy section is on screen (useAcademyInView).
+  const academyInView = useAcademyInView(cta !== 'enroll');
   const ctaButton =
-    cta === 'contact'
-      ? { href: '#contact', label: strings.actions.contactUs }
-      : {
+    cta === 'enroll' || academyInView
+      ? {
           href: localizedHref('/academy/#apply', lang, pathname),
           label: strings.actions.enrollNow,
-        };
+        }
+      : { href: cta === 'contact' ? '#contact' : contactHref, label: strings.actions.contactUs };
   return (
     <React.Fragment>
       <a className="skip-link" href="#main">
