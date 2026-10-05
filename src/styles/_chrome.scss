@@ -35,10 +35,20 @@
 // sticky top), so anchors and sticky panels don't slide under it.
 :root {
   --social-bar-h: 40px;
+  // The top bar above it (logo row), so --header-h + --social-bar-h is the sticky header.
+  --header-h: 80px;
 
   @media (max-width: v.$breakpoint-md) {
     --social-bar-h: 36px;
+    --header-h: 86px;
   }
+}
+
+// Every in-page target (#apply, #programs, #dates, #faq, #contact…) lands below the sticky
+// header instead of under it: "Enroll Now" (/academy/#apply) hid its section's title on phones.
+// :where() keeps it at zero specificity, so the offsets tuned per section still win.
+:where(main [id]) {
+  scroll-margin-top: calc(var(--header-h) + var(--social-bar-h));
 }
 
 .social-bar {
