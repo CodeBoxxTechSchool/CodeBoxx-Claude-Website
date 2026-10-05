@@ -59,6 +59,9 @@ received the submission, which a queued resend keeps.
 
 - Contact also requires `division` (`codeboxx`/`solutions`/`academy`/`ventures`), `mobile`
   (`yes`/`no`) and `country` (ISO 3166-1 alpha-2), and takes an optional `message` (2000 max).
+  The business form (/solutions, /case-studies) adds an optional `topic`
+  (`issue`/`project`/`quote`/`factory`/`staffing`/`training`) and `company` (200 max), sent to
+  the portal as `extra.topic` and `extra.company`.
 - Pitch takes an optional `projectType` (`native-app`/`web-app`/`web-project`/`other`, sent to
   the portal as `extra.projectType`) and `description` (2000 max, sent as `message`); its
   division is always `ventures`.

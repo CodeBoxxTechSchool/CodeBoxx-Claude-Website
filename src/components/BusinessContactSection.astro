@@ -1,0 +1,46 @@
+---
+// The #contact section of the business pages (/solutions, /case-studies, EN and FR): what a
+// company can write about, the autonomy promise (training and coaching built into the delivery),
+// and the form (BusinessContact.jsx). The header's "Contact Us" (Layout's cta="contact") and the
+// pages' buttons link here; a link with data-contact-topic="<value>" also picks the form's topic.
+import BusinessContact from './BusinessContact';
+
+const { t, home, lang } = Astro.props;
+---
+
+<section id="contact" class="sect biz-contact">
+  <div class="wrap biz-contact-grid">
+    <div class="biz-contact-intro">
+      <p class="eyebrow eyebrow-brand">{t.eyebrow}</p>
+      <h2 class="biz-contact-title">{t.title}</h2>
+      <p class="lede">{t.lede}</p>
+      <ul class="biz-contact-list">
+        {t.topics.map((x) => (
+          <li>
+            <a href="#contact" data-contact-topic={x.value}>
+              <span class="biz-contact-list-label">{x.label}</span>
+              <span class="biz-contact-list-hint">{x.hint}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="biz-autonomy">
+        <h3 class="biz-autonomy-title">{t.autonomy.title}</h3>
+        <p>{t.autonomy.body}</p>
+      </div>
+    </div>
+    <BusinessContact client:visible t={t} home={home} lang={lang} />
+  </div>
+</section>
+
+<script>
+  // TOPIC_EVENT in BusinessContact.jsx. The choice is also kept on window for the island, which
+  // may hydrate only once the form scrolls into view.
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest?.('[data-contact-topic]');
+    if (!link) return;
+    const topic = link.getAttribute('data-contact-topic');
+    window.__cbxContactTopic = topic;
+    window.dispatchEvent(new CustomEvent('contact:topic', { detail: topic }));
+  });
+</script>

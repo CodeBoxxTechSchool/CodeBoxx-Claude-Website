@@ -45,3 +45,14 @@ export const HEARD_ABOUT = new Map(
 // The pitch drawer's project types, the values of pitchDrawer.projectKinds in
 // src/locales/{en,fr}/ventures.js.
 export const PROJECT_TYPES = new Set(['native-app', 'web-app', 'web-project', 'other']);
+
+// The business contact form's topics (/solutions, /case-studies), the values of topics in
+// src/locales/{en,fr}/businessContact.js.
+export const CONTACT_TOPICS = new Set([
+  'issue',
+  'project',
+  'quote',
+  'factory',
+  'staffing',
+  'training',
+]);

@@ -136,12 +136,12 @@ export default {
   services: {
     eyebrow: 'SERVICES',
     title: 'Other Services at CodeBoxx',
-    // [label, href] — hrefs go through localizedHref (homepage sections).
+    // [label, href] — hrefs go through localizedHref; #service-<id> opens that tab on /solutions.
     items: [
       ['Corporate Training', '/corporate-training'],
-      ['CTO as a Service', '#solutions'],
-      ['Advisory Service', '#solutions'],
-      ['Custom Software Development', '#solutions'],
+      ['CTO as a Service', '/solutions/#service-cto'],
+      ['Advisory Service', '/solutions/#services'],
+      ['Custom Software Development', '/solutions/#service-custom'],
     ],
   },
   cta: {

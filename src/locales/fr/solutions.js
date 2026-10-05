@@ -60,6 +60,7 @@ export default {
       video: 'partners-meeting',
       cta: 'Parler à un spécialiste',
       href: '#contact',
+      topic: 'project',
     },
     {
       kicker: 'Assurer la pérennité',
@@ -141,11 +142,5 @@ export default {
     title:
       'Une formation en programmation propulsée par l’IA pour la prochaine génération de technologues.',
     cta: 'Découvrir l’Académie',
-  },
-  cta: {
-    eyebrow: 'Nous joindre',
-    title: 'Évaluons votre projet.',
-    primary: 'Nous joindre',
-    secondary: 'Voir les études de cas',
   },
 };

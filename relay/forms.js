@@ -1,5 +1,5 @@
 import { isEmail, readFields } from './fields.js';
-import { COUNTRY_CODES, PROJECT_TYPES } from './lists.js';
+import { CONTACT_TOPICS, COUNTRY_CODES, PROJECT_TYPES } from './lists.js';
 import { isSubmissionId } from './outbox.js';
 
 // At or under the portal's FormSubmission limits (names 100, email 256, phone 32, message 5000).
@@ -11,15 +11,18 @@ const MAX_LENGTH = {
   message: 2000,
   description: 2000,
   position: 100,
+  company: 200,
 };
 
 const LANGUAGES = new Set(['en', 'fr']);
 
 const CONTACT = {
   required: ['division', 'first', 'last', 'email', 'phone', 'mobile', 'lang', 'country'],
-  optional: ['message'],
+  // topic and company: the business form on /solutions and /case-studies.
+  optional: ['message', 'topic', 'company'],
   choices: {
     division: new Set(['codeboxx', 'solutions', 'academy', 'ventures']),
+    topic: CONTACT_TOPICS,
     mobile: new Set(['yes', 'no']),
     lang: LANGUAGES,
     country: COUNTRY_CODES,
@@ -138,6 +141,12 @@ export function toContact(data, now) {
     isMobilePhone: data.mobile === 'yes',
     country: data.country,
     ...(data.message && { message: data.message }),
+    ...((data.topic || data.company) && {
+      extra: {
+        ...(data.topic && { topic: data.topic }),
+        ...(data.company && { company: data.company }),
+      },
+    }),
   };
 }
 

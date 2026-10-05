@@ -136,9 +136,9 @@ export default {
     title: 'Autres services de CodeBoxx',
     items: [
       ['Formation en entreprise', '/corporate-training'],
-      ['CTO en tant que service', '#solutions'],
-      ['Services-conseils', '#solutions'],
-      ['Développement de logiciels sur mesure', '#solutions'],
+      ['CTO en tant que service', '/solutions/#service-cto'],
+      ['Services-conseils', '/solutions/#services'],
+      ['Développement de logiciels sur mesure', '/solutions/#service-custom'],
     ],
   },
   cta: {

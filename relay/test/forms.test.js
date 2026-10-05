@@ -52,6 +52,18 @@ test('maps a valid contact submission to a form submission', () => {
   const bare = toContact(validateContact({ ...CONTACT, message: '  ', pageUrl: undefined }).data);
   assert.equal('message' in bare || 'pageUrl' in bare, false);
   assert.equal(toContact(validateContact({ ...CONTACT, mobile: 'yes' }).data).isMobilePhone, true);
+  assert.equal('extra' in bare, false);
+});
+
+test('sends the business form topic and company in extra', () => {
+  const both = validateContact({ ...CONTACT, topic: 'quote', company: ' Acme Inc. ' });
+  assert.equal(both.ok, true);
+  assert.deepEqual(toContact(both.data, NOW).extra, { topic: 'quote', company: 'Acme Inc.' });
+  const topicOnly = validateContact({ ...CONTACT, topic: 'training', company: '' });
+  assert.deepEqual(toContact(topicOnly.data, NOW).extra, { topic: 'training' });
+  assert.deepEqual(contactErrors({ topic: 'sales' }), ['topic']);
+  assert.deepEqual(contactErrors({ company: 'a'.repeat(200) }), []);
+  assert.deepEqual(contactErrors({ company: 'a'.repeat(201) }), ['company']);
 });
 
 test('maps a valid pitch to a Ventures form submission', () => {

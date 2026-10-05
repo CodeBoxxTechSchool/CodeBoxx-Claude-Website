@@ -13,11 +13,13 @@
 import Layout from '../layouts/Layout.astro';
 import HeroVideo from './HeroVideo.astro';
 import SolutionsServices from './SolutionsServices';
+import BusinessContactSection from './BusinessContactSection.astro';
 import { localizedHref } from '../lib/i18nRoutes';
 
-const { t, common, home, lang } = Astro.props;
+const { t, common, home, business, lang } = Astro.props;
 const href = (path) => localizedHref(path, lang, '');
-const contactHref = href('#contact');
+// The page's own #contact section (BusinessContactSection.astro), not the homepage's form.
+const contactHref = '#contact';
 
 const services = [
   { id: 'cto' },
@@ -63,7 +65,13 @@ const coaching = media('vibe-coaching');
 const academy = media('academy-keyboard');
 ---
 
-<Layout lang={lang} title={t.seo.title} description={t.seo.description} strings={common}>
+<Layout
+  lang={lang}
+  title={t.seo.title}
+  description={t.seo.description}
+  strings={common}
+  cta="contact"
+>
   <div class="sol-page">
     {/* Hero */}
     <section class="band-dark sol-hero">
@@ -85,7 +93,7 @@ const academy = media('academy-keyboard');
           </span>
         </p>
         <div class="fg-actions">
-          <a class="btn btn-primary btn-lg" href={contactHref}>
+          <a class="btn btn-primary btn-lg" href={contactHref} data-contact-topic="project">
             {t.hero.ctaPrimary}
           </a>
           <a class="btn btn-outline-light btn-lg" href="#services">
@@ -214,7 +222,11 @@ const academy = media('academy-keyboard');
                 <span class="kicker">{p.kicker}</span>
                 <h3 class="sol-pillar-title">{p.title}</h3>
                 <p class="pbody">{p.body}</p>
-                <a class="sol-link" href={href(p.href)}>
+                <a
+                  class="sol-link"
+                  href={p.topic ? contactHref : href(p.href)}
+                  data-contact-topic={p.topic}
+                >
                   {p.cta} <span aria-hidden="true">→</span>
                 </a>
               </div>
@@ -236,7 +248,7 @@ const academy = media('academy-keyboard');
         <p class="eyebrow eyebrow-brand">{t.coaching.eyebrow}</p>
         <h2 class="sol-h2 sol-h2-inverse">{t.coaching.title}</h2>
         <div>
-          <a class="btn btn-primary btn-lg" href={contactHref}>
+          <a class="btn btn-primary btn-lg" href={contactHref} data-contact-topic="training">
             {t.coaching.cta}
           </a>
         </div>
@@ -360,21 +372,8 @@ const academy = media('academy-keyboard');
       </div>
     </section>
 
-    {/* Closing call to action */}
-    <section class="fg-cta">
-      <div class="wrap fg-cta-inner">
-        <p class="eyebrow eyebrow-brand">{t.cta.eyebrow}</p>
-        <h2 class="fg-cta-title">{t.cta.title}</h2>
-        <div class="fg-actions">
-          <a class="btn btn-primary btn-lg" href={contactHref}>
-            {t.cta.primary}
-          </a>
-          <a class="btn btn-outline-light btn-lg" href={href('/case-studies')}>
-            {t.cta.secondary}
-          </a>
-        </div>
-      </div>
-    </section>
+    {/* Contact: the business form */}
+    <BusinessContactSection t={business} home={home} lang={lang} />
   </div>
 </Layout>
 
