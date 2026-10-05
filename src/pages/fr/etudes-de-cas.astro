@@ -5,21 +5,29 @@ import HeroVideo from '../../components/HeroVideo.astro';
 import { localizedHref } from '../../lib/i18nRoutes';
 import common from '../../locales/fr/common';
 import cs from '../../locales/fr/caseStudies';
-import ventures from '../../locales/fr/ventures';
-import PitchWidget from '../../components/PitchWidget';
+import home from '../../locales/fr/home';
+import business from '../../locales/fr/businessContact';
+import BusinessContactSection from '../../components/BusinessContactSection.astro';
 
 const pathname = Astro.url.pathname;
-const contactHref = localizedHref('#contact', 'fr', pathname);
+// The page's own #contact section (BusinessContactSection.astro).
+const contactHref = '#contact';
 ---
 
-<Layout lang="fr" title={cs.seo.title} description={cs.seo.description} strings={common}>
+<Layout
+  lang="fr"
+  title={cs.seo.title}
+  description={cs.seo.description}
+  strings={common}
+  cta="contact"
+>
   <section class="band-dark">
     <HeroVideo />
     <div class="wrap d-flex flex-column gap-4 align-items-start">
       <span class="pill">{cs.pill}</span>
       <h1 class="band-title">{cs.band.title}</h1>
       <p class="band-lede">{cs.band.lede}</p>
-      <a class="btn btn-primary" href={contactHref}>
+      <a class="btn btn-primary" href={contactHref} data-contact-topic="project">
         {cs.cta.contact}
       </a>
     </div>
@@ -117,8 +125,12 @@ const contactHref = localizedHref('#contact', 'fr', pathname);
       <p class="eyebrow eyebrow-brand">{cs.cta.eyebrow}</p>
       <h2 class="h2 h2-inverse">{cs.cta.title}</h2>
       <div>
-        <PitchWidget client:load ventures={ventures} lang="fr" closeLabel={common.actions.close} />
+        <a class="btn btn-primary btn-lg" href={contactHref} data-contact-topic="project">
+          {cs.cta.contact}
+        </a>
       </div>
     </div>
   </section>
+
+  <BusinessContactSection t={business} home={home} lang="fr" />
 </Layout>

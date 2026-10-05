@@ -27,6 +27,9 @@ const {
   langHref,
   // The page mounts Codi (CodiChat.jsx): TopBar's "Talk With Codi" opens it.
   codi = false,
+  // TopBar's call to action: 'enroll' (the Academy application) or 'contact' (the page's own
+  // #contact section, on the business pages).
+  cta = 'enroll',
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
@@ -54,6 +57,7 @@ const pathname = Astro.url.pathname;
           strings={strings}
           langHref={langHref}
           codi={codi}
+          cta={cta}
         />
       )}
       <main id="main" tabindex="-1">

@@ -21,6 +21,7 @@ export default {
   },
   actions: {
     enrollNow: "S'inscrire",
+    contactUs: 'Nous joindre',
     talkWithCodi: 'Parler à Codi',
     close: 'Fermer',
     language: 'Langue',

@@ -160,7 +160,15 @@ function NavItem({ item, onNavigate }) {
 // pages, via Layout's `codi` prop) show it regardless.
 const SHOW_CODI_BUTTON = false;
 
-export function TopBar({ lang, pathname, strings, onCodi, langHref, codi = false }) {
+export function TopBar({
+  lang,
+  pathname,
+  strings,
+  onCodi,
+  langHref,
+  codi = false,
+  cta = 'enroll',
+}) {
   const [expanded, setExpanded] = React.useState(false);
   const nav = NAV_STRUCTURE.map((n) => ({
     key: n.key,
@@ -176,8 +184,16 @@ export function TopBar({ lang, pathname, strings, onCodi, langHref, codi = false
     ? () => window.dispatchEvent(new Event('codi:open'))
     : onCodi || (() => (window.location.href = contactHref));
   const showCodi = SHOW_CODI_BUTTON || codi;
-  // Students apply on the Academy page only (/academy or /fr/academie).
-  const enrollHref = localizedHref('/academy/#apply', lang, pathname);
+  // Students apply on the Academy page only (/academy or /fr/academie). The business pages
+  // (Layout's cta="contact": /solutions, /case-studies) ask companies to write instead, in the
+  // page's own #contact section (BusinessContactSection.astro).
+  const ctaButton =
+    cta === 'contact'
+      ? { href: '#contact', label: strings.actions.contactUs }
+      : {
+          href: localizedHref('/academy/#apply', lang, pathname),
+          label: strings.actions.enrollNow,
+        };
   return (
     <React.Fragment>
       <a className="skip-link" href="#main">
@@ -199,8 +215,8 @@ export function TopBar({ lang, pathname, strings, onCodi, langHref, codi = false
             </Navbar.Collapse>
             <div className="d-none d-lg-flex align-items-center gap-3 flex-shrink-0">
               <LanguageToggle lang={lang} pathname={pathname} hrefOverride={langHref} />
-              <Button size="sm" variant="outline-primary" href={enrollHref}>
-                {strings.actions.enrollNow}
+              <Button size="sm" variant="outline-primary" href={ctaButton.href}>
+                {ctaButton.label}
               </Button>
               {showCodi && (
                 <Button size="sm" onClick={handleCodi}>
@@ -213,8 +229,8 @@ export function TopBar({ lang, pathname, strings, onCodi, langHref, codi = false
         <SocialBar strings={strings} />
       </header>
       <div className="mobile-cta-bar d-lg-none">
-        <Button variant="outline-primary" href={enrollHref}>
-          {strings.actions.enrollNow}
+        <Button variant="outline-primary" href={ctaButton.href}>
+          {ctaButton.label}
         </Button>
         {showCodi && <Button onClick={handleCodi}>{strings.actions.talkWithCodi}</Button>}
       </div>

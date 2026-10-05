@@ -23,6 +23,7 @@ export default {
   },
   actions: {
     enrollNow: 'Enroll Now',
+    contactUs: 'Contact Us',
     talkWithCodi: 'Talk With Codi',
     close: 'Close',
     language: 'Language',

@@ -58,6 +58,7 @@ export default {
       video: 'partners-meeting',
       cta: 'Talk to a specialist',
       href: '#contact',
+      topic: 'project',
     },
     {
       kicker: 'Ensure sustainability',
@@ -135,11 +136,5 @@ export default {
     eyebrow: 'CodeBoxx Academy',
     title: 'AI-enabled coding education for next-gen technologists.',
     cta: 'Discover the Academy',
-  },
-  cta: {
-    eyebrow: 'Contact us',
-    title: "Let's scope your project.",
-    primary: 'Contact us',
-    secondary: 'See the case studies',
   },
 };
