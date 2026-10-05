@@ -18,7 +18,7 @@ const postDates = await fetchPostDates({
 // adapter/server needed, so the rsync-dist-to-nginx deploy pipeline
 // (.github/workflows/deploy.yml) works as-is.
 export default defineConfig({
-  site: 'https://codeboxx.com',
+  site: 'https://codeboxx.ai',
   output: 'static',
   integrations: [
     react(),

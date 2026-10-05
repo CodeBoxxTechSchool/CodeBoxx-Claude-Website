@@ -1,14 +1,16 @@
-# Old Wix URL -> page on https://codeboxx.com: the source of truth for the nginx redirects.
+# Old Wix URL -> page on https://codeboxx.ai (SITE in redirects.js): the source of truth for the
+# nginx redirects.
 # After an edit, run `node ops/nginx/redirects.js` to regenerate conf.d/codeboxx-redirects.conf
 # (the tests fail until you do). Format and install: ops/nginx/README.md.
 #
 # [hosts]: <hostname> <group>. [redirects]: <group>[,<group>...] <old path> <target>, tab-separated.
 #   old path: /path (with or without a trailing slash), /path/* (the path and everything under
 #             it, tried in file order after the exact paths) or * (the rest of the group's paths).
-#   target:   a path on https://codeboxx.com with an optional #fragment, or = for the same path.
+#   target:   a path on https://codeboxx.ai with an optional #fragment, or = for the same path.
 # The request's query string (gclid, utm_*) is kept, before the fragment. Old paths match
 # ignoring case. /.well-known/acme-challenge/ is never redirected.
-# apex lists only paths the new site doesn't serve: everything else there is the new site.
+# codeboxx.ai is the one live origin: www and the apex (codeboxx.com) send every path there, the
+# old Wix paths to their page and everything else to the same path.
 
 [hosts]
 codeboxx.com	apex
@@ -133,7 +135,7 @@ www,apex	/join-our-team	/careers/
 www	/crewkit-forge-20	/crewkit-forge-20/
 www	/privacy-policy	/privacy-policy/
 www	/terms-conditions	/terms-conditions/
-www	*	=
+www,apex	*	=
 
 # academy.codeboxx.com; /enroll, /faq, /contact, /pinellas, /financing-options and
 # /technology-training-for-businesses are the Wix site's own shortcuts. /academy is

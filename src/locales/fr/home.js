@@ -317,11 +317,11 @@ export default {
   },
   academyTopics: {
     program: {
-      titleLine1: '16 semaines, à temps plein',
+      titleLine1: 'À temps plein, cinq jours par semaine',
       blurb:
         "Les cohortes débutent à dates fixes au cours de l'année. Aucun diplôme préalable requis, seulement un test d'admission.",
       detail:
-        "Seize semaines, cinq jours par semaine. Le test d'admission mesure l'aptitude, pas les diplômes, et la page de l'Académie donne les dates de rentrée.",
+        "Le test d'admission mesure l'aptitude, pas les diplômes, et la page de l'Académie donne les dates de rentrée.",
     },
     courses: {
       titleLine1: 'Nos cours',

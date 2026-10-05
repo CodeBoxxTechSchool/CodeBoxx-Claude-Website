@@ -6,7 +6,7 @@
 // changefreq/priority: Google ignores them.
 import { localizedHref } from './i18nRoutes.js';
 
-export const SITE_URL = 'https://codeboxx.com';
+export const SITE_URL = 'https://codeboxx.ai';
 
 // Map of post slug -> ISO date it was last edited. Returns an empty map (no
 // lastmod, build still succeeds) if the project ID is missing or Sanity is

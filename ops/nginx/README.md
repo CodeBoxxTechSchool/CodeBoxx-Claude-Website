@@ -4,18 +4,17 @@ On the droplet, nginx answers every old Wix URL of `codeboxx.com`, `www.codeboxx
 `academy.codeboxx.com`, `academie.codeboxx.com`, `solutions.codeboxx.com` (and their `www.`) with a
 single 301 to its page on `https://codeboxx.ai`, the main domain (`SITE` in `redirects.js`; CLP-1342). Node 24, no npm dependencies.
 
-- `www.codeboxx.com`: blog posts to `/blog/<slug>/`, a few old pages to their new page, anything
-  else to the same path on the apex.
-- `codeboxx.com`: the same old paths, but only those the new site doesn't serve; everything else is
-  the new site, as before.
+- `www.codeboxx.com` and `codeboxx.com` (the apex): blog posts to `/blog/<slug>/`, a few old pages
+  to their new page, anything else to the same path on `https://codeboxx.ai`. The apex serves no
+  page itself: codeboxx.ai is the one live origin.
 - academy, academie (in French) and solutions: old pages to their page or homepage section, anything
   else to the Academy page (`/academy/`, `/fr/academie/`); corporate-training pages to
   `/corporate-training/` (`/fr/formation-entreprise/`) or Solutions (`/#solutions`) section.
 - The query string (`gclid`, `utm_*`) is kept, before the fragment. `/.well-known/acme-challenge/`,
   the bare IP and unknown hosts are never redirected.
 
-Port 80 answers every host: old URLs go straight to their `https://codeboxx.ai` page, other
-`http://codeboxx.com` URLs to the same URL over https (one 301 either way), certificate challenges
+Port 80 answers every host: old URLs and every `http://codeboxx.com` URL go straight to their
+`https://codeboxx.ai` page (one 301), certificate challenges
 are served from `/var/www/letsencrypt`, and the IP and unknown hosts get the site as before (the
 uptime checks use the IP). Port 443 answers the eight names with one Let's Encrypt certificate
 (CLP-1343): the same redirects, then the site; the IP and unknown names fail the handshake. The
@@ -47,7 +46,7 @@ npm run test:ops              # fails while the generated file is out of date
 
 The tests check that every old URL has a target, every target is a page in `new-pages.txt` (or a
 file in `public/`), academie's targets are the French of academy's (`src/lib/i18nRoutes.js`), and
-the apex never redirects a page of the new site. When pages are added or removed, refresh
+the apex sends each page of the new site to the same path on codeboxx.ai. When pages are added or removed, refresh
 `new-pages.txt` from the built site: `(cd dist && find . -name index.html | sed 's#^\.##; s#index.html$##' | sort)`.
 
 ## Test with Docker
@@ -87,12 +86,13 @@ Without the `codeboxx-https.conf` mount it's step 1 below alone: `nginx -t` and 
 `check-redirects.js` sends each old URL (with and without its trailing slash, plus samples with a
 query string, in capitals and under each prefix) with its old `Host:` header, expects one 301 to the
 `redirects.tsv` target, then expects 200 from each target. It also checks that certificate
-challenges aren't redirected. Over http, the apex's own pages must be one 301 to the same URL on
-https, the targets are fetched through the IP, and the IP and an unknown host must get the site.
+challenges aren't redirected. The new site's pages on the apex must be one 301 to the same path
+on codeboxx.ai. The targets, headers and relay are fetched from the site: through the IP over http
+when `--base` is an IP, else from `https://codeboxx.ai` (`--site <url>` to choose). Over http the
+IP and an unknown host must get the site.
 On both, the homepage must come gzipped with `Cache-Control: no-cache`, and its `/_astro/`
 stylesheet gzipped and cached for a year (`immutable`). Over https, every request checks the certificate against its host name (`--ca`: a test CA
-instead of the system's), the apex's own pages must answer 200, and the IP and an unknown name
-must fail the handshake. It prints the failures and a summary, and exits 1 on any failure.
+instead of the system's), and the IP and an unknown name must fail the handshake. It prints the failures and a summary, and exits 1 on any failure.
 
 ## Install on the droplet
 

@@ -7,9 +7,13 @@ import { OLD_URLS, load, match, resolve } from './redirects.js';
 const USAGE =
   'usage: node ops/nginx/check-redirects.js --base http://159.223.145.47 [--relay]\n' +
   '       node ops/nginx/check-redirects.js --base https://159.223.145.47 [--ca test-ca.pem] [--relay]\n' +
-  '       node ops/nginx/check-redirects.js --base https://codeboxx.com --relay   (after the DNS swap)';
+  '       node ops/nginx/check-redirects.js --base https://codeboxx.com --relay   (after the DNS swap)\n' +
+  '  --site <url>: where the targets, headers and relay are fetched, the site itself (default:\n' +
+  '  http://<ip> when --base is an IP, else https://codeboxx.ai)';
 const QUERY = 'gclid=x&utm_source=y';
 const APEX = 'codeboxx.com';
+// The one live origin: every old host, the apex included, redirects there.
+const SITE_HOST = 'codeboxx.ai';
 const PARALLEL = 8;
 // Its own user agent, so ops/nginx-report leaves out the 404s it asks for on purpose.
 export const USER_AGENT = 'codeboxx-check-redirects';
@@ -93,14 +97,12 @@ const oldPaths = (group) =>
 
 /**
  * Every request to make: { host, path, location } (a 301 there), { host, path, unchanged }, or
- * { host, path, rejected } (no handshake). Over http the apex's own pages go to https.
+ * { host, path, rejected } (no handshake). The apex serves no page: every path of it is a 301 to
+ * codeboxx.ai, the new site's pages to the same path.
  */
 export function plan(table, baseHost, secure = false) {
   const checks = [];
-  const page = (host, path) =>
-    host === APEX && !secure
-      ? { host, path, location: `https://${APEX}${path}` }
-      : { host, path, unchanged: 200 };
+  const page = (host, path) => ({ host, path, unchanged: 200 });
   for (const [host, group] of Object.entries(table.hosts)) {
     const paths = new Set();
     for (const path of oldPaths(group)) paths.add(path).add(path.replace(/\/?$/, '/'));
@@ -141,7 +143,11 @@ export function plan(table, baseHost, secure = false) {
     '/crewkit-forge-20',
     '/fr/blogue/',
   ];
-  for (const path of apexPages) checks.push(page(APEX, path));
+  // The apex serves nothing itself: each of the new site's pages goes to the same path on the site.
+  for (const path of apexPages) {
+    const [pathname, query] = path.split('?');
+    checks.push({ host: APEX, path, location: resolve(table, APEX, pathname, query) });
+  }
   return checks;
 }
 
@@ -163,10 +169,19 @@ export async function main(args, { out = console.log, err = console.error } = {}
   const caIndex = args.indexOf('--ca');
   const ca = caIndex >= 0 ? readFileSync(args[caIndex + 1]) : undefined;
   const secure = base.startsWith('https:');
-  // Over http the apex answers with a redirect: its pages are fetched through the IP.
-  const siteHost = secure ? APEX : new URL(base).hostname;
+  // The targets, headers and relay are the site's: through the IP's default server over http (the
+  // droplet answers any unknown name with the site), else codeboxx.ai itself.
+  const baseHost = new URL(base).hostname;
+  const siteIndex = args.indexOf('--site');
+  const siteBase =
+    siteIndex >= 0
+      ? args[siteIndex + 1]
+      : isIP(baseHost)
+        ? `http://${baseHost}`
+        : `https://${SITE_HOST}`;
+  const siteHost = isIP(new URL(siteBase).hostname) ? new URL(siteBase).hostname : SITE_HOST;
   const table = load();
-  const checks = plan(table, new URL(base).hostname, secure);
+  const checks = plan(table, baseHost, secure);
   const failures = [];
   const fail = (what, got) => failures.push(`${what}: got ${got}`);
   const describe = (res) => `${res.status}${res.location ? ` -> ${res.location}` : ''}`;
@@ -199,7 +214,7 @@ export async function main(args, { out = console.log, err = console.error } = {}
 
   let reached = 0;
   await runAll(targets, async (path) => {
-    const res = await send(base, siteHost, path, 'HEAD', ca).catch((error) => error);
+    const res = await send(siteBase, siteHost, path, 'HEAD', ca).catch((error) => error);
     if (res instanceof Error || res.status !== 200)
       return fail(`target ${siteHost}${path} (want 200)`, res.message ?? describe(res));
     reached++;
@@ -208,11 +223,11 @@ export async function main(args, { out = console.log, err = console.error } = {}
   // Compression and caching (ops/nginx/snippets/codeboxx-site.conf), on the homepage and its CSS.
   let headers = 'unchecked';
   try {
-    const css = stylesheet((await get(base, siteHost, '/', { ca })).body);
+    const css = stylesheet((await get(siteBase, siteHost, '/', { ca })).body);
     if (!css) fail(`headers ${siteHost}/`, 'no /_astro/ stylesheet in the page');
     else {
-      const page = await get(base, siteHost, '/', { gzip: true, ca });
-      const asset = await get(base, siteHost, css, { gzip: true, ca });
+      const page = await get(siteBase, siteHost, '/', { gzip: true, ca });
+      const asset = await get(siteBase, siteHost, css, { gzip: true, ca });
       const problems = headerProblems(page, asset);
       for (const problem of problems) fail(`headers ${siteHost}`, problem);
       headers = problems.length ? 'wrong' : 'ok';
@@ -222,7 +237,7 @@ export async function main(args, { out = console.log, err = console.error } = {}
   }
 
   if (args.includes('--relay')) {
-    const res = await send(base, siteHost, '/api/health', 'GET', ca).catch((error) => error);
+    const res = await send(siteBase, siteHost, '/api/health', 'GET', ca).catch((error) => error);
     if (res instanceof Error || res.status !== 200)
       fail(`relay ${siteHost}/api/health (want 200)`, res.message ?? describe(res));
   }

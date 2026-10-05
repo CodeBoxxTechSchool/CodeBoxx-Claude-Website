@@ -7,8 +7,6 @@
 .biz-contact {
   background:
     radial-gradient(circle at 100% 0%, rgba(67, 180, 240, 0.14), transparent 40%), v.$ui-slate-200;
-  // Clear of the sticky header when the header's "Contact Us" lands here.
-  scroll-margin-top: calc(72px + var(--social-bar-h));
 }
 .biz-contact-grid {
   display: grid;

@@ -45,7 +45,8 @@ on all eight names as soon as they point at the droplet.
   the CNAME) on both Wix nameservers and on 1.1.1.1, 8.8.8.8 and 9.9.9.9 must be the droplet alone
   (it shows which ones still answer Wix). Then a valid certificate for the name, served by the
   droplet, with the days left, and `http://<name>/` answering one 301 to `https://codeboxx.com/…`.
-  When `codeboxx.com` is among the names, it also checks `https://codeboxx.com/api/health`. With
+  When `codeboxx.com` is among the names, it also checks that `https://codeboxx.com/api/health` is
+  one 301 to `https://codeboxx.ai/api/health` (codeboxx.ai is the one live origin). With
   `--snapshot`, every record other than the eight names' A/AAAA/CNAME must still hold the
   snapshot's values. It prints one line per check and a summary, and exits 1 on any failure.
 
@@ -139,9 +140,10 @@ Any "no" means the switch doesn't happen; everything stays as it is.
       arrive; the received message's headers (show original) show `spf=pass`, `dkim=pass` and
       `dmarc=pass`.
 - [ ] Droplet operator, DigitalOcean → Monitoring → Uptime: point the three checks from
-      `http://159.223.145.47/…` to `https://codeboxx.com/`, `https://codeboxx.com/api/health` and
-      `https://codeboxx.com/api/health?queue=900`, and turn on the certificate expiry alert. Test
-      an alert: point one check at `https://codeboxx.com/api/health?queue=x` (answers 400) until
+      `http://159.223.145.47/…` to `https://codeboxx.ai/`, `https://codeboxx.ai/api/health` and
+      `https://codeboxx.ai/api/health?queue=900` (codeboxx.com only redirects there), and turn on the
+      certificate expiry alert. Test an alert: point one check at
+      `https://codeboxx.ai/api/health?queue=x` (answers 400) until
       the alert arrives, then set it back and see it recover.
 - [ ] Droplet operator, on the droplet for the first hour: `journalctl -u website-relay -f` and
       `tail -f /var/log/nginx/error.log`. Look for portal errors, 502s and queued submissions.

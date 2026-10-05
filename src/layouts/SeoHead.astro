@@ -14,14 +14,15 @@ const {
   lang,
   title,
   description,
-  image = 'https://codeboxx.com/assets/hero-bg.png',
+  image = 'https://codeboxx.ai/assets/hero-bg.png',
   type = 'website',
   noindex = false,
   structuredData = null,
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
-const SITE_URL = 'https://codeboxx.com';
+// The one live origin: canonicals, hreflang, og:url and JSON-LD all name codeboxx.ai.
+const SITE_URL = 'https://codeboxx.ai';
 const SITE_NAME = 'CodeBoxx';
 const canonical = SITE_URL + pathname;
 const enHref = SITE_URL + localizedHref(pathname, 'en', pathname);
