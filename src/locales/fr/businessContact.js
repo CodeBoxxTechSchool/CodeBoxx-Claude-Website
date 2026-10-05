@@ -8,6 +8,10 @@ export default {
     title: 'Une livraison qui vous rend autonomes.',
     body: 'Nous intégrons la formation en entreprise et le coaching à la livraison de nos solutions. Vos équipes apprennent les outils et le code pendant que nous bâtissons, pour que vos partenaires et vos équipes puissent l’exploiter seuls lors de la passation.',
   },
+  pitch: {
+    title: 'Une entreprise à nous présenter ?',
+    body: 'CodeBoxx Ventures met la capacité de livraison du studio derrière des produits en lesquels nous croyons. Argent, capital, ou les deux : présentez votre projet à l’équipe Ventures.',
+  },
   topicLabel: 'Comment pouvons-nous vous aider ?',
   topics: [
     {

@@ -5,8 +5,6 @@ import HeroVideo from '../../components/HeroVideo.astro';
 import { localizedHref } from '../../lib/i18nRoutes';
 import common from '../../locales/fr/common';
 import cs from '../../locales/fr/caseStudies';
-import home from '../../locales/fr/home';
-import business from '../../locales/fr/businessContact';
 import BusinessContactSection from '../../components/BusinessContactSection.astro';
 
 const pathname = Astro.url.pathname;
@@ -132,5 +130,5 @@ const contactHref = '#contact';
     </div>
   </section>
 
-  <BusinessContactSection t={business} home={home} lang="fr" />
+  <BusinessContactSection lang="fr" />
 </Layout>

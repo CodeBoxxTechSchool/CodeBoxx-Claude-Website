@@ -3,11 +3,19 @@
 // and the public, with the full PDF to download from /docs/. Body in
 // AdrLanding.astro, shared with the FR twin at src/pages/fr/ai-done-right.astro.
 import Layout from '../layouts/Layout.astro';
+import BusinessContactSection from '../components/BusinessContactSection.astro';
 import AdrLanding from '../components/AdrLanding.astro';
 import common from '../locales/en/common';
 import adr from '../locales/en/aiDoneRight';
 ---
 
-<Layout lang="en" title={adr.seo.title} description={adr.seo.description} strings={common}>
+<Layout
+  lang="en"
+  title={adr.seo.title}
+  description={adr.seo.description}
+  strings={common}
+  cta="contact"
+>
   <AdrLanding t={adr} pageUrl="https://codeboxx.com/ai-done-right/" />
+  <BusinessContactSection lang="en" />
 </Layout>
