@@ -510,9 +510,10 @@ function DivisionBand({
   left,
   aside,
   badge,
+  cta,
 }) {
   return (
-    <section id={id} className={'sect' + (alt ? ' sect-alt' : '')}>
+    <section id={id} className={'sect' + (alt ? ' sect-alt' : '')} data-cta={cta}>
       <div className="wrap">
         {aside ? (
           <div className="d-flex gap-5 align-items-start justify-content-between flex-wrap">
@@ -1031,6 +1032,7 @@ function Academy() {
     <DivisionBand
       alt
       id={academyId}
+      cta="enroll"
       index="05"
       role={home.academy.role}
       name={home.academy.name}

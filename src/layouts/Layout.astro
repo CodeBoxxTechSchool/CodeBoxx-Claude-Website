@@ -27,9 +27,10 @@ const {
   langHref,
   // The page mounts Codi (CodiChat.jsx): TopBar's "Talk With Codi" opens it.
   codi = false,
-  // TopBar's call to action, by audience: 'enroll' (the Academy application, for students) or
-  // 'contact' (the page's own #contact section: inquire or pitch, for companies).
-  cta = 'enroll',
+  // TopBar's call to action, by audience: 'enroll' (the Academy application, on the Academy's
+  // pages), 'contact' (the page's own #contact section: inquire or pitch, for companies) or
+  // 'general' (Contact Us, the homepage's contact form).
+  cta = 'general',
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
