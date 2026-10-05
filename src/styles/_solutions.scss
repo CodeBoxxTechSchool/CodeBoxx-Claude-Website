@@ -242,6 +242,8 @@ $sol-line: rgba(255, 255, 255, 0.1);
 }
 .sol-tab {
   position: relative;
+  // #service-<id> links (homepage pipeline) land on the tab, clear of the sticky header.
+  scroll-margin-top: calc(120px + var(--social-bar-h));
   display: flex;
   gap: 20px;
   align-items: flex-start;

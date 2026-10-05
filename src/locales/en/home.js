@@ -53,7 +53,7 @@ export default {
   platform: {
     eyebrow: 'The Pipeline',
     title: 'Three divisions. One pipeline.',
-    lede: 'One AI-first entity covering the full need: the build, the platform that runs it and the talent that staffs it. Fewer vendors, faster delivery, lower cost per outcome.',
+    lede: 'One AI-native entity covering the full need: the build, the platform that runs it and the talent that staffs it. Fewer vendors, faster delivery, lower cost per outcome.',
   },
   divisions: {
     codeboxx: {
@@ -63,6 +63,7 @@ export default {
       blurb:
         'AI-native delivery pods that scope, build and ship product with the client in the room.',
       extra: 'We transform businesses, individuals, and communities through technology.',
+      cta: 'Meet CodeBoxx',
     },
     solutions: {
       name: 'CodeBoxx Solutions',
@@ -70,6 +71,7 @@ export default {
       tag: 'Your Solutions',
       blurb:
         'We specialize in strategy, intricate design solutions, and top-tier software engineering services. Our expertise in the latest software development tools and technologies empowers our clients to innovate better and execute faster.',
+      cta: 'Explore CodeBoxx Solutions',
     },
     academy: {
       name: 'CodeBoxx Academy',
@@ -77,6 +79,7 @@ export default {
       tag: 'The Next Generation',
       blurb:
         'CodeBoxx Academy is a workforce development solution committed to closing the opportunity gap and addressing the talent shortage in the tech industry. We believe that everyone has the potential to be a great developer, and we are dedicated to molding potential into proficiency and shaping novices into nimble developers.',
+      cta: 'Visit CodeBoxx Academy',
     },
   },
   codi: {

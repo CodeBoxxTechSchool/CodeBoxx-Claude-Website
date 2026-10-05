@@ -5,7 +5,9 @@ import React from 'react';
 // Solutions band uses the same), so the two never drift. While it is on screen
 // and nobody has touched it, it moves to the next service every few seconds, with a
 // progress bar on the active tab. It stops for good on the first click, key or
-// focus, and never runs under prefers-reduced-motion.
+// focus, and never runs under prefers-reduced-motion. A link to #service-<id> (the
+// homepage pipeline's shortcuts) opens that service: the tab carries the id, so the
+// browser scrolls to it, and the island picks the tab once it hydrates.
 const ADVANCE_MS = 9000;
 
 const LOGO_IMAGES = {
@@ -50,6 +52,16 @@ export default function SolutionsServices({ services, label }) {
     stop();
     setActive(i);
   };
+
+  React.useEffect(() => {
+    const fromHash = () => {
+      const i = services.findIndex((item) => location.hash === `#service-${item.id}`);
+      if (i !== -1) choose(i);
+    };
+    fromHash();
+    window.addEventListener('hashchange', fromHash);
+    return () => window.removeEventListener('hashchange', fromHash);
+  }, [services]);
   const onKey = (e) => {
     const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
     let next = null;
@@ -78,7 +90,7 @@ export default function SolutionsServices({ services, label }) {
             ref={(el) => (tabsRef.current[i] = el)}
             type="button"
             role="tab"
-            id={`sol-tab-${item.id}`}
+            id={`service-${item.id}`}
             aria-selected={i === active}
             aria-controls={`sol-panel-${item.id}`}
             tabIndex={i === active ? 0 : -1}
@@ -114,7 +126,7 @@ export default function SolutionsServices({ services, label }) {
         className="sol-panel"
         role="tabpanel"
         id={`sol-panel-${s.id}`}
-        aria-labelledby={`sol-tab-${s.id}`}
+        aria-labelledby={`service-${s.id}`}
         tabIndex={0}
       >
         <span className="kicker">{s.title}</span>
