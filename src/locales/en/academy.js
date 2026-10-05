@@ -9,8 +9,10 @@
 // Street Journal banner, and studio proof (Forge, Lucky Brand, Suitely).
 export default {
   seo: {
-    title:
-      'AI-Native Software Factory, Services and Business-First Academy for the new Digital Age',
+    // The school, the place and the next Full-Stack start (AcademyPage fills {date} from
+    // programs.items, so it moves on by itself); `title` when no date is listed.
+    title: 'CodeBoxx Academy, St. Petersburg, FL',
+    titleWithDate: 'CodeBoxx Academy, St. Petersburg, FL: Full-Stack cohort starts {date}',
     description:
       'A licensed school that teaches AI and technology for business readiness, with over 340 graduates already placed into technology jobs. A 16-week full-stack program from no experience, and an AI track for programmers.',
   },

@@ -36,14 +36,14 @@ function sanityImageUrl(url, { w, q = 60 } = {}) {
   return url + '?w=' + w + '&q=' + q + '&auto=format';
 }
 
-const DEFAULT_OG_IMAGE = 'https://codeboxx.com/assets/hero-bg.png';
+const DEFAULT_OG_IMAGE = 'https://codeboxx.ai/assets/hero-bg.png';
 const ogImage = post.featuredImage
   ? sanityImageUrl(post.featuredImage, { w: 1200 })
   : DEFAULT_OG_IMAGE;
 
 const articleSchema = blogPostingSchema({
   post,
-  url: 'https://codeboxx.com' + Astro.url.pathname,
+  url: 'https://codeboxx.ai' + Astro.url.pathname,
   image: ogImage,
   inLanguage: 'en',
 });

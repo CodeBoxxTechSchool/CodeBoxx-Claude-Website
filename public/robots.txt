@@ -1,4 +1,4 @@
-# robots.txt for codeboxx.com
+# robots.txt for codeboxx.ai
 # Everything public is crawlable. /api/ is the forms' submission relay (POST
 # only): nothing to index there.
 
@@ -64,4 +64,4 @@ User-agent: ChatRankBot
 Disallow: /api/
 Allow: /
 
-Sitemap: https://codeboxx.com/sitemap-index.xml
+Sitemap: https://codeboxx.ai/sitemap-index.xml

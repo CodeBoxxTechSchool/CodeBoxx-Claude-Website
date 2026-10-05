@@ -46,12 +46,17 @@ const programs = a.programs.items.map((p) => ({
   ...p,
   upcoming: (p.starts || []).filter((d) => d >= today).map(fmtDate),
 }));
+// The <title>: the school, the place and the next Full-Stack start.
+const nextFullStack = programs.find((p) => p.id === 'fsd')?.upcoming[0];
+const pageTitle = nextFullStack
+  ? a.seo.titleWithDate.replace('{date}', nextFullStack)
+  : a.seo.title;
 
 const courseSchema = {
   '@context': 'https://schema.org',
   '@type': 'EducationalOrganization',
   name: fr ? 'CodeBoxx Académie' : 'CodeBoxx Academy',
-  url: fr ? 'https://codeboxx.com/fr/academie/' : 'https://codeboxx.com/academy/',
+  url: fr ? 'https://codeboxx.ai/fr/academie/' : 'https://codeboxx.ai/academy/',
   address: {
     '@type': 'PostalAddress',
     streetAddress: '1101 4th St S',
@@ -65,7 +70,7 @@ const courseSchema = {
 
 <Layout
   lang={lang}
-  title={a.seo.title}
+  title={pageTitle}
   description={a.seo.description}
   strings={common}
   structuredData={[courseSchema, faqSchema(a.faq.items)]}

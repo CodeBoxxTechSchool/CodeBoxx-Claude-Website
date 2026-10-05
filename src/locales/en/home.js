@@ -301,11 +301,11 @@ export default {
   },
   academyTopics: {
     program: {
-      titleLine1: '16 weeks, full time',
+      titleLine1: 'Full time, five days a week',
       blurb:
         'Cohorts start on fixed dates through the year. No prior degree required, entrance assessment only.',
       detail:
-        'Sixteen weeks, five days a week. The entrance assessment measures aptitude, not credentials, and the Academy page lists the start dates.',
+        'The entrance assessment measures aptitude, not credentials, and the Academy page lists the start dates.',
     },
     courses: {
       titleLine1: 'Our Courses',

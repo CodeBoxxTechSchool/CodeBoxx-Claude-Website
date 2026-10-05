@@ -38,14 +38,12 @@ test('maps the eight swap hosts, and only those', () => {
   assert.deepEqual(Object.keys(table.hosts).sort(), SWAP_HOSTS.sort());
 });
 
-test('every old URL redirects, except apex paths the new site serves', () => {
+test('every old URL redirects, on every old host', () => {
   for (const group of Object.keys(OLD_URLS)) {
     for (const host of hostsOf(group)) {
       for (const path of oldPaths(group)) {
         for (const variant of new Set([path, path.replace(/\/?$/, '/')])) {
-          const location = resolve(table, host, variant);
-          if (group === 'apex' && servedPath(path)) assert.equal(location, null, host + variant);
-          else assert.ok(location, `${host}${variant} has no target`);
+          assert.ok(resolve(table, host, variant), `${host}${variant} has no target`);
         }
       }
     }
@@ -74,10 +72,9 @@ test('academie targets are the French academy targets, and exist', () => {
   }
 });
 
-test('catch-alls land on a section or the Academy or Solutions page, never on the bare homepage; apex has none', () => {
+test('catch-alls land on a section or the Academy or Solutions page, never on the bare homepage', () => {
   const rest = table.rules.filter((rule) => rule.kind === 'rest');
   for (const rule of rest) {
-    assert.ok(!rule.groups.includes('apex'), 'apex must keep serving the new site');
     assert.ok(
       rule.to === '=' ||
         rule.to === '/academy/' ||
@@ -86,28 +83,38 @@ test('catch-alls land on a section or the Academy or Solutions page, never on th
         /\/#[a-z-]+$/.test(rule.to),
       `redirects.tsv:${rule.line}`
     );
-    assert.ok(rule.to !== '=' || rule.groups.join() === 'www', 'only www keeps the path');
+    assert.ok(
+      rule.to !== '=' || rule.groups.join() === 'www,apex',
+      'only www and the apex keep the path'
+    );
   }
   for (const group of new Set(Object.values(table.hosts)))
-    assert.equal(rest.filter((r) => r.groups.includes(group)).length, group === 'apex' ? 0 : 1);
+    assert.equal(rest.filter((r) => r.groups.includes(group)).length, 1, group);
 });
 
-test('apex never redirects a path the new site serves', () => {
-  for (const rule of table.rules.filter((rule) => rule.groups.includes('apex'))) {
+test('the apex serves nothing: old paths to their page, every other path to the same one on codeboxx.ai', () => {
+  // Its old-path rules never shadow a page of the new site, which keeps its path.
+  for (const rule of table.rules.filter(
+    (rule) => rule.groups.includes('apex') && rule.kind !== 'rest'
+  )) {
     assert.ok(!servedPath(rule.path), `redirects.tsv:${rule.line}: ${rule.path} is a page`);
     if (rule.kind === 'prefix')
       for (const page of PAGES)
         assert.ok(!page.startsWith(`${rule.path}/`), `${rule.from}: ${page}`);
   }
-  for (const page of PAGES) assert.equal(resolve(table, 'codeboxx.com', page), null, page);
-  for (const path of ['/', '/api/health', '/api/contact', '/404.html'])
-    assert.equal(resolve(table, 'codeboxx.com', path), null, path);
+  assert.equal(SITE, 'https://codeboxx.ai');
+  for (const page of PAGES) assert.equal(resolve(table, 'codeboxx.com', page), SITE + page, page);
+  for (const path of ['/', '/academy/', '/api/health', '/404.html', '/no-such-page'])
+    assert.equal(resolve(table, 'codeboxx.com', path), SITE + path, path);
+  assert.equal(
+    resolve(table, 'codeboxx.com', '/academy/', 'gclid=x'),
+    'https://codeboxx.ai/academy/?gclid=x'
+  );
 });
 
 test('the old hosts send /favicon.ico to the icon, not to a section', () => {
-  for (const host of Object.keys(table.hosts).filter((host) => host !== 'codeboxx.com'))
+  for (const host of Object.keys(table.hosts))
     assert.equal(resolve(table, host, '/favicon.ico'), `${SITE}/favicon.ico`, host);
-  assert.equal(resolve(table, 'codeboxx.com', '/favicon.ico'), null);
 });
 
 test('keeps the query string, before the fragment', () => {
@@ -175,18 +182,21 @@ test('the certificate and the https server cover the eight swap hosts', () => {
   assert.deepEqual(issued.split(/\s+/).filter(Boolean).sort(), [...SWAP_HOSTS].sort());
 });
 
-test('check plan: the apex goes to https over http; the IP fails the handshake over https', () => {
+test('check plan: the apex goes to codeboxx.ai over both; the IP fails the handshake over https', () => {
   const ip = '159.223.145.47';
   const [http, https] = [plan(table, ip), plan(table, ip, true)];
   const find = (checks, host, path) => checks.find((c) => c.host === host && c.path === path);
-  const oldHosts = (checks) =>
-    checks.filter((c) => c.host !== 'codeboxx.com' && table.hosts[c.host]);
+  const oldHosts = (checks) => checks.filter((c) => table.hosts[c.host]);
   assert.deepEqual(oldHosts(http), oldHosts(https));
-  // Old Wix paths go to the site (codeboxx.ai); the apex's own pages to https on the apex.
+  // Every apex request but the certificate challenge is a 301 to codeboxx.ai.
   for (const check of http.filter((c) => c.host === 'codeboxx.com' && !c.unchanged))
-    assert.ok(/^https:\/\/codeboxx\.(ai|com)\//.test(check.location), check.path);
-  assert.equal(find(http, 'codeboxx.com', '/faq/').location, 'https://codeboxx.com/faq/');
-  assert.equal(find(https, 'codeboxx.com', '/faq/').unchanged, 200);
+    assert.ok(check.location.startsWith('https://codeboxx.ai/'), check.path);
+  assert.deepEqual(
+    http.filter((c) => c.host === 'codeboxx.com' && c.unchanged).map((c) => c.path),
+    ['/.well-known/acme-challenge/test']
+  );
+  assert.equal(find(http, 'codeboxx.com', '/faq/').location, 'https://codeboxx.ai/faq/');
+  assert.equal(find(https, 'codeboxx.com', '/').location, 'https://codeboxx.ai/');
   for (const host of SWAP_HOSTS)
     for (const checks of [http, https])
       assert.equal(find(checks, host, '/.well-known/acme-challenge/test').unchanged, 404, host);
@@ -200,7 +210,10 @@ test('check plan over live DNS (--base https://codeboxx.com): only the unknown n
     live.filter((c) => c.rejected).map((c) => c.host),
     ['example.com']
   );
-  assert.equal(live.find((c) => c.host === 'codeboxx.com' && c.path === '/').unchanged, 200);
+  assert.equal(
+    live.find((c) => c.host === 'codeboxx.com' && c.path === '/').location,
+    'https://codeboxx.ai/'
+  );
 });
 
 test('rejects malformed lines', () => {

@@ -4,9 +4,9 @@
 // so the networks fetch the right preview no matter which host the page runs on.
 import { localizedHref } from './i18nRoutes';
 
-export const SITE_URL = 'https://codeboxx.com';
+export const SITE_URL = 'https://codeboxx.ai';
 
-// Absolute, localized URL of a post, e.g. https://codeboxx.com/fr/blogue/<slug>/.
+// Absolute, localized URL of a post, e.g. https://codeboxx.ai/fr/blogue/<slug>/.
 export function postUrl(slug, lang) {
   return SITE_URL + localizedHref('/blog/' + slug, lang, '/');
 }

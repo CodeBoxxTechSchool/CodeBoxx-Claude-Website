@@ -207,11 +207,13 @@ async function checkHttp(name, expectIp) {
   return [wrong, `${res.status} ${res.location ?? ''}`];
 }
 
+// The apex serves nothing itself (codeboxx.ai is the one live origin): its /api/health is one 301
+// there. The relay's own health is check-redirects.js --relay, on the site.
 async function checkHealth(expectIp) {
   const res = await request(`https://${SITE}/api/health`, 'GET');
-  const healthy = res.status === 200 && /"ok":\s*true\b/.test(res.body);
-  const wrong = elsewhere(res.address, expectIp) || (healthy ? '' : 'wrong answer');
-  return [wrong, `${res.status} ${res.body.trim()}`];
+  const redirected = res.status === 301 && res.location === 'https://codeboxx.ai/api/health';
+  const wrong = elsewhere(res.address, expectIp) || (redirected ? '' : 'wrong answer');
+  return [wrong, `${res.status} ${res.location ?? ''}`];
 }
 
 function report(results, out) {
@@ -299,7 +301,7 @@ export async function main(argv, { out = console.log, err = console.error } = {}
     probe(`https ${name} certificate`, checkTls(name, options.expectIp)),
     probe(`http://${name}/ -> 301 https`, checkHttp(name, options.expectIp)),
   ]);
-  const health = `https://${SITE}/api/health -> 200 ok:true`;
+  const health = `https://${SITE}/api/health -> 301 https://codeboxx.ai/api/health`;
   if (options.names.includes(SITE)) jobs.push(probe(health, checkHealth(options.expectIp)));
   else out(`--   /api/health skipped: ${SITE} is not in --names`);
   if (options.snapshot) {

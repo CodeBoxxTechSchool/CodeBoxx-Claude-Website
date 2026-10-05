@@ -3,8 +3,8 @@
 // translation of the EN seed (Sanity's testimonials are English only).
 export default {
   seo: {
-    title:
-      'Fabrique logicielle native IA, services et académie axée sur les affaires pour la nouvelle ère numérique',
+    title: 'CodeBoxx Académie, St. Petersburg (Floride)',
+    titleWithDate: 'CodeBoxx Académie, St. Petersburg (Floride) : cohorte Full-Stack dès le {date}',
     description:
       'Une école agréée qui enseigne l’IA et la technologie au service des affaires, avec plus de 340 diplômés déjà placés dans des emplois en technologie. Un programme full-stack de 16 semaines sans expérience préalable, et un parcours IA pour les programmeurs.',
   },

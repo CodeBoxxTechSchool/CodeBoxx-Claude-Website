@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { blogPostingSchema, LOGO_URL, postAuthor } from '../schemaOrg.js';
 
-const CODEBOXX = { '@type': 'Organization', name: 'CodeBoxx', url: 'https://codeboxx.com/' };
+const CODEBOXX = { '@type': 'Organization', name: 'CodeBoxx', url: 'https://codeboxx.ai/' };
 
 test('postAuthor maps any CodeBoxx spelling, or no author, to the organization', () => {
   for (const name of ['CodeBoxx Technology', 'Codeboxx Technology', ' codeboxx ', '', null]) {
@@ -21,7 +21,7 @@ const POST = {
   date: '2026-07-16',
   updatedAt: '2026-09-30T15:45:11Z',
 };
-const PAGE_URL = 'https://codeboxx.com/blog/ai-native-code-migration/';
+const PAGE_URL = 'https://codeboxx.ai/blog/ai-native-code-migration/';
 
 test('blogPostingSchema points the page, url and logo at absolute URLs', () => {
   const schema = blogPostingSchema({ post: POST, url: PAGE_URL, image: 'img', inLanguage: 'en' });
@@ -33,7 +33,7 @@ test('blogPostingSchema points the page, url and logo at absolute URLs', () => {
     ...CODEBOXX,
     logo: { '@type': 'ImageObject', url: LOGO_URL },
   });
-  assert.equal(LOGO_URL, 'https://codeboxx.com/icon-192.png');
+  assert.equal(LOGO_URL, 'https://codeboxx.ai/icon-192.png');
   assert.equal(schema.datePublished, '2026-07-16');
   assert.equal(schema.dateModified, '2026-09-30T15:45:11Z');
 });
