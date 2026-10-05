@@ -335,34 +335,160 @@ function SectionHead({ eyebrow, index, title, lede, children, badge }) {
   );
 }
 
-function Platform() {
-  const { home, lang, pathname } = useHomeCtx();
-  const divisions = useDivisions(home);
+// The pipeline: the three divisions as connected stations, each leading to its own page
+// (the Studio section here, /solutions, /academy) with shortcuts into it. A card plays its
+// clip while hovered or focused and lights its node on the rail; the rail's flow, the clips
+// and the staggered entrance all stop under prefers-reduced-motion.
+const PIPELINE_META = {
+  codeboxx: {
+    href: '#codeboxx',
+    media: 'vibe-coaching',
+    links: [
+      ['nav', 'aboutTeam', '#about-team'],
+      ['nav', 'aboutHistory', '#about-history'],
+      ['nav', 'aboutVisionMission', '#about-vision'],
+      ['nav', 'aboutAiDoneRight', '/ai-done-right'],
+    ],
+  },
+  solutions: {
+    href: '/solutions/',
+    media: 'partners-meeting',
+    links: [
+      ['service', 'cto', '/solutions/#service-cto'],
+      ['service', 'agentic', '/solutions/#service-agentic'],
+      ['service', 'custom', '/solutions/#service-custom'],
+      ['service', 'daas', '/solutions/#service-daas'],
+      ['nav', 'corporateTraining', CORPORATE_HREF],
+      ['nav', 'caseStudies', '/case-studies'],
+    ],
+  },
+  academy: {
+    href: ACADEMY_HREF,
+    media: 'academy-classroom',
+    links: [
+      ['nav', 'academyCourses', '/academy/#programs'],
+      ['nav', 'academyCalendar', ACADEMY_DATES_HREF],
+      ['nav', 'academyFinancing', '/financing'],
+      ['nav', 'academyFaq', '/academy/#faq'],
+      ['action', 'talkWithCodi', '/academy/#codi'],
+    ],
+  },
+};
+
+const motionOk = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+
+function PipelineCard({ d, index, active, onActive }) {
+  const { home, common, lang, pathname } = useHomeCtx();
+  const meta = PIPELINE_META[d.id];
+  const videoRef = React.useRef(null);
+  const href = (path) => localizedHref(path, lang, pathname);
+  const label = ([kind, key]) =>
+    kind === 'service'
+      ? home.services[key].title
+      : kind === 'action'
+        ? common.actions[key]
+        : common.nav[key];
+
+  React.useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (active && motionOk() && window.matchMedia('(hover: hover)').matches)
+      v.play().catch(() => {});
+    else v.pause();
+  }, [active]);
+
   return (
-    <section id="platform" className="sect">
-      <div className="wrap">
-        <SectionHead
-          index="01"
-          eyebrow={home.platform.eyebrow}
-          title={home.platform.title}
-          lede={home.platform.lede}
-        />
-        <div className="grid3">
-          {divisions.map((d) => (
-            <div key={d.id} className="panel panel-division">
-              <div className="d-flex flex-column gap-3">
-                <Badge bg="brand">{d.tag}</Badge>
-                <h3 className="ptitle">{d.name}</h3>
-                <p className="pbody">{d.blurb}</p>
-                {d.extra ? <p className="pbody">{d.extra}</p> : null}
-              </div>
-              <div className="d-flex flex-column gap-4">
-                <div className="rule" />
-                <a href={localizedHref('#' + d.id, lang, pathname)} className="link-tag">
-                  {d.role}
-                </a>
-              </div>
-            </div>
+    <article
+      className={'pipe-card' + (active ? ' is-active' : '')}
+      onMouseEnter={() => onActive(index)}
+      onMouseLeave={() => onActive(null)}
+      onFocus={() => onActive(index)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) onActive(null);
+      }}
+    >
+      {/* The clip repeats the card's main link for pointers; keyboards and screen readers use the button below. */}
+      <a className="pipe-media" href={href(meta.href)} tabIndex={-1} aria-hidden="true">
+        <video
+          ref={videoRef}
+          muted
+          loop
+          playsInline
+          preload="none"
+          poster={`/assets/solutions/${meta.media}-poster.webp`}
+        >
+          <source src={`/assets/solutions/${meta.media}.webm`} type="video/webm" />
+          <source src={`/assets/solutions/${meta.media}.mp4`} type="video/mp4" />
+        </video>
+        <span className="pipe-media-index">{String(index + 1).padStart(2, '0')}</span>
+        <span className="pipe-media-tag">{d.tag}</span>
+      </a>
+      <div className="pipe-body">
+        <h3 className="pipe-name">{d.name}</h3>
+        <p className="pbody">{d.blurb}</p>
+        {d.extra ? <p className="pbody">{d.extra}</p> : null}
+        <ul className="pipe-links">
+          {meta.links.map((link) => (
+            <li key={link[1]}>
+              <a href={href(link[2])}>{label(link)}</a>
+            </li>
+          ))}
+        </ul>
+        <a className="btn btn-primary pipe-cta" href={href(meta.href)}>
+          {d.cta} <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </article>
+  );
+}
+
+function Platform() {
+  const { home } = useHomeCtx();
+  const divisions = useDivisions(home);
+  const [active, setActive] = React.useState(null);
+  const [inView, setInView] = React.useState(false);
+  const [ready, setReady] = React.useState(false); // hide for the entrance only once JS runs
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    if (!motionOk() || !('IntersectionObserver' in window)) return undefined;
+    // Already on screen when the island hydrates: no entrance, so nothing blinks out.
+    if (ref.current.getBoundingClientRect().top < window.innerHeight) return undefined;
+    setReady(true);
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setInView(true);
+        io.disconnect();
+      },
+      { threshold: 0.15 }
+    );
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <section id="platform" className="sect pipe-sect">
+      <div
+        ref={ref}
+        className={'wrap pipe' + (ready ? ' pipe-ready' : '') + (inView ? ' is-inview' : '')}
+      >
+        <div className="pipe-head">
+          <ScriptTitle index="01">{home.platform.eyebrow}</ScriptTitle>
+          <h2 className="pipe-title">{home.platform.title}</h2>
+          <p className="lede lede-640">{home.platform.lede}</p>
+        </div>
+        <ol className="pipe-rail" aria-hidden="true">
+          {divisions.map((d, i) => (
+            <li key={d.id} className={active === i ? 'is-active' : ''}>
+              <span className="pipe-node">{String(i + 1).padStart(2, '0')}</span>
+              <span className="pipe-node-label">{d.tag}</span>
+            </li>
+          ))}
+        </ol>
+        <div className="pipe-grid">
+          {divisions.map((d, i) => (
+            <PipelineCard key={d.id} d={d} index={i} active={active === i} onActive={setActive} />
           ))}
         </div>
       </div>

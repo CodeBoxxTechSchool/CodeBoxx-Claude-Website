@@ -51,9 +51,9 @@ export default {
     },
   },
   platform: {
-    eyebrow: 'Le Noyau. L’Atelier. L’Académie.',
-    title: 'Trois divisions. Une seule équipe.',
-    lede: "Une entité axée sur l'IA qui couvre l'ensemble des besoins : le développement, la plateforme qui le fait rouler et les talents qui l'exploitent. Moins de fournisseurs, une livraison plus rapide, un coût par résultat plus bas.",
+    eyebrow: 'La filière',
+    title: 'Trois divisions. Une seule filière.',
+    lede: "Une entité native IA qui couvre l'ensemble des besoins : le développement, la plateforme qui le fait rouler et les talents qui l'exploitent. Moins de fournisseurs, une livraison plus rapide, un coût par résultat plus bas.",
   },
   divisions: {
     codeboxx: {
@@ -64,6 +64,7 @@ export default {
         'Des équipes natives en IA qui définissent, bâtissent et livrent le produit avec le client, côte à côte.',
       extra:
         'On aide les entreprises, les gens et les communautés à aller plus loin grâce à la technologie.',
+      cta: 'Découvrir CodeBoxx',
     },
     solutions: {
       name: 'CodeBoxx Solutions',
@@ -71,6 +72,7 @@ export default {
       tag: 'Vos solutions',
       blurb:
         'On combine stratégie, design et génie logiciel pour s’attaquer aux défis complexes. Avec les meilleures technologies et les outils les plus récents, on aide nos clients à innover plus intelligemment et à passer de l’idée à l’action plus vite.',
+      cta: 'Découvrir CodeBoxx Solutions',
     },
     academy: {
       name: 'CodeBoxx Académie',
@@ -78,6 +80,7 @@ export default {
       tag: 'La relève',
       blurb:
         'CodeBoxx Académie aide les gens à faire leur place dans le monde de la tech. On forme une nouvelle génération de développeurs en donnant à chacun les outils, les compétences et la confiance pour réussir. Parce qu’on croit que le talent peut venir de partout — il suffit de lui donner une chance de se développer.',
+      cta: 'Visiter CodeBoxx Académie',
     },
   },
   codi: {
