@@ -3,6 +3,8 @@
 # access adds the TXT records this prints. Run as root on the droplet, from a terminal:
 #   issue-cert.sh [email] [certbot option...]      (ops/nginx/README.md)
 # certbot calls it back as its auth hook (issue-cert.sh auth-hook), once per name.
+# certbot renews by HTTP-01 instead, once switched with certbot reconfigure (README, step 2);
+# running this again saves DNS-01 as the renewal method, so run that reconfigure again after.
 set -euo pipefail
 
 NAMES=(codeboxx.com www.codeboxx.com academy.codeboxx.com www.academy.codeboxx.com
@@ -19,7 +21,7 @@ die() {
 
 auth_hook() {
   # certbot holds the hook's output until it returns, so the list goes to the terminal.
-  (: >/dev/tty) 2>/dev/null || die "no terminal to show the TXT records on (auto-renewal: CLP-1381)"
+  (: >/dev/tty) 2>/dev/null || die "no terminal to show the TXT records on (renewal: README step 2)"
   exec 3>/dev/tty
   echo "_acme-challenge.${CERTBOT_DOMAIN:?} ${CERTBOT_VALIDATION:?}" >>"$ACME_TXT_FILE"
   [ "${CERTBOT_REMAINING_CHALLENGES:?}" = 0 ] || exit 0
