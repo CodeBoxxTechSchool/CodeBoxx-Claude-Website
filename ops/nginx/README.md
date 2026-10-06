@@ -15,10 +15,11 @@ single 301 to its page on `https://codeboxx.ai`, the main domain (`SITE` in `red
 
 Port 80 answers every host: old URLs and every `http://codeboxx.com` URL go straight to their
 `https://codeboxx.ai` page (one 301), certificate challenges
-are served from `/var/www/letsencrypt`, and the IP and unknown hosts get the site as before (the
-uptime checks use the IP). Port 443 answers the eight names with one Let's Encrypt certificate
+are served from `/var/www/letsencrypt`, and the IP and unknown hosts get the site as before.
+Port 443 answers the eight names with one Let's Encrypt certificate
 (CLP-1343): the same redirects, then the site; the IP and unknown names fail the handshake. The
-certificate is issued by hand by DNS-01; renewal by HTTP-01 and HSTS are CLP-1381.
+certificate is issued by hand (DNS-01) and renewed by certbot (HTTP-01, from
+`/var/www/letsencrypt`; step 2). This config sets no HSTS (CLP-1414).
 
 | File                               | What                                                                     |
 | ---------------------------------- | ------------------------------------------------------------------------ |
@@ -30,7 +31,7 @@ certificate is issued by hand by DNS-01; renewal by HTTP-01 and HSTS are CLP-138
 | `snippets/codeboxx-tls.conf`       | TLS settings (Mozilla "intermediate") for the 443 server blocks          |
 | `codeboxx.conf`                    | Port 80 (`/etc/nginx/sites-available/codeboxx`)                          |
 | `codeboxx-https.conf`              | Port 443 (`/etc/nginx/sites-available/codeboxx-https`)                   |
-| `issue-cert.sh`                    | Issues the certificate by DNS-01, with TXT records added in Wix          |
+| `issue-cert.sh`                    | First issuance and fallback, by DNS-01 with TXT records added in Wix     |
 | `old-urls/`                        | The Wix sitemaps (2026-09-30) the tests and the check go through         |
 | `new-pages.txt`                    | The new site's pages (its sitemap), since the tests run before the build |
 | `check-redirects.js`               | Sends every old URL to a running nginx and checks the answer             |
@@ -136,10 +137,31 @@ output only once it ends, so the script writes them straight to the terminal (an
 (60 min at most) Let's Encrypt validates them. The certificate lands in
 `/etc/letsencrypt/live/codeboxx.com/`; the TXT records can then be removed.
 
-It doesn't renew by itself: `certbot.timer` tries twice a day from about 30 days before expiry
-(90 days), and fails at once (no terminal to show the records on) until CLP-1381 moves renewal to
-HTTP-01. Until then, running `issue-cert.sh` again in those 30 days renews it (with the TXT
-records again); nginx is reloaded after each issuance.
+Then, once the eight names resolve to the droplet, switch renewal to HTTP-01 and check it:
+
+```sh
+certbot reconfigure --cert-name codeboxx.com --webroot -w /var/www/letsencrypt \
+  --preferred-challenges http
+certbot renew --dry-run --cert-name codeboxx.com   # "all simulated renewals succeeded"
+```
+
+`reconfigure` runs a simulated renewal against Let's Encrypt's staging servers and saves the new
+settings in `/etc/letsencrypt/renewal/codeboxx.com.conf` only if it passes; the certificate isn't
+reissued. `--preferred-challenges http` is needed because the saved settings prefer dns-01. The
+file then has `authenticator = webroot` and keeps `renew_hook = systemctl reload nginx`; its
+leftover `manual_auth_hook` line is unused.
+
+`certbot.timer` runs `certbot renew` twice a day; it renews once fewer than 30 of the 90 days are
+left, then nginx reloads. Let's Encrypt fetches the challenge files over http from each name:
+step 1 serves `/.well-known/acme-challenge/` from `/var/www/letsencrypt` for every host, without
+redirect, and the deploy's `rsync --delete` doesn't reach that folder (outside the site root).
+It breaks if a name stops resolving to the droplet, goes behind a proxy or CDN that doesn't pass
+that path through on port 80, or if the port-80 config redirects it; run the dry run again after
+any such change. An uptime check on `https://codeboxx.com/` alerts when less than 21 days are left.
+
+If a name can't be validated over http, `issue-cert.sh` still renews the certificate by DNS-01
+(with the TXT records again). certbot keeps the options of the last successful issuance, so this
+saves the manual DNS-01 settings again: run the `certbot reconfigure` command again afterwards.
 
 **3. Port 443**, once the certificate exists (nginx won't load it before):
 
