@@ -1,7 +1,9 @@
 ---
+import { enableConsentedTags } from '../lib/consentedTags.js';
+
 // Analytics and marketing tags, rendered at the top of every page's <head> via
 // SeoHead.astro. IDs match what codeboxx.com (Wix) loads today:
-// - CookieYes consent banner (account registered to codeboxx.com, so the banner
+// - CookieYes consent banner (account registered to codeboxx.ai, so the banner
 //   only runs on that domain and its subdomains). It must load first: it holds
 //   back known trackers until the visitor consents. Its built-in list covers
 //   googletagmanager.com (analytics) and doubleclick.net (advertising).
@@ -11,8 +13,11 @@
 // - Google Ads AW-11226981671 and AW-16665523741 (the lead conversion sent by
 //   src/lib/trackLead.js), and the LinkedIn Insight Tag 7311770. None is
 //   on CookieYes's built-in list for the advertising category, so they're
-//   marked type="text/plain" + data-cookieyes="cookieyes-advertisement", which
-//   CookieYes swaps to runnable scripts only after advertising consent.
+//   marked type="text/plain" + data-cookieyes="cookieyes-advertisement" and
+//   run only after advertising consent. CookieYes swaps them to runnable
+//   scripts itself only on the page view where the visitor consents; on later
+//   pages, with consent already saved, it leaves them as they are, so
+//   src/lib/consentedTags.js switches on the accepted ones.
 //   CookieYes only re-enables blocked scripts that have a src, not inline
 //   ones, so the Ads config and LinkedIn loader live in public/assets/js/.
 const GTM_ID = 'GTM-K83Z8XD';
@@ -20,9 +25,16 @@ const GA4_ID = 'G-7L7VBFGNTF'; // also in public/assets/js/google-analytics.js
 const GOOGLE_ADS_ID = 'AW-11226981671'; // also in public/assets/js/google-ads.js, with AW-16665523741
 // LinkedIn partner 7311770 lives in public/assets/js/linkedin-insight.js.
 const COOKIEYES_SRC = 'https://cdn-cookieyes.com/client_data/728b9c1a29fbe2d7dfd2c0f5/script.js';
+// CookieYes fires cookieyes_banner_load once it has read the visitor's saved choice, which is
+// after the page is parsed, so the tags below are all in place by then. cookieyes_consent_update
+// catches a category accepted later on the same page, for a tag CookieYes had left in place
+// rather than held back. Inline rather than a file, to keep a blocking request out of the <head>.
+const ENABLE_CONSENTED_TAGS = `for (const type of ['cookieyes_banner_load', 'cookieyes_consent_update'])
+  document.addEventListener(type, ${enableConsentedTags});`;
 ---
 
 <script is:inline id="cookieyes" type="text/javascript" src={COOKIEYES_SRC}></script>
+<script is:inline set:html={ENABLE_CONSENTED_TAGS}></script>
 
 <script is:inline define:vars={{ GTM_ID }}>
   (function (w, d, s, l, i) {
