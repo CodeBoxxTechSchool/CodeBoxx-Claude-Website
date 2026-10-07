@@ -23,6 +23,31 @@ export function frTypographyString(s) {
   );
 }
 
+// A French Portable Text body (a blog post's contentFr, from Sanity): the same rule on each
+// span's text and each table cell, leaving keys, marks and links alone.
+export function frTypographyBlocks(blocks) {
+  return (blocks || []).map((block) => {
+    if (block._type === 'block')
+      return {
+        ...block,
+        children: (block.children || []).map((c) =>
+          typeof c.text === 'string' ? { ...c, text: frTypographyString(c.text) } : c
+        ),
+      };
+    if (block._type === 'table')
+      return {
+        ...block,
+        rows: (block.rows || []).map((row) => ({
+          ...row,
+          cells: (row.cells || []).map((cell) =>
+            typeof cell === 'string' ? frTypographyString(cell) : cell
+          ),
+        })),
+      };
+    return block;
+  });
+}
+
 // Left as-is: the testimonials kept in English in the FR locale (home.js), and
 // the legal JSON's internal `source` note.
 const SKIP_KEYS = new Set(['clientQuotes', 'gradQuotes', 'source']);

@@ -49,7 +49,7 @@ const [studioTeam, academyTeam, logos, academyLogos, latestPosts, clientTestimon
       academyTeam={academyTeam}
       logos={logos}
       academyLogos={academyLogos}
-      latestPosts={latestPosts.slice(0, 3).map(toPostCard)}
+      latestPosts={latestPosts.slice(0, 3).map((post) => toPostCard(post))}
       clientTestimonials={clientTestimonials}
     />
     <ScrollReveal />

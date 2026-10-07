@@ -8,17 +8,20 @@ import { localizedHref } from './i18nRoutes.js';
 
 export const SITE_URL = 'https://codeboxx.ai';
 
-// Map of post slug -> ISO date it was last edited. Returns an empty map (no
-// lastmod, build still succeeds) if the project ID is missing or Sanity is
-// unreachable.
-export async function fetchPostDates({
+// Each post's last edit (slug -> ISO date, for <lastmod>) and which posts have a French
+// translation (titleFr and contentFr in Sanity). Unknown (dates empty, translated null) when the
+// project ID is missing or Sanity is unreachable: the build still succeeds, without lastmod, and
+// every French post stays listed as before.
+export async function fetchPostIndex({
   projectId,
   dataset = 'production',
   apiVersion = '2024-01-01',
 }) {
-  if (!projectId) return new Map();
+  const unknown = { dates: new Map(), translated: null };
+  if (!projectId) return unknown;
   const query =
-    '*[_type == "post" && defined(slug.current) && !(_id in path("drafts.**"))]{"s": slug.current, "u": _updatedAt}';
+    '*[_type == "post" && defined(slug.current) && !(_id in path("drafts.**"))]' +
+    '{"s": slug.current, "u": _updatedAt, "fr": defined(titleFr) && count(contentFr) > 0}';
   const url =
     'https://' +
     projectId +
@@ -32,17 +35,26 @@ export async function fetchPostDates({
     const res = await fetch(url);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const { result } = await res.json();
-    return new Map((result || []).map((p) => [p.s, p.u]));
+    const posts = result || [];
+    return {
+      dates: new Map(posts.map((p) => [p.s, p.u])),
+      translated: new Set(posts.filter((p) => p.fr).map((p) => p.s)),
+    };
   } catch (err) {
-    console.warn('[sitemap] no post dates (' + err.message + '); omitting <lastmod>');
-    return new Map();
+    console.warn('[sitemap] no post index (' + err.message + '); omitting <lastmod>');
+    return unknown;
   }
 }
 
 const POST_PATH = /^\/(?:fr\/blogue|blog)\/([^/]+)\/$/;
+const FR_POST_PATH = /^\/fr\/blogue\/([^/]+)\/$/;
 const LISTING_PATH = /^\/(?:fr\/blogue|blog)\/$/;
 
-export function makeSerialize(postDates) {
+// A post without a French translation has no twin: no hreflang pair (`translated` null: unknown,
+// so every post keeps its pair, as before).
+const untranslated = (translated, slug) => Boolean(translated) && !translated.has(slug);
+
+export function makeSerialize(postDates, translated = null) {
   const latest = [...postDates.values()].sort().pop();
   return (item) => {
     const path = new URL(item.url).pathname;
@@ -56,7 +68,7 @@ export function makeSerialize(postDates) {
     // per-document) keep no alternates rather than a wrong one.
     const en = localizedHref(path, 'en', path);
     const fr = localizedHref(path, 'fr', path);
-    if (en !== fr) {
+    if (en !== fr && !(post && untranslated(translated, post[1]))) {
       item.links = [
         { lang: 'en', url: SITE_URL + en },
         { lang: 'fr', url: SITE_URL + fr },
@@ -67,7 +79,13 @@ export function makeSerialize(postDates) {
   };
 }
 
-// Never list error or utility pages.
-export function includeInSitemap(page) {
-  return !/\/404\/?$/.test(new URL(page).pathname);
+// Never list error or utility pages, nor a post's French page until the post is translated (that
+// page names the English post as canonical).
+export function makeFilter(translated = null) {
+  return (page) => {
+    const path = new URL(page).pathname;
+    if (/\/404\/?$/.test(path)) return false;
+    const frPost = path.match(FR_POST_PATH);
+    return !(frPost && untranslated(translated, frPost[1]));
+  };
 }

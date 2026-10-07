@@ -18,6 +18,10 @@ const {
   type,
   noindex,
   structuredData,
+  // SeoHead: false when the page has no twin in the other language (no hreflang pair), and
+  // the canonical URL when it isn't the page itself (a blog post's untranslated French copy).
+  translated,
+  canonicalUrl,
   strings, // current-language common.js content (nav/actions/footer), for ChromeIsland
   hideTopBar = false,
   hideFooter = false,
@@ -46,6 +50,8 @@ const pathname = Astro.url.pathname;
       type={type}
       noindex={noindex}
       structuredData={structuredData}
+      translated={translated}
+      canonicalUrl={canonicalUrl}
     />
   </head>
   <body>

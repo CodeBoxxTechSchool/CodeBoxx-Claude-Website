@@ -18,13 +18,19 @@ const {
   type = 'website',
   noindex = false,
   structuredData = null,
+  // false: the page has no twin in the other language, so no hreflang pair (a blog post not
+  // translated yet).
+  translated = true,
+  // Another page's URL, when that one is the canonical (a post's untranslated French copy names
+  // the English post).
+  canonicalUrl = null,
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
 // The one live origin: canonicals, hreflang, og:url and JSON-LD all name codeboxx.ai.
 const SITE_URL = 'https://codeboxx.ai';
 const SITE_NAME = 'CodeBoxx';
-const canonical = SITE_URL + pathname;
+const canonical = canonicalUrl || SITE_URL + pathname;
 const enHref = SITE_URL + localizedHref(pathname, 'en', pathname);
 const frHref = SITE_URL + localizedHref(pathname, 'fr', pathname);
 const fullTitle = title.includes(SITE_NAME) ? title : title + ' | ' + SITE_NAME;
@@ -109,9 +115,13 @@ const schemas = [organizationSchema, websiteSchema, ...pageSchemas];
 <meta name="description" content={desc} />
 <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
 <link rel="canonical" href={canonical} />
-<link rel="alternate" hreflang="en" href={enHref} />
-<link rel="alternate" hreflang="fr" href={frHref} />
-<link rel="alternate" hreflang="x-default" href={enHref} />
+{translated && (
+  <>
+    <link rel="alternate" hreflang="en" href={enHref} />
+    <link rel="alternate" hreflang="fr" href={frHref} />
+    <link rel="alternate" hreflang="x-default" href={enHref} />
+  </>
+)}
 
 <meta property="og:site_name" content={SITE_NAME} />
 <meta property="og:type" content={type} />

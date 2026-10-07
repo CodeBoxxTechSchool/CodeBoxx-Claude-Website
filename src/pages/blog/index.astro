@@ -11,7 +11,7 @@ import { SEED_POSTS } from '../../lib/blogSeed';
 import common from '../../locales/en/common';
 import blog from '../../locales/en/blog';
 
-const posts = (await fetchPostList(SEED_POSTS)).map(toPostCard);
+const posts = (await fetchPostList(SEED_POSTS)).map((post) => toPostCard(post));
 ---
 
 <Layout lang="en" title={blog.seo.title} description={blog.seo.description} strings={common}>
