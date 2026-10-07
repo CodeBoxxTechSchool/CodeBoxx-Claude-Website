@@ -51,16 +51,16 @@ function toPost(entry) {
     content: entry.content || null,
     featuredImage: entry.featuredImageUrl || null,
     url: entry.url || entry.canonicalUrl || null,
+    // The French translation (titleFr, excerptFr, contentFr in the Studio), if any.
+    titleFr: entry.titleFr || '',
+    excerptFr: entry.excerptFr || '',
+    contentFr: entry.contentFr || null,
   };
 }
 
-// A post trimmed to what a listing card renders — drops `content` (the full
-// Portable Text body), which is most of a post's size. Lists passed to a React
-// island get serialized into the page's HTML, so shipping full posts made the
-// homepage and /blog HTML ~1.6 MB each.
-export function toPostCard({ title, slug, category, author, date, excerpt, featuredImage }) {
-  return { title, slug, category, author, date, excerpt, featuredImage };
-}
+// isTranslated, localizePost and toPostCard (a post trimmed to what a listing card renders)
+// live in postLanguage.js, which has no import.meta.env, so plain Node tests can import them.
+export { isTranslated, localizePost, toPostCard } from './postLanguage.js';
 
 // Full post list, newest first — used at build time by both the /blog listing
 // page (all of it, filtering/pagination happens client-side over the full set)

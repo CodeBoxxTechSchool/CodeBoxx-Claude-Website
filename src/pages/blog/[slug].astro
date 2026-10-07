@@ -8,7 +8,7 @@ import Layout from '../../layouts/Layout.astro';
 import HeroVideo from '../../components/HeroVideo.astro';
 import ShareLinks from '../../components/ShareLinks.astro';
 import { postUrl } from '../../lib/share';
-import { fetchPostList } from '../../lib/sanityContent';
+import { fetchPostList, isTranslated } from '../../lib/sanityContent';
 import { SEED_POSTS } from '../../lib/blogSeed';
 import { blogPostingSchema } from '../../lib/schemaOrg';
 import { portableTextToHtml } from '../../lib/portableText';
@@ -64,6 +64,7 @@ const contentHtml = post.content ? portableTextToHtml(post.content) : '';
   image={ogImage}
   type="article"
   structuredData={articleSchema}
+  translated={isTranslated(post)}
   strings={common}
 >
   <section class="band-dark" style={heroStyle}>

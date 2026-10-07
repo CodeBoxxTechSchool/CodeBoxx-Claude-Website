@@ -2,13 +2,14 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import { loadEnv } from 'vite';
-import { fetchPostDates, makeSerialize, includeInSitemap } from './src/lib/sitemap.js';
+import { fetchPostIndex, makeSerialize, makeFilter } from './src/lib/sitemap.js';
 import { frTypographyPlugin } from './src/lib/frTypography.js';
 
-// Blog post dates for the sitemap's <lastmod> (see src/lib/sitemap.js). Same
+// Blog post dates for the sitemap's <lastmod>, and which posts are translated (their French page
+// is listed and paired with hreflang; see src/lib/sitemap.js). Same
 // VITE_SANITY_* vars the pages use: from .env locally, from CI secrets in deploy.
 const env = { ...loadEnv(process.env.NODE_ENV || 'production', process.cwd(), ''), ...process.env };
-const postDates = await fetchPostDates({
+const { dates: postDates, translated } = await fetchPostIndex({
   projectId: env.VITE_SANITY_PROJECT_ID,
   dataset: env.VITE_SANITY_DATASET || 'production',
   apiVersion: env.VITE_SANITY_API_VERSION || '2024-01-01',
@@ -22,7 +23,7 @@ export default defineConfig({
   output: 'static',
   integrations: [
     react(),
-    sitemap({ filter: includeInSitemap, serialize: makeSerialize(postDates) }),
+    sitemap({ filter: makeFilter(translated), serialize: makeSerialize(postDates, translated) }),
   ],
   build: { format: 'directory' },
   // The French Academy's accented spelling, as people type it. Static output makes
