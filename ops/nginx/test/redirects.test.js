@@ -3,7 +3,19 @@ import { existsSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { localizedHref } from '../../../src/lib/i18nRoutes.js';
 import { headerProblems, plan, stylesheet } from '../check-redirects.js';
-import { CONF_FILE, OLD_URLS, SITE, load, match, parse, render, resolve } from '../redirects.js';
+import {
+  CONF_FILE,
+  OLD_URLS,
+  OLD_URLS_SITEMAP,
+  SITE,
+  SITEMAP_FILE,
+  load,
+  match,
+  oldUrlsSitemap,
+  parse,
+  render,
+  resolve,
+} from '../redirects.js';
 
 const table = load();
 const read = (name) => readFileSync(new URL(`../${name}`, import.meta.url), 'utf8');
@@ -173,6 +185,20 @@ test('never redirects certificate challenges, the IP or unknown hosts', () => {
   }
   for (const host of ['159.223.145.47', 'example.com', ''])
     assert.equal(resolve(table, host, '/post/kntv-press-here'), null);
+});
+
+test('temporary: the apex serves the sitemap of every old URL (CLP-1398)', () => {
+  assert.equal(match(table, 'codeboxx.com', OLD_URLS_SITEMAP), null);
+  assert.ok(render(table).includes(`"apex:${OLD_URLS_SITEMAP}" "";`));
+  // Only the apex: on the other old hosts it's an old path like any other.
+  assert.equal(resolve(table, 'www.codeboxx.com', OLD_URLS_SITEMAP), SITE + OLD_URLS_SITEMAP);
+  const xml = oldUrlsSitemap();
+  assert.equal(readFileSync(SITEMAP_FILE, 'utf8'), xml, 'stale: run node ops/nginx/redirects.js');
+  const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  const old = Object.values(OLD_URLS).flatMap((name) => lines(read(`old-urls/${name}`)));
+  assert.deepEqual(new Set(locs), new Set(old));
+  assert.equal(locs.length, new Set(locs).size);
+  for (const loc of locs) assert.match(new URL(loc).hostname, /^([a-z]+\.)*codeboxx\.com$/, loc);
 });
 
 test('the certificate and the https server cover the eight swap hosts', () => {

@@ -12,6 +12,12 @@ single 301 to its page on `https://codeboxx.ai`, the main domain (`SITE` in `red
   `/corporate-training/` (`/fr/formation-entreprise/`) or Solutions (`/#solutions`) section.
 - The query string (`gclid`, `utm_*`) is kept, before the fragment. `/.well-known/acme-challenge/`,
   the bare IP and unknown hosts are never redirected.
+- Temporary (CLP-1398, from 2026-10-07 for about four weeks): the apex serves
+  `https://codeboxx.com/sitemap-old-urls.xml` instead of redirecting it. It lists every old URL
+  (`old-urls/`), and is submitted in Search Console's codeboxx.com property so Google recrawls them
+  and sees their 301s. `redirects.js` writes it to `public/` with the conf. To retire it: remove it
+  in Search Console, delete `OLD_URLS_SITEMAP` and its lines in `redirects.js`, the file and its
+  test, regenerate and reinstall the conf.
 
 Port 80 answers every host: old URLs and every `http://codeboxx.com` URL go straight to their
 `https://codeboxx.ai` page (one 301), certificate challenges
