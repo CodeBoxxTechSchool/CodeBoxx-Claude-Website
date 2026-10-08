@@ -7,7 +7,8 @@
 // are invisible without JS" problem described in the migration writeup (the old
 // SPA set them client-side with react-helmet-async).
 import { localizedHref } from '../lib/i18nRoutes';
-import { LOGO_URL } from '../lib/schemaOrg';
+import { LOGO_URL, breadcrumbSchema } from '../lib/schemaOrg';
+import { CAMPUSES } from '../lib/academyPrograms';
 import Tracking from '../components/Tracking.astro';
 
 const {
@@ -68,24 +69,8 @@ const organizationSchema = {
     availableLanguage: ['English', 'French'],
     areaServed: ['US', 'CA'],
   },
-  address: [
-    {
-      '@type': 'PostalAddress',
-      streetAddress: '1101 4th St S',
-      addressLocality: 'St. Petersburg',
-      addressRegion: 'FL',
-      postalCode: '33701',
-      addressCountry: 'US',
-    },
-    {
-      '@type': 'PostalAddress',
-      streetAddress: '400-1020 Bouvier Street',
-      addressLocality: 'Quebec City',
-      addressRegion: 'QC',
-      postalCode: 'G2K 2C9',
-      addressCountry: 'CA',
-    },
-  ],
+  // St. Petersburg and Quebec City (src/lib/academyPrograms.js CAMPUSES).
+  address: CAMPUSES.map((c) => c.address),
   // The old Wix sites' footer links (www, academy, solutions).
   sameAs: [
     'https://www.linkedin.com/school/codeboxx',
@@ -104,7 +89,15 @@ const websiteSchema = {
   name: SITE_NAME,
   url: SITE_URL + '/',
 };
-const schemas = [organizationSchema, websiteSchema, ...pageSchemas];
+// Home > section > page, on every inner page that is indexed and is its own canonical (not a
+// landing page, the 404 or a post's untranslated French copy).
+const breadcrumbs = noindex || canonicalUrl ? null : breadcrumbSchema({ pathname, lang, title });
+const schemas = [
+  organizationSchema,
+  websiteSchema,
+  ...pageSchemas,
+  ...(breadcrumbs ? [breadcrumbs] : []),
+];
 ---
 
 <meta charset="utf-8" />

@@ -15,6 +15,7 @@ import HeroVideo from './HeroVideo.astro';
 import SolutionsServices from './SolutionsServices';
 import BusinessContactSection from './BusinessContactSection.astro';
 import { localizedHref } from '../lib/i18nRoutes';
+import { serviceSchema } from '../lib/schemaOrg';
 
 const { t, common, home, lang } = Astro.props;
 const href = (path) => localizedHref(path, lang, '');
@@ -63,6 +64,13 @@ const mailto = `mailto:info@codeboxx.com?subject=${encodeURIComponent(t.lead.mai
 const hero = media('hero-network');
 const coaching = media('vibe-coaching');
 const academy = media('academy-keyboard');
+
+// The four services as Service structured data, so search engines and AI assistants can name
+// what the studio sells (the cards in #services).
+const pageUrl = 'https://codeboxx.ai' + href('/solutions/');
+const serviceSchemas = services.map((s) =>
+  serviceSchema({ name: s.title, description: s.blurb, url: pageUrl + '#services' })
+);
 ---
 
 <Layout
@@ -70,6 +78,7 @@ const academy = media('academy-keyboard');
   title={t.seo.title}
   description={t.seo.description}
   strings={common}
+  structuredData={serviceSchemas}
   cta="contact"
 >
   <div class="sol-page">
@@ -337,7 +346,7 @@ const academy = media('academy-keyboard');
             <ul aria-hidden={copy === 1 ? 'true' : undefined}>
               {clients.map(([name, file]) => (
                 <li>
-                  <img src={logo(file)} alt={copy === 1 ? '' : name} loading="lazy" />
+                  <img src={logo(file)} alt={name} loading="lazy" />
                 </li>
               ))}
             </ul>

@@ -12,6 +12,8 @@ import AcademyApply from './AcademyApply';
 import CodiChat from './CodiChat';
 import { fetchGraduateTestimonials, fetchTeam, sanityImageUrl } from '../lib/sanityContent';
 import { faqSchema } from '../lib/faqSchema';
+import { courseSchemas } from '../lib/schemaOrg';
+import { CAMPUSES } from '../lib/academyPrograms';
 
 const { a, common, home, lang } = Astro.props;
 const fr = lang === 'fr';
@@ -52,20 +54,17 @@ const pageTitle = nextFullStack
   ? a.seo.titleWithDate.replace('{date}', nextFullStack)
   : a.seo.title;
 
-const courseSchema = {
+const pageUrl = fr ? 'https://codeboxx.ai/fr/academie/' : 'https://codeboxx.ai/academy/';
+const academySchema = {
   '@context': 'https://schema.org',
   '@type': 'EducationalOrganization',
   name: fr ? 'CodeBoxx Académie' : 'CodeBoxx Academy',
-  url: fr ? 'https://codeboxx.ai/fr/academie/' : 'https://codeboxx.ai/academy/',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: '1101 4th St S',
-    addressLocality: 'St. Petersburg',
-    addressRegion: 'FL',
-    postalCode: '33701',
-    addressCountry: 'US',
-  },
+  url: pageUrl,
+  address: CAMPUSES.map((c) => c.address),
 };
+// The two programs as Course structured data: tuition, length, on campus or online, and
+// the upcoming start dates (src/lib/academyPrograms.js has the numbers).
+const programSchemas = courseSchemas({ programs: a.programs.items, lang, today, pageUrl });
 ---
 
 <Layout
@@ -73,7 +72,7 @@ const courseSchema = {
   title={pageTitle}
   description={a.seo.description}
   strings={common}
-  structuredData={[courseSchema, faqSchema(a.faq.items)]}
+  structuredData={[academySchema, ...programSchemas, faqSchema(a.faq.items)]}
   codi
   cta="enroll"
 >
