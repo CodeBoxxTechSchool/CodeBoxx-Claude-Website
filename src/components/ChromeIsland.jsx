@@ -192,6 +192,7 @@ export function TopBar({
   onCodi,
   langHref,
   codi = false,
+  enrollDrawer = false,
   cta = 'general',
 }) {
   const [expanded, setExpanded] = React.useState(false);
@@ -259,7 +260,20 @@ export function TopBar({
         <SocialBar strings={strings} />
       </header>
       <div className="mobile-cta-bar d-lg-none">
-        <Button variant="outline-primary" href={ctaButton.href}>
+        {/* `enrollDrawer`: the page mounts the enroll drawer (AcademyApply.jsx), opened by its
+            event; the href stays as the no-JS fallback. */}
+        <Button
+          variant="outline-primary"
+          href={ctaButton.href}
+          onClick={
+            enrollDrawer && cta === 'enroll'
+              ? (e) => {
+                  e.preventDefault();
+                  window.dispatchEvent(new Event('enroll:open'));
+                }
+              : undefined
+          }
+        >
           {ctaButton.label}
         </Button>
         {showCodi && <Button onClick={handleCodi}>{strings.actions.talkWithCodi}</Button>}
