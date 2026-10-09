@@ -2,6 +2,7 @@ import React from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import Logo from './Logo';
 import { localizedHref } from '../lib/i18nRoutes';
+import { ENROLL_OPEN_EVENT } from '../lib/enrollDrawer';
 import { SOCIAL_LINKS } from '../lib/social';
 
 // Site-wide top menu and footer (replaced the old react-router/react-i18next
@@ -225,6 +226,19 @@ export function TopBar({
           label: strings.actions.enrollNow,
         }
       : { href: cta === 'contact' ? '#contact' : contactHref, label: strings.actions.contactUs };
+  // `enrollDrawer`: the page mounts the enroll drawer (/academy's AcademyApply.jsx, the
+  // homepage's HomeIsland.jsx), opened by its event. The mobile bar's button is then always
+  // Enroll Now and opens it; the href stays as the no-JS fallback.
+  const mobileButton = enrollDrawer
+    ? {
+        href: localizedHref('/academy/#apply', lang, pathname),
+        label: strings.actions.enrollNow,
+        onClick: (e) => {
+          e.preventDefault();
+          window.dispatchEvent(new Event(ENROLL_OPEN_EVENT));
+        },
+      }
+    : ctaButton;
   return (
     <React.Fragment>
       <a className="skip-link" href="#main">
@@ -260,21 +274,8 @@ export function TopBar({
         <SocialBar strings={strings} />
       </header>
       <div className="mobile-cta-bar d-lg-none">
-        {/* `enrollDrawer`: the page mounts the enroll drawer (AcademyApply.jsx), opened by its
-            event; the href stays as the no-JS fallback. */}
-        <Button
-          variant="outline-primary"
-          href={ctaButton.href}
-          onClick={
-            enrollDrawer && cta === 'enroll'
-              ? (e) => {
-                  e.preventDefault();
-                  window.dispatchEvent(new Event('enroll:open'));
-                }
-              : undefined
-          }
-        >
-          {ctaButton.label}
+        <Button variant="outline-primary" href={mobileButton.href} onClick={mobileButton.onClick}>
+          {mobileButton.label}
         </Button>
         {showCodi && <Button onClick={handleCodi}>{strings.actions.talkWithCodi}</Button>}
       </div>

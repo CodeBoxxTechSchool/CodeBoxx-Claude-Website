@@ -2,12 +2,14 @@ import React from 'react';
 import { Button, Badge, Form, Offcanvas, Spinner } from 'react-bootstrap';
 import { TopBar, Footer } from './ChromeIsland';
 import Avatar from './Avatar';
+import EnrollDrawer from './EnrollDrawer';
 import CountryCombobox from './CountryCombobox';
 import Logo from './Logo';
 import CyclingHeadline from './CyclingHeadline';
 import { localizedHref, localizedId } from '../lib/i18nRoutes';
 import { pageUrl, useRelaySubmit } from '../lib/useRelaySubmit';
 import { trackLead } from '../lib/trackLead';
+import { ENROLL_OPEN_EVENT } from '../lib/enrollDrawer';
 import { PORTFOLIO } from '../lib/forgeEvidence';
 import { money } from '../lib/forgeFormat';
 
@@ -18,8 +20,8 @@ import { money } from '../lib/forgeFormat';
 // tab-switchers, there's a chat drawer, a contact form, a carousel, a count-up
 // animation — so hand-splitting it wouldn't buy much, and the Codi drawer needs to
 // share state with both TopBar (top of the page) and the content, which only works
-// cleanly if they're all one React tree. (The enroll drawer moved to /academy, see
-// EnrollDrawer.jsx.) So this whole component mounts as ONE
+// cleanly if they're all one React tree. (The enroll drawer lives in EnrollDrawer.jsx; here
+// only TopBar's mobile Enroll Now opens it.) So this whole component mounts as ONE
 // `client:load` island from src/pages/index.astro — but Astro still server-renders
 // its first pass into real HTML same as any other island, which already fixes the
 // two real problems this migration exists to fix: (1) real SEO/OG tags (via
@@ -1686,6 +1688,14 @@ export default function HomeIsland({
   clientTestimonials,
 }) {
   const [codi, setCodi] = React.useState(false);
+  // The enroll drawer, opened by TopBar's mobile Enroll Now (its `enrollDrawer`), on the
+  // Full-Stack program as on /academy.
+  const [course, setCourse] = React.useState(null);
+  React.useEffect(() => {
+    const open = () => setCourse(home.enroll.titles.fsd);
+    window.addEventListener(ENROLL_OPEN_EVENT, open);
+    return () => window.removeEventListener(ENROLL_OPEN_EVENT, open);
+  }, [home]);
   React.useEffect(() => {
     // Arriving here from another page (e.g. clicking "Contact" on /blog) lands on
     // "/#contact" via a full page load. The browser's own anchor-scroll fires before
@@ -1712,7 +1722,13 @@ export default function HomeIsland({
       }}
     >
       <div id="top">
-        <TopBar lang={lang} pathname={pathname} strings={common} onCodi={() => setCodi(true)} />
+        <TopBar
+          lang={lang}
+          pathname={pathname}
+          strings={common}
+          onCodi={() => setCodi(true)}
+          enrollDrawer
+        />
         <main id="main" tabIndex={-1}>
           <div className="hero">
             <video
@@ -1754,6 +1770,13 @@ export default function HomeIsland({
         </main>
         <Footer lang={lang} pathname={pathname} strings={common} />
         <Codi open={codi} onClose={() => setCodi(false)} />
+        <EnrollDrawer
+          course={course}
+          onClose={() => setCourse(null)}
+          home={home}
+          common={common}
+          lang={lang}
+        />
       </div>
     </HomeCtx.Provider>
   );
