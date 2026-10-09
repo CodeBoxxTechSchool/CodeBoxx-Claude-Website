@@ -92,3 +92,11 @@ test('sitemap: with the translation status unknown, everything stays listed and 
     3
   );
 });
+
+test('localizePost gives the French short title, never the English one, on a French page', () => {
+  const both = { ...post, seoTitle: 'Short EN', seoTitleFr: 'Court FR' };
+  assert.equal(localizePost(both, 'fr').seoTitle, 'Court FR');
+  assert.equal(localizePost(both, 'en').seoTitle, 'Short EN');
+  // No French short title: the French page falls back to its full French title, not to English.
+  assert.equal(localizePost({ ...post, seoTitle: 'Short EN' }, 'fr').seoTitle, '');
+});

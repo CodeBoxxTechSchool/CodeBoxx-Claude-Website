@@ -12,7 +12,8 @@ export default {
     // The school, the place and the next Full-Stack start (AcademyPage fills {date} from
     // programs.items, so it moves on by itself); `title` when no date is listed.
     title: 'CodeBoxx Academy, St. Petersburg, FL',
-    titleWithDate: 'CodeBoxx Academy, St. Petersburg, FL: Full-Stack cohort starts {date}',
+    // At most 70 characters with the longest date ("September 30, 2026"): Bing flags longer titles.
+    titleWithDate: 'CodeBoxx Academy St. Pete: Full-Stack cohort starts {date}',
     description:
       'A licensed school that teaches AI and technology for business readiness, with over 340 graduates already placed into technology jobs. A 16-week full-stack program from no experience, and an AI track for programmers.',
   },

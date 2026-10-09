@@ -9,6 +9,7 @@
 import { localizedHref } from '../lib/i18nRoutes';
 import { LOGO_URL, breadcrumbSchema } from '../lib/schemaOrg';
 import { CAMPUSES } from '../lib/academyPrograms';
+import { pageTitle, SITE_NAME } from '../lib/pageTitle';
 import Tracking from '../components/Tracking.astro';
 
 const {
@@ -30,11 +31,10 @@ const {
 const pathname = Astro.url.pathname;
 // The one live origin: canonicals, hreflang, og:url and JSON-LD all name codeboxx.ai.
 const SITE_URL = 'https://codeboxx.ai';
-const SITE_NAME = 'CodeBoxx';
 const canonical = canonicalUrl || SITE_URL + pathname;
 const enHref = SITE_URL + localizedHref(pathname, 'en', pathname);
 const frHref = SITE_URL + localizedHref(pathname, 'fr', pathname);
-const fullTitle = title.includes(SITE_NAME) ? title : title + ' | ' + SITE_NAME;
+const fullTitle = pageTitle(title);
 const desc =
   description && description.length > 160
     ? description.slice(0, 159).replace(/\s+\S*$/, '') + '…'

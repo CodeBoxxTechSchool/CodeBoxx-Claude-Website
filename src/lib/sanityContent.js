@@ -55,6 +55,10 @@ function toPost(entry) {
     titleFr: entry.titleFr || '',
     excerptFr: entry.excerptFr || '',
     contentFr: entry.contentFr || null,
+    // Optional shorter titles for the <title> tag when the headline runs over 70 characters
+    // (seoTitle, seoTitleFr in the Studio); the page's heading stays the full title.
+    seoTitle: entry.seoTitle || '',
+    seoTitleFr: entry.seoTitleFr || '',
   };
 }
 
