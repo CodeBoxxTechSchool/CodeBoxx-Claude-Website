@@ -22,7 +22,9 @@ export const SITEMAP_FILE = new URL('../../public/sitemap-old-urls.xml', import.
 
 const ACME = /^\/\.well-known\/acme-challenge(\/|$)/;
 const FROM = /^(\*|\/[a-z0-9._-]+(\/[a-z0-9._-]+)*(\/\*)?)$/;
-const TO = /^(=|\/([a-z0-9._-]+\/?)*(#[a-z0-9-]+)?)$/;
+const TO = /^(=|-|\/([a-z0-9._-]+\/?)*(#[a-z0-9-]+)?)$/;
+// A "-" target: the page is gone. nginx doesn't redirect it, so the site answers 404.
+export const GONE = '-';
 
 /** { hosts: { hostname: group }, rules: [{ groups, from, to, kind, path, line }] } of redirects.tsv. */
 export function parse(text) {
@@ -56,6 +58,7 @@ export function parse(text) {
       seen.add(`${group} ${from}`);
     }
     const kind = from === '*' ? 'rest' : from.endsWith('/*') ? 'prefix' : 'exact';
+    if (to === GONE && kind !== 'exact') fail(`${from}: only an exact old path can be gone`);
     rules.push({ groups, from, to, kind, path: from.replace(/\/\*$/, ''), line });
   });
   return { hosts, rules };
@@ -83,7 +86,7 @@ export function match({ hosts, rules }, host, path) {
 /** The Location nginx answers for this request, or null when it doesn't redirect. */
 export function resolve(table, host, path, query = '') {
   const rule = match(table, host, path);
-  if (!rule) return null;
+  if (!rule || rule.to === GONE) return null;
   const search = query ? `?${query}` : '';
   if (rule.to === '=') return SITE + path + search;
   const [target, fragment] = rule.to.split('#');
@@ -98,7 +101,9 @@ export function render({ hosts, rules }) {
   const alternatives = (groups) => (groups.length > 1 ? `(${groups.join('|')})` : groups[0]);
   const exact = rules
     .filter((rule) => rule.kind === 'exact')
-    .flatMap((rule) => rule.groups.map((group) => [`${group}:${rule.path}`, rule.to]));
+    .flatMap((rule) =>
+      rule.groups.map((group) => [`${group}:${rule.path}`, rule.to === GONE ? '' : rule.to])
+    );
   const prefix = rules
     .filter((rule) => rule.kind === 'prefix')
     .map((rule) => [`~*^${alternatives(rule.groups)}:${escape(rule.path)}(/.*)?$`, rule.to]);
@@ -125,7 +130,8 @@ export function render({ hosts, rules }) {
     '    "~^(.+?)/+$" $1;',
     '}',
     '',
-    '# Exact paths first; then the regexes, in this order.',
+    '# Exact paths first; then the regexes, in this order. "" does not redirect: a gone page',
+    '# (redirects.tsv\'s "-") then gets the site\'s 404.',
     'map "$legacy_group:$legacy_path" $legacy_target {',
     '    default "";',
     ...entries(exact),

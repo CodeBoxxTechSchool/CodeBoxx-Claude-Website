@@ -6,7 +6,8 @@
 # [hosts]: <hostname> <group>. [redirects]: <group>[,<group>...] <old path> <target>, tab-separated.
 #   old path: /path (with or without a trailing slash), /path/* (the path and everything under
 #             it, tried in file order after the exact paths) or * (the rest of the group's paths).
-#   target:   a path on https://codeboxx.ai with an optional #fragment, or = for the same path.
+#   target:   a path on https://codeboxx.ai with an optional #fragment, = for the same path, or
+#             - for none: the page is gone, the old URL answers 404 (exact old paths only).
 # The request's query string (gclid, utm_*) is kept, before the fragment. Old paths match
 # ignoring case. /.well-known/acme-challenge/ is never redirected.
 # codeboxx.ai is the one live origin: www and the apex (codeboxx.com) send every path there, the
@@ -109,20 +110,21 @@ www,apex	/post/ai-native-code-migration	/blog/ai-native-code-migration/
 www,apex	/post/codeboxx-powers-ai-collaboration-as-founding-sponsor-of-ai-salon-in-st-pete-tampa-bay-area-orlando	/blog/codeboxx-powers-ai-collaboration-as-founding-sponsor-of-ai-salon-in-st-pete-tampa-bay-area-orlando-1/
 www,apex	/post/the-ai-tools-you-need-to-stay-ahead-of-the-curve	/blog/the-ai-tools-you-need-to-stay-ahead-of-the-curve/
 www,apex	/post/the-edtech-evolution-of-codeboxx	/blog/the-edtech-evolution-of-codeboxx/
-# Not on the new blog (yet): CLP-1378.
-www,apex	/post/5-reasons-to-dive-into-the-world-of-artificial-intelligence	/blog/
-www,apex	/post/beyond-the-code-how-soft-skills-boost-success	/blog/
-www,apex	/post/codeboxx-cohort-uses-tech-skills-for-good	/blog/
-www,apex	/post/codeboxx-revstar-collaborate-to-cultivate-tampa-bay-s-next-generation-of-developers	/blog/
-www,apex	/post/codeboxx-svp-tampa-bay-and-tech4good-tampa-announce-their-first-ever-hackathon	/blog/
-www,apex	/post/cracking-the-code-5-essential-features-to-look-for-in-an-online-coding-program	/blog/
-www,apex	/post/help-people-find-careers-in-coding	/blog/
-www,apex	/post/how-codeboxx-is-addressing-the-tech-talent-gap	/blog/
-www,apex	/post/how-codeboxx-is-meeting-the-growing-demand-for-it-professionals	/blog/
-www,apex	/post/kntv-press-here	/blog/
-www,apex	/post/software-development-innovation	/blog/
-www,apex	/post/the-great-education-debate-college-degrees-vs-coding-bootcamps	/blog/
-www,apex	/post/why-software-development-is-a-promising-career-choice-trends-and-opportunities	/blog/
+# Obsolete, left off the new blog on purpose (CLP-1378, Oct 2026): gone, so the old URL answers
+# 404 and search engines drop it, instead of landing on the blog page.
+www,apex	/post/5-reasons-to-dive-into-the-world-of-artificial-intelligence	-
+www,apex	/post/beyond-the-code-how-soft-skills-boost-success	-
+www,apex	/post/codeboxx-cohort-uses-tech-skills-for-good	-
+www,apex	/post/codeboxx-revstar-collaborate-to-cultivate-tampa-bay-s-next-generation-of-developers	-
+www,apex	/post/codeboxx-svp-tampa-bay-and-tech4good-tampa-announce-their-first-ever-hackathon	-
+www,apex	/post/cracking-the-code-5-essential-features-to-look-for-in-an-online-coding-program	-
+www,apex	/post/help-people-find-careers-in-coding	-
+www,apex	/post/how-codeboxx-is-addressing-the-tech-talent-gap	-
+www,apex	/post/how-codeboxx-is-meeting-the-growing-demand-for-it-professionals	-
+www,apex	/post/kntv-press-here	-
+www,apex	/post/software-development-innovation	-
+www,apex	/post/the-great-education-debate-college-degrees-vs-coding-bootcamps	-
+www,apex	/post/why-software-development-is-a-promising-career-choice-trends-and-opportunities	-
 www,apex	/post/*	/blog/
 www	/blog	/blog/
 www,apex	/blog/categories/*	/blog/
