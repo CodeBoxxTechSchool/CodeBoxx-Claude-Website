@@ -1,0 +1,38 @@
+---
+// Every post on /blog (and /fr/blogue), newest first and grouped by year, as plain links with
+// the post's title as the text. The cards above (BlogPostsIsland.jsx) show a few posts and load
+// more on scroll; this list puts all of them in the page's HTML, so search engines find every
+// post from the blog page. Collapsed by default; zero JS.
+import { localizedHref } from '../lib/i18nRoutes';
+
+const { posts, lang, strings } = Astro.props;
+const pathname = lang === 'fr' ? '/fr/blogue' : '/blog';
+
+const years = [];
+for (const p of posts) {
+  const year = (p.date || '').slice(0, 4);
+  const last = years[years.length - 1];
+  if (last && last.year === year) last.posts.push(p);
+  else years.push({ year, posts: [p] });
+}
+---
+
+<section class="sect blog-archive-band">
+  <div class="wrap">
+    <details class="blog-archive">
+      <summary>{strings.archive.summary.replace('{{count}}', String(posts.length))}</summary>
+      {years.map(({ year, posts: list }) => (
+        <div class="blog-archive-year">
+          {year ? <h2 class="blog-archive-heading">{year}</h2> : null}
+          <ul>
+            {list.map((p) => (
+              <li>
+                <a href={localizedHref('/blog/' + p.slug, lang, pathname)}>{p.title}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </details>
+  </div>
+</section>

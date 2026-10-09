@@ -3,13 +3,14 @@
 // translation of the EN seed (Sanity's testimonials are English only).
 export default {
   seo: {
-    title: 'CodeBoxx Académie, St. Petersburg (Floride)',
+    title: 'Bootcamp en IA CodeBoxx, St. Petersburg (Floride)',
     // Au plus 70 caractères avec la date la plus longue (« 30 septembre 2026 ») : Bing signale les titres plus longs.
-    titleWithDate: 'CodeBoxx Académie St. Pete : Full-Stack, cohorte du {date}',
+    titleWithDate: 'Bootcamp en IA CodeBoxx St. Pete : Full-Stack dès le {date}',
+    // Au plus 160 caractères : les résultats de recherche coupent les descriptions plus longues.
     description:
-      'Une école agréée qui enseigne l’IA et la technologie au service des affaires, avec plus de 340 diplômés déjà placés dans des emplois en technologie. Un programme full-stack de 16 semaines sans expérience préalable, et un parcours IA pour les programmeurs.',
+      'Bootcamp en IA agréé à St. Petersburg (Floride), sur le campus ou en ligne : plus de 340 diplômés placés en techno. Full-stack en 16 semaines ou parcours IA.',
   },
-  pill: 'CodeBoxx Académie',
+  pill: 'CodeBoxx Académie · Bootcamp en IA',
   title:
     'Une école agréée qui enseigne l’IA et la technologie au service des affaires. Plus de 340 diplômés, forts d’une nouvelle forme d’intelligence, déjà placés dans des emplois en technologie.',
   applyCta: 'Postuler',
@@ -45,7 +46,7 @@ export default {
   offer: {
     eyebrow: 'L’offre',
     title:
-      'Un programme de 16 semaines qui se termine au sein d’une vraie équipe de livraison. Le placement est le critère de sortie, pas un babillard d’emplois.',
+      'Un bootcamp en IA de 16 semaines qui se termine au sein d’une vraie équipe de livraison. Le placement est le critère de sortie, pas un babillard d’emplois.',
     contrast:
       'Eux sélectionnent 50 personnes qui ont déjà bâti quelque chose, à San Francisco, en 2027. Nous partons de zéro, avec ce qui se fait de mieux en IA appliquée. Nous le faisons depuis 2018, et nous pouvons vous donner une date de départ à inscrire à votre agenda.',
   },
@@ -64,6 +65,7 @@ export default {
         schedule: [
           'Temps plein : 16 semaines, 35 à 40 heures par semaine.',
           'Temps partiel : 32 semaines.',
+          'Sur le campus ou en ligne.',
         ],
         starts: ['2026-09-14', '2026-11-09'],
         noDates: 'Prochaines dates de départ à venir.',
@@ -74,7 +76,11 @@ export default {
         id: 'ai',
         title: 'Technologue IA avancé',
         who: 'Les personnes qui programment déjà. Expérience en programmation et en SQL requise.',
-        schedule: ['Temps plein : 12 semaines.', 'Temps partiel : 24 semaines.'],
+        schedule: [
+          'Temps plein : 12 semaines.',
+          'Temps partiel : 24 semaines.',
+          'Sur le campus ou en ligne.',
+        ],
         startsText: 'Sur demande',
         tuition: '9 800 $',
         apply: 'Postuler au programme IA',

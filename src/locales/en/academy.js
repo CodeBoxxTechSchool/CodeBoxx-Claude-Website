@@ -10,14 +10,16 @@
 export default {
   seo: {
     // The school, the place and the next Full-Stack start (AcademyPage fills {date} from
-    // programs.items, so it moves on by itself); `title` when no date is listed.
-    title: 'CodeBoxx Academy, St. Petersburg, FL',
+    // programs.items, so it moves on by itself); `title` when no date is listed. "AI bootcamp",
+    // never "coding bootcamp": leadership's wording (Oct 2026), and what people search for.
+    title: 'CodeBoxx AI Bootcamp, St. Petersburg, FL',
     // At most 70 characters with the longest date ("September 30, 2026"): Bing flags longer titles.
-    titleWithDate: 'CodeBoxx Academy St. Pete: Full-Stack cohort starts {date}',
+    titleWithDate: 'CodeBoxx AI Bootcamp St. Pete: Full-Stack starts {date}',
+    // At most 160 characters: search results cut longer descriptions.
     description:
-      'A licensed school that teaches AI and technology for business readiness, with over 340 graduates already placed into technology jobs. A 16-week full-stack program from no experience, and an AI track for programmers.',
+      'A licensed AI bootcamp in St. Petersburg, FL, on campus or online, with 340+ graduates placed in tech jobs. Full-stack from zero in 16 weeks, or an AI track.',
   },
-  pill: 'CodeBoxx Academy',
+  pill: 'CodeBoxx Academy · AI Bootcamp',
   // 1. One sentence.
   // Graduate count (340+) confirmed by CodeBoxx leadership, Oct 2026.
   title:
@@ -64,7 +66,7 @@ export default {
   offer: {
     eyebrow: 'The offer',
     title:
-      'A 16-week program that ends inside a real pod. Placement is the exit criterion, not a job board.',
+      'A 16-week AI bootcamp that ends inside a real pod. Placement is the exit criterion, not a job board.',
     contrast:
       'They are selecting 50 people who already built something, in San Francisco, in 2027. We start from no experience, with the latest and greatest in applied AI, we’ve been at it since 2018 and we can give you a start date you can put on a calendar.',
   },
@@ -82,7 +84,12 @@ export default {
         title: 'AI Native Full-Stack Developer',
         // academy.codeboxx.com/full-stack-development: no prior experience.
         who: 'People starting from no experience. No prior programming required.',
-        schedule: ['Full-time: 16 weeks, 35–40 hours a week.', 'Part-time: 32 weeks.'],
+        // Both programs: on campus or online (FAQ, "How much does it cost?").
+        schedule: [
+          'Full-time: 16 weeks, 35–40 hours a week.',
+          'Part-time: 32 weeks.',
+          'On campus or online.',
+        ],
         // academy.codeboxx.com/full-stack-development. Dates already past at build
         // time are dropped by the page (src/pages/academy.astro).
         starts: ['2026-09-14', '2026-11-09'],
@@ -97,7 +104,7 @@ export default {
         // this track has prerequisites.
         who: 'People who already program. Requires prior programming experience and SQL.',
         // The AI page also says "six weeks", which conflicts with 12 / 24: dropped.
-        schedule: ['Full-time: 12 weeks.', 'Part-time: 24 weeks.'],
+        schedule: ['Full-time: 12 weeks.', 'Part-time: 24 weeks.', 'On campus or online.'],
         startsText: 'On Demand',
         tuition: '$9,800',
         apply: 'Apply to AI Technologist',

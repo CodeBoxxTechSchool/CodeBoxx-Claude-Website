@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import { loadEnv } from 'vite';
 import { fetchPostIndex, makeSerialize, makeFilter } from './src/lib/sitemap.js';
 import { frTypographyPlugin } from './src/lib/frTypography.js';
+import { stripNulBytes } from './src/lib/stripNul.js';
 
 // Blog post dates for the sitemap's <lastmod>, and which posts are translated (their French page
 // is listed and paired with hreflang; see src/lib/sitemap.js). Same
@@ -24,6 +25,8 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({ filter: makeFilter(translated), serialize: makeSerialize(postDates, translated) }),
+    // React 18 can leave a NUL byte in a page's HTML; see src/lib/stripNul.js.
+    stripNulBytes(),
   ],
   build: { format: 'directory' },
   // The French Academy's accented spelling, as people type it. Static output makes

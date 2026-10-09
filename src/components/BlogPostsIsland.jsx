@@ -134,18 +134,29 @@ export default function BlogPosts({ posts, lang, pathname, strings }) {
                   <Badge bg="brand">{categoryLabels[p.category] || p.category}</Badge>
                   <span className="post-date">{fmt(p.date)}</span>
                 </div>
-                <h2 className="post-title">{p.title}</h2>
+                <h2 className="post-title">
+                  {/* stretched-link: the whole card is clickable (Bootstrap's ::after
+                  overlay; .post-card is position: relative). The title is the link
+                  text, for screen readers and search engines alike. */}
+                  <a
+                    href={localizedHref('/blog/' + p.slug, lang, pathname)}
+                    className="stretched-link"
+                  >
+                    {p.title}
+                  </a>
+                </h2>
                 <p className="pbody">{p.excerpt}</p>
                 <div className="rule" />
                 <div className="post-meta-row post-card-footer">
                   <span className="post-author">{p.author}</span>
                   <div className="post-card-actions">
                     <ShareButtons url={postUrl(p.slug, lang)} strings={strings.share} />
-                    {/* stretched-link: the whole card is clickable (Bootstrap's
-                    ::after overlay; .post-card is position: relative). */}
+                    {/* The same link as the title, for the eye only. */}
                     <a
                       href={localizedHref('/blog/' + p.slug, lang, pathname)}
-                      className="link-tag stretched-link"
+                      className="link-tag"
+                      tabIndex={-1}
+                      aria-hidden="true"
                     >
                       {strings.readPost}
                     </a>

@@ -2,7 +2,7 @@ import React from 'react';
 import { shareHrefs, SHARE_ICONS, copyToClipboard } from '../lib/share';
 
 // LinkedIn / Facebook / copy-link buttons for a blog post card (see
-// BlogPostsIsland.jsx). The card's "Read Post" link is stretched over the whole
+// BlogPostsIsland.jsx). The card's title link is stretched over the whole
 // card; .share-buttons sits above that overlay (see _blog.scss) so these stay
 // clickable. The post page hero has an Astro twin, ShareLinks.astro.
 export default function ShareButtons({ url, strings, className = '' }) {

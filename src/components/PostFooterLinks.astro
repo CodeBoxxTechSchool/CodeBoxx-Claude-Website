@@ -1,0 +1,45 @@
+---
+// The end of a blog post (blog/[slug].astro, fr/blogue/[slug].astro): a link to the CodeBoxx
+// page the post leads to, then three related posts, all plain links with their title as the
+// text, so readers and search engines reach more of the blog from every post. Zero JS.
+// `post` and `posts` are the English posts (toPost); the French page shows French titles.
+import { postTopic, relatedPosts, TOPIC_PATHS } from '../lib/postLinks';
+import { localizePost } from '../lib/sanityContent';
+import { localizedHref } from '../lib/i18nRoutes';
+
+const { post, posts, lang, strings } = Astro.props;
+const pathname = (lang === 'fr' ? '/fr/blogue/' : '/blog/') + post.slug;
+const topic = postTopic(post.slug);
+const related = relatedPosts(post, posts).map((p) => localizePost(p, lang));
+
+const fmt = (d) =>
+  new Date(d + 'T12:00:00').toLocaleDateString(lang === 'fr' ? 'fr-CA' : 'en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+---
+
+<nav class="post-more" lang={lang} aria-labelledby={related.length ? 'post-more-title' : undefined}>
+  <a class="post-next" href={localizedHref(TOPIC_PATHS[topic], lang, pathname)}>
+    {strings.post.next[topic]}
+  </a>
+  {related.length ? (
+    <>
+      <h2 id="post-more-title" class="post-more-title">
+        {strings.post.relatedTitle}
+      </h2>
+      <ul class="post-related">
+        {related.map((p) => (
+          <li>
+            <a href={localizedHref('/blog/' + p.slug, lang, pathname)}>{p.title}</a>
+            <span class="post-date">
+              {strings.categories[p.category] || p.category}
+              {p.date ? ' · ' + fmt(p.date) : ''}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </>
+  ) : null}
+</nav>

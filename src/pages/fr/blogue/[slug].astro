@@ -3,6 +3,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import HeroVideo from '../../../components/HeroVideo.astro';
 import ShareLinks from '../../../components/ShareLinks.astro';
+import PostFooterLinks from '../../../components/PostFooterLinks.astro';
 import { postUrl } from '../../../lib/share';
 import { fetchPostList, isTranslated, localizePost } from '../../../lib/sanityContent';
 import { SEED_POSTS } from '../../../lib/blogSeed';
@@ -15,10 +16,10 @@ import blog from '../../../locales/fr/blog';
 
 export async function getStaticPaths() {
   const posts = await fetchPostList(SEED_POSTS);
-  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post, posts } }));
 }
 
-const { post: source } = Astro.props;
+const { post: source, posts } = Astro.props;
 const pathname = '/fr/blogue/' + source.slug;
 // The French translation (Sanity's titleFr, excerptFr, contentFr). A post not translated yet shows
 // the English post here, marked as English, with the English page as its canonical and no hreflang
@@ -102,6 +103,7 @@ const textLang = translated ? undefined : 'en';
           </a>
         </div>
       ) : null}
+      <PostFooterLinks post={source} posts={posts} lang="fr" strings={blog} />
       <a href={localizedHref('/blog', 'fr', pathname)} class="link-tag mt-40">
         {blog.post.backToCodeBlog}
       </a>
