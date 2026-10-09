@@ -46,6 +46,8 @@ const HomeCtx = React.createContext(null);
 // French visitors to /fr/academie and /fr/formation-entreprise.
 const ACADEMY_HREF = '/academy/';
 const ACADEMY_APPLY_HREF = '/academy/#apply';
+// Opens the enroll drawer on the Full-Stack program (see HomeIsland below).
+const LAUNCH_HASH = '#launch';
 const ACADEMY_DATES_HREF = '/academy/#dates';
 const CORPORATE_HREF = '/corporate-training/';
 function useHomeCtx() {
@@ -1689,12 +1691,19 @@ export default function HomeIsland({
 }) {
   const [codi, setCodi] = React.useState(false);
   // The enroll drawer, opened by TopBar's mobile Enroll Now (its `enrollDrawer`), on the
-  // Full-Stack program as on /academy.
+  // Full-Stack program as on /academy. A link to the homepage's #launch (e.g.
+  // codeboxx.ai/#launch, from a campaign) opens it too, on load or on a same-page hash change.
   const [course, setCourse] = React.useState(null);
   React.useEffect(() => {
     const open = () => setCourse(home.enroll.titles.fsd);
+    const openOnLaunch = () => location.hash === LAUNCH_HASH && open();
+    openOnLaunch();
     window.addEventListener(ENROLL_OPEN_EVENT, open);
-    return () => window.removeEventListener(ENROLL_OPEN_EVENT, open);
+    window.addEventListener('hashchange', openOnLaunch);
+    return () => {
+      window.removeEventListener(ENROLL_OPEN_EVENT, open);
+      window.removeEventListener('hashchange', openOnLaunch);
+    };
   }, [home]);
   React.useEffect(() => {
     // Arriving here from another page (e.g. clicking "Contact" on /blog) lands on
@@ -1772,7 +1781,12 @@ export default function HomeIsland({
         <Codi open={codi} onClose={() => setCodi(false)} />
         <EnrollDrawer
           course={course}
-          onClose={() => setCourse(null)}
+          onClose={() => {
+            setCourse(null);
+            // Drop #launch so a reload doesn't reopen it and the same link opens it again.
+            if (location.hash === LAUNCH_HASH)
+              history.replaceState(null, '', location.pathname + location.search);
+          }}
           home={home}
           common={common}
           lang={lang}
