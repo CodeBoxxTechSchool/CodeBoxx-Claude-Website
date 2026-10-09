@@ -59,7 +59,7 @@ const contentHtml = post.content ? portableTextToHtml(post.content) : '';
 
 <Layout
   lang="en"
-  title={post.title}
+  title={post.seoTitle || post.title}
   description={post.excerpt}
   image={ogImage}
   type="article"

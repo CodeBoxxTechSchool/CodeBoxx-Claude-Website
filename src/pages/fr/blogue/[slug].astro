@@ -66,7 +66,7 @@ const textLang = translated ? undefined : 'en';
 
 <Layout
   lang="fr"
-  title={post.title}
+  title={post.seoTitle || post.title}
   description={post.excerpt}
   image={ogImage}
   type="article"

@@ -4,7 +4,8 @@
 export default {
   seo: {
     title: 'CodeBoxx Académie, St. Petersburg (Floride)',
-    titleWithDate: 'CodeBoxx Académie, St. Petersburg (Floride) : cohorte Full-Stack dès le {date}',
+    // Au plus 70 caractères avec la date la plus longue (« 30 septembre 2026 ») : Bing signale les titres plus longs.
+    titleWithDate: 'CodeBoxx Académie St. Pete : Full-Stack, cohorte du {date}',
     description:
       'Une école agréée qui enseigne l’IA et la technologie au service des affaires, avec plus de 340 diplômés déjà placés dans des emplois en technologie. Un programme full-stack de 16 semaines sans expérience préalable, et un parcours IA pour les programmeurs.',
   },

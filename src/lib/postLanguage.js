@@ -7,12 +7,13 @@ export function isTranslated(post) {
   return Boolean(post.titleFr && post.contentFr && post.contentFr.length);
 }
 
-// The post's title, excerpt and body in `lang`, falling back to English.
+// The post's title, short SEO title, excerpt and body in `lang`, falling back to English.
 export function localizePost(post, lang) {
   if (lang !== 'fr' || !isTranslated(post)) return post;
   return {
     ...post,
     title: post.titleFr,
+    seoTitle: post.seoTitleFr || '',
     excerpt: post.excerptFr || post.excerpt,
     content: post.contentFr,
   };

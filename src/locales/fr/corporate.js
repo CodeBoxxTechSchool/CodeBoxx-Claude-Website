@@ -2,7 +2,7 @@
 // same facts; see the EN file for the source of each claim.
 export default {
   seo: {
-    title: 'Formation en IA pour les équipes d’ingénierie | CodeBoxx pour les entreprises',
+    title: 'Formation en IA pour vos équipes | CodeBoxx pour les entreprises',
     description:
       'Une formation technologique native en IA, sur mesure pour vos équipes, en présentiel ou en ligne. Conçue au sein d’un vrai studio logiciel et IA, gouvernée avec CrewKit, mesurée sur du vrai travail.',
   },

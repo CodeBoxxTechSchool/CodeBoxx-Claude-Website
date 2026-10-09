@@ -3,7 +3,7 @@
 // translated here and flagged as such.
 export default {
   seo: {
-    title: '#AIDoneRight — Une norme d’intelligence artificielle centrée sur l’humain',
+    title: '#AIDoneRight — Une norme d’IA centrée sur l’humain',
     description:
       'AI Done Right 2.0 est une norme ouverte, centrée sur l’humain, pour utiliser l’IA avec un but et une responsabilité clairs : 13 engagements vérifiables, un engagement public et des lignes rouges. Lisez-la et téléchargez la norme complète.',
   },
