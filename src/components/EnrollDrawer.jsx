@@ -8,8 +8,8 @@ import { trackLead } from '../lib/trackLead';
 
 // The Academy application drawer: posts to the relay (/api/enroll), which creates the
 // lead in the student portal; the portal then emails the link to create the portal
-// account. Moved out of HomeIsland.jsx so /academy (the only place a student applies)
-// can mount it. `home` only needs home.js's `enroll` and `heardAbout`; `common` is
+// account. Mounted on /academy (AcademyApply.jsx) and the homepage (HomeIsland.jsx, opened
+// from TopBar's mobile Enroll Now). `home` only needs home.js's `enroll` and `heardAbout`; `common` is
 // common.js (for the Close label).
 
 // Phone country codes/abbreviations — not translated (not prose).
