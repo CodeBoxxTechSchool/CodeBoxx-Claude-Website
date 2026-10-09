@@ -31,6 +31,9 @@ export default {
     copied: 'Lien copié',
   },
   loadMore: 'Charger plus',
+  archive: {
+    summary: 'Parcourir les {{count}} articles par année',
+  },
   showingOf: '{{shown}} sur {{total}} affichés',
   subscribe: {
     eyebrow: 'ABONNEMENT',
@@ -46,5 +49,11 @@ export default {
     notFoundBody: 'Cet article a peut-être été déplacé ou supprimé.',
     backToCodeBlog: 'Retour au CodeBlog',
     externalReference: 'Référence externe',
+    next: {
+      academy: 'CodeBoxx Académie : un bootcamp en IA, sur le campus ou en ligne',
+      corporate: 'Formation en IA pour vos équipes : CodeBoxx pour les entreprises',
+      solutions: 'Des logiciels natifs IA, conçus par CodeBoxx Solutions',
+    },
+    relatedTitle: 'Articles connexes',
   },
 };

@@ -34,6 +34,10 @@ export default {
     copied: 'Link copied',
   },
   loadMore: 'Load More',
+  // BlogArchive.astro: every post as a link, by year, under the cards.
+  archive: {
+    summary: 'Browse all {{count}} posts by year',
+  },
   showingOf: 'Showing {{shown}} of {{total}}',
   subscribe: {
     eyebrow: 'SUBSCRIBE',
@@ -49,5 +53,13 @@ export default {
     notFoundBody: 'This post may have been moved or removed.',
     backToCodeBlog: 'Back to CodeBlog',
     externalReference: 'External Reference',
+    // PostFooterLinks.astro: the page the post leads to (postTopic in src/lib/postLinks.js),
+    // then the related posts.
+    next: {
+      academy: 'CodeBoxx Academy: an AI bootcamp, on campus or online',
+      corporate: 'AI training for your teams: CodeBoxx for Businesses',
+      solutions: 'AI-native software, built by CodeBoxx Solutions',
+    },
+    relatedTitle: 'Related posts',
   },
 };

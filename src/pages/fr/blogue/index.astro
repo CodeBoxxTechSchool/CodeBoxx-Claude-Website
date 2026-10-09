@@ -3,6 +3,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import HeroVideo from '../../../components/HeroVideo.astro';
 import BlogPosts from '../../../components/BlogPostsIsland';
+import BlogArchive from '../../../components/BlogArchive.astro';
 import { fetchPostList, toPostCard } from '../../../lib/sanityContent';
 import { SEED_POSTS } from '../../../lib/blogSeed';
 import common from '../../../locales/fr/common';
@@ -22,6 +23,7 @@ const posts = (await fetchPostList(SEED_POSTS)).map((post) => toPostCard(post, '
   </section>
 
   <BlogPosts client:visible posts={posts} lang="fr" pathname="/fr/blogue" strings={blog} />
+  <BlogArchive posts={posts} lang="fr" strings={blog} />
 
   <section class="sect sect-contact">
     <div class="wrap grid2">

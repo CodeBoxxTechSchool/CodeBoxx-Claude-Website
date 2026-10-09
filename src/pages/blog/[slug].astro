@@ -7,6 +7,7 @@
 import Layout from '../../layouts/Layout.astro';
 import HeroVideo from '../../components/HeroVideo.astro';
 import ShareLinks from '../../components/ShareLinks.astro';
+import PostFooterLinks from '../../components/PostFooterLinks.astro';
 import { postUrl } from '../../lib/share';
 import { fetchPostList, isTranslated } from '../../lib/sanityContent';
 import { SEED_POSTS } from '../../lib/blogSeed';
@@ -18,10 +19,10 @@ import blog from '../../locales/en/blog';
 
 export async function getStaticPaths() {
   const posts = await fetchPostList(SEED_POSTS);
-  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post, posts } }));
 }
 
-const { post } = Astro.props;
+const { post, posts } = Astro.props;
 const pathname = '/blog/' + post.slug;
 
 const fmt = (d) =>
@@ -92,6 +93,7 @@ const contentHtml = post.content ? portableTextToHtml(post.content) : '';
           </a>
         </div>
       ) : null}
+      <PostFooterLinks post={post} posts={posts} lang="en" strings={blog} />
       <a href={localizedHref('/blog', 'en', pathname)} class="link-tag mt-40">
         {blog.post.backToCodeBlog}
       </a>

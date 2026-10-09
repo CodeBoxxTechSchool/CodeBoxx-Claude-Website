@@ -104,12 +104,15 @@ www,apex	/post/if-ai-is-biased-what-can-developers-do-next-1	/blog/if-ai-is-bias
 www,apex	/post/the-age-of-vibe-coding-why-logic-alone-won-t-cut-it-anymore-1	/blog/the-age-of-vibe-coding-why-logic-alone-won-t-cut-it-anymore/
 www,apex	/post/the-new-ai-literacy-beyond-syntax-and-semantics-1	/blog/the-new-ai-literacy-beyond-syntax-and-semantics/
 www,apex	/post/why-you-should-consider-vibe-coding-a-vital-literacy-skill-1	/blog/why-you-should-consider-vibe-coding-a-vital-literacy-skill/
+# On the new blog since the list below was made (the AI Salon post under its Wix copy's slug, -1).
+www,apex	/post/ai-native-code-migration	/blog/ai-native-code-migration/
+www,apex	/post/codeboxx-powers-ai-collaboration-as-founding-sponsor-of-ai-salon-in-st-pete-tampa-bay-area-orlando	/blog/codeboxx-powers-ai-collaboration-as-founding-sponsor-of-ai-salon-in-st-pete-tampa-bay-area-orlando-1/
+www,apex	/post/the-ai-tools-you-need-to-stay-ahead-of-the-curve	/blog/the-ai-tools-you-need-to-stay-ahead-of-the-curve/
+www,apex	/post/the-edtech-evolution-of-codeboxx	/blog/the-edtech-evolution-of-codeboxx/
 # Not on the new blog (yet): CLP-1378.
 www,apex	/post/5-reasons-to-dive-into-the-world-of-artificial-intelligence	/blog/
-www,apex	/post/ai-native-code-migration	/blog/
 www,apex	/post/beyond-the-code-how-soft-skills-boost-success	/blog/
 www,apex	/post/codeboxx-cohort-uses-tech-skills-for-good	/blog/
-www,apex	/post/codeboxx-powers-ai-collaboration-as-founding-sponsor-of-ai-salon-in-st-pete-tampa-bay-area-orlando	/blog/
 www,apex	/post/codeboxx-revstar-collaborate-to-cultivate-tampa-bay-s-next-generation-of-developers	/blog/
 www,apex	/post/codeboxx-svp-tampa-bay-and-tech4good-tampa-announce-their-first-ever-hackathon	/blog/
 www,apex	/post/cracking-the-code-5-essential-features-to-look-for-in-an-online-coding-program	/blog/
@@ -118,8 +121,6 @@ www,apex	/post/how-codeboxx-is-addressing-the-tech-talent-gap	/blog/
 www,apex	/post/how-codeboxx-is-meeting-the-growing-demand-for-it-professionals	/blog/
 www,apex	/post/kntv-press-here	/blog/
 www,apex	/post/software-development-innovation	/blog/
-www,apex	/post/the-ai-tools-you-need-to-stay-ahead-of-the-curve	/blog/
-www,apex	/post/the-edtech-evolution-of-codeboxx	/blog/
 www,apex	/post/the-great-education-debate-college-degrees-vs-coding-bootcamps	/blog/
 www,apex	/post/why-software-development-is-a-promising-career-choice-trends-and-opportunities	/blog/
 www,apex	/post/*	/blog/

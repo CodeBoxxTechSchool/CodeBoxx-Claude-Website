@@ -1,5 +1,6 @@
 /
 /academy/
+/ai-done-right/
 /blog/
 /blog/ai-agents-are-breaking-the-foundations-of-software-engineering-and-most-enterprises-aren-t-ready/
 /blog/ai-can-do-the-work-so-what-are-employers-actually-hiring-for/
@@ -7,6 +8,7 @@
 /blog/ai-inequity-roles-such-as-clerks-bookkeepers-most-likely-to-be-automated-study-finds/
 /blog/ai-is-becoming-the-new-definition-of-software-here-s-what-developers-should-know/
 /blog/ai-is-moving-faster-than-ever-here-are-the-tech-stories-setting-the-stage-for-2026/
+/blog/ai-native-code-migration/
 /blog/ai-vs-traditional-tech-roles-which-career-path-is-right-for-you/
 /blog/amazon-is-cutting-jobs-again-but-here-s-how-workers-can-navigate-the-pressure/
 /blog/amazon-layoffs-devastate-thousands-but-it-s-not-the-endgame-for-workers/
@@ -65,8 +67,10 @@
 /blog/the-age-of-vibe-coding-is-here/
 /blog/the-age-of-vibe-coding-why-logic-alone-won-t-cut-it-anymore/
 /blog/the-ai-chapter-that-s-bringing-community-back-to-st-pete-tampa-bay/
+/blog/the-ai-tools-you-need-to-stay-ahead-of-the-curve/
 /blog/the-ai-workforce-stack-how-companies-will-structure-teams-when-ai-becomes-an-operational-unit/
 /blog/the-challenges-and-solutions-of-tech-training-for-tampa-bay-corporations-how-codeboxx-academy-is-le/
+/blog/the-edtech-evolution-of-codeboxx/
 /blog/the-end-of-the-coordination-layer-how-ai-agents-are-reshaping-company-structures/
 /blog/the-fastest-way-to-become-a-job-ready-full-stack-developer/
 /blog/the-future-of-ai-depends-on-the-humans/
@@ -108,6 +112,7 @@
 /financing/
 /fr/
 /fr/academie/
+/fr/ai-done-right/
 /fr/blogue/
 /fr/blogue/ai-agents-are-breaking-the-foundations-of-software-engineering-and-most-enterprises-aren-t-ready/
 /fr/blogue/ai-can-do-the-work-so-what-are-employers-actually-hiring-for/
@@ -115,6 +120,7 @@
 /fr/blogue/ai-inequity-roles-such-as-clerks-bookkeepers-most-likely-to-be-automated-study-finds/
 /fr/blogue/ai-is-becoming-the-new-definition-of-software-here-s-what-developers-should-know/
 /fr/blogue/ai-is-moving-faster-than-ever-here-are-the-tech-stories-setting-the-stage-for-2026/
+/fr/blogue/ai-native-code-migration/
 /fr/blogue/ai-vs-traditional-tech-roles-which-career-path-is-right-for-you/
 /fr/blogue/amazon-is-cutting-jobs-again-but-here-s-how-workers-can-navigate-the-pressure/
 /fr/blogue/amazon-layoffs-devastate-thousands-but-it-s-not-the-endgame-for-workers/
@@ -173,8 +179,10 @@
 /fr/blogue/the-age-of-vibe-coding-is-here/
 /fr/blogue/the-age-of-vibe-coding-why-logic-alone-won-t-cut-it-anymore/
 /fr/blogue/the-ai-chapter-that-s-bringing-community-back-to-st-pete-tampa-bay/
+/fr/blogue/the-ai-tools-you-need-to-stay-ahead-of-the-curve/
 /fr/blogue/the-ai-workforce-stack-how-companies-will-structure-teams-when-ai-becomes-an-operational-unit/
 /fr/blogue/the-challenges-and-solutions-of-tech-training-for-tampa-bay-corporations-how-codeboxx-academy-is-le/
+/fr/blogue/the-edtech-evolution-of-codeboxx/
 /fr/blogue/the-end-of-the-coordination-layer-how-ai-agents-are-reshaping-company-structures/
 /fr/blogue/the-fastest-way-to-become-a-job-ready-full-stack-developer/
 /fr/blogue/the-future-of-ai-depends-on-the-humans/
