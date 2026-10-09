@@ -5,6 +5,7 @@ import { localizedHref } from '../../../src/lib/i18nRoutes.js';
 import { headerProblems, plan, stylesheet } from '../check-redirects.js';
 import {
   CONF_FILE,
+  GONE,
   OLD_URLS,
   OLD_URLS_SITEMAP,
   SITE,
@@ -50,20 +51,37 @@ test('maps the eight swap hosts, and only those', () => {
   assert.deepEqual(Object.keys(table.hosts).sort(), SWAP_HOSTS.sort());
 });
 
-test('every old URL redirects, on every old host', () => {
+test('every old URL redirects or is gone, on every old host', () => {
   for (const group of Object.keys(OLD_URLS)) {
     for (const host of hostsOf(group)) {
       for (const path of oldPaths(group)) {
         for (const variant of new Set([path, path.replace(/\/?$/, '/')])) {
-          assert.ok(resolve(table, host, variant), `${host}${variant} has no target`);
+          const gone = match(table, host, variant)?.to === GONE;
+          assert.ok(gone || resolve(table, host, variant), `${host}${variant} has no target`);
         }
       }
     }
   }
 });
 
+test('a gone page is not redirected, and is no page of the new site, so it answers 404', () => {
+  const gone = table.rules.filter((rule) => rule.to === GONE);
+  assert.equal(gone.length, 13);
+  for (const rule of gone) {
+    assert.equal(rule.kind, 'exact', `redirects.tsv:${rule.line}`);
+    assert.ok(!servedPath(rule.path), `redirects.tsv:${rule.line}: ${rule.path} is a page`);
+    for (const host of rule.groups.flatMap(hostsOf)) {
+      assert.equal(resolve(table, host, rule.path), null, host + rule.path);
+      assert.equal(resolve(table, host, rule.path + '/', 'utm_source=x'), null, host + rule.path);
+    }
+  }
+  assert.ok(render(table).includes('"apex:/post/kntv-press-here" "";'));
+  // Another old post still lands on the blog.
+  assert.equal(resolve(table, 'codeboxx.com', '/post/unknown'), `${SITE}/blog/`);
+});
+
 test('every target is a page of the new site (or a file in public/)', () => {
-  for (const rule of table.rules.filter((rule) => rule.to !== '=')) {
+  for (const rule of table.rules.filter((rule) => rule.to !== '=' && rule.to !== GONE)) {
     assert.ok(
       onSite(rule.to.split('#')[0]),
       `redirects.tsv:${rule.line}: ${rule.to} is not on the new site`
@@ -214,13 +232,19 @@ test('check plan: the apex goes to codeboxx.ai over both; the IP fails the hands
   const find = (checks, host, path) => checks.find((c) => c.host === host && c.path === path);
   const oldHosts = (checks) => checks.filter((c) => table.hosts[c.host]);
   assert.deepEqual(oldHosts(http), oldHosts(https));
-  // Every apex request but the certificate challenge is a 301 to codeboxx.ai.
+  // Every apex request but the certificate challenge and the gone posts (404) is a 301 to
+  // codeboxx.ai.
   for (const check of http.filter((c) => c.host === 'codeboxx.com' && !c.unchanged))
     assert.ok(check.location.startsWith('https://codeboxx.ai/'), check.path);
+  const unchanged = http.filter((c) => c.host === 'codeboxx.com' && c.unchanged);
+  const gone = table.rules
+    .filter((rule) => rule.to === GONE && rule.groups.includes('apex'))
+    .flatMap((rule) => [rule.path, rule.path + '/']);
   assert.deepEqual(
-    http.filter((c) => c.host === 'codeboxx.com' && c.unchanged).map((c) => c.path),
-    ['/.well-known/acme-challenge/test']
+    unchanged.map((c) => c.path).sort(),
+    ['/.well-known/acme-challenge/test', ...gone].sort()
   );
+  assert.ok(unchanged.every((c) => c.unchanged === 404));
   assert.equal(find(http, 'codeboxx.com', '/faq/').location, 'https://codeboxx.ai/faq/');
   assert.equal(find(https, 'codeboxx.com', '/').location, 'https://codeboxx.ai/');
   for (const host of SWAP_HOSTS)
@@ -251,6 +275,8 @@ test('rejects malformed lines', () => {
   assert.throws(() => parse(`${head}a\t/x\t/blog/\na\t/x\t/`), /repeated/);
   assert.throws(() => parse(`${head}a\t/.well-known/acme-challenge/x\t/`), /bad old path/);
   assert.throws(() => parse(`${head}a /x /blog/`), /unexpected line/);
+  assert.throws(() => parse(`${head}a\t/x/*\t-`), /only an exact old path can be gone/);
+  assert.equal(parse(`${head}a\t/x\t-`).rules[0].to, GONE);
 });
 
 test('finds the page stylesheet and checks compression and caching', () => {

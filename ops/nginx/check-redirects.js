@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import http from 'node:http';
 import https from 'node:https';
 import { isIP } from 'node:net';
-import { OLD_URLS, load, match, resolve } from './redirects.js';
+import { GONE, OLD_URLS, load, match, resolve } from './redirects.js';
 
 const USAGE =
   'usage: node ops/nginx/check-redirects.js --base http://159.223.145.47 [--relay]\n' +
@@ -114,7 +114,15 @@ export function plan(table, baseHost, secure = false) {
     }
     for (const path of paths) {
       const location = resolve(table, host, path);
-      checks.push(location ? { host, path, location } : page(host, path));
+      // A gone page isn't redirected: the site answers it with its 404.
+      const gone = match(table, host, path)?.to === GONE;
+      checks.push(
+        location
+          ? { host, path, location }
+          : gone
+            ? { host, path, unchanged: 404 }
+            : page(host, path)
+      );
     }
     // The query string must land before the fragment, where the target has one.
     const redirected = [...paths].filter((path) => resolve(table, host, path));

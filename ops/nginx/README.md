@@ -5,7 +5,8 @@ On the droplet, nginx answers every old Wix URL of `codeboxx.com`, `www.codeboxx
 single 301 to its page on `https://codeboxx.ai`, the main domain (`SITE` in `redirects.js`; CLP-1342). Node 24, no npm dependencies.
 
 - `www.codeboxx.com` and `codeboxx.com` (the apex): blog posts to `/blog/<slug>/`, a few old pages
-  to their new page, anything else to the same path on `https://codeboxx.ai`. The apex serves no
+  to their new page, anything else to the same path on `https://codeboxx.ai`. Obsolete posts left off
+  the new blog (`-` in `redirects.tsv`) are gone: not redirected, the site answers them 404. The apex serves no
   page itself: codeboxx.ai is the one live origin.
 - academy, academie (in French) and solutions: old pages to their page or homepage section, anything
   else to the Academy page (`/academy/`, `/fr/academie/`); corporate-training pages to
