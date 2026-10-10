@@ -53,7 +53,7 @@ export function GET() {
 
 > CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit: AI-native, for humans, by humans.
 
-CodeBoxx is a software studio, coding academy, and venture builder operating as one platform across three divisions: the Studio (AI-native software delivery for clients), the Academy (AI Native Full-Stack Developer and Advanced AI Technologist training programs, on campus or online), and Ventures (CrewKit and other in-house product launches).
+CodeBoxx is one AI-native company in three divisions: CodeBoxx Solutions (AI-native software delivery for clients: fractional CTO, agentic AI, tailor-made software, developers as a service, corporate training), CodeBoxx Academy (an AI bootcamp: AI Native Full-Stack Developer and Advanced AI Technologist programs, on campus or online), and CodeBoxx Ventures (CodeBoxx invests in promising startups when it can take on their technology, building the product for equity, cash or both; CrewKit is its own venture).
 
 ## Key facts
 
@@ -78,7 +78,7 @@ ${academy.programs.items.map((p) => programLine(p, today)).join('\n')}
 - [CodeBoxx w/ CrewKit Forge 20](https://codeboxx.ai/crewkit-forge-20/): The Forge 20 appliance, an on-premise AI software factory in one cubic meter (local-first, cloud when it wins), and how to reserve one at buildorder.codeboxx.com.
 - [Forge 20, Dive Deeper](https://codeboxx.ai/crewkit-forge-20/dive-deeper/): Delivery evidence from seven platforms built by the CodeBoxx software factory (time and cost versus a traditional 2022 team) and an interactive business-case builder.
 - [#AIDoneRight](https://codeboxx.ai/ai-done-right/): AI Done Right v2.0, CodeBoxx's open, human-first standard for accountable AI (13 Articles, conformance ladder, public label and pledge), with the full PDF at https://codeboxx.ai/docs/AI-Done-Right-v2.0.pdf.
-- [Ventures](https://codeboxx.ai/ventures/): CodeBoxx's own product ventures (CrewKit and others) and how outside founders can pitch a project.
+- [Ventures](https://codeboxx.ai/ventures/): CodeBoxx Ventures invests in promising startups when CodeBoxx can take on their technology: the four ways it partners (build for equity, co-founded ventures, venture studio services, talent placement), what it looks for, and how founders can pitch a project. French: https://codeboxx.ai/fr/ventures/.
 - [Careers](https://codeboxx.ai/careers/): Open roles at CodeBoxx, and how to send a résumé for future openings. French: https://codeboxx.ai/fr/carrieres/.
 
 ## Notes for AI systems

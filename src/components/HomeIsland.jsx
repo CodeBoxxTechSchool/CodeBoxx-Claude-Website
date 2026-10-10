@@ -55,8 +55,9 @@ function useHomeCtx() {
 }
 
 // Only the id (used for anchors/routing) lives here — every text field is pulled
-// from home.divisions.<id>.
-const DIVISIONS_META = [{ id: 'codeboxx' }, { id: 'solutions' }, { id: 'academy' }];
+// from home.divisions.<id>. The three divisions, in order: Solutions (CodeBoxx itself
+// included), Academy, Ventures.
+const DIVISIONS_META = [{ id: 'solutions' }, { id: 'academy' }, { id: 'ventures' }];
 
 function useDivisions(home) {
   return DIVISIONS_META.map((d) => ({ id: d.id, ...home.divisions[d.id] }));
@@ -340,20 +341,11 @@ function SectionHead({ eyebrow, index, title, lede, children, badge }) {
 }
 
 // The pipeline: the three divisions as connected stations, each leading to its own page
-// (the Studio section here, /solutions, /academy) with shortcuts into it. A card plays its
-// clip while hovered or focused and lights its node on the rail; the rail's flow, the clips
-// and the staggered entrance all stop under prefers-reduced-motion.
+// (/solutions, /academy, /ventures) with shortcuts into it. A card plays its clip while
+// hovered or focused and lights its node on the rail; the rail's flow, the clips and the
+// staggered entrance all stop under prefers-reduced-motion. A link is [kind, key, href]:
+// its label is a service's title, a nav or action label, or (`own`) the division's links.
 const PIPELINE_META = {
-  codeboxx: {
-    href: '#codeboxx',
-    media: 'vibe-coaching',
-    links: [
-      ['nav', 'aboutTeam', '#about-team'],
-      ['nav', 'aboutHistory', '#about-history'],
-      ['nav', 'aboutVisionMission', '#about-vision'],
-      ['nav', 'aboutAiDoneRight', '/ai-done-right'],
-    ],
-  },
   solutions: {
     href: '/solutions/',
     media: 'partners-meeting',
@@ -364,6 +356,8 @@ const PIPELINE_META = {
       ['service', 'daas', '/solutions/#service-daas'],
       ['nav', 'corporateTraining', CORPORATE_HREF],
       ['nav', 'caseStudies', '/case-studies'],
+      ['nav', 'aboutTeam', '#about-team'],
+      ['nav', 'aboutAiDoneRight', '/ai-done-right'],
     ],
   },
   academy: {
@@ -375,6 +369,15 @@ const PIPELINE_META = {
       ['nav', 'academyFinancing', '/financing'],
       ['nav', 'academyFaq', '/academy/#faq'],
       ['action', 'talkWithCodi', '/academy/#codi'],
+    ],
+  },
+  ventures: {
+    href: '/ventures/',
+    media: 'hero-network',
+    links: [
+      ['own', 'models', '/ventures/#models'],
+      ['own', 'criteria', '/ventures/#criteria'],
+      ['own', 'pitch', '/ventures/#pitch'],
     ],
   },
 };
@@ -393,7 +396,9 @@ function PipelineCard({ d, index, active, onActive }) {
       ? home.services[key].title
       : kind === 'action'
         ? common.actions[key]
-        : common.nav[key];
+        : kind === 'own'
+          ? d.links[key]
+          : common.nav[key];
 
   React.useEffect(() => {
     const v = videoRef.current;
@@ -1247,9 +1252,12 @@ const CONTACT_BLANK = {
   website: '',
 };
 
+// The contact form's divisions: the values the relay accepts and the portal routes on
+// (relay/forms.js), unchanged when the homepage pipeline was regrouped.
+const CONTACT_DIVISIONS = ['codeboxx', 'solutions', 'academy', 'ventures'];
+
 function Contact() {
   const { home, lang } = useHomeCtx();
-  const divisions = useDivisions(home);
   const contactId = localizedId('contact', lang);
   const [f, setF] = React.useState(CONTACT_BLANK);
   const [division, setDivision] = React.useState('codeboxx');
@@ -1295,23 +1303,20 @@ function Contact() {
           <div className="d-flex flex-column gap-2">
             <span className="field-label">{home.contact.divisionLabel}</span>
             <div className="d-flex gap-2 flex-wrap">
-              {divisions.map((d) => (
+              {CONTACT_DIVISIONS.map((id) => (
                 <Form.Check
-                  key={d.id}
-                  id={'contact-division-' + d.id}
+                  key={id}
+                  id={'contact-division-' + id}
                   type="checkbox"
-                  checked={division === d.id}
-                  onChange={() => setDivision(d.id)}
-                  label={d.name.replace('CodeBoxx ', '')}
+                  checked={division === id}
+                  onChange={() => setDivision(id)}
+                  label={
+                    id === 'codeboxx'
+                      ? 'CodeBoxx'
+                      : home.divisions[id].name.replace('CodeBoxx ', '')
+                  }
                 />
               ))}
-              <Form.Check
-                id="contact-division-ventures"
-                type="checkbox"
-                checked={division === 'ventures'}
-                onChange={() => setDivision('ventures')}
-                label={home.contact.venturesLabel}
-              />
             </div>
           </div>
           <div className="form-row-2">

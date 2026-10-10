@@ -53,25 +53,17 @@ export default {
   platform: {
     eyebrow: 'La filière',
     title: 'Trois divisions. Une seule filière.',
-    lede: "Une entité native IA qui couvre l'ensemble des besoins : le développement, la plateforme qui le fait rouler et les talents qui l'exploitent. Moins de fournisseurs, une livraison plus rapide, un coût par résultat plus bas.",
+    lede: 'Solutions bâtit vos logiciels, l’Académie forme les talents qui les font rouler, et Ventures investit dans des fondateurs quand nous pouvons prendre en charge leur technologie. Une seule entreprise native IA : moins de fournisseurs, une livraison plus rapide, un coût par résultat plus bas.',
   },
   divisions: {
-    codeboxx: {
-      name: 'CodeBoxx',
-      role: 'À propos de nous',
-      tag: 'Nous sommes CodeBoxx',
-      blurb:
-        'Des équipes natives en IA qui définissent, bâtissent et livrent le produit avec le client, côte à côte.',
-      extra:
-        'On aide les entreprises, les gens et les communautés à aller plus loin grâce à la technologie.',
-      cta: 'Découvrir CodeBoxx',
-    },
     solutions: {
       name: 'CodeBoxx Solutions',
       role: 'Découvrez nos solutions',
       tag: 'Vos solutions',
       blurb:
-        'On combine stratégie, design et génie logiciel pour s’attaquer aux défis complexes. Avec les meilleures technologies et les outils les plus récents, on aide nos clients à innover plus intelligemment et à passer de l’idée à l’action plus vite.',
+        'Des équipes natives en IA qui définissent, bâtissent et livrent votre produit avec vous, côte à côte : stratégie, design et génie logiciel de haut niveau, avec les outils les plus récents, pour innover plus intelligemment et passer de l’idée à l’action plus vite.',
+      extra:
+        'Depuis 2018, on aide les entreprises, les gens et les communautés à aller plus loin grâce à la technologie.',
       cta: 'Découvrir CodeBoxx Solutions',
     },
     academy: {
@@ -81,6 +73,20 @@ export default {
       blurb:
         'CodeBoxx Académie aide les gens à faire leur place dans le monde de la tech. On forme une nouvelle génération de développeurs en donnant à chacun les outils, les compétences et la confiance pour réussir. Parce qu’on croit que le talent peut venir de partout — il suffit de lui donner une chance de se développer.',
       cta: 'Visiter CodeBoxx Académie',
+    },
+    ventures: {
+      name: 'CodeBoxx Ventures',
+      role: 'Bâtir avec des fondateurs',
+      tag: 'Bâtir avec des fondateurs',
+      blurb:
+        'CodeBoxx investit dans des entreprises prometteuses quand elle peut prendre en charge le volet technologique de la jeune pousse. On bâtit le produit avec les fondateurs, en capital, en argent ou les deux, et on reste leur partenaire technologique.',
+      extra: 'Le logiciel au cœur, un fondateur dans la salle, une voie vers le revenu.',
+      links: {
+        models: 'Quatre façons de collaborer',
+        criteria: 'Ce que nous recherchons',
+        pitch: 'Présentez votre projet',
+      },
+      cta: 'Découvrir CodeBoxx Ventures',
     },
   },
   codi: {
@@ -423,7 +429,6 @@ export default {
     applyBtn: 'Postuler à CodeBoxx Académie',
     formTitle: "Besoin de plus d'information ? Écrivez-nous.",
     divisionLabel: 'La division de CodeBoxx que vous souhaitez joindre',
-    venturesLabel: 'Ventures',
     firstPlaceholder: 'Prénom',
     lastPlaceholder: 'Nom',
     emailPlaceholder: 'nom@entreprise.com',
