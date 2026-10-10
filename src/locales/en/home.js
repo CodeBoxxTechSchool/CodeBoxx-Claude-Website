@@ -53,24 +53,19 @@ export default {
   platform: {
     eyebrow: 'The Pipeline',
     title: 'Three divisions. One pipeline.',
-    lede: 'One AI-native entity covering the full need: the build, the platform that runs it and the talent that staffs it. Fewer vendors, faster delivery, lower cost per outcome.',
+    lede: 'Solutions builds your software, the Academy trains the talent that staffs it, and Ventures invests in founders when we can take on their technology. One AI-native company: fewer vendors, faster delivery, lower cost per outcome.',
   },
+  // The three divisions, in this order: Solutions, Academy, Ventures. CodeBoxx itself and
+  // CodeBoxx Solutions are one division (leadership, Oct 2026).
   divisions: {
-    codeboxx: {
-      name: 'CodeBoxx',
-      role: 'About Us',
-      tag: 'We Are CodeBoxx',
-      blurb:
-        'AI-native delivery pods that scope, build and ship product with the client in the room.',
-      extra: 'We transform businesses, individuals, and communities through technology.',
-      cta: 'Meet CodeBoxx',
-    },
     solutions: {
       name: 'CodeBoxx Solutions',
       role: 'Discover Your Solutions',
       tag: 'Your Solutions',
       blurb:
-        'We specialize in strategy, intricate design solutions, and top-tier software engineering services. Our expertise in the latest software development tools and technologies empowers our clients to innovate better and execute faster.',
+        'AI-native delivery pods that scope, build and ship your product with you in the room: strategy, design and top-tier software engineering, with the latest tools, so you innovate better and execute faster.',
+      extra:
+        'Since 2018, we transform businesses, individuals, and communities through technology.',
       cta: 'Explore CodeBoxx Solutions',
     },
     academy: {
@@ -80,6 +75,21 @@ export default {
       blurb:
         'CodeBoxx Academy is a workforce development solution committed to closing the opportunity gap and addressing the talent shortage in the tech industry. We believe that everyone has the potential to be a great developer, and we are dedicated to molding potential into proficiency and shaping novices into nimble developers.',
       cta: 'Visit CodeBoxx Academy',
+    },
+    // CodeBoxx invests where it can take on the startup's technology (src/locales/en/ventures.js).
+    ventures: {
+      name: 'CodeBoxx Ventures',
+      role: 'Build With Founders',
+      tag: 'Build With Founders',
+      blurb:
+        'CodeBoxx invests in promising companies when we can take on the technology side of the startup. We build the product with the founders, for equity, cash or both, and stay on as their technical partner.',
+      extra: 'Software at the core, a founder in the room, a path to revenue.',
+      links: {
+        models: 'Four ways we partner',
+        criteria: 'What we look for',
+        pitch: 'Pitch your project',
+      },
+      cta: 'Explore CodeBoxx Ventures',
     },
   },
   codi: {
@@ -403,7 +413,6 @@ export default {
     applyBtn: 'Apply to CodeBoxx Academy',
     formTitle: 'Need more info, contact us.',
     divisionLabel: "CodeBoxx's Division you want to reach",
-    venturesLabel: 'Ventures',
     firstPlaceholder: 'First',
     lastPlaceholder: 'Last',
     emailPlaceholder: 'name@company.com',

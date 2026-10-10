@@ -12,6 +12,9 @@ import { trackLead } from '../lib/trackLead';
 // with `client:load` right where the trigger button belongs in the page; the
 // Offcanvas itself overlays the viewport when open, so its position in the DOM
 // tree doesn't affect where it visually appears.
+// A link to the page's #pitch (e.g. the homepage's Ventures card) opens the drawer.
+const PITCH_HASH = '#pitch';
+
 const PITCH_BLANK = {
   first: '',
   last: '',
@@ -30,6 +33,18 @@ export default function PitchWidget({ ventures, lang, closeLabel }) {
   React.useEffect(() => {
     if (open) setStatus((s) => (s === 'sending' ? s : 'idle'));
   }, [open]);
+  React.useEffect(() => {
+    const openOnPitch = () => location.hash === PITCH_HASH && setOpen(true);
+    openOnPitch();
+    window.addEventListener('hashchange', openOnPitch);
+    return () => window.removeEventListener('hashchange', openOnPitch);
+  }, []);
+  const close = () => {
+    setOpen(false);
+    // Drop #pitch so a reload doesn't reopen it and the same link opens it again.
+    if (location.hash === PITCH_HASH)
+      history.replaceState(null, '', location.pathname + location.search);
+  };
   const set = (k) => (e) => setForm((f) => Object.assign({}, f, { [k]: e.target.value }));
   const invalid = form.email.length > 0 && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email);
   const ready = form.first && form.last && form.email && !invalid && form.phone && consent;
@@ -51,18 +66,13 @@ export default function PitchWidget({ ventures, lang, closeLabel }) {
   return (
     <React.Fragment>
       <Button onClick={() => setOpen(true)}>{ventures.band.pitchButton}</Button>
-      <Offcanvas
-        show={open}
-        onHide={() => setOpen(false)}
-        placement="end"
-        className="pitch-offcanvas"
-      >
+      <Offcanvas show={open} onHide={close} placement="end" className="pitch-offcanvas">
         <Offcanvas.Header className="site-header">
           <div className="d-flex flex-column gap-3 align-items-start">
             <span className="kicker">{ventures.pitchDrawer.kicker}</span>
             <h3 className="ptitle">{ventures.pitchDrawer.title}</h3>
           </div>
-          <Button size="sm" variant="ghost" onClick={() => setOpen(false)}>
+          <Button size="sm" variant="ghost" onClick={close}>
             {closeLabel}
           </Button>
         </Offcanvas.Header>
