@@ -34,6 +34,12 @@ export default defineConfig({
   redirects: {
     '/académie': '/fr/academie/',
     '/fr/académie': '/fr/academie/',
+    // Posts merged or retired (Search Console coverage, Oct 2026): the teaser now points to the
+    // full episode post, and the 2024 "coming soon" announcement to the Academy it announced.
+    '/blog/building-people-not-just-tech': '/blog/building-people-not-just-tech-nicolas-genest-on-ai-talent-and-the-future-of-work-ep-1146/',
+    '/fr/blogue/building-people-not-just-tech': '/fr/blogue/building-people-not-just-tech-nicolas-genest-on-ai-talent-and-the-future-of-work-ep-1146/',
+    '/blog/coming-soon-at-codeboxx': '/academy/',
+    '/fr/blogue/coming-soon-at-codeboxx': '/fr/academie/',
   },
   // Local dev only: the forms' relay (relay/server.js); nginx does this in production.
   // French spacing (non-breaking space before : ; ! ?, before $ and %) on all FR
