@@ -96,7 +96,8 @@ const oldPaths = (group) =>
     .map((url) => new URL(url).pathname);
 
 /**
- * Every request to make: { host, path, location } (a 301 there), { host, path, unchanged }, or
+ * Every request to make: { host, path, location } (a 301 there, gone: true when its target is a
+ * gone page), { host, path, unchanged }, or
  * { host, path, rejected } (no handshake). The apex serves no page: every path of it is a 301 to
  * codeboxx.ai, the new site's pages to the same path.
  */
@@ -114,13 +115,17 @@ export function plan(table, baseHost, secure = false) {
     }
     for (const path of paths) {
       const location = resolve(table, host, path);
-      // A gone page isn't redirected: the site answers it with its 404.
+      // A gone page isn't redirected: the site answers it with its 404. Over http the apex sends
+      // every path to https://codeboxx.ai in one hop first, so its 404 comes from there (a gone
+      // target, not a page to expect 200 from).
       const gone = match(table, host, path)?.to === GONE;
       checks.push(
         location
           ? { host, path, location }
           : gone
-            ? { host, path, unchanged: 404 }
+            ? host === APEX && !secure
+              ? { host, path, location: `https://${SITE_HOST}${path}`, gone: true }
+              : { host, path, unchanged: 404 }
             : page(host, path)
       );
     }
@@ -139,7 +144,7 @@ export function plan(table, baseHost, secure = false) {
   for (const host of unknown) {
     if (secure) checks.push({ host, path: '/', rejected: true });
     else
-      for (const path of ['/', '/post/kntv-press-here', '/contact', '/join-our-team'])
+      for (const path of ['/', '/post/kntv-press-here', '/inquiry-services-page', '/join-our-team'])
         checks.push({ host, path, unchanged: path === '/' ? 200 : 404 });
   }
   const apexPages = [
@@ -212,7 +217,7 @@ export async function main(args, { out = console.log, err = console.error } = {}
       if (res.status !== 301 || res.location !== check.location)
         return fail(`${what} (want 301 -> ${check.location})`, describe(res));
       redirects++;
-      targets.add(new URL(check.location).pathname);
+      if (!check.gone) targets.add(new URL(check.location).pathname);
     } else {
       if (res.status !== check.unchanged || res.location)
         return fail(`${what} (want ${check.unchanged}, no redirect)`, describe(res));

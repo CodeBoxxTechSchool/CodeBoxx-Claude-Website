@@ -230,21 +230,35 @@ test('check plan: the apex goes to codeboxx.ai over both; the IP fails the hands
   const ip = '159.223.145.47';
   const [http, https] = [plan(table, ip), plan(table, ip, true)];
   const find = (checks, host, path) => checks.find((c) => c.host === host && c.path === path);
-  const oldHosts = (checks) => checks.filter((c) => table.hosts[c.host]);
-  assert.deepEqual(oldHosts(http), oldHosts(https));
-  // Every apex request but the certificate challenge and the gone posts (404) is a 301 to
-  // codeboxx.ai.
-  for (const check of http.filter((c) => c.host === 'codeboxx.com' && !c.unchanged))
-    assert.ok(check.location.startsWith('https://codeboxx.ai/'), check.path);
-  const unchanged = http.filter((c) => c.host === 'codeboxx.com' && c.unchanged);
   const gone = table.rules
     .filter((rule) => rule.to === GONE && rule.groups.includes('apex'))
     .flatMap((rule) => [rule.path, rule.path + '/']);
+  const apexGone = (c) => c.host === 'codeboxx.com' && gone.includes(c.path);
+  const oldHosts = (checks) => checks.filter((c) => table.hosts[c.host] && !apexGone(c));
+  assert.deepEqual(oldHosts(http), oldHosts(https));
+  // Over https the apex's gone posts get the site's 404; over http the apex sends every path to
+  // codeboxx.ai in one hop, so they're 301s to the same path there.
+  for (const path of gone) {
+    assert.equal(find(https, 'codeboxx.com', path).unchanged, 404, path);
+    assert.equal(find(http, 'codeboxx.com', path).location, `https://codeboxx.ai${path}`, path);
+    assert.ok(find(http, 'codeboxx.com', path).gone, path);
+  }
+  // Every other apex request but the certificate challenge is a 301 to codeboxx.ai.
+  for (const checks of [http, https])
+    for (const check of checks.filter((c) => c.host === 'codeboxx.com' && !c.unchanged))
+      assert.ok(check.location.startsWith('https://codeboxx.ai/'), check.path);
+  const unchanged = (checks) => checks.filter((c) => c.host === 'codeboxx.com' && c.unchanged);
   assert.deepEqual(
-    unchanged.map((c) => c.path).sort(),
+    unchanged(http).map((c) => c.path),
+    ['/.well-known/acme-challenge/test']
+  );
+  assert.deepEqual(
+    unchanged(https)
+      .map((c) => c.path)
+      .sort(),
     ['/.well-known/acme-challenge/test', ...gone].sort()
   );
-  assert.ok(unchanged.every((c) => c.unchanged === 404));
+  assert.ok(unchanged(https).every((c) => c.unchanged === 404));
   assert.equal(find(http, 'codeboxx.com', '/faq/').location, 'https://codeboxx.ai/faq/');
   assert.equal(find(https, 'codeboxx.com', '/').location, 'https://codeboxx.ai/');
   for (const host of SWAP_HOSTS)
