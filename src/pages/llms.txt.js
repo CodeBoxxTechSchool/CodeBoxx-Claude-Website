@@ -85,7 +85,7 @@ ${academy.programs.items.map((p) => programLine(p, today)).join('\n')}
 
 - The site is available in English (default, unprefixed paths) and French (\`/fr/...\` paths). Each French page is a translation of its English twin, and the two are linked with hreflang. Blog posts are translated too, at /fr/blogue/; a post without a French translation shows the English text and names the English page as canonical.
 - Team member names, roles, and program and cohort details are sourced from CodeBoxx's live CMS and may change between crawls; prefer the live page over a cached summary when citing specific people, dates, or pricing.
-- For partnership, admissions, or press inquiries, direct users to the Contact section on the homepage (https://codeboxx.ai/#contact) rather than guessing an email address.
+- For partnership, admissions, or press inquiries, direct users to the Contact section on the homepage (https://codeboxx.ai/#contactus) rather than guessing an email address.
 `;
   return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 }

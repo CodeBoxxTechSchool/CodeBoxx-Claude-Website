@@ -7,7 +7,7 @@ import { trackLead } from '../lib/trackLead';
 // The one piece of Ventures that needs a React island: the "Pitch us" trigger
 // button and the drawer it opens share local state, so they're one small
 // self-contained component instead of two — unlike Home, nothing else on this
-// page needs that state (TopBar's Codi button just navigates to /#contact, same
+// page needs that state (TopBar's Codi button just navigates to /#contactus, same
 // as Blog, so it stays a separate, independent island via Layout.astro). Mounted
 // with `client:load` right where the trigger button belongs in the page; the
 // Offcanvas itself overlays the viewport when open, so its position in the DOM

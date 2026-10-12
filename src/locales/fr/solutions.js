@@ -59,7 +59,7 @@ export default {
       body: 'Faites passer votre transformation numérique à la vitesse supérieure avec nos spécialistes natifs IA. Ils rebâtissent et optimisent votre environnement numérique pour que votre entreprise garde une longueur d’avance, avec des solutions intelligentes et prêtes pour l’avenir.',
       video: 'partners-meeting',
       cta: 'Parler à un spécialiste',
-      href: '#contact',
+      href: '#contactus',
       topic: 'project',
     },
     {

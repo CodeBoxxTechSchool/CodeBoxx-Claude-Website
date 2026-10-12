@@ -17,7 +17,7 @@ export default {
     academyFaq: 'FAQ',
     ventures: 'Ventures',
     blog: 'CodeBlog',
-    contact: 'Contact',
+    contact: 'Nous joindre',
   },
   actions: {
     enrollNow: "S'inscrire",

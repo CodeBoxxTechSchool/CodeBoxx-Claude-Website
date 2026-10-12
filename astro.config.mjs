@@ -42,6 +42,11 @@ export default defineConfig({
       '/fr/blogue/building-people-not-just-tech-nicolas-genest-on-ai-talent-and-the-future-of-work-ep-1146/',
     '/blog/coming-soon-at-codeboxx': '/academy/',
     '/fr/blogue/coming-soon-at-codeboxx': '/fr/academie/',
+    // Short links that open the homepage's enroll drawer (ENROLL_HASHES in HomeIsland.jsx).
+    '/contact': '/#contact',
+    '/launch': '/#launch',
+    '/fr/contact': '/fr/#contact',
+    '/fr/launch': '/fr/#launch',
   },
   // Local dev only: the forms' relay (relay/server.js); nginx does this in production.
   // French spacing (non-breaking space before : ; ! ?, before $ and %) on all FR

@@ -46,8 +46,9 @@ const HomeCtx = React.createContext(null);
 // French visitors to /fr/academie and /fr/formation-entreprise.
 const ACADEMY_HREF = '/academy/';
 const ACADEMY_APPLY_HREF = '/academy/#apply';
-// Opens the enroll drawer on the Full-Stack program (see HomeIsland below).
-const LAUNCH_HASH = '#launch';
+// Open the enroll drawer on the Full-Stack program (see HomeIsland below). The contact form
+// is #contactus; /contact and /launch redirect here (astro.config.mjs).
+const ENROLL_HASHES = ['#launch', '#contact'];
 const ACADEMY_DATES_HREF = '/academy/#dates';
 const CORPORATE_HREF = '/corporate-training/';
 function useHomeCtx() {
@@ -1156,7 +1157,7 @@ function Academy() {
                     size="sm"
                     variant="outline-primary"
                     onClick={() => {
-                      location.hash = localizedHref('#contact', lang, pathname);
+                      location.hash = localizedHref('#contactus', lang, pathname);
                     }}
                   >
                     {home.academy.contactUs}
@@ -1258,7 +1259,7 @@ const CONTACT_DIVISIONS = ['codeboxx', 'solutions', 'academy', 'ventures'];
 
 function Contact() {
   const { home, lang } = useHomeCtx();
-  const contactId = localizedId('contact', lang);
+  const contactId = localizedId('contactus', lang);
   const [f, setF] = React.useState(CONTACT_BLANK);
   const [division, setDivision] = React.useState('codeboxx');
   const [mobile, setMobile] = React.useState('yes');
@@ -1696,12 +1697,12 @@ export default function HomeIsland({
 }) {
   const [codi, setCodi] = React.useState(false);
   // The enroll drawer, opened by TopBar's mobile Enroll Now (its `enrollDrawer`), on the
-  // Full-Stack program as on /academy. A link to the homepage's #launch (e.g.
+  // Full-Stack program as on /academy. A link to the homepage's #launch or #contact (e.g.
   // codeboxx.ai/#launch, from a campaign) opens it too, on load or on a same-page hash change.
   const [course, setCourse] = React.useState(null);
   React.useEffect(() => {
     const open = () => setCourse(home.enroll.titles.fsd);
-    const openOnLaunch = () => location.hash === LAUNCH_HASH && open();
+    const openOnLaunch = () => ENROLL_HASHES.includes(location.hash) && open();
     openOnLaunch();
     window.addEventListener(ENROLL_OPEN_EVENT, open);
     window.addEventListener('hashchange', openOnLaunch);
@@ -1712,7 +1713,7 @@ export default function HomeIsland({
   }, [home]);
   React.useEffect(() => {
     // Arriving here from another page (e.g. clicking "Contact" on /blog) lands on
-    // "/#contact" via a full page load. The browser's own anchor-scroll fires before
+    // "/#contactus" via a full page load. The browser's own anchor-scroll fires before
     // React has rendered the target section, so it silently does nothing — this is
     // the one-time catch-up scroll that makes it land the same place a same-page
     // click already does (same-page clicks keep working via native anchor scrolling,
@@ -1788,8 +1789,8 @@ export default function HomeIsland({
           course={course}
           onClose={() => {
             setCourse(null);
-            // Drop #launch so a reload doesn't reopen it and the same link opens it again.
-            if (location.hash === LAUNCH_HASH)
+            // Drop the hash so a reload doesn't reopen it and the same link opens it again.
+            if (ENROLL_HASHES.includes(location.hash))
               history.replaceState(null, '', location.pathname + location.search);
           }}
           home={home}

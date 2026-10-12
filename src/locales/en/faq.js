@@ -55,7 +55,7 @@ export default {
         ],
         [
           'Pinellas County, Florida residents: We encourage you to ',
-          { label: 'contact us', href: '#contact' },
+          { label: 'contact us', href: '#contactus' },
           ' to learn more about ',
           { label: 'local funding', href: '/pinellas-residents' },
           ' that can cover all or part of your tuition.',
