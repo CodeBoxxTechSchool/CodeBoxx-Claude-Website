@@ -23,7 +23,6 @@
 /blog/best-onshore-ai-development-companies-in-the-us/
 /blog/beyond-access-how-codeboxx-is-creating-real-tech-opportunities-in-st-petersburg/
 /blog/building-people-not-just-tech-nicolas-genest-on-ai-talent-and-the-future-of-work-ep-1146/
-/blog/building-people-not-just-tech/
 /blog/codeboxx-2025-advertise/
 /blog/codeboxx-academy-empowering-communities-through-tech-education/
 /blog/codeboxx-academy-expands-pathways-to-prosperity-through-new-community-referral-program/
@@ -31,7 +30,6 @@
 /blog/codeboxx-and-urban-league-of-hillsborough-county-kick-off-full-stack-development-program-for-student/
 /blog/codeboxx-celebrates-new-learning-opportunities-with-usf-ctpe/
 /blog/codeboxx-powers-ai-collaboration-as-founding-sponsor-of-ai-salon-in-st-pete-tampa-bay-area-orlando-1/
-/blog/coming-soon-at-codeboxx/
 /blog/executives-advocate-for-reshaping-of-workforce-following-job-cuts-from-ai/
 /blog/from-prompt-to-prototype/
 /blog/from-second-chances-to-software-coding-is-rewriting-lives/
@@ -61,7 +59,6 @@
 /blog/meet-tbbw-s-2025-philanthropists-of-the-year/
 /blog/new-rules-for-junior-developers-in-the-age-of-ai/
 /blog/nicolas-genest/
-/blog/q-a-about-ethics-by-design/
 /blog/st-pete-based-codeboxx-relocates-to-spark-labs-by-ark-invest/
 /blog/tedx-st-pete-palladium-explores-redefining-education-for-the-next-generation-with-insights-from-b/
 /blog/the-age-of-vibe-coding-is-here/
@@ -135,7 +132,6 @@
 /fr/blogue/best-onshore-ai-development-companies-in-the-us/
 /fr/blogue/beyond-access-how-codeboxx-is-creating-real-tech-opportunities-in-st-petersburg/
 /fr/blogue/building-people-not-just-tech-nicolas-genest-on-ai-talent-and-the-future-of-work-ep-1146/
-/fr/blogue/building-people-not-just-tech/
 /fr/blogue/codeboxx-2025-advertise/
 /fr/blogue/codeboxx-academy-empowering-communities-through-tech-education/
 /fr/blogue/codeboxx-academy-expands-pathways-to-prosperity-through-new-community-referral-program/
@@ -143,7 +139,6 @@
 /fr/blogue/codeboxx-and-urban-league-of-hillsborough-county-kick-off-full-stack-development-program-for-student/
 /fr/blogue/codeboxx-celebrates-new-learning-opportunities-with-usf-ctpe/
 /fr/blogue/codeboxx-powers-ai-collaboration-as-founding-sponsor-of-ai-salon-in-st-pete-tampa-bay-area-orlando-1/
-/fr/blogue/coming-soon-at-codeboxx/
 /fr/blogue/executives-advocate-for-reshaping-of-workforce-following-job-cuts-from-ai/
 /fr/blogue/from-prompt-to-prototype/
 /fr/blogue/from-second-chances-to-software-coding-is-rewriting-lives/
@@ -173,7 +168,6 @@
 /fr/blogue/meet-tbbw-s-2025-philanthropists-of-the-year/
 /fr/blogue/new-rules-for-junior-developers-in-the-age-of-ai/
 /fr/blogue/nicolas-genest/
-/fr/blogue/q-a-about-ethics-by-design/
 /fr/blogue/st-pete-based-codeboxx-relocates-to-spark-labs-by-ark-invest/
 /fr/blogue/tedx-st-pete-palladium-explores-redefining-education-for-the-next-generation-with-insights-from-b/
 /fr/blogue/the-age-of-vibe-coding-is-here/

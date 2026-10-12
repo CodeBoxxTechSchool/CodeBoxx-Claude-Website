@@ -172,7 +172,7 @@ test('academy.codeboxx.com lands on /academy, its section, or its own page', () 
     ['/no-such-page', '/academy/'],
     ['/corporate-training', '/corporate-training/'],
     ['/technology-training-for-businesses', '/corporate-training/'],
-    ['/post/coming-soon-at-codeboxx', '/blog/coming-soon-at-codeboxx/'],
+    ['/post/coming-soon-at-codeboxx', '/academy/'],
   ];
   for (const host of ['academy.codeboxx.com', 'www.academy.codeboxx.com'])
     for (const [path, to] of cases) assert.equal(resolve(table, host, path), `${SITE}${to}`, path);
