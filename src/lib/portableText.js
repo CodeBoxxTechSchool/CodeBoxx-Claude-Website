@@ -137,7 +137,7 @@ function renderTable(block) {
 const YOUTUBE_RE = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/i;
 const VIMEO_RE = /vimeo\.com\/(?:.*\/)?(\d+)/i;
 
-function parseVideoUrl(url) {
+export function parseVideoUrl(url) {
   const yt = (url || '').match(YOUTUBE_RE);
   if (yt) return { provider: 'youtube', id: yt[1] };
   const vm = (url || '').match(VIMEO_RE);

@@ -11,7 +11,7 @@ import PostFooterLinks from '../../components/PostFooterLinks.astro';
 import { postUrl } from '../../lib/share';
 import { fetchPostList, isTranslated } from '../../lib/sanityContent';
 import { SEED_POSTS } from '../../lib/blogSeed';
-import { blogPostingSchema } from '../../lib/schemaOrg';
+import { blogPostingSchema, videoSchemas } from '../../lib/schemaOrg';
 import { portableTextToHtml } from '../../lib/portableText';
 import { localizedHref } from '../../lib/i18nRoutes';
 import common from '../../locales/en/common';
@@ -64,7 +64,7 @@ const contentHtml = post.content ? portableTextToHtml(post.content) : '';
   description={post.excerpt}
   image={ogImage}
   type="article"
-  structuredData={articleSchema}
+  structuredData={[articleSchema, ...videoSchemas({ post })]}
   translated={isTranslated(post)}
   strings={common}
 >
