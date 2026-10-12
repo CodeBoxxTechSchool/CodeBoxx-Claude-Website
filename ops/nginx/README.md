@@ -95,7 +95,7 @@ Without the `codeboxx-https.conf` mount it's step 1 below alone: `nginx -t` and 
 query string, in capitals and under each prefix) with its old `Host:` header, expects one 301 to the
 `redirects.tsv` target, then expects 200 from each target. It also checks that certificate
 challenges aren't redirected. The new site's pages on the apex must be one 301 to the same path
-on codeboxx.ai. The targets, headers and relay are fetched from the site: through the IP over http
+on codeboxx.ai (over http its gone posts too: port 80 sends every apex path there first). The targets, headers and relay are fetched from the site: through the IP over http
 when `--base` is an IP, else from `https://codeboxx.ai` (`--site <url>` to choose). Over http the
 IP and an unknown host must get the site.
 On both, the homepage must come gzipped with `Cache-Control: no-cache`, and its `/_astro/`
