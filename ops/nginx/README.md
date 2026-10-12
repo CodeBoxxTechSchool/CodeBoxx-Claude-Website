@@ -28,6 +28,13 @@ Port 443 answers the eight names with one Let's Encrypt certificate
 certificate is issued by hand (DNS-01) and renewed by certbot (HTTP-01, from
 `/var/www/letsencrypt`; step 2). This config sets no HSTS (CLP-1414).
 
+The site itself, `codeboxx.ai`, has its own 443 server block (`codeboxx-ai.conf`, a copy of the
+droplet's file): `codeboxx.ai` and `www.codeboxx.ai`, with a Cloudflare Origin Certificate, since
+Cloudflare proxies both names (SSL mode Full strict). `www.codeboxx.ai` doesn't reach it: a
+Cloudflare Redirect Rule (zone codeboxx.ai, "Redirect www to root") answers it first with one 301
+to the same path on `https://codeboxx.ai`, query kept (CLP-1413). nginx still serves www as the
+site, so www keeps working if the rule is ever turned off.
+
 | File                               | What                                                                     |
 | ---------------------------------- | ------------------------------------------------------------------------ |
 | `redirects.tsv`                    | The redirects: host groups, old path → target (format in its header)     |
@@ -38,6 +45,7 @@ certificate is issued by hand (DNS-01) and renewed by certbot (HTTP-01, from
 | `snippets/codeboxx-tls.conf`       | TLS settings (Mozilla "intermediate") for the 443 server blocks          |
 | `codeboxx.conf`                    | Port 80 (`/etc/nginx/sites-available/codeboxx`)                          |
 | `codeboxx-https.conf`              | Port 443 (`/etc/nginx/sites-available/codeboxx-https`)                   |
+| `codeboxx-ai.conf`                 | Port 443 for codeboxx.ai (`/etc/nginx/sites-available/codeboxx-ai`)      |
 | `issue-cert.sh`                    | First issuance and fallback, by DNS-01 with TXT records added in Wix     |
 | `old-urls/`                        | The Wix sitemaps (2026-09-30) the tests and the check go through         |
 | `new-pages.txt`                    | The new site's pages (its sitemap), since the tests run before the build |
@@ -61,7 +69,8 @@ the apex sends each page of the new site to the same path on codeboxx.ai. When p
 
 Serves the built site (`npm run build`, or any folder holding `index.html` for each page) with the
 official nginx image (`nginx:1.24` is Ubuntu 24.04's version), with a test CA's certificate for
-the eight names where certbot puts the real one:
+the eight names where certbot puts the real one, and one for codeboxx.ai where the Cloudflare
+Origin Certificate goes:
 
 ```sh
 T=$(mktemp -d)
@@ -74,22 +83,31 @@ san=$(printf 'DNS:%s,' {,www.}{,academy.,academie.,solutions.}codeboxx.com)
 openssl x509 -req -in $T/req.csr -CA $T/ca.pem -CAkey $T/ca.key -CAcreateserial -days 2 \
   -extfile <(echo "subjectAltName=${san%,}") -out $T/cert.pem
 cat $T/cert.pem $T/ca.pem > $T/fullchain.pem
+mkdir $T/cf
+openssl req -newkey ec -pkeyopt ec_paramgen_curve:P-256 -nodes -subj /CN=codeboxx.ai \
+  -keyout $T/cf/codeboxx.ai.key -out $T/cf/req.csr
+openssl x509 -req -in $T/cf/req.csr -CA $T/ca.pem -CAkey $T/ca.key -CAcreateserial -days 2 \
+  -extfile <(echo 'subjectAltName=DNS:codeboxx.ai,DNS:www.codeboxx.ai') -out $T/cf/codeboxx.ai.pem
 docker run -d --name nginx-test -p 127.0.0.1:8089:80 -p 127.0.0.1:8443:443 \
   -v $T/forms-ratelimit.conf:/etc/nginx/conf.d/forms-ratelimit.conf:ro \
   -v "$PWD/ops/nginx/conf.d/codeboxx-redirects.conf:/etc/nginx/conf.d/codeboxx-redirects.conf:ro" \
   -v "$PWD/ops/nginx/codeboxx.conf:/etc/nginx/conf.d/codeboxx.conf:ro" \
   -v "$PWD/ops/nginx/codeboxx-https.conf:/etc/nginx/conf.d/codeboxx-https.conf:ro" \
+  -v "$PWD/ops/nginx/codeboxx-ai.conf:/etc/nginx/conf.d/codeboxx-ai.conf:ro" \
   -v "$PWD/ops/nginx/snippets:/etc/nginx/snippets:ro" \
-  -v $T:/etc/letsencrypt/live/codeboxx.com:ro \
+  -v $T:/etc/letsencrypt/live/codeboxx.com:ro -v $T/cf:/etc/ssl/cloudflare:ro \
   -v /dev/null:/etc/nginx/conf.d/default.conf:ro \
   -v "$PWD/dist:/var/www/codeboxx:ro" nginx:1.24
 docker exec nginx-test nginx -t
-node ops/nginx/check-redirects.js --base http://127.0.0.1:8089
-node ops/nginx/check-redirects.js --base https://127.0.0.1:8443 --ca $T/ca.pem
+node ops/nginx/check-redirects.js --base http://127.0.0.1:8089 --site http://127.0.0.1:8089
+node ops/nginx/check-redirects.js --base https://127.0.0.1:8443 --site http://127.0.0.1:8089 \
+  --ca $T/ca.pem
+curl -so /dev/null -w '%{http_code}\n' --cacert $T/ca.pem --resolve www.codeboxx.ai:8443:127.0.0.1 \
+  https://www.codeboxx.ai:8443/   # 200: the droplet serves www, Cloudflare redirects it
 docker rm -f nginx-test; rm -r $T
 ```
 
-Without the `codeboxx-https.conf` mount it's step 1 below alone: `nginx -t` and the http check pass.
+Without the `codeboxx-https.conf` and `codeboxx-ai.conf` mounts it's step 1 below alone: `nginx -t` and the http check pass.
 
 `check-redirects.js` sends each old URL (with and without its trailing slash, plus samples with a
 query string, in capitals and under each prefix) with its old `Host:` header, expects one 301 to the
@@ -100,7 +118,9 @@ when `--base` is an IP, else from `https://codeboxx.ai` (`--site <url>` to choos
 IP and an unknown host must get the site.
 On both, the homepage must come gzipped with `Cache-Control: no-cache`, and its `/_astro/`
 stylesheet gzipped and cached for a year (`immutable`). Over https, every request checks the certificate against its host name (`--ca`: a test CA
-instead of the system's), and the IP and an unknown name must fail the handshake. It prints the failures and a summary, and exits 1 on any failure.
+instead of the system's), and the IP and an unknown name must fail the handshake. With a name as
+`--base` (after the swap), `https://www.codeboxx.ai` must also be one 301 to the same path on
+codeboxx.ai, query kept: that's the Cloudflare rule, so it isn't checked through the IP. It prints the failures and a summary, and exits 1 on any failure.
 
 ## Install on the droplet
 
@@ -189,6 +209,20 @@ node ops/nginx/check-redirects.js --base http://159.223.145.47 --relay
 
 The DNS swap itself, once step 3 passes: [../swap-runbook.md](../swap-runbook.md).
 
+**codeboxx.ai** (`codeboxx-ai.conf`, in place since the swap), with the Cloudflare Origin
+Certificate in `/etc/ssl/cloudflare/codeboxx.ai.pem` and `codeboxx.ai.key`:
+
+```sh
+cp /etc/nginx/sites-available/codeboxx-ai /root/codeboxx-ai.nginx.bak-$(date +%Y%m%d-%H%M)
+install -m 0644 codeboxx-ai.conf /etc/nginx/sites-available/codeboxx-ai
+[ -L /etc/nginx/sites-enabled/codeboxx-ai ] ||
+  ln -s /etc/nginx/sites-available/codeboxx-ai /etc/nginx/sites-enabled/codeboxx-ai
+nginx -t && systemctl reload nginx
+```
+
+Then `node ops/nginx/check-redirects.js --base https://codeboxx.com --relay` (the site and the www
+redirect, through Cloudflare).
+
 **Compression and caching** (`snippets/codeboxx-site.conf`: gzip for CSS, JS, SVG, JSON and text;
 a year for `/_astro/`, whose file names carry a content hash; a day for images, video and fonts;
 `no-cache` for pages), once step 1 is in place:
@@ -211,5 +245,6 @@ Then `node ops/nginx/check-redirects.js --base http://159.223.145.47 --relay` mu
   new snippets can stay, nothing else includes them).
 - Compression and caching: `cp /root/codeboxx-site.conf.bak-YYYYMMDD-HHMM
 /etc/nginx/snippets/codeboxx-site.conf`.
+- codeboxx.ai: `cp /root/codeboxx-ai.nginx.bak-YYYYMMDD-HHMM /etc/nginx/sites-available/codeboxx-ai`.
 - The redirects: put the pre-CLP-1342 backup (`/root/codeboxx.nginx.bak-YYYYMMDD`) back and
   `rm /etc/nginx/conf.d/codeboxx-redirects.conf /etc/nginx/snippets/codeboxx-redirects.conf`.
