@@ -44,7 +44,7 @@ export const HASH_TABLE = {
   academy: { en: 'academy', fr: 'academie' },
   'academy-courses': { en: 'academy-courses', fr: 'academie-cours' },
   intake: { en: 'intake', fr: 'admission' },
-  contact: { en: 'contact', fr: 'contact' },
+  contactus: { en: 'contactus', fr: 'contactus' },
 };
 
 export const isFrenchPath = (pathname) => pathname === '/fr' || pathname.startsWith('/fr/');
@@ -84,7 +84,7 @@ function fillPattern(pattern, params) {
   );
 }
 
-// Translates a hash-only anchor ("#contact") or a full pathname ("/blog",
+// Translates a hash-only anchor ("#contactus") or a full pathname ("/blog",
 // "/blog/some-slug") into its equivalent in `lang`. `currentPathname` is only
 // needed for the hash case (to know whether to prefix it with the localized home
 // path) — pass `Astro.url.pathname` server-side or `window.location.pathname`
@@ -98,8 +98,8 @@ const withTrailingSlash = (p) => (p.endsWith('/') ? p : p + '/');
 
 export function localizedHref(path, lang, currentPathname = '/') {
   // "/academy/#faq": localize the path, keep the fragment (page-local ids are
-  // the same in both languages). "/#contact" is a homepage section: its id is
-  // translated like a bare "#contact".
+  // the same in both languages). "/#contactus" is a homepage section: its id is
+  // translated like a bare "#contactus".
   const hashAt = path.indexOf('#');
   if (hashAt > 0) {
     const page = path.slice(0, hashAt);

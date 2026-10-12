@@ -186,7 +186,7 @@ test('matches with or without a trailing slash, ignoring case, prefixes included
   assert.equal(resolve(table, 'www.codeboxx.com', '/Join-Our-Team'), `${SITE}/careers/`);
   assert.equal(resolve(table, 'www.codeboxx.com', '/Blog/Categories/X'), `${SITE}/blog/`);
   assert.equal(resolve(table, 'www.codeboxx.com', '/About'), `${SITE}/About`);
-  assert.equal(resolve(table, 'www.codeboxx.com', '/contact/'), `${SITE}/#contact`);
+  assert.equal(resolve(table, 'www.codeboxx.com', '/contact/'), `${SITE}/#contactus`);
   assert.equal(resolve(table, 'Solutions.codeboxx.com', '/product-page'), `${SITE}/solutions/`);
   assert.equal(resolve(table, 'solutions.codeboxx.com', '/product-page/x/'), `${SITE}/solutions/`);
   assert.equal(

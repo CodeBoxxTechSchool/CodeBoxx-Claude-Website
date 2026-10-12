@@ -6,7 +6,7 @@ import { pageUrl, useRelaySubmit } from '../lib/useRelaySubmit';
 import { trackLead } from '../lib/trackLead';
 
 // The business contact form on the pages for companies (BusinessContactSection.astro mounts it in
-// the page's #contact section): what a company writes to CodeBoxx about, an issue, a project,
+// the page's #contactus section): what a company writes to CodeBoxx about, an issue, a project,
 // a quote, the software factory, staff augmentation, or training and coaching built into the
 // delivery. Posts to the relay's /api/contact as the Solutions division, with the topic and the
 // company (sent to the portal in `extra`). A link with data-contact-topic="<value>" anywhere on the

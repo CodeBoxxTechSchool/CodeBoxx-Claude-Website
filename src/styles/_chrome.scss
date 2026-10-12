@@ -44,7 +44,7 @@
   }
 }
 
-// Every in-page target (#apply, #programs, #dates, #faq, #contact…) lands below the sticky
+// Every in-page target (#apply, #programs, #dates, #faq, #contactus…) lands below the sticky
 // header instead of under it: "Enroll Now" (/academy/#apply) hid its section's title on phones.
 // :where() keeps it at zero specificity, so the offsets tuned per section still win.
 :where(main [id]) {

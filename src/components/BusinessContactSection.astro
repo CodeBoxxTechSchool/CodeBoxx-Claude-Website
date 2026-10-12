@@ -1,5 +1,5 @@
 ---
-// The #contact section of every page for companies (Layout cta="contact": Solutions, Case
+// The #contactus section of every page for companies (Layout cta="contact": Solutions, Case
 // Studies, Corporate Training, Forge 20, Ventures, #AIDoneRight, EN and FR). Academy visitors
 // enroll; Solutions visitors inquire and pitch: the business form (BusinessContact.jsx) for an
 // inquiry, and the Ventures pitch drawer (PitchWidget.jsx) for a venture. The header's "Contact
@@ -24,7 +24,7 @@ const ventures = fr ? venturesFr : venturesEn;
 const common = fr ? commonFr : commonEn;
 ---
 
-<section id="contact" class="sect biz-contact">
+<section id="contactus" class="sect biz-contact">
   <div class="wrap biz-contact-grid">
     <div class="biz-contact-intro">
       <p class="eyebrow eyebrow-brand">{t.eyebrow}</p>
@@ -33,7 +33,7 @@ const common = fr ? commonFr : commonEn;
       <ul class="biz-contact-list">
         {t.topics.map((x) => (
           <li>
-            <a href="#contact" data-contact-topic={x.value}>
+            <a href="#contactus" data-contact-topic={x.value}>
               <span class="biz-contact-list-label">{x.label}</span>
               <span class="biz-contact-list-hint">{x.hint}</span>
             </a>

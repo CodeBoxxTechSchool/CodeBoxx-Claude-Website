@@ -53,7 +53,7 @@ const NAV_STRUCTURE = [
   },
   { key: 'ventures', href: '/ventures' },
   { key: 'blog', href: '/blog' },
-  { key: 'contact', href: '#contact' },
+  { key: 'contact', href: '#contactus' },
 ];
 
 // Accessible name keeps the visible "FR"/"EN" text (WCAG 2.5.3 Label in Name)
@@ -204,8 +204,8 @@ export function TopBar({
     items: n.items?.map(([k, href]) => [strings.nav[k], localizedHref(href, lang, pathname)]),
   }));
   // Pages without an on-page Codi drawer (Blog, BlogPost) send the visitor to the
-  // homepage's #contact section instead.
-  const contactHref = localizedHref('#contact', lang, pathname);
+  // homepage's #contactus section instead.
+  const contactHref = localizedHref('#contactus', lang, pathname);
   // `codi`: the page mounts the live admissions assistant (CodiChat.jsx), opened by its event.
   const handleCodi = codi
     ? () => window.dispatchEvent(new Event('codi:open'))
@@ -214,7 +214,7 @@ export function TopBar({
   // Academy visitors enroll; everyone else is asked to get in touch. `cta`:
   // - 'enroll': the Academy's pages (Academy, Financing, FAQ, Pinellas residents).
   // - 'contact': the pages for companies (Solutions, Case Studies, Corporate Training, Forge 20,
-  //   Ventures, #AIDoneRight), to inquire or pitch in their own #contact section
+  //   Ventures, #AIDoneRight), to inquire or pitch in their own #contactus section
   //   (BusinessContactSection.astro).
   // - 'general': every other page, the homepage's contact form. On the homepage, Enroll Now
   //   while its Academy section is on screen (useAcademyInView).
@@ -225,7 +225,7 @@ export function TopBar({
           href: localizedHref('/academy/#apply', lang, pathname),
           label: strings.actions.enrollNow,
         }
-      : { href: cta === 'contact' ? '#contact' : contactHref, label: strings.actions.contactUs };
+      : { href: cta === 'contact' ? '#contactus' : contactHref, label: strings.actions.contactUs };
   // `enrollDrawer`: the page mounts the enroll drawer (/academy's AcademyApply.jsx, the
   // homepage's HomeIsland.jsx), opened by its event. The mobile bar's button is then always
   // Enroll Now and opens it; the href stays as the no-JS fallback.

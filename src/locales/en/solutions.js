@@ -57,7 +57,7 @@ export default {
       body: 'Take your digital transformation to the next level with our AI-Native specialists. They rebuild and optimize your digital environment so your business stays ahead with intelligent, future-ready solutions.',
       video: 'partners-meeting',
       cta: 'Talk to a specialist',
-      href: '#contact',
+      href: '#contactus',
       topic: 'project',
     },
     {
