@@ -4,6 +4,7 @@
 import { SITE_URL } from './sitemap.js';
 import { localizedHref } from './i18nRoutes.js';
 import { CAMPUSES, COURSE_MODES, PACES, PROGRAM_FACTS, upcomingStarts } from './academyPrograms.js';
+import { parseVideoUrl } from './portableText.js';
 
 // Google wants a raster logo of at least 112 px, so not favicon.svg.
 export const LOGO_URL = SITE_URL + '/icon-192.png';
@@ -34,6 +35,28 @@ export function blogPostingSchema({ post, url, image, inLanguage }) {
     publisher: { ...CODEBOXX, logo: { '@type': 'ImageObject', url: LOGO_URL } },
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
   };
+}
+
+// One VideoObject per YouTube video in a post's body (its videoEmbed blocks), so Google can show
+// the post in video results: the blog plays them behind a click-to-play thumbnail, which search
+// engines don't see as a video. Vimeo has no thumbnail without an API call, and Google requires
+// one, so only YouTube; a post with no date (Google requires uploadDate) gets none.
+export function videoSchemas({ post }) {
+  if (!post.date) return [];
+  const ids = (post.content || [])
+    .filter((block) => block._type === 'videoEmbed')
+    .map((block) => parseVideoUrl(block.url))
+    .filter((video) => video && video.provider === 'youtube')
+    .map((video) => video.id);
+  return [...new Set(ids)].map((id, i) => ({
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: i ? `${post.title} (${i + 1})` : post.title,
+    description: post.excerpt || post.title,
+    thumbnailUrl: [`https://i.ytimg.com/vi/${id}/hqdefault.jpg`],
+    uploadDate: post.date,
+    embedUrl: `https://www.youtube.com/embed/${id}`,
+  }));
 }
 
 const AREA_SERVED = [

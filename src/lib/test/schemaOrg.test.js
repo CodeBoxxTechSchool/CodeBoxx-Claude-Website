@@ -7,6 +7,7 @@ import {
   LOGO_URL,
   postAuthor,
   serviceSchema,
+  videoSchemas,
 } from '../schemaOrg.js';
 
 const CODEBOXX = { '@type': 'Organization', name: 'CodeBoxx', url: 'https://codeboxx.ai/' };
@@ -198,4 +199,31 @@ test('breadcrumbSchema skips the homepage and pages it has no name for', () => {
   assert.equal(breadcrumbSchema({ pathname: '/', lang: 'en', title: 'Home' }), null);
   assert.equal(breadcrumbSchema({ pathname: '/fr/', lang: 'fr', title: 'Accueil' }), null);
   assert.equal(breadcrumbSchema({ pathname: '/lp/spring-cohort/', lang: 'en', title: 'LP' }), null);
+});
+
+test('videoSchemas: one VideoObject per YouTube video in the body, none without a date', () => {
+  const post = {
+    title: "Let's talk about Vibe Coding",
+    excerpt: 'Our CEO speaks on CBS News Detroit.',
+    date: '2025-11-25',
+    content: [
+      { _type: 'block', children: [{ _type: 'span', text: 'Intro' }] },
+      { _type: 'videoEmbed', url: 'https://www.youtube.com/watch?v=zppfYWmf36w', caption: 'x' },
+      { _type: 'videoEmbed', url: 'https://youtu.be/zppfYWmf36w' },
+      { _type: 'videoEmbed', url: 'https://vimeo.com/123456' },
+    ],
+  };
+  assert.deepEqual(videoSchemas({ post }), [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      name: "Let's talk about Vibe Coding",
+      description: 'Our CEO speaks on CBS News Detroit.',
+      thumbnailUrl: ['https://i.ytimg.com/vi/zppfYWmf36w/hqdefault.jpg'],
+      uploadDate: '2025-11-25',
+      embedUrl: 'https://www.youtube.com/embed/zppfYWmf36w',
+    },
+  ]);
+  assert.deepEqual(videoSchemas({ post: { ...post, date: '' } }), []);
+  assert.deepEqual(videoSchemas({ post: { ...post, content: [] } }), []);
 });
