@@ -143,7 +143,8 @@ www,apex	*	=
 # academy.codeboxx.com; /enroll, /faq, /contact, /pinellas, /financing-options and
 # /technology-training-for-businesses are the Wix site's own shortcuts. /academy is
 # the one Academy page: the homepage and every Academy page land on it (or its
-# section); blog posts, Pinellas and contact keep their own page.
+# section); blog posts, FAQ, financing, Pinellas, contact and corporate training keep
+# their own page.
 # academie gets the French twin of each target (/fr/academie, /fr/formation-entreprise).
 academy	/post/ai-vs-traditional-tech-roles-which-career-path-is-right-for-you	/blog/ai-vs-traditional-tech-roles-which-career-path-is-right-for-you/
 academy	/post/best-corporate-ai-bootcamps	/blog/best-corporate-ai-bootcamps/
@@ -178,16 +179,17 @@ academy	/artificial-intelligence	/academy/#programs
 academy	/launch	/#contact
 academy	/enroll-in-our-coding-school-programs	/academy/#apply
 academy	/enroll	/academy/#apply
-academy	/frequently-asked-questions	/academy/#faq
-academy	/faq	/academy/#faq
-academy	/coding-school-financing-options	/academy/#funding
-academy	/financing-options	/academy/#funding
+academy	/frequently-asked-questions	/faq/
+academy	/faq	/faq/
+academy	/coding-school-financing-options	/financing/
+academy	/financing-options	/financing/
 academy	/local-support-for-pinellas-residents	/pinellas-residents/
 academy	/pinellas	/pinellas-residents/
 academy	/contact-codeboxx	/#contact
 academy	/contact	/#contact
 academy	/corporate-training	/corporate-training/
 academy	/technology-training-for-businesses	/corporate-training/
+academy	/technology-training-for-businesses-old	/corporate-training/
 academy	/codeboxx-locations	/academy/
 academy	/event-details/*	/academy/
 academy	/subscribe	/academy/
@@ -227,10 +229,10 @@ academie	/artificial-intelligence	/fr/academie/#programs
 academie	/launch	/fr/#contact
 academie	/enroll-in-our-coding-school-programs	/fr/academie/#apply
 academie	/enroll	/fr/academie/#apply
-academie	/frequently-asked-questions	/fr/academie/#faq
-academie	/faq	/fr/academie/#faq
-academie	/coding-school-financing-options	/fr/academie/#funding
-academie	/financing-options	/fr/academie/#funding
+academie	/frequently-asked-questions	/fr/faq/
+academie	/faq	/fr/faq/
+academie	/coding-school-financing-options	/fr/financement/
+academie	/financing-options	/fr/financement/
 academie	/local-support-for-pinellas-residents	/fr/residents-pinellas/
 academie	/pinellas	/fr/residents-pinellas/
 academie	/contact-codeboxx	/fr/#contact
@@ -238,6 +240,7 @@ academie	/contact	/fr/#contact
 # Where the site links "Corporate Training".
 academie	/corporate-training	/fr/formation-entreprise/
 academie	/technology-training-for-businesses	/fr/formation-entreprise/
+academie	/technology-training-for-businesses-old	/fr/formation-entreprise/
 academie	/codeboxx-locations	/fr/academie/
 academie	/event-details/*	/fr/academie/
 academie	/subscribe	/fr/academie/
@@ -252,12 +255,19 @@ solutions	/agentic-ai-blueprint	/assets/agentic-ai-blueprint.pdf
 solutions	/_files/ugd/c3a713_5f7bf770a5dc4f29b377ee4b28a136e3.pdf	/assets/agentic-ai-blueprint.pdf
 solutions	/agentic-ai	/solutions/#services
 solutions	/services	/solutions/#services
-solutions	/developer-as-a-service	/solutions/#services
+solutions	/developer-as-a-service	/solutions/#service-daas
+solutions	/developers-as-a-service	/solutions/#service-daas
+solutions	/daas	/solutions/#service-daas
+solutions	/sdaas	/solutions/#service-daas
 solutions	/fractional-cto	/solutions/#services
 solutions	/taylor-made-softwares	/solutions/#services
 solutions	/for-partners	/solutions/#clients
+# Wix had it under its typo too (buisness).
+solutions	/academy-for-business	/corporate-training/
+solutions	/academy-for-buisness	/corporate-training/
 solutions	/portfolio	/case-studies/
 solutions	/vibe-coaching	/solutions/#vibe-coaching
+solutions	/vibe-coding-workshop	/solutions/#vibe-coaching
 solutions	/thank-you	/solutions/
 solutions	/build-your-own-conversational-agent	/assets/agentic-ai-blueprint.pdf
 solutions	/product-page/*	/solutions/

@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import http from 'node:http';
 import https from 'node:https';
 import { isIP } from 'node:net';
-import { GONE, OLD_URLS, load, match, resolve } from './redirects.js';
+import { GONE, load, match, oldUrls, resolve } from './redirects.js';
 
 const USAGE =
   'usage: node ops/nginx/check-redirects.js --base http://159.223.145.47 [--relay]\n' +
@@ -89,11 +89,7 @@ export function headerProblems(page, asset) {
   return problems;
 }
 
-const oldPaths = (group) =>
-  readFileSync(new URL(`old-urls/${OLD_URLS[group]}`, import.meta.url), 'utf8')
-    .split('\n')
-    .filter(Boolean)
-    .map((url) => new URL(url).pathname);
+const oldPaths = (group) => oldUrls(group).map((url) => new URL(url).pathname);
 
 /**
  * Every request to make: { host, path, location } (a 301 there, gone: true when its target is a

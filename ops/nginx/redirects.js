@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
 export const SITE = 'https://codeboxx.ai';
 export const DATA_FILE = new URL('redirects.tsv', import.meta.url);
@@ -12,6 +12,22 @@ export const OLD_URLS = {
   academie: 'academy.codeboxx.com.txt',
   solutions: 'www.solutions.codeboxx.com.txt',
 };
+
+const urlsIn = (file) =>
+  readFileSync(file, 'utf8')
+    .split('\n')
+    .map((url) => url.trim())
+    .filter(Boolean);
+
+/**
+ * A group's old URLs: its Wix sitemap, then those found outside it (old-urls/extra/, same file
+ * name; Wayback Machine, CLP-1378), which only the tests and the check go through.
+ */
+export function oldUrls(group) {
+  return ['old-urls/', 'old-urls/extra/']
+    .map((dir) => new URL(dir + OLD_URLS[group], import.meta.url))
+    .flatMap((file) => (existsSync(file) ? urlsIn(file) : []));
+}
 
 // Temporary (CLP-1398, about four weeks from 2026-10-07): every old URL in one sitemap, which the
 // apex serves instead of redirecting so it can be submitted in Search Console's codeboxx.com
@@ -157,13 +173,10 @@ export function render({ hosts, rules }) {
 const xmlEscape = (text) =>
   text.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
 
-/** Every old Wix URL (old-urls/), as the sitemap at OLD_URLS_SITEMAP. */
+/** Every old Wix URL (old-urls/, not old-urls/extra/), as the sitemap at OLD_URLS_SITEMAP. */
 export function oldUrlsSitemap() {
   const urls = [...new Set(Object.values(OLD_URLS))].flatMap((name) =>
-    readFileSync(new URL(`old-urls/${name}`, import.meta.url), 'utf8')
-      .split('\n')
-      .map((url) => url.trim())
-      .filter(Boolean)
+    urlsIn(new URL(`old-urls/${name}`, import.meta.url))
   );
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
