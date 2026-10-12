@@ -523,7 +523,7 @@ function DivisionBand({
   cta,
 }) {
   return (
-    <section id={id} className={'sect' + (alt ? ' sect-alt' : '')} data-cta={cta}>
+    <section id={id} className={'sect' + (alt ? ' sect-alt' : '')}>
       <div className="wrap">
         {aside ? (
           <div className="d-flex gap-5 align-items-start justify-content-between flex-wrap">

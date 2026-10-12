@@ -161,31 +161,6 @@ function NavItem({ item, onNavigate }) {
 // pages, via Layout's `codi` prop) show it regardless.
 const SHOW_CODI_BUTTON = false;
 
-// Academy content on a page that isn't the Academy's own (the homepage's Academy section) carries
-// data-cta="enroll". While one crosses the middle of the screen, TopBar's call to action is Enroll
-// Now instead of Contact Us.
-function useAcademyInView(enabled) {
-  const [inView, setInView] = React.useState(false);
-  React.useEffect(() => {
-    if (!enabled || typeof IntersectionObserver === 'undefined') return;
-    const sections = document.querySelectorAll('[data-cta="enroll"]');
-    if (!sections.length) return;
-    const visible = new Set();
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) =>
-          e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)
-        );
-        setInView(visible.size > 0);
-      },
-      { rootMargin: '-45% 0px -45% 0px' }
-    );
-    sections.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, [enabled]);
-  return inView;
-}
-
 export function TopBar({
   lang,
   pathname,
@@ -216,11 +191,9 @@ export function TopBar({
   // - 'contact': the pages for companies (Solutions, Case Studies, Corporate Training, Forge 20,
   //   Ventures, #AIDoneRight), to inquire or pitch in their own #contactus section
   //   (BusinessContactSection.astro).
-  // - 'general': every other page, the homepage's contact form. On the homepage, Enroll Now
-  //   while its Academy section is on screen (useAcademyInView).
-  const academyInView = useAcademyInView(cta !== 'enroll');
+  // - 'general': every other page, the homepage's contact form.
   const ctaButton =
-    cta === 'enroll' || academyInView
+    cta === 'enroll'
       ? {
           href: localizedHref('/academy/#apply', lang, pathname),
           label: strings.actions.enrollNow,
