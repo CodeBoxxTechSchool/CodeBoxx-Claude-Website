@@ -326,6 +326,22 @@ test('check plan over live DNS (--base https://codeboxx.com): only the unknown n
   );
 });
 
+test('check plan: www.codeboxx.ai is one 301 to the same path on codeboxx.ai, over public DNS only', () => {
+  const www = (checks) => checks.filter((c) => c.host === 'www.codeboxx.ai');
+  // Through the IP the droplet serves www itself; the redirect is Cloudflare's (CLP-1413).
+  for (const secure of [false, true])
+    assert.deepEqual(www(plan(table, '159.223.145.47', secure)), []);
+  const checks = www(plan(table, 'codeboxx.com', true));
+  assert.deepEqual(
+    checks.map((c) => c.path),
+    ['/', '/faq/', '/faq/?gclid=x&utm_source=y', '/blog', '/fr/blogue/']
+  );
+  for (const check of checks) {
+    assert.equal(check.base, 'https://www.codeboxx.ai');
+    assert.equal(check.location, `https://codeboxx.ai${check.path}`);
+  }
+});
+
 test('rejects malformed lines', () => {
   const head = '[hosts]\na.com\ta\n[redirects]\n';
   assert.throws(() => parse(`${head}a\t/Post\t/blog/`), /bad old path/);

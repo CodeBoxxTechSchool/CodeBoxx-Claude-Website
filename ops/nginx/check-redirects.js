@@ -8,12 +8,16 @@ const USAGE =
   'usage: node ops/nginx/check-redirects.js --base http://159.223.145.47 [--relay]\n' +
   '       node ops/nginx/check-redirects.js --base https://159.223.145.47 [--ca test-ca.pem] [--relay]\n' +
   '       node ops/nginx/check-redirects.js --base https://codeboxx.com --relay   (after the DNS swap)\n' +
+  '  A name as --base also checks that https://www.codeboxx.ai redirects to the apex (Cloudflare).\n' +
   '  --site <url>: where the targets, headers and relay are fetched, the site itself (default:\n' +
   '  http://<ip> when --base is an IP, else https://codeboxx.ai)';
 const QUERY = 'gclid=x&utm_source=y';
 const APEX = 'codeboxx.com';
 // The one live origin: every old host, the apex included, redirects there.
 const SITE_HOST = 'codeboxx.ai';
+// Cloudflare answers it with one 301 to the same path on the apex, query kept, before nginx (a
+// Redirect Rule in the codeboxx.ai zone, CLP-1413); the droplet serves it as the site.
+const WWW_HOST = `www.${SITE_HOST}`;
 const PARALLEL = 8;
 // Its own user agent, so ops/nginx-report leaves out the 404s it asks for on purpose.
 export const USER_AGENT = 'codeboxx-check-redirects';
@@ -93,8 +97,8 @@ const oldPaths = (group) => oldUrls(group).map((url) => new URL(url).pathname);
 
 /**
  * Every request to make: { host, path, location } (a 301 there, gone: true when its target is a
- * gone page), { host, path, unchanged }, or
- * { host, path, rejected } (no handshake). The apex serves no page: every path of it is a 301 to
+ * gone page), { host, path, unchanged }, or { host, path, rejected } (no handshake); with a base,
+ * sent there instead of to --base. The apex serves no page: every path of it is a 301 to
  * codeboxx.ai, the new site's pages to the same path.
  */
 export function plan(table, baseHost, secure = false) {
@@ -157,6 +161,17 @@ export function plan(table, baseHost, secure = false) {
     const [pathname, query] = path.split('?');
     checks.push({ host: APEX, path, location: resolve(table, APEX, pathname, query) });
   }
+  // www.codeboxx.ai is redirected by Cloudflare, not nginx: checked at https://www.codeboxx.ai
+  // itself when --base is a name. Through the IP the droplet would serve it as the site (by
+  // design), which proves nothing about the redirect, so it isn't checked there.
+  if (!isIP(baseHost))
+    for (const path of ['/', '/faq/', `/faq/?${QUERY}`, '/blog', '/fr/blogue/'])
+      checks.push({
+        base: `https://${WWW_HOST}`,
+        host: WWW_HOST,
+        path,
+        location: `https://${SITE_HOST}${path}`,
+      });
   return checks;
 }
 
@@ -196,12 +211,19 @@ export async function main(args, { out = console.log, err = console.error } = {}
   const describe = (res) => `${res.status}${res.location ? ` -> ${res.location}` : ''}`;
   const targets = new Set();
   let redirects = 0;
+  let www = 0;
+  const wwwChecked = checks.some((check) => check.host === WWW_HOST);
   let unchanged = 0;
   let rejected = 0;
 
   await runAll(checks, async (check) => {
     const what = `${check.host}${check.path}`;
-    const res = await send(base, check.host, check.path, 'HEAD', ca).catch((error) => error);
+    // A check with its own base goes through public DNS: the system's CAs, not --ca.
+    const res = await (
+      check.base
+        ? send(check.base, check.host, check.path)
+        : send(base, check.host, check.path, 'HEAD', ca)
+    ).catch((error) => error);
     if (check.rejected) {
       if (!/unrecognized name/.test(res.message))
         return fail(`${what} (want the handshake rejected)`, res.message ?? describe(res));
@@ -212,7 +234,8 @@ export async function main(args, { out = console.log, err = console.error } = {}
     if (check.location) {
       if (res.status !== 301 || res.location !== check.location)
         return fail(`${what} (want 301 -> ${check.location})`, describe(res));
-      redirects++;
+      if (check.host === WWW_HOST) www++;
+      else redirects++;
       if (!check.gone) targets.add(new URL(check.location).pathname);
     } else {
       if (res.status !== check.unchanged || res.location)
@@ -253,7 +276,9 @@ export async function main(args, { out = console.log, err = console.error } = {}
 
   for (const failure of failures.sort()) err(`FAIL ${failure}`);
   out(
-    `${base}: ${redirects} redirects, ${targets.size} targets (${reached} answered 200), ` +
+    `${base}: ${redirects} redirects, ` +
+      `${wwwChecked ? `${www} ${WWW_HOST} redirects, ` : ''}` +
+      `${targets.size} targets (${reached} answered 200), ` +
       `${unchanged} unredirected requests${secure ? `, ${rejected} rejected handshakes` : ''}, ` +
       `compression and caching ${headers}` +
       `${args.includes('--relay') ? ', relay health' : ''}; ` +
