@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { localizedHref } from '../../../src/lib/i18nRoutes.js';
-import { headerProblems, plan, stylesheet } from '../check-redirects.js';
+import { cohortsList, headerProblems, plan, stylesheet } from '../check-redirects.js';
 import {
   CONF_FILE,
   GONE,
@@ -373,4 +373,11 @@ test('finds the page stylesheet and checks compression and caching', () => {
     '/_astro/ CSS not gzipped (none)',
     '/_astro/ CSS Cache-Control none (want a year, immutable)',
   ]);
+});
+
+test("recognizes the relay's cohorts answer", () => {
+  const answer = { ok: true, cohorts: [], windowDays: 90, asOf: '2026-10-13T12:00:00.000Z' };
+  assert.equal(cohortsList(JSON.stringify(answer)), true);
+  for (const body of ['', '<html>', '{"ok":false,"error":"cohorts unavailable"}', '[]'])
+    assert.equal(cohortsList(body), false, body);
 });

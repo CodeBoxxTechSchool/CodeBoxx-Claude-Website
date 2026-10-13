@@ -144,7 +144,8 @@ install -m 0644 codeboxx.conf /etc/nginx/sites-available/codeboxx
 nginx -t && systemctl reload nginx
 ```
 
-Then, from anywhere (`--relay`: `/api/health` answers):
+Then, from anywhere (`--relay`: `/api/health` answers, and `/api/cohorts` answers 200 with a
+`cohorts` list; it is 503 until the relay has had one answer from the portal):
 
 ```sh
 node ops/nginx/check-redirects.js --base http://159.223.145.47 --relay
@@ -236,6 +237,12 @@ nginx -t && systemctl reload nginx
 
 Then `node ops/nginx/check-redirects.js --base http://159.223.145.47 --relay` must print
 `compression and caching ok`.
+
+The same install puts in place the relay's routes in that snippet: `location /api/` (the forms,
+5 requests a minute per IP, shared), `/api/careers` (the CV's larger body), and, not rate-limited,
+`/api/health` and `/api/cohorts` (GET and HEAD only; the start dates the site's build and Codi
+read, CLP-1393). Until it is installed, `/api/cohorts` falls under `location /api/` and its reads
+use the forms' budget.
 
 **Roll back**, `nginx -t && systemctl reload nginx` after each:
 
