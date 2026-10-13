@@ -13,13 +13,15 @@ import CodiChat from './CodiChat';
 import { fetchGraduateTestimonials, fetchTeam, sanityImageUrl } from '../lib/sanityContent';
 import { faqSchema } from '../lib/faqSchema';
 import { courseSchemas } from '../lib/schemaOrg';
-import { CAMPUSES } from '../lib/academyPrograms';
+import { CAMPUSES, upcomingStarts } from '../lib/academyPrograms';
+import { buildStarts } from '../lib/cohorts';
 
 const { a, common, home, lang } = Astro.props;
 const fr = lang === 'fr';
-const [graduates, academyTeam] = await Promise.all([
+const [graduates, academyTeam, starts] = await Promise.all([
   fetchGraduateTestimonials(),
   fetchTeam('academy'),
+  buildStarts(),
 ]);
 
 // Graduate stories: Sanity's, else the seed; the named ones lead. Sanity's
@@ -34,9 +36,8 @@ function rank(t) {
 const director = (academyTeam || []).find((p) => /brian peret/i.test(p.name));
 const directorPhoto = director?.photo ? sanityImageUrl(director.photo, { w: 480, q: 75 }) : null;
 
-// Start dates already past on build day are dropped; a deploy runs at least on
-// every Sanity publish, and the next date stays listed until it has passed.
-const today = new Date().toISOString().slice(0, 10);
+// Start dates: the portal's, within the next 90 days (src/lib/cohorts.js); the site is
+// rebuilt every day, so a date leaves the list once it has passed.
 const fmtDate = (iso) =>
   new Date(iso + 'T12:00:00Z').toLocaleDateString(fr ? 'fr-CA' : 'en-US', {
     month: 'long',
@@ -46,7 +47,7 @@ const fmtDate = (iso) =>
   });
 const programs = a.programs.items.map((p) => ({
   ...p,
-  upcoming: (p.starts || []).filter((d) => d >= today).map(fmtDate),
+  upcoming: upcomingStarts(p, starts).map(fmtDate),
 }));
 // The <title>: the school, the place and the next Full-Stack start.
 const nextFullStack = programs.find((p) => p.id === 'fsd')?.upcoming[0];
@@ -64,7 +65,7 @@ const academySchema = {
 };
 // The two programs as Course structured data: tuition, length, on campus or online, and
 // the upcoming start dates (src/lib/academyPrograms.js has the numbers).
-const programSchemas = courseSchemas({ programs: a.programs.items, lang, today, pageUrl });
+const programSchemas = courseSchemas({ programs: a.programs.items, lang, starts, pageUrl });
 ---
 
 <Layout

@@ -67,9 +67,9 @@ const AREA_SERVED = [
 // One Course per Academy program (src/locales/{en,fr}/academy.js programs.items), for
 // Google's course info results and for AI assistants quoting tuition, length and dates.
 // Each program is offered on campus (both campuses) or online, full-time or part-time:
-// one CourseInstance per mode and pace, per upcoming start date when the program lists
-// any (dates already past on `today` are dropped, as on the page).
-export function courseSchemas({ programs, lang, today, pageUrl }) {
+// one CourseInstance per mode and pace, per upcoming start date when the program has any.
+// `starts`: the portal's start dates by program key (src/lib/cohorts.js).
+export function courseSchemas({ programs, lang, starts, pageUrl }) {
   const fr = lang === 'fr';
   const provider = {
     '@type': 'EducationalOrganization',
@@ -80,7 +80,7 @@ export function courseSchemas({ programs, lang, today, pageUrl }) {
     .filter((p) => PROGRAM_FACTS[p.id])
     .map((p) => {
       const facts = PROGRAM_FACTS[p.id];
-      const starts = upcomingStarts(p, today);
+      const dates = upcomingStarts(p, starts);
       const instances = [];
       for (const courseMode of COURSE_MODES) {
         for (const pace of PACES) {
@@ -91,8 +91,8 @@ export function courseSchemas({ programs, lang, today, pageUrl }) {
             courseWorkload: `P${facts.weeks[pace]}W`,
             ...(courseMode === 'Onsite' ? { location: CAMPUSES } : {}),
           };
-          if (starts.length)
-            starts.forEach((startDate) => instances.push({ ...instance, startDate }));
+          if (dates.length)
+            dates.forEach((startDate) => instances.push({ ...instance, startDate }));
           else instances.push(instance);
         }
       }

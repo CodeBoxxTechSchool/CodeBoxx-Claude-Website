@@ -13,8 +13,9 @@ route, including the 404 page, is native Astro; the old SPA code has been remove
   the Codi/Enroll drawers), themed via Sass variable overrides — no vendored component bundle
 - **SCSS** for all styling, no inline styles (`src/styles/`)
 - **Sanity** CMS, fetched at build time for every native page (`src/lib/sanityContent.js`,
-  zero client JS for the content itself) — the intake calendar is the one deliberate
-  exception, still fetched client-side (see "Why Home is one big island" below)
+  zero client JS for the content itself)
+- **Academy start dates** from the school portal, through the relay's `GET /api/cohorts`, also
+  at build time (`src/lib/cohorts.js`, see "Academy start dates" below)
 - **@astrojs/sitemap** generates `sitemap-index.xml`/`sitemap-*.xml` from the actual
   prerendered routes (including one entry per blog post) — replaces the old hand-rolled
   `scripts/generate-sitemap.mjs`
@@ -53,12 +54,6 @@ the SEO/crawlability problem — the trade-off, honestly stated, is that Home sh
 real JS bundle for its interactivity same as before; this migration's win here is
 crawlability and removing the Sanity-content pop-in, not a zero-JS page.
 
-One exception stays client-side on purpose: `IntakeCalendar`'s "InProgress" status
-is derived by comparing a cohort's start date to _today_, in the browser, on every
-load — baking that into a build-time snapshot would let it silently go stale
-between deploys with no content change to trigger a rebuild. It still uses the
-unmodified `lib/intakes.js` hook.
-
 ## Getting started
 
 ```bash
@@ -70,6 +65,34 @@ npm run dev
 ```
 
 `npm run build` writes the static site to `dist/`; `npm run preview` serves it.
+
+### Academy start dates
+
+The Academy page (`/academy`, `/fr/academie`: its Starts list, its `<title>` and its Course
+structured data) and `/llms.txt` show the school portal's start dates, read once per build by
+`src/lib/cohorts.js` from the relay's `GET https://codeboxx.ai/api/cohorts` (`relay/README.md`).
+Only starts after today (UTC) and at most 90 days later are shown; the AI program is on demand and
+shows none. Two variables, from the environment or `.env`:
+
+| Variable       | Use                                                                                       |
+| -------------- | ----------------------------------------------------------------------------------------- |
+| `COHORTS_URL`  | Where to read them, default `https://codeboxx.ai/api/cohorts`                             |
+| `COHORTS_FILE` | A local JSON file holding the same answer, read instead of the URL (offline, or a sample) |
+
+```json
+{
+  "ok": true,
+  "cohorts": [{ "program": "fsd", "start": "2026-11-09" }],
+  "asOf": "2026-10-13T14:00:00Z"
+}
+```
+
+Local builds read `COHORTS_URL`; the deploy reads the relay over SSH and passes `COHORTS_FILE`
+(see Deployment). A cohort of a program the site doesn't show is skipped with a warning.
+`npm run build` fails when the dates can't be had (network, timeout after 15 s, any status but
+200, a 503 from the relay, an answer of another shape), so a deploy stops and the live site keeps
+the dates it has. `npm run dev` warns and shows the page without dates. A copy the relay got from
+the portal more than two days ago (`asOf`) gets a warning in the build log, not a failure.
 
 ## Routes
 
@@ -92,8 +115,8 @@ already modeled EN/FR as distinct paths rather than one parameterized locale rou
 async functions (`fetchPostList`, `fetchPostBySlug`, `fetchAllPostSlugs`, `fetchTeam`,
 `fetchLogos`) called from Astro frontmatter/`getStaticPaths`, so content is already
 resolved into the HTML by the time it ships — no hook, no loading state.
-`src/lib/sanity.js` is the browser-side counterpart, used only by Home's intake calendar
-(`lib/intakes.js`), which has to fetch at runtime. Both query the Sanity Content API directly over
+`src/lib/sanity.js` is the browser-side counterpart (today only `pickLocale`, for the landing
+pages' islands, is used). Both query the Sanity Content API directly over
 `fetch` (no SDK dependency) and fall back to a hardcoded seed array/object
 (`src/lib/blogSeed.js`) when `VITE_SANITY_PROJECT_ID` isn't set, so the site always builds
 and runs with no CMS connection. Entry mapping lives in each file's own `toPost()`-shaped
@@ -107,7 +130,7 @@ so `VITE_SANITY_TOKEN` can stay blank — only set it if the dataset is ever mad
 
 The editing dashboard (Sanity Studio) lives in its own project, not in this repo:
 `/projects/codeboxx-website-studio`, already attached to project `zagi8xr3`
-with the four schema types below.
+with the schema types below.
 
 - **Locally**: `cd` into that folder, `npm run dev`, open `http://localhost:3333`.
 - **Deployed** (the real day-to-day dashboard, reachable from anywhere): **https://codeboxxweb.sanity.studio/**
@@ -117,17 +140,11 @@ with the four schema types below.
 Document types expected in the Sanity Studio project (created separately — this repo only
 consumes the API, it doesn't scaffold a Studio):
 
-| Document type  | Fields                                                                                                                                                                                         | Consumed by                                                                                                                           |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `post`         | `title`, `slug`, `category`, `author`, `publishedAt`, `excerpt`, `content` (Portable Text/rich text), `featuredImage` (optional), `url` (optional external reference — not the content source) | `useSanityPosts` — Blog page; `useSanityPost(slug, seed)` — the post's own page at `/blog/:slug`                                      |
-| `teamMember`   | `name`, `role`, `linkedin` (url), `photo` (image), `group` (`"studio"` \| `"academy"`), `order` (number)                                                                                       | `useSanityTeam(group, seed)` — Studio team (`#codeboxx .person`) and Academy team (`#academy .person`), same type filtered by `group` |
-| `partnerLogo`  | `name`, `logo` (image), `order` (number)                                                                                                                                                       | `useSanityLogos(seed)` — the `.client-slider` partner logos; however many documents exist is however many slides show                 |
-| `cohortIntake` | `program` (`"fsd"` \| `"aidev"`), `date`, `location`, `status` (`"Open"` \| `"Waitlist"` \| `"Planned"`)                                                                                       | `useIntakes(seed)` in `src/lib/intakes.js` — the `#intake` calendar rows                                                              |
-
-`useIntakes` lives in its own file, not `sanity.js`, on purpose: the intake calendar is a
-placeholder for a real admissions API later, and `IntakeCalendar` only ever imports
-`useIntakes` and expects a `{ fsd: [...], aidev: [...] }` return shape — swapping the data
-source later means rewriting `src/lib/intakes.js` only, with no changes to `HomeIsland.jsx`.
+| Document type | Fields                                                                                                                                                                                         | Consumed by                                                                                                                           |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `post`        | `title`, `slug`, `category`, `author`, `publishedAt`, `excerpt`, `content` (Portable Text/rich text), `featuredImage` (optional), `url` (optional external reference — not the content source) | `useSanityPosts` — Blog page; `useSanityPost(slug, seed)` — the post's own page at `/blog/:slug`                                      |
+| `teamMember`  | `name`, `role`, `linkedin` (url), `photo` (image), `group` (`"studio"` \| `"academy"`), `order` (number)                                                                                       | `useSanityTeam(group, seed)` — Studio team (`#codeboxx .person`) and Academy team (`#academy .person`), same type filtered by `group` |
+| `partnerLogo` | `name`, `logo` (image), `order` (number)                                                                                                                                                       | `useSanityLogos(seed)` — the `.client-slider` partner logos; however many documents exist is however many slides show                 |
 
 Each post's `content` field is Sanity's standard Portable Text (rich text): headings,
 bold/italic, links, lists, quotes, tables (the `@sanity/table` Studio plugin), and a
@@ -238,9 +255,17 @@ script failing to load): without it, a hidden title with nothing left to add
 ## Deployment
 
 `.github/workflows/deploy.yml` builds the site and rsyncs `dist/` to the
-"CodeBoxx Web Claude" DigitalOcean Droplet over SSH on every push to `main` (or
-manually via "Run workflow"). It does not provision anything — the Droplet, nginx,
-the `deploy` user, and the target directory are already set up (see below).
+"CodeBoxx Web Claude" DigitalOcean Droplet over SSH on every push to `main`, on every Sanity
+publish (below), once a day at 09:15 UTC (so the Academy's start dates enter and leave their
+90-day window on time, and new portal cohorts show within a day), or manually via "Run
+workflow". After the tests, it deploys `relay/` first, so a relay fix can always ship (and a
+relay change is live even if the site's build then fails); then it reads the start dates from the
+relay over SSH on the droplet (`curl http://127.0.0.1:8787/api/cohorts`, not through Cloudflare or
+nginx) into the file the build reads as `COHORTS_FILE`, builds, and rsyncs `dist/`. A relay that
+can't answer (503, error) or a build that can't use the dates stops the run before `dist/` is
+deployed (see "Academy start dates" above). GitHub disables a scheduled workflow after 60 days without
+activity in the repository; re-enable it in the Actions tab. It does not provision anything —
+the Droplet, nginx, the `deploy` user, and the target directory are already set up (see below).
 
 Required repo secrets (Settings → Secrets and variables → Actions):
 
@@ -325,12 +350,12 @@ src/
     Logo.jsx, Avatar.jsx      brand components with no Bootstrap equivalent, used by both
   lib/
     sanityContent.js          build-time Sanity fetch — every native page
-    sanity.js                 browser-side Sanity fetch — Home's intake calendar only
+    sanity.js                 browser-side Sanity helpers — pickLocale for the landing pages
+    cohorts.js                build-time Academy start dates, from the portal via the relay
     blogSeed.js               shared fallback post data, blog pages
     homeSeed.js               shared fallback CodeBlog-teaser data, home page
     portableText.js           server-side Portable Text → HTML, blog post pages only
     i18nRoutes.js             EN/FR path helper (no router dependency)
-    intakes.js                intake calendar rows — still client-side everywhere, see Sanity above
   styles/                   main.scss + partials (see Styling above)
 public/assets/              images referenced by the pages
 ```

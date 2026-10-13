@@ -10,6 +10,12 @@ on:
   # webhook config (URL, headers, GROQ projection) this expects to receive.
   repository_dispatch:
     types: [sanity-publish]
+  # Every day: the Academy's start dates (read from the portal at build time, src/lib/cohorts.js)
+  # enter and leave their 90-day window, and new portal cohorts appear, with no push or publish to
+  # rebuild the site. 09:15 UTC: clear of the droplet's unattended-upgrades (06:00-07:00) and the
+  # nginx report (11:00).
+  schedule:
+    - cron: '15 9 * * *'
 
 # One deploy at a time: a publish or push during a deploy waits, and GitHub keeps only the
 # newest waiting run, so an older build can never finish last and overwrite newer content.
@@ -40,30 +46,18 @@ jobs:
           npm run test:relay
           npm run test:ops
 
-      - name: Build
-        run: npm run build
-        env:
-          VITE_SANITY_PROJECT_ID: ${{ secrets.VITE_SANITY_PROJECT_ID }}
-          VITE_SANITY_DATASET: ${{ secrets.VITE_SANITY_DATASET }}
-          VITE_SANITY_API_VERSION: ${{ secrets.VITE_SANITY_API_VERSION }}
-          VITE_SANITY_TOKEN: ${{ secrets.VITE_SANITY_TOKEN }}
-          # Same project/dataset, under the prefix Astro actually exposes to
-          # browser-bundled code — see the comment atop src/lib/sanity.js.
-          # No PUBLIC_SANITY_TOKEN: never ship a write-capable token client-side.
-          PUBLIC_SANITY_PROJECT_ID: ${{ secrets.VITE_SANITY_PROJECT_ID }}
-          PUBLIC_SANITY_DATASET: ${{ secrets.VITE_SANITY_DATASET }}
-          PUBLIC_SANITY_API_VERSION: ${{ secrets.VITE_SANITY_API_VERSION }}
-
+      # The relay deploys before the site's build: a relay fix can always ship, even when the
+      # build would fail (the tests above guard both), and a relay change is live even if the
+      # build below then fails.
       - name: Add deploy SSH key
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.DROPLET_SSH_KEY }}
 
-      - name: Deploy dist/ to Droplet
+      - name: Trust the droplet's host key
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H "${{ secrets.DROPLET_HOST }}" >> ~/.ssh/known_hosts
-          rsync -avz --delete dist/ "${{ secrets.DROPLET_USER }}@${{ secrets.DROPLET_HOST }}:${{ secrets.DROPLET_TARGET_PATH }}"
 
       # relay/ runs on the droplet as the website-relay service (setup: relay/README.md). Every
       # Sanity publish runs this job too, so the service restarts only when rsync changed a file
@@ -79,3 +73,32 @@ jobs:
           echo "$changes"
           ssh "$target" 'sudo systemctl restart website-relay &&
             for i in 1 2 3 4 5; do sleep 1; curl -fsS http://127.0.0.1:8787/api/health && exit 0; done; exit 1'
+
+      # The Academy's start dates for the build (src/lib/cohorts.js), from the relay over SSH: not
+      # through Cloudflare, whose bot checks could challenge a runner, nor nginx. curl -f fails
+      # this step on a 503 (the relay has no copy) or any other error, so the site isn't deployed
+      # and the live one keeps its dates.
+      - name: Read the start dates from the relay
+        run: |
+          target="${{ secrets.DROPLET_USER }}@${{ secrets.DROPLET_HOST }}"
+          ssh "$target" 'curl -fsS --max-time 15 http://127.0.0.1:8787/api/cohorts' > "$RUNNER_TEMP/cohorts.json"
+
+      # Fails without valid start dates, before dist/ is deployed.
+      - name: Build
+        run: npm run build
+        env:
+          COHORTS_FILE: ${{ runner.temp }}/cohorts.json
+          VITE_SANITY_PROJECT_ID: ${{ secrets.VITE_SANITY_PROJECT_ID }}
+          VITE_SANITY_DATASET: ${{ secrets.VITE_SANITY_DATASET }}
+          VITE_SANITY_API_VERSION: ${{ secrets.VITE_SANITY_API_VERSION }}
+          VITE_SANITY_TOKEN: ${{ secrets.VITE_SANITY_TOKEN }}
+          # Same project/dataset, under the prefix Astro actually exposes to
+          # browser-bundled code — see the comment atop src/lib/sanity.js.
+          # No PUBLIC_SANITY_TOKEN: never ship a write-capable token client-side.
+          PUBLIC_SANITY_PROJECT_ID: ${{ secrets.VITE_SANITY_PROJECT_ID }}
+          PUBLIC_SANITY_DATASET: ${{ secrets.VITE_SANITY_DATASET }}
+          PUBLIC_SANITY_API_VERSION: ${{ secrets.VITE_SANITY_API_VERSION }}
+
+      - name: Deploy dist/ to Droplet
+        run: |
+          rsync -avz --delete dist/ "${{ secrets.DROPLET_USER }}@${{ secrets.DROPLET_HOST }}:${{ secrets.DROPLET_TARGET_PATH }}"

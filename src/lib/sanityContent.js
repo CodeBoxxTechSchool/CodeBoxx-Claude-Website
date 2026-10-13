@@ -1,5 +1,4 @@
-// Build-time counterpart to src/lib/sanity.js (the browser-side fetcher, still
-// used for Home's intake calendar — see lib/intakes.js). Same
+// Build-time counterpart to src/lib/sanity.js (the browser-side helpers). Same
 // Content-API-over-fetch approach, no SDK, but these run in Astro frontmatter
 // (Node, at build time via getStaticPaths/top-level await) instead of a browser
 // `useEffect`, so callers get plain resolved data instead of a hook + loading
