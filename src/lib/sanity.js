@@ -5,20 +5,14 @@ import React from 'react';
 // of Vite's default VITE_ prefix — see astro.config.mjs, which doesn't
 // override it). VITE_SANITY_* stays correct for sanityContent.js, which only
 // ever runs server-side at build time and so is never subject to that
-// client-bundle filtering; this file is the one Sanity consumer that actually
-// ships to the browser (via lib/intakes.js's useIntakes(), the one piece of
-// Home that fetches client-side), so it needs the client-visible name instead.
+// client-bundle filtering; this file is the browser-side one, so it needs the
+// client-visible name instead.
 // No token here on purpose: this dataset allows public reads, and a
 // write-capable token must never ship in browser-readable JS.
-// `|| {}` lets plain Node (src/lib/test, via intakes.js) import this file.
-const env = import.meta.env || {};
+const env = import.meta.env;
 const PROJECT_ID = env.PUBLIC_SANITY_PROJECT_ID;
 const DATASET = env.PUBLIC_SANITY_DATASET || 'production';
 const API_VERSION = env.PUBLIC_SANITY_API_VERSION || '2024-01-01';
-
-// Lets other modules (e.g. intakes.js) skip a doomed fetch quietly instead of
-// hitting the same "not configured" warning fetchCollection already throws.
-export const hasSanityProject = Boolean(PROJECT_ID);
 
 export async function fetchCollection(type, groqTail = '') {
   if (!PROJECT_ID) throw new Error('PUBLIC_SANITY_PROJECT_ID is not set.');
