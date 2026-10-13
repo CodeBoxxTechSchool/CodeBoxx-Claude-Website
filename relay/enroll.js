@@ -33,11 +33,14 @@ const MAX_LENGTH = {
   postal: 15,
 };
 
+/** The portal's program IDs, by the site's program key. */
+export const PROGRAM_IDS = { fsd: 31, ai: 43 };
+
 const CHOICES = {
   mobile: { yes: true, no: false },
   lang: { en: 'English', fr: 'French' },
   contactBy: { phone: 'Phone', sms: 'SMS', email: 'Email' },
-  program: { fsd: 31, ai: 43 },
+  program: PROGRAM_IDS,
 };
 
 /**

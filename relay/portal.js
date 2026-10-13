@@ -19,7 +19,7 @@ export async function sendToPortal(
 ) {
   const { path, received } = KINDS[kind];
   try {
-    const res = await fetch(`${portalUrl.replace(/\/+$/, '')}${path}`, {
+    const res = await fetch(endpoint(portalUrl, path), {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'api-key': apiKey },
       body: JSON.stringify(body),
@@ -34,6 +34,38 @@ export async function sendToPortal(
     return { received: false, status: err.name === 'TimeoutError' ? 'timeout' : 'error' };
   }
 }
+
+/**
+ * GETs the portal's upcoming cohorts. Resolves to { status, cohorts }: cohorts is the portal's
+ * array, only on a 200 whose body is a JSON array; status is the portal's HTTP status, 'invalid'
+ * for any other 200 body, or 'timeout' / 'error' as in sendToPortal. Never rejects.
+ */
+export async function fetchCohorts({
+  portalUrl,
+  apiKey,
+  timeoutMs = 10000,
+  fetch = globalThis.fetch,
+}) {
+  try {
+    // The timeout covers reading the body too.
+    const res = await fetch(endpoint(portalUrl, '/api/v1/cohorts'), {
+      headers: { accept: 'application/json', 'api-key': apiKey },
+      redirect: 'manual',
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+    if (res.status !== 200) {
+      await res.body?.cancel();
+      return { status: res.status };
+    }
+    const cohorts = await res.json();
+    return Array.isArray(cohorts) ? { status: 200, cohorts } : { status: 'invalid' };
+  } catch (err) {
+    const status = { TimeoutError: 'timeout', SyntaxError: 'invalid' }[err.name] ?? 'error';
+    return { status };
+  }
+}
+
+const endpoint = (portalUrl, path) => `${portalUrl.replace(/\/+$/, '')}${path}`;
 
 /** The portal may take it later: a 5xx, a timeout or a network error. */
 export const isRetryable = (status) => typeof status === 'string' || status >= 500;
