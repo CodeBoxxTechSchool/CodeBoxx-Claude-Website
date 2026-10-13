@@ -12,6 +12,7 @@ import {
   SITEMAP_FILE,
   load,
   match,
+  oldUrls,
   oldUrlsSitemap,
   parse,
   render,
@@ -36,8 +37,7 @@ const SWAP_HOSTS = [
 ];
 
 const hostsOf = (group) => Object.keys(table.hosts).filter((host) => table.hosts[host] === group);
-const oldPaths = (group) =>
-  lines(read(`old-urls/${OLD_URLS[group]}`)).map((url) => new URL(url).pathname);
+const oldPaths = (group) => oldUrls(group).map((url) => new URL(url).pathname);
 const servedPath = (path) => PAGES.has(path) || PAGES.has(`${path}/`);
 // A target (without its #fragment): a page of the new site, or a file in public/.
 const onSite = (path) =>
@@ -154,7 +154,7 @@ test('keeps the query string, before the fragment', () => {
     ['www.codeboxx.com', '/join-our-team', `${SITE}/careers/?${query}`],
     ['www.codeboxx.com', '/fr/faq/', `${SITE}/fr/faq/?${query}`],
     ['academie.codeboxx.com', '/anything', `${SITE}/fr/academie/?${query}`],
-    ['academie.codeboxx.com', '/faq', `${SITE}/fr/academie/?${query}#faq`],
+    ['academie.codeboxx.com', '/enroll', `${SITE}/fr/academie/?${query}#apply`],
   ];
   for (const [host, path, expected] of cases)
     assert.equal(resolve(table, host, path, query), expected);
@@ -166,12 +166,15 @@ test('academy.codeboxx.com lands on /academy, its section, or its own page', () 
     ['/full-stack-development', '/academy/#programs'],
     ['/artificial-intelligence', '/academy/#programs'],
     ['/programs', '/academy/#programs'],
-    ['/frequently-asked-questions', '/academy/#faq'],
-    ['/coding-school-financing-options', '/academy/#funding'],
+    ['/frequently-asked-questions', '/faq/'],
+    ['/faq', '/faq/'],
+    ['/coding-school-financing-options', '/financing/'],
+    ['/financing-options', '/financing/'],
     ['/enroll-in-our-coding-school-programs', '/academy/#apply'],
     ['/no-such-page', '/academy/'],
     ['/corporate-training', '/corporate-training/'],
     ['/technology-training-for-businesses', '/corporate-training/'],
+    ['/technology-training-for-businesses-old', '/corporate-training/'],
     ['/post/coming-soon-at-codeboxx', '/academy/'],
   ];
   for (const host of ['academy.codeboxx.com', 'www.academy.codeboxx.com'])
@@ -180,6 +183,49 @@ test('academy.codeboxx.com lands on /academy, its section, or its own page', () 
     resolve(table, 'academy.codeboxx.com', '/full-stack-development', 'utm_source=x'),
     `${SITE}/academy/?utm_source=x#programs`
   );
+});
+
+test('solutions.codeboxx.com sends DaaS, vibe coding and Academy for Business to their page', () => {
+  const cases = [
+    ['/developer-as-a-service', '/solutions/#service-daas'],
+    ['/developers-as-a-service', '/solutions/#service-daas'],
+    ['/daas', '/solutions/#service-daas'],
+    ['/sdaas', '/solutions/#service-daas'],
+    ['/vibe-coding-workshop', '/solutions/#vibe-coaching'],
+    ['/academy-for-business', '/corporate-training/'],
+    ['/academy-for-buisness', '/corporate-training/'],
+  ];
+  for (const host of hostsOf('solutions'))
+    for (const [path, to] of cases) assert.equal(resolve(table, host, path), `${SITE}${to}`, path);
+  assert.equal(
+    resolve(table, 'academie.codeboxx.com', '/financing-options'),
+    `${SITE}/fr/financement/`
+  );
+  assert.equal(resolve(table, 'academie.codeboxx.com', '/faq/'), `${SITE}/fr/faq/`);
+});
+
+test('the old URLs found outside the sitemaps (old-urls/extra/) are checked, not in the sitemap', () => {
+  const extra = (name) => lines(read(`old-urls/extra/${name}`));
+  const academy = extra('academy.codeboxx.com.txt');
+  const solutions = extra('www.solutions.codeboxx.com.txt');
+  assert.equal(academy.length + solutions.length, 50);
+  assert.ok(oldUrls('academie').includes('https://academy.codeboxx.com/new-enroll'));
+  const checks = plan(table, '159.223.145.47');
+  for (const [group, urls] of [
+    ['academy', academy],
+    ['academie', academy],
+    ['solutions', solutions],
+  ])
+    for (const host of hostsOf(group))
+      for (const url of urls) {
+        const { pathname } = new URL(url);
+        const check = checks.find((c) => c.host === host && c.path === pathname);
+        assert.ok(check?.location, host + pathname);
+        assert.equal(check.location, resolve(table, host, pathname));
+      }
+  const sitemap = oldUrlsSitemap();
+  for (const url of [...academy, ...solutions])
+    assert.ok(!sitemap.includes(`<loc>${url}</loc>`), url);
 });
 
 test('matches with or without a trailing slash, ignoring case, prefixes included', () => {

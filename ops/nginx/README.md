@@ -15,10 +15,10 @@ single 301 to its page on `https://codeboxx.ai`, the main domain (`SITE` in `red
   the bare IP and unknown hosts are never redirected.
 - Temporary (CLP-1398, from 2026-10-07 for about four weeks): the apex serves
   `https://codeboxx.com/sitemap-old-urls.xml` instead of redirecting it. It lists every old URL
-  (`old-urls/`), and is submitted in Search Console's codeboxx.com property so Google recrawls them
-  and sees their 301s. `redirects.js` writes it to `public/` with the conf. To retire it: remove it
-  in Search Console, delete `OLD_URLS_SITEMAP` and its lines in `redirects.js`, the file and its
-  test, regenerate and reinstall the conf.
+  of the Wix sitemaps (`old-urls/`, not `old-urls/extra/`), and is submitted in Search Console's
+  codeboxx.com property so Google recrawls them and sees their 301s. `redirects.js` writes it to
+  `public/` with the conf. To retire it: remove it in Search Console, delete `OLD_URLS_SITEMAP` and
+  its lines in `redirects.js`, the file and its test, regenerate and reinstall the conf.
 
 Port 80 answers every host: old URLs and every `http://codeboxx.com` URL go straight to their
 `https://codeboxx.ai` page (one 301), certificate challenges
@@ -40,6 +40,7 @@ certificate is issued by hand (DNS-01) and renewed by certbot (HTTP-01, from
 | `codeboxx-https.conf`              | Port 443 (`/etc/nginx/sites-available/codeboxx-https`)                   |
 | `issue-cert.sh`                    | First issuance and fallback, by DNS-01 with TXT records added in Wix     |
 | `old-urls/`                        | The Wix sitemaps (2026-09-30) the tests and the check go through         |
+| `old-urls/extra/`                  | Old URLs outside them (Wayback Machine, CLP-1378): tests and check only  |
 | `new-pages.txt`                    | The new site's pages (its sitemap), since the tests run before the build |
 | `check-redirects.js`               | Sends every old URL to a running nginx and checks the answer             |
 
