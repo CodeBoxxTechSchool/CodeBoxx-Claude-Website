@@ -87,6 +87,8 @@ shows none. Two variables, from the environment or `.env`:
 }
 ```
 
+Local builds read `COHORTS_URL`; the deploy reads the relay over SSH and passes `COHORTS_FILE`
+(see Deployment). A cohort of a program the site doesn't show is skipped with a warning.
 `npm run build` fails when the dates can't be had (network, timeout after 15 s, any status but
 200, a 503 from the relay, an answer of another shape), so a deploy stops and the live site keeps
 the dates it has. `npm run dev` warns and shows the page without dates. A copy the relay got from
@@ -256,8 +258,12 @@ script failing to load): without it, a hidden title with nothing left to add
 "CodeBoxx Web Claude" DigitalOcean Droplet over SSH on every push to `main`, on every Sanity
 publish (below), once a day at 09:15 UTC (so the Academy's start dates enter and leave their
 90-day window on time, and new portal cohorts show within a day), or manually via "Run
-workflow". A build that can't read the start dates fails before anything is deployed (see
-"Academy start dates" above). GitHub disables a scheduled workflow after 60 days without
+workflow". After the tests, it deploys `relay/` first, so a relay fix can always ship (and a
+relay change is live even if the site's build then fails); then it reads the start dates from the
+relay over SSH on the droplet (`curl http://127.0.0.1:8787/api/cohorts`, not through Cloudflare or
+nginx) into the file the build reads as `COHORTS_FILE`, builds, and rsyncs `dist/`. A relay that
+can't answer (503, error) or a build that can't use the dates stops the run before `dist/` is
+deployed (see "Academy start dates" above). GitHub disables a scheduled workflow after 60 days without
 activity in the repository; re-enable it in the Actions tab. It does not provision anything —
 the Droplet, nginx, the `deploy` user, and the target directory are already set up (see below).
 
