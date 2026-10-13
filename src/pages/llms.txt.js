@@ -1,10 +1,11 @@
 // /llms.txt: the site's summary for AI systems (https://llmstxt.org). Built on every deploy
-// (a deploy runs on every Sanity publish) so the key facts below stay current: tuition and
-// lengths come from src/lib/academyPrograms.js, start dates and roles from the locales,
-// and dates already past are dropped, as on the Academy page.
+// (a deploy runs on every Sanity publish and once a day) so the key facts below stay current:
+// tuition and lengths come from src/lib/academyPrograms.js, start dates from the portal
+// (src/lib/cohorts.js, as on the Academy page), roles from the locales.
 import academy from '../locales/en/academy.js';
 import home from '../locales/en/home.js';
 import { CAMPUSES, PROGRAM_FACTS, upcomingStarts } from '../lib/academyPrograms.js';
+import { buildStarts } from '../lib/cohorts.js';
 
 // Leadership, in the homepage's team order (names: HomeIsland.jsx ABOUT_META; roles:
 // home.about.team.people).
@@ -27,11 +28,11 @@ const fmt = (iso) =>
     timeZone: 'UTC',
   });
 
-function programLine(p, today) {
+function programLine(p, starts) {
   const facts = PROGRAM_FACTS[p.id];
-  const starts = upcomingStarts(p, today).map(fmt);
-  const when = starts.length
-    ? `next start${starts.length > 1 ? 's' : ''} ${starts.join(', ')}`
+  const dates = upcomingStarts(p, starts).map(fmt);
+  const when = dates.length
+    ? `next start${dates.length > 1 ? 's' : ''} ${dates.join(', ')}`
     : p.startsText
       ? `starts ${p.startsText.toLowerCase()}`
       : 'next start dates to be announced';
@@ -42,8 +43,8 @@ function programLine(p, today) {
   );
 }
 
-export function GET() {
-  const today = new Date().toISOString().slice(0, 10);
+export async function GET() {
+  const starts = await buildStarts();
   const people = home.about.team.people;
   const campuses = CAMPUSES.map(
     ({ address: a }) =>
@@ -59,7 +60,7 @@ CodeBoxx is one AI-native company in three divisions: CodeBoxx Solutions (AI-nat
 
 - Founded in 2018. Two campuses: ${campuses}.
 - CodeBoxx Academy is licensed by the Florida Commission for Independent Education, License No. 9103.
-${academy.programs.items.map((p) => programLine(p, today)).join('\n')}
+${academy.programs.items.map((p) => programLine(p, starts)).join('\n')}
 - Graduate outcomes: over 340 graduates placed into technology jobs. VideoAmp hired seven CodeBoxx graduates full-time at $60,000 with benefits (Tampa Bay Business Journal Inno, week of January 30, 2026). Graduates have been hired by eBay, Lucky Brand, Coveo and TD SYNNEX, among others.
 - Award: RetailTech Breakthrough 2025, Chatbot Solution of the Year, for the GEM chatbot CodeBoxx built for GoodwillFinds.
 - Leadership: ${LEADERS.map(([id, name]) => `${name} (${people[id].role})`).join(', ')}.

@@ -67,7 +67,6 @@ export default {
           'Temps partiel : 32 semaines.',
           'Sur le campus ou en ligne.',
         ],
-        starts: ['2026-09-14', '2026-11-09'],
         noDates: 'Prochaines dates de départ à venir.',
         tuition: '12 000 $',
         apply: 'Postuler au programme full-stack',

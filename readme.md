@@ -14,6 +14,8 @@ route, including the 404 page, is native Astro; the old SPA code has been remove
 - **SCSS** for all styling, no inline styles (`src/styles/`)
 - **Sanity** CMS, fetched at build time for every native page (`src/lib/sanityContent.js`,
   zero client JS for the content itself)
+- **Academy start dates** from the school portal, through the relay's `GET /api/cohorts`, also
+  at build time (`src/lib/cohorts.js`, see "Academy start dates" below)
 - **@astrojs/sitemap** generates `sitemap-index.xml`/`sitemap-*.xml` from the actual
   prerendered routes (including one entry per blog post) — replaces the old hand-rolled
   `scripts/generate-sitemap.mjs`
@@ -63,6 +65,32 @@ npm run dev
 ```
 
 `npm run build` writes the static site to `dist/`; `npm run preview` serves it.
+
+### Academy start dates
+
+The Academy page (`/academy`, `/fr/academie`: its Starts list, its `<title>` and its Course
+structured data) and `/llms.txt` show the school portal's start dates, read once per build by
+`src/lib/cohorts.js` from the relay's `GET https://codeboxx.ai/api/cohorts` (`relay/README.md`).
+Only starts after today (UTC) and at most 90 days later are shown; the AI program is on demand and
+shows none. Two variables, from the environment or `.env`:
+
+| Variable       | Use                                                                                       |
+| -------------- | ----------------------------------------------------------------------------------------- |
+| `COHORTS_URL`  | Where to read them, default `https://codeboxx.ai/api/cohorts`                             |
+| `COHORTS_FILE` | A local JSON file holding the same answer, read instead of the URL (offline, or a sample) |
+
+```json
+{
+  "ok": true,
+  "cohorts": [{ "program": "fsd", "start": "2026-11-09" }],
+  "asOf": "2026-10-13T14:00:00Z"
+}
+```
+
+`npm run build` fails when the dates can't be had (network, timeout after 15 s, any status but
+200, a 503 from the relay, an answer of another shape), so a deploy stops and the live site keeps
+the dates it has. `npm run dev` warns and shows the page without dates. A copy the relay got from
+the portal more than two days ago (`asOf`) gets a warning in the build log, not a failure.
 
 ## Routes
 
@@ -313,6 +341,7 @@ src/
   lib/
     sanityContent.js          build-time Sanity fetch — every native page
     sanity.js                 browser-side Sanity helpers — pickLocale for the landing pages
+    cohorts.js                build-time Academy start dates, from the portal via the relay
     blogSeed.js               shared fallback post data, blog pages
     homeSeed.js               shared fallback CodeBlog-teaser data, home page
     portableText.js           server-side Portable Text → HTML, blog post pages only

@@ -9,9 +9,10 @@
 // Street Journal banner, and studio proof (Forge, Lucky Brand, Suitely).
 export default {
   seo: {
-    // The school, the place and the next Full-Stack start (AcademyPage fills {date} from
-    // programs.items, so it moves on by itself); `title` when no date is listed. "AI bootcamp",
-    // never "coding bootcamp": leadership's wording (Oct 2026), and what people search for.
+    // The school, the place and the next Full-Stack start (AcademyPage fills {date} from the
+    // portal's start dates, so it moves on by itself); `title` when no date is listed. "AI
+    // bootcamp", never "coding bootcamp": leadership's wording (Oct 2026), and what people search
+    // for.
     title: 'CodeBoxx AI Bootcamp, St. Petersburg, FL',
     // At most 70 characters with the longest date ("September 30, 2026"): Bing flags longer titles.
     titleWithDate: 'CodeBoxx AI Bootcamp St. Pete: Full-Stack starts {date}',
@@ -90,9 +91,8 @@ export default {
           'Part-time: 32 weeks.',
           'On campus or online.',
         ],
-        // academy.codeboxx.com/full-stack-development. Dates already past at build
-        // time are dropped by the page (src/pages/academy.astro).
-        starts: ['2026-09-14', '2026-11-09'],
+        // Start dates come from the portal (src/lib/cohorts.js); this shows when none is
+        // within the next 90 days.
         noDates: 'Next start dates coming soon.',
         tuition: '$12,000',
         apply: 'Apply to Full-Stack',

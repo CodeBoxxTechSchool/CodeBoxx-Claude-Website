@@ -58,18 +58,25 @@ const PROGRAMS = [
     title: 'AI Native Full-Stack Developer',
     who: 'People starting from no experience.',
     schedule: ['Full-time: 16 weeks.', 'Part-time: 32 weeks.'],
-    starts: ['2026-09-14', '2026-11-09'],
   },
-  { id: 'ai', title: 'Advanced AI Technologist', who: 'People who already program.', schedule: [] },
+  {
+    id: 'ai',
+    title: 'Advanced AI Technologist',
+    who: 'People who already program.',
+    schedule: [],
+    startsText: 'On Demand',
+  },
   { id: 'other', title: 'Not a program with facts' },
 ];
 const ACADEMY = 'https://codeboxx.ai/academy/';
+// The portal's start dates by program key, as src/lib/cohorts.js gives them.
+const STARTS = { fsd: ['2026-11-09', '2027-01-11'], ai: [] };
 
 test('courseSchemas gives each program its tuition, provider and instances', () => {
   const [fsd, ai, ...rest] = courseSchemas({
     programs: PROGRAMS,
     lang: 'en',
-    today: '2026-10-08',
+    starts: STARTS,
     pageUrl: ACADEMY,
   });
   assert.equal(rest.length, 0, 'programs without facts are skipped');
@@ -100,12 +107,15 @@ test('courseSchemas lists on-campus and online, full-time and part-time, for eac
   const [fsd, ai] = courseSchemas({
     programs: PROGRAMS,
     lang: 'en',
-    today: '2026-10-08',
+    starts: STARTS,
     pageUrl: ACADEMY,
   });
-  // September 14 has passed: only November 9 remains, in 2 modes x 2 paces.
-  assert.equal(fsd.hasCourseInstance.length, 4);
-  assert.ok(fsd.hasCourseInstance.every((i) => i.startDate === '2026-11-09'));
+  // Each start date in 2 modes x 2 paces.
+  assert.equal(fsd.hasCourseInstance.length, 8);
+  assert.deepEqual(
+    fsd.hasCourseInstance.map((i) => i.startDate),
+    Array(4).fill(['2026-11-09', '2027-01-11']).flat()
+  );
   const byKey = Object.fromEntries(
     fsd.hasCourseInstance.map((i) => [i.courseMode + ' ' + i.courseWorkload, i])
   );
@@ -128,11 +138,24 @@ test('courseSchemas lists on-campus and online, full-time and part-time, for eac
   ]);
 });
 
+test('courseSchemas: no start in the window, or on demand, gives instances without a date', () => {
+  const [fsd, ai] = courseSchemas({
+    programs: PROGRAMS,
+    lang: 'en',
+    starts: { fsd: [], ai: ['2026-11-09'] },
+    pageUrl: ACADEMY,
+  });
+  for (const course of [fsd, ai]) {
+    assert.equal(course.hasCourseInstance.length, 4);
+    assert.ok(course.hasCourseInstance.every((i) => !('startDate' in i)));
+  }
+});
+
 test('courseSchemas names the French provider and labels in French', () => {
   const [fsd] = courseSchemas({
     programs: PROGRAMS,
     lang: 'fr',
-    today: '2026-10-08',
+    starts: STARTS,
     pageUrl: 'https://codeboxx.ai/fr/academie/',
   });
   assert.equal(fsd.provider.name, 'CodeBoxx Académie');
