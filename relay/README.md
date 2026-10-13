@@ -1,11 +1,12 @@
 # Website relay
 
 A small Node server that takes the site's forms and forwards them to the school portal, so the
-portal's API key never reaches the browser. nginx proxies `/api/` to it. Node 24, no npm
-dependencies: the folder runs on its own (`node server.js`). Only a submission the portal could not
-take is saved to disk, in the queue below, and for 72 hours at most (a careers application's CV
-included: it is never written anywhere else); the logs hold status codes, timings and random
-submission IDs only, never a file name or content.
+portal's API key never reaches the browser, and publishes the portal's upcoming start dates. nginx
+proxies `/api/` to it. Node 24, no npm dependencies: the folder runs on its own (`node server.js`).
+Only a submission the portal could not take is saved to disk, in the queue below, and for 72 hours
+at most (a careers application's CV included: it is never written anywhere else); the logs hold
+status codes, timings and random submission IDs only, never a file name or content. The start
+dates' copy on disk holds no personal data.
 
 ## Run
 
@@ -21,8 +22,10 @@ npm run test:relay
 | `PORT`                  | Listens on `127.0.0.1:PORT`, default 8787                |
 | `STATE_DIRECTORY`       | Set by systemd; the queue is its `outbox/` folder        |
 | `OUTBOX_DIR`            | The queue folder when `STATE_DIRECTORY` is not set       |
+| `COHORTS_FILE`          | The cohorts copy when `STATE_DIRECTORY` is not set       |
 
-With neither `STATE_DIRECTORY` nor `OUTBOX_DIR`, nothing is queued (one warning at startup).
+With neither `STATE_DIRECTORY` nor `OUTBOX_DIR`, nothing is queued; with neither `STATE_DIRECTORY`
+nor `COHORTS_FILE`, the cohorts are kept in memory only (one warning at startup each).
 
 ## Routes
 
@@ -31,6 +34,37 @@ the queue is empty, `queue` null when it is disabled), without calling the porta
 `?queue=<seconds>`, it answers `503 {ok: false, queue: …}` when the oldest queued submission is
 older than that (and 400 when the value is not a whole number): the DigitalOcean uptime check on
 `/api/health?queue=900` alerts when a submission has waited more than 15 minutes.
+
+`GET /api/cohorts` (and `HEAD`) → the upcoming start dates, the one source the site's build and
+Codi read them from: the portal's `GET /api/v1/cohorts` (with the same `api-key`), reduced to
+
+```json
+{
+  "ok": true,
+  "cohorts": [
+    { "program": "fsd", "start": "2026-11-09" },
+    { "program": "fsd", "start": "2027-01-11" }
+  ],
+  "windowDays": 90,
+  "asOf": "2026-10-13T14:07:09.834Z"
+}
+```
+
+with `Cache-Control: public, max-age=300`. Sorted by start, without duplicates, only the dates after
+today (UTC) and at most 90 days later; `asOf` is when the relay got them from the portal. Only the
+program and the date: no cohort name, ID, campus or description. One portal cohort is one start
+date, offered online or at St. Pete, full or part time, so neither is given. Programs are mapped in
+`cohorts.js` (`PROGRAMS`, portal ID → site key; today 31 → `fsd`, the Full-Stack Development
+program); a cohort of any other program, or without a start date, is left out, and each such
+program ID is logged once.
+
+The portal's answer is kept 10 minutes in memory, and saved to `cohorts.json` in `STATE_DIRECTORY`
+(only the program and start of each cohort, before the 90-day window), so a restart (every relay
+deploy) starts from it; requests that arrive while the portal is asked wait for that one call. When
+the portal fails (not a 200 with a JSON array: a 401, a 5xx, a 10 s timeout, bad JSON), the relay
+serves the last copy, with its older `asOf`, logs `portal=<status> stale`, and doesn't ask the
+portal again for a minute. The window is applied to every answer, so a date that has passed leaves
+a stale copy too. With no copy at all, it answers `503 {ok: false, error: "cohorts unavailable"}`.
 
 `POST /api/enroll` (JSON, 16 KB max) → the portal's `POST /api/v1/leads`. Fields, all strings:
 `first`, `last`, `birth` (`YYYY-MM-DD`), `email`, `dial` (`+1`), `phone`, `mobile` (`yes`/`no`),
@@ -118,7 +152,8 @@ One-time droplet setup (Ubuntu 24.04, done 2026-09-28, as root):
    `location /api/` (`limit_req zone=forms burst=3 nodelay`, `limit_req_status 429`,
    `client_max_body_size 16k`, `proxy_pass http://127.0.0.1:8787`, `proxy_set_header Host` and
    `X-Forwarded-For`, `proxy_read_timeout 15s`) plus `location = /api/health` without the limit,
-   for uptime checks.
+   for uptime checks, and `location = /api/cohorts`, which isn't rate-limited either (GET and HEAD
+   only), so reads never use the forms' budget; the relay's cache bounds the calls to the portal.
 
    The careers form has a block of its own for the larger body, next to `location /api/`.
    `client_body_buffer_size` keeps the body in memory: without it, nginx writes any body over

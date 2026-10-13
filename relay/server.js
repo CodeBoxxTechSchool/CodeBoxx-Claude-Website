@@ -1,5 +1,6 @@
 import http from 'node:http';
 import { join } from 'node:path';
+import { cohortsHandler } from './cohorts.js';
 import { toLead, validateEnroll } from './enroll.js';
 import { isHoneypot } from './fields.js';
 import {
@@ -18,8 +19,8 @@ const MAX_BODY_BYTES = 16 * 1024;
 const BODY_LIMITS = { '/api/careers': 8 * 1024 * 1024 };
 
 // Handlers get the parsed JSON body (POST) or the query's URLSearchParams (GET) and the config, and
-// resolve to { status, note?, body? }; body is added to the answer's JSON; note goes to the log, so
-// it must never carry personal data.
+// resolve to { status, note?, headers?, body? }; body is added to the answer's JSON; note goes to
+// the log, so it must never carry personal data. /api/cohorts is added by createServer.
 const routes = {
   '/api/health': { GET: health },
   '/api/enroll': { POST: submission('enroll', validateEnroll, toLead) },
@@ -77,31 +78,35 @@ async function forward(kind, body, id, config) {
 }
 
 /**
- * config: { portalUrl, apiKey, timeoutMs?, fetch?, log?, outboxDir?, now? }; without outboxDir,
- * nothing is queued. Call .listen() on the result.
+ * config: { portalUrl, apiKey, timeoutMs?, fetch?, log?, outboxDir?, cohortsFile?, now? }; without
+ * outboxDir, nothing is queued; without cohortsFile, the cohorts are cached in memory only. Call
+ * .listen() on the result.
  */
 export function createServer(config) {
   const log = config.log ?? console.log;
+  // The cohorts route keeps a cache, one per server.
+  const cohorts = cohortsHandler(config);
+  const table = { ...routes, '/api/cohorts': { GET: cohorts, HEAD: cohorts } };
   return http.createServer(async (req, res) => {
     const started = performance.now();
     const path = req.url.split('?')[0];
     let result;
     try {
-      result = await handle(req, path, config);
+      result = await handle(req, path, config, table);
     } catch (err) {
       result = { status: 500, note: `error=${err.name}` };
     }
     if (result.allow) res.setHeader('Allow', result.allow);
     if (result.status === 413) res.setHeader('Connection', 'close');
-    res.writeHead(result.status, { 'Content-Type': 'application/json' });
+    res.writeHead(result.status, { 'Content-Type': 'application/json', ...result.headers });
     res.end(JSON.stringify({ ok: result.status === 200, ...result.body }));
     const ms = Math.round(performance.now() - started);
     log([req.method, path, result.status, `${ms}ms`, result.note].filter(Boolean).join(' '));
   });
 }
 
-async function handle(req, path, config) {
-  const route = routes[path];
+async function handle(req, path, config, table) {
+  const route = table[path];
   if (!route) return { status: 404 };
   const handler = route[req.method];
   if (!handler) return { status: 405, allow: Object.keys(route).join(', ') };
@@ -155,11 +160,15 @@ if (import.meta.main) {
     console.error('website-relay: PORTAL_URL is not a valid URL');
     process.exit(1);
   }
-  const { STATE_DIRECTORY, OUTBOX_DIR } = process.env;
+  const { STATE_DIRECTORY, OUTBOX_DIR, COHORTS_FILE } = process.env;
   // STATE_DIRECTORY comes from the unit's StateDirectory=; OUTBOX_DIR is for local runs.
   const outboxDir = STATE_DIRECTORY ? join(STATE_DIRECTORY, 'outbox') : OUTBOX_DIR;
   if (!outboxDir) console.warn('website-relay: no STATE_DIRECTORY or OUTBOX_DIR, queue disabled');
-  const config = { portalUrl: PORTAL_URL, apiKey: WEBSITE_LEADS_API_KEY, outboxDir };
+  // The last good cohorts answer, for after a restart; COHORTS_FILE is for local runs.
+  const cohortsFile = STATE_DIRECTORY ? join(STATE_DIRECTORY, 'cohorts.json') : COHORTS_FILE;
+  if (!cohortsFile)
+    console.warn('website-relay: no STATE_DIRECTORY or COHORTS_FILE, cohorts not saved');
+  const config = { portalUrl: PORTAL_URL, apiKey: WEBSITE_LEADS_API_KEY, outboxDir, cohortsFile };
   const server = createServer(config);
   server.listen(Number(PORT), '127.0.0.1', () => {
     console.log(`website-relay listening on 127.0.0.1:${PORT}`);

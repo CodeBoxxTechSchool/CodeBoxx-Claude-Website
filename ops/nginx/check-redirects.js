@@ -93,6 +93,15 @@ export function headerProblems(page, asset) {
   return problems;
 }
 
+/** Whether a body is the relay's /api/cohorts answer: JSON with a cohorts array. */
+export function cohortsList(body) {
+  try {
+    return Array.isArray(JSON.parse(body).cohorts);
+  } catch {
+    return false;
+  }
+}
+
 const oldPaths = (group) => oldUrls(group).map((url) => new URL(url).pathname);
 
 /**
@@ -272,6 +281,13 @@ export async function main(args, { out = console.log, err = console.error } = {}
     const res = await send(siteBase, siteHost, '/api/health', 'GET', ca).catch((error) => error);
     if (res instanceof Error || res.status !== 200)
       fail(`relay ${siteHost}/api/health (want 200)`, res.message ?? describe(res));
+    // 503 until the relay has had one answer from the portal.
+    const cohorts = await get(siteBase, siteHost, '/api/cohorts', { ca }).catch((error) => error);
+    if (cohorts instanceof Error || cohorts.status !== 200 || !cohortsList(cohorts.body))
+      fail(
+        `relay ${siteHost}/api/cohorts (want 200, a cohorts list)`,
+        cohorts.message ?? cohorts.status
+      );
   }
 
   for (const failure of failures.sort()) err(`FAIL ${failure}`);
@@ -281,7 +297,7 @@ export async function main(args, { out = console.log, err = console.error } = {}
       `${targets.size} targets (${reached} answered 200), ` +
       `${unchanged} unredirected requests${secure ? `, ${rejected} rejected handshakes` : ''}, ` +
       `compression and caching ${headers}` +
-      `${args.includes('--relay') ? ', relay health' : ''}; ` +
+      `${args.includes('--relay') ? ', relay health and cohorts' : ''}; ` +
       `${failures.length} failure(s)`
   );
   return failures.length ? 1 : 0;
