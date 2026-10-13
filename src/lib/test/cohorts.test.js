@@ -98,19 +98,30 @@ test('invalid JSON or a bad shape fails the build', async () => {
     [{ ...ANSWER, ok: false }, /not an \{ ok: true/],
     [{ ...ANSWER, cohorts: {} }, /not an \{ ok: true/],
     [{ ...ANSWER, asOf: undefined }, /no valid asOf/],
-    [
-      { ...ANSWER, cohorts: [{ program: 'aidev', start: '2026-11-09' }] },
-      /unknown program "aidev"/,
-    ],
-    [{ ...ANSWER, cohorts: [{ program: 'toString', start: '2026-11-09' }] }, /unknown program/],
     [{ ...ANSWER, cohorts: [{ program: 'fsd', start: '2026-11-09T00:00:00' }] }, /invalid start/],
     [{ ...ANSWER, cohorts: [{ program: 'fsd', start: '2026-02-30' }] }, /invalid start/],
-    [{ ...ANSWER, cohorts: [null] }, /unknown program/],
+    [{ ...ANSWER, cohorts: [{ program: 'xyz', start: 'soon' }] }, /invalid start/],
+    [{ ...ANSWER, cohorts: [{ program: 7, start: '2026-11-09' }] }, /invalid cohort/],
+    [{ ...ANSWER, cohorts: [null] }, /invalid cohort/],
   ];
   for (const [body, error] of bad) {
     const { run } = load({ fetch: jsonFetch(200, body) });
     await assert.rejects(run, error, JSON.stringify(body));
   }
+});
+
+test("a program the site doesn't show is skipped, with one warning per program", async () => {
+  const cohorts = [
+    ...ANSWER.cohorts,
+    { program: 'xyz', start: '2026-11-16' },
+    { program: 'xyz', start: '2026-12-07' },
+    { program: 'toString', start: '2026-11-09' },
+  ];
+  const { run, warnings } = load({ fetch: jsonFetch(200, { ...ANSWER, cohorts }) });
+  assert.deepEqual(await run, { fsd: ['2026-11-09', '2027-01-11'], ai: [] });
+  assert.equal(warnings.length, 2);
+  assert.match(warnings[0], /skipped program "xyz"/);
+  assert.match(warnings[1], /skipped program "toString"/);
 });
 
 test('a network error fails the build', async () => {

@@ -9,8 +9,10 @@
 // the dates it has, rather than publishing an Academy page without any. `astro dev` warns and
 // carries on without dates.
 //
-// COHORTS_URL (default below) or COHORTS_FILE (a local JSON file holding the same answer, for
-// offline work), from the environment or .env.
+// COHORTS_URL (default below) or COHORTS_FILE (a local JSON file holding the same answer), from
+// the environment or .env. The deploy uses COHORTS_FILE: it reads the relay over SSH on the
+// droplet, not through Cloudflare, after deploying the relay, so a relay fix can always ship.
+// Local builds read COHORTS_URL.
 import { readFile as fsReadFile } from 'node:fs/promises';
 import { PROGRAM_FACTS } from './academyPrograms.js';
 
@@ -42,7 +44,7 @@ export async function loadStarts({
     const body = env.COHORTS_FILE
       ? JSON.parse(await readFile(env.COHORTS_FILE, 'utf8'))
       : await fetchCohorts(source, fetch, timeoutMs);
-    const { cohorts, asOf } = parseCohorts(body);
+    const { cohorts, asOf } = parseCohorts(body, warn);
     const time = now();
     const starts = byProgram(inWindow(cohorts, time));
     const ageMs = time - Date.parse(asOf);
@@ -91,21 +93,30 @@ async function fetchCohorts(url, fetch, timeoutMs) {
   return body;
 }
 
-/** The relay's answer, checked: { cohorts: [{ program, start }], asOf }, or throws. */
-export function parseCohorts(body) {
+/**
+ * The relay's answer, checked: { cohorts: [{ program, start }], asOf }, or throws. A cohort of a
+ * program the site doesn't show yet is left out, with one warning per program: the relay may
+ * publish a program before the site has a page for it.
+ */
+export function parseCohorts(body, warn = console.warn) {
   if (body?.ok !== true || !Array.isArray(body.cohorts)) {
     throw new Error('not an { ok: true, cohorts: [...] } answer');
   }
   if (typeof body.asOf !== 'string' || Number.isNaN(Date.parse(body.asOf))) {
     throw new Error('no valid asOf');
   }
-  const cohorts = body.cohorts.map((c) => {
-    if (typeof c?.program !== 'string' || !Object.hasOwn(PROGRAM_FACTS, c.program)) {
-      throw new Error(`unknown program ${JSON.stringify(c?.program)}`);
-    }
+  const cohorts = [];
+  const unknown = new Set();
+  for (const c of body.cohorts) {
+    if (typeof c?.program !== 'string') throw new Error(`invalid cohort ${JSON.stringify(c)}`);
     if (!isDate(c.start)) throw new Error(`invalid start ${JSON.stringify(c.start)}`);
-    return { program: c.program, start: c.start };
-  });
+    if (Object.hasOwn(PROGRAM_FACTS, c.program))
+      cohorts.push({ program: c.program, start: c.start });
+    else if (!unknown.has(c.program)) {
+      unknown.add(c.program);
+      warn(`[cohorts] skipped program ${JSON.stringify(c.program)}: not one the site shows`);
+    }
+  }
   return { cohorts, asOf: body.asOf };
 }
 
