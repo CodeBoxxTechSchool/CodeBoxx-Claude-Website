@@ -253,9 +253,13 @@ script failing to load): without it, a hidden title with nothing left to add
 ## Deployment
 
 `.github/workflows/deploy.yml` builds the site and rsyncs `dist/` to the
-"CodeBoxx Web Claude" DigitalOcean Droplet over SSH on every push to `main` (or
-manually via "Run workflow"). It does not provision anything — the Droplet, nginx,
-the `deploy` user, and the target directory are already set up (see below).
+"CodeBoxx Web Claude" DigitalOcean Droplet over SSH on every push to `main`, on every Sanity
+publish (below), once a day at 09:15 UTC (so the Academy's start dates enter and leave their
+90-day window on time, and new portal cohorts show within a day), or manually via "Run
+workflow". A build that can't read the start dates fails before anything is deployed (see
+"Academy start dates" above). GitHub disables a scheduled workflow after 60 days without
+activity in the repository; re-enable it in the Actions tab. It does not provision anything —
+the Droplet, nginx, the `deploy` user, and the target directory are already set up (see below).
 
 Required repo secrets (Settings → Secrets and variables → Actions):
 
