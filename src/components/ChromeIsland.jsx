@@ -60,12 +60,12 @@ const NAV_STRUCTURE = [
 // and adds the language's own name, announced in that language.
 const LANGUAGE_NAMES = { en: 'English', fr: 'Français' };
 
-function LanguageToggle({ lang, pathname, hrefOverride }) {
+function LanguageToggle({ lang, pathname, hrefOverride, className = '' }) {
   const next = lang === 'fr' ? 'en' : 'fr';
   const href = hrefOverride || localizedHref(pathname, next, pathname);
   return (
     <a
-      className="btn btn-sm btn-outline-primary"
+      className={'btn btn-sm btn-outline-primary' + (className ? ' ' + className : '')}
       href={href}
       hrefLang={next}
       lang={next}
@@ -223,6 +223,14 @@ export function TopBar({
             <Navbar.Brand href={localizedHref('#top', lang, pathname)} className="p-0">
               <Logo width={168} label="CodeBoxx Technology" />
             </Navbar.Brand>
+            {/* Phones and tablets: the desktop toggle below is hidden there, and the menu
+                doesn't carry one, so the FR/EN button sits next to the menu button. */}
+            <LanguageToggle
+              lang={lang}
+              pathname={pathname}
+              hrefOverride={langHref}
+              className="lang-toggle-mobile d-lg-none ms-auto me-2"
+            />
             <Navbar.Toggle aria-controls="main-nav" />
             <Navbar.Collapse id="main-nav">
               <Nav className="flex-wrap gap-4 mx-lg-auto">

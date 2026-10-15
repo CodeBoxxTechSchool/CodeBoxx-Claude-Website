@@ -27,6 +27,19 @@
         height: 85vh;
       }
     }
+
+    // Logo, FR/EN and the menu button share one row down to 320px wide; the FR/EN button's
+    // ms-auto already keeps them apart.
+    .navbar-brand {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 359.98px) {
+    .navbar-brand .logo {
+      width: 144px;
+      height: auto;
+    }
   }
 }
 
@@ -87,6 +100,15 @@
       outline-offset: 1px;
     }
   }
+}
+
+// The FR/EN button next to the menu button below lg (ChromeIsland.jsx): a full-size tap target.
+.lang-toggle-mobile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 40px;
 }
 
 .navbar-toggler.collapsed {
