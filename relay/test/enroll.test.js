@@ -2,13 +2,28 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { toLead, validateEnroll } from '../enroll.js';
 import { isHoneypot } from '../fields.js';
-import { VALID } from './fixtures.js';
+import { FULL, VALID } from './fixtures.js';
 
 const now = new Date('2026-09-28T12:00:00Z');
 const errorsFor = (changes) => validateEnroll({ ...VALID, ...changes }, now).errors ?? [];
 
-test('maps a valid submission to a LeadCreateDto', () => {
+test('maps a drawer submission to a LeadCreateDto', () => {
   const result = validateEnroll({ ...VALID, extra: 'ignored' }, now);
+  assert.equal(result.ok, true);
+  assert.deepEqual(toLead(result.data), {
+    Email: 'ada@example.com',
+    FirstName: 'Ada',
+    LastName: 'Lovelace',
+    Phone: '+15555550100',
+    IsMobilePhone: true,
+    Language: 'French',
+    PreferredProgram: 43,
+    SendEmails: true,
+  });
+});
+
+test('maps a submission with every field, as Codi sends it', () => {
+  const result = validateEnroll(FULL, now);
   assert.equal(result.ok, true);
   assert.deepEqual(toLead(result.data), {
     Email: 'ada@example.com',
@@ -31,7 +46,7 @@ test('maps a valid submission to a LeadCreateDto', () => {
 });
 
 test('maps each choice', () => {
-  const lead = (changes) => toLead(validateEnroll({ ...VALID, ...changes }, now).data);
+  const lead = (changes) => toLead(validateEnroll({ ...FULL, ...changes }, now).data);
   assert.equal(lead({ mobile: 'no' }).IsMobilePhone, false);
   assert.equal(lead({ lang: 'en' }).Language, 'English');
   assert.equal(lead({ contactBy: 'phone' }).PreferredCommunicationMethod, 'Phone');
@@ -42,12 +57,37 @@ test('maps each choice', () => {
   assert.equal(lead({ dial: '+234', phone: '803 123 4567' }).Phone, '+2348031234567');
   assert.equal('ReferralChannel' in lead({ heard: '' }), false);
   assert.equal('ReferralChannel' in lead({ heard: undefined }), false);
+  const drawer = toLead(validateEnroll({ ...VALID, contactBy: 'sms' }, now).data);
+  assert.equal(drawer.PreferredCommunicationMethod, 'SMS');
 });
 
-test('requires every drawer field but heard', () => {
-  for (const field of Object.keys(VALID).filter((f) => f !== 'heard')) {
+test('requires every drawer field', () => {
+  for (const field of Object.keys(VALID)) {
     assert.deepEqual(errorsFor({ [field]: undefined }), [field], field);
     assert.ok(errorsFor({ [field]: '  ' }).includes(field), field);
+  }
+});
+
+test('takes the fields the drawer no longer asks as optional', () => {
+  const keys = {
+    birth: 'BirthDate',
+    mobile: 'IsMobilePhone',
+    contactBy: 'PreferredCommunicationMethod',
+    street: 'Address',
+    city: 'City',
+    region: 'State',
+    country: 'Country',
+    postal: 'PostalCode',
+    heard: 'ReferralChannel',
+  };
+  for (const field of Object.keys(FULL).filter((f) => !(f in VALID))) {
+    for (const value of [undefined, '', '  ']) {
+      const result = validateEnroll({ ...FULL, [field]: value }, now);
+      assert.equal(result.ok, true, field);
+      const lead = toLead(result.data);
+      if (field === 'mobile') assert.equal(lead.IsMobilePhone, true);
+      else assert.equal(keys[field] in lead, false, field);
+    }
   }
 });
 

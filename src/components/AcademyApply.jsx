@@ -5,11 +5,11 @@ import { ENROLL_OPEN_EVENT } from '../lib/enrollDrawer';
 
 // /academy's apply buttons: the page's one island. Each button opens the enroll
 // drawer for its program; the drawer reads the program from the title it gets.
-// `programs` is [{ title, apply }] (academy.js), `enroll`/`heardAbout` come from
+// `programs` is [{ title, apply }] (academy.js), `enroll` comes from
 // home.js, the same strings the drawer had on the homepage. TopBar's mobile Enroll Now
 // (Layout's `enrollDrawer`) opens it on the first program via ENROLL_OPEN_EVENT.
 
-export default function AcademyApply({ programs, enroll, heardAbout, common, lang }) {
+export default function AcademyApply({ programs, enroll, common, lang }) {
   const [course, setCourse] = React.useState(null);
   React.useEffect(() => {
     const open = () => setCourse(programs[0]?.title ?? null);
@@ -33,7 +33,7 @@ export default function AcademyApply({ programs, enroll, heardAbout, common, lan
       <EnrollDrawer
         course={course}
         onClose={() => setCourse(null)}
-        home={{ enroll, heardAbout }}
+        home={{ enroll }}
         common={common}
         lang={lang}
       />

@@ -1,7 +1,6 @@
 import React from 'react';
 import { flushSync } from 'react-dom';
 import { Button, Form, Offcanvas, Spinner } from 'react-bootstrap';
-import CountryCombobox from './CountryCombobox';
 import { suggestEmail } from '../lib/emailTypos';
 import { useRelaySubmit } from '../lib/useRelaySubmit';
 import { trackLead } from '../lib/trackLead';
@@ -9,7 +8,7 @@ import { trackLead } from '../lib/trackLead';
 // The Academy application drawer: posts to the relay (/api/enroll), which creates the
 // lead in the student portal; the portal then emails the link to create the portal
 // account. Mounted on /academy (AcademyApply.jsx) and the homepage (HomeIsland.jsx, opened
-// from TopBar's mobile Enroll Now). `home` only needs home.js's `enroll` and `heardAbout`; `common` is
+// from TopBar's mobile Enroll Now). `home` only needs home.js's `enroll`; `common` is
 // common.js (for the Close label).
 
 // Phone country codes/abbreviations — not translated (not prose).
@@ -54,25 +53,17 @@ function RadioRow({ label, options, value, onChange }) {
 const ENROLL_BLANK = {
   first: '',
   last: '',
-  birth: '',
   email: '',
   dial: '+1',
   phone: '',
-  street: '',
-  city: '',
-  region: '',
-  country: '',
-  postal: '',
   website: '',
 };
 
 export default function EnrollDrawer({ course, onClose, home, common, lang: pageLang }) {
   const [form, setForm] = React.useState(ENROLL_BLANK);
-  const [mobile, setMobile] = React.useState('yes');
-  // The portal emails the applicant in this language, so it starts as the page's.
-  const [lang, setLang] = React.useState(pageLang === 'fr' ? 'fr' : 'en');
-  const [contactBy, setContactBy] = React.useState('email');
-  const [heard, setHeard] = React.useState('');
+  // The portal emails the applicant in the page's language.
+  const lang = pageLang === 'fr' ? 'fr' : 'en';
+  const [contactBy, setContactBy] = React.useState('');
   const { status, setStatus, submit } = useRelaySubmit('/api/enroll');
   const [emailHint, setEmailHint] = React.useState(null);
   const [renderCourse, setRenderCourse] = React.useState(course);
@@ -89,25 +80,13 @@ export default function EnrollDrawer({ course, onClose, home, common, lang: page
   }, [status]);
   const set = (k) => (e) => setForm((f) => Object.assign({}, f, { [k]: e.target.value }));
   const invalid = form.email.length > 0 && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email);
-  const ready =
-    form.first &&
-    form.last &&
-    form.birth &&
-    form.email &&
-    !invalid &&
-    form.phone &&
-    form.street &&
-    form.city &&
-    form.region &&
-    form.country &&
-    form.postal;
+  const ready = form.first && form.last && form.email && !invalid && form.dial && form.phone;
   // Matches both the legacy hyphenated "Full-Stack" and Sanity's real Program
   // title "Full Stack" (space-separated) — a real cohort's title now comes
   // straight from a live Program document, not just this file's own hardcoded
   // strings, so the space form has to match too.
   const program = renderCourse && /full[\s-]?stack|fsd/i.test(renderCourse) ? 'fsd' : 'ai';
   const title = home.enroll.titles[program];
-  const heardAbout = home.heardAbout;
   const submitAgain = () => {
     flushSync(() => setStatus('idle'));
     emailRef.current?.focus();
@@ -169,15 +148,6 @@ export default function EnrollDrawer({ course, onClose, home, common, lang: page
           />
         </div>
         <Form.Group>
-          <Form.Label>{home.enroll.birthdate}</Form.Label>
-          <Form.Control
-            type="date"
-            aria-label={home.enroll.birthdate}
-            value={form.birth}
-            onChange={set('birth')}
-          />
-        </Form.Group>
-        <Form.Group>
           <Form.Control
             ref={emailRef}
             placeholder={home.enroll.emailPlaceholder}
@@ -230,24 +200,6 @@ export default function EnrollDrawer({ course, onClose, home, common, lang: page
           </div>
         </Form.Group>
         <RadioRow
-          label={home.enroll.mobileQ}
-          options={[
-            { value: 'yes', label: home.enroll.yes },
-            { value: 'no', label: home.enroll.no },
-          ]}
-          value={mobile}
-          onChange={setMobile}
-        />
-        <RadioRow
-          label={home.enroll.languageQ}
-          options={[
-            { value: 'en', label: home.enroll.english },
-            { value: 'fr', label: home.enroll.french },
-          ]}
-          value={lang}
-          onChange={setLang}
-        />
-        <RadioRow
           label={home.enroll.contactMethodQ}
           options={[
             { value: 'phone', label: home.enroll.phone },
@@ -255,56 +207,9 @@ export default function EnrollDrawer({ course, onClose, home, common, lang: page
             { value: 'email', label: home.enroll.email },
           ]}
           value={contactBy}
-          onChange={setContactBy}
+          // Optional: clicking the chosen one again clears it.
+          onChange={(v) => setContactBy((c) => (c === v ? '' : v))}
         />
-        <Form.Control
-          placeholder={home.enroll.streetPlaceholder}
-          value={form.street}
-          onChange={set('street')}
-        />
-        <div className="form-row-2">
-          <Form.Control
-            placeholder={home.enroll.cityPlaceholder}
-            value={form.city}
-            onChange={set('city')}
-          />
-          <Form.Control
-            placeholder={home.enroll.regionPlaceholder}
-            value={form.region}
-            onChange={set('region')}
-          />
-        </div>
-        <div className="form-row-2">
-          <CountryCombobox
-            id="enroll-country"
-            label={home.enroll.countryLabel}
-            lang={pageLang}
-            value={form.country}
-            onChange={(country) => setForm((f) => ({ ...f, country }))}
-            strings={home.enroll}
-          />
-          <Form.Control
-            className="align-self-end"
-            placeholder={home.enroll.postalPlaceholder}
-            value={form.postal}
-            onChange={set('postal')}
-          />
-        </div>
-        <Form.Group>
-          <Form.Label>{home.enroll.heardAboutQ}</Form.Label>
-          <Form.Select
-            aria-label={home.enroll.heardAboutQ}
-            value={heard}
-            onChange={(e) => setHeard(e.target.value)}
-          >
-            <option value="">{home.enroll.selectPlaceholder}</option>
-            {heardAbout.map((o) => (
-              <option key={o} value={o}>
-                {o}
-              </option>
-            ))}
-          </Form.Select>
-        </Form.Group>
         <p className="pbody">{home.enroll.nextStepNote}</p>
         {/* Honeypot: off-screen rather than display:none, which some bots skip. */}
         <div className="enroll-hp" aria-hidden="true">
@@ -327,7 +232,9 @@ export default function EnrollDrawer({ course, onClose, home, common, lang: page
             size="lg"
             disabled={!ready || sending}
             onClick={async () => {
-              if (await submit({ ...form, mobile, lang, contactBy, heard, program }))
+              const fields = { ...form, lang, program };
+              if (contactBy) fields.contactBy = contactBy;
+              if (await submit(fields))
                 trackLead({ formId: 'enroll', program, language: pageLang });
             }}
           >

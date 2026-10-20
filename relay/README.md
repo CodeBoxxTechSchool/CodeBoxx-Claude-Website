@@ -66,11 +66,15 @@ serves the last copy, with its older `asOf`, logs `portal=<status> stale`, and d
 portal again for a minute. The window is applied to every answer, so a date that has passed leaves
 a stale copy too. With no copy at all, it answers `503 {ok: false, error: "cohorts unavailable"}`.
 
-`POST /api/enroll` (JSON, 16 KB max) → the portal's `POST /api/v1/leads`. Fields, all strings:
-`first`, `last`, `birth` (`YYYY-MM-DD`), `email`, `dial` (`+1`), `phone`, `mobile` (`yes`/`no`),
-`lang` (`en`/`fr`), `contactBy` (`phone`/`sms`/`email`), `street`, `city`, `region`, `country`
-(ISO 3166-1 alpha-2), `postal`, `program` (`fsd`/`ai`), and optional `heard` (a label from the
-drawer, English or French), and optional `submissionId`: a UUID the drawer creates when it opens,
+`POST /api/enroll` (JSON, 16 KB max) → the portal's `POST /api/v1/leads`. Fields, all strings.
+Required: `first`, `last`, `email`, `dial` (`+1`), `phone`, `lang` (`en`/`fr`, the page's language,
+which the portal emails the applicant in) and `program` (`fsd`/`ai`). Optional: `contactBy`
+(`phone`/`sms`/`email`), which the drawer sends only when chosen, and the fields the drawer no
+longer asks, which Codi still sends until CLP-1438: `birth` (`YYYY-MM-DD`), `mobile` (`yes`/`no`),
+`street`, `city`, `region`, `country` (ISO 3166-1 alpha-2), `postal` and `heard` (a label from
+`heardAbout` in the site's `home.js`, English or French). An optional field is checked only when
+present, and left out of the lead when absent (the portal stores its own placeholders; a missing
+`mobile` is sent as yes). Also optional, `submissionId`: a UUID the drawer creates when it opens,
 keeps across retries and renews after a success, passed to the portal, which answers a repeat of a
 known ID as it did the first time without saving or emailing again. A non-empty `website`
 (honeypot) answers 200 and sends nothing.

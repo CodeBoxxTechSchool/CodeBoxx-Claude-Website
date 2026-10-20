@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { after, before, beforeEach, test } from 'node:test';
 import { enqueue, resendQueued } from '../outbox.js';
 import { createServer } from '../server.js';
-import { base64, CAREERS, CONTACT, PDF, PITCH, VALID } from './fixtures.js';
+import { base64, CAREERS, CONTACT, FULL, PDF, PITCH, VALID } from './fixtures.js';
 
 const API_KEY = 'test-key';
 const NOW = Date.parse('2026-09-29T12:00:00Z');
@@ -322,8 +322,8 @@ test('refuses a health check whose ?queue= is not a whole number of seconds', as
 });
 
 test('logs no personal data', async () => {
-  await post('/api/enroll', VALID);
-  await post('/api/enroll', { ...VALID, birth: '1990-02-30' });
+  await post('/api/enroll', FULL);
+  await post('/api/enroll', { ...FULL, birth: '1990-02-30' });
   portalStatus = 500;
   await post('/api/enroll', { ...VALID, submissionId: ID });
   await post('/api/contact', CONTACT);

@@ -17,8 +17,9 @@ export const COUNTRY_CODES = new Set(
     .split(/\s+/)
 );
 
-// The drawer's "How did you hear about us?" options, [English, French], in the order of
-// heardAbout in src/locales/{en,fr}/home.js. The portal gets the English label either way.
+// The "How did you hear about us?" options Codi sends (the drawer's before CLP-1437), [English,
+// French], in the order of heardAbout in src/locales/{en,fr}/home.js. The portal gets the English
+// label either way.
 const HEARD_ABOUT_PAIRS = [
   ['Google / Search Engine', 'Google / Moteur de recherche'],
   ['TV', 'Télévision'],
