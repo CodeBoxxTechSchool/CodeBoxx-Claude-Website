@@ -134,8 +134,12 @@ test('the apex serves nothing: old paths to their page, every other path to the 
   }
   assert.equal(SITE, 'https://codeboxx.ai');
   for (const page of PAGES) assert.equal(resolve(table, 'codeboxx.com', page), SITE + page, page);
-  for (const path of ['/', '/academy/', '/api/health', '/404.html', '/no-such-page'])
+  for (const path of ['/', '/academy/', '/api/health', '/404.html', '/favicon.svg'])
     assert.equal(resolve(table, 'codeboxx.com', path), SITE + path, path);
+  // A page's path without its trailing slash gets it, so it lands in one hop (codeboxx.ai would
+  // answer /blog with a 301 to /blog/).
+  for (const path of ['/blog', '/crewkit-forge-20', '/fr/blogue', '/no-such-page'])
+    assert.equal(resolve(table, 'codeboxx.com', path), `${SITE}${path}/`, path);
   assert.equal(
     resolve(table, 'codeboxx.com', '/academy/', 'gclid=x'),
     'https://codeboxx.ai/academy/?gclid=x'
@@ -231,7 +235,7 @@ test('the old URLs found outside the sitemaps (old-urls/extra/) are checked, not
 test('matches with or without a trailing slash, ignoring case, prefixes included', () => {
   assert.equal(resolve(table, 'www.codeboxx.com', '/Join-Our-Team'), `${SITE}/careers/`);
   assert.equal(resolve(table, 'www.codeboxx.com', '/Blog/Categories/X'), `${SITE}/blog/`);
-  assert.equal(resolve(table, 'www.codeboxx.com', '/About'), `${SITE}/About`);
+  assert.equal(resolve(table, 'www.codeboxx.com', '/About'), `${SITE}/About/`);
   assert.equal(resolve(table, 'www.codeboxx.com', '/contact/'), `${SITE}/#contactus`);
   assert.equal(resolve(table, 'Solutions.codeboxx.com', '/product-page'), `${SITE}/solutions/`);
   assert.equal(resolve(table, 'solutions.codeboxx.com', '/product-page/x/'), `${SITE}/solutions/`);
@@ -334,12 +338,26 @@ test('check plan: www.codeboxx.ai is one 301 to the same path on codeboxx.ai, ov
   const checks = www(plan(table, 'codeboxx.com', true));
   assert.deepEqual(
     checks.map((c) => c.path),
-    ['/', '/faq/', '/faq/?gclid=x&utm_source=y', '/blog', '/fr/blogue/']
+    ['/', '/faq/', '/faq/?gclid=x&utm_source=y', '/blog/', '/fr/blogue/']
   );
   for (const check of checks) {
     assert.equal(check.base, 'https://www.codeboxx.ai');
     assert.equal(check.location, `https://codeboxx.ai${check.path}`);
   }
+});
+
+test('the site answers a page without its trailing slash with a 301 to it, as "=" does', () => {
+  const site = read('snippets/codeboxx-site.conf');
+  assert.match(site, /^absolute_redirect off;$/m);
+  assert.match(site, /location \/ \{[^}]*try_files \$uri \$uri\/ =404;/);
+  // nginx's map and samePath agree: the same paths get a slash, the query string after it.
+  const conf = render(table);
+  assert.ok(conf.includes('"~^(?!/api/)([^?]*/[^/?.]+)(\\?.*)?$" https://codeboxx.ai$1/$2;'));
+  assert.ok(conf.includes('"=" $legacy_same_path;'));
+  assert.equal(
+    resolve(table, 'codeboxx.com', '/blog', 'gclid=x'),
+    'https://codeboxx.ai/blog/?gclid=x'
+  );
 });
 
 test('rejects malformed lines', () => {

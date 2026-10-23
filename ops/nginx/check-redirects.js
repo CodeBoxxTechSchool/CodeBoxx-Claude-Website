@@ -174,7 +174,7 @@ export function plan(table, baseHost, secure = false) {
   // itself when --base is a name. Through the IP the droplet would serve it as the site (by
   // design), which proves nothing about the redirect, so it isn't checked there.
   if (!isIP(baseHost))
-    for (const path of ['/', '/faq/', `/faq/?${QUERY}`, '/blog', '/fr/blogue/'])
+    for (const path of ['/', '/faq/', `/faq/?${QUERY}`, '/blog/', '/fr/blogue/'])
       checks.push({
         base: `https://${WWW_HOST}`,
         host: WWW_HOST,
@@ -277,6 +277,14 @@ export async function main(args, { out = console.log, err = console.error } = {}
     fail(`headers ${siteHost}/`, error.message);
   }
 
+  // A page asked without its trailing slash is one 301 to it, query kept (codeboxx-site.conf).
+  const bare = await send(siteBase, siteHost, `/academy?${QUERY}`, 'HEAD', ca).catch((e) => e);
+  if (bare instanceof Error || bare.status !== 301 || bare.location !== `/academy/?${QUERY}`)
+    fail(
+      `${siteHost}/academy?${QUERY} (want 301 -> /academy/?${QUERY})`,
+      bare.message ?? describe(bare)
+    );
+
   if (args.includes('--relay')) {
     const res = await send(siteBase, siteHost, '/api/health', 'GET', ca).catch((error) => error);
     if (res instanceof Error || res.status !== 200)
@@ -296,7 +304,7 @@ export async function main(args, { out = console.log, err = console.error } = {}
       `${wwwChecked ? `${www} ${WWW_HOST} redirects, ` : ''}` +
       `${targets.size} targets (${reached} answered 200), ` +
       `${unchanged} unredirected requests${secure ? `, ${rejected} rejected handshakes` : ''}, ` +
-      `compression and caching ${headers}` +
+      `compression and caching ${headers}, /academy to /academy/` +
       `${args.includes('--relay') ? ', relay health and cohorts' : ''}; ` +
       `${failures.length} failure(s)`
   );
