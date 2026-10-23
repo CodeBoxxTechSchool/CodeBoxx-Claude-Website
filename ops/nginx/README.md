@@ -5,7 +5,8 @@ On the droplet, nginx answers every old Wix URL of `codeboxx.com`, `www.codeboxx
 single 301 to its page on `https://codeboxx.ai`, the main domain (`SITE` in `redirects.js`; CLP-1342). Node 24, no npm dependencies.
 
 - `www.codeboxx.com` and `codeboxx.com` (the apex): blog posts to `/blog/<slug>/`, a few old pages
-  to their new page, anything else to the same path on `https://codeboxx.ai`. Obsolete posts left off
+  to their new page, anything else to the same path on `https://codeboxx.ai` (a page's path with
+  its trailing slash, `/blog` to `/blog/`, so it lands in one hop). Obsolete posts left off
   the new blog (`-` in `redirects.tsv`) are gone: not redirected, the site answers them 404. The apex serves no
   page itself: codeboxx.ai is the one live origin.
 - academy, academie (in French) and solutions: old pages to their page or homepage section, anything
@@ -27,6 +28,10 @@ Port 443 answers the eight names with one Let's Encrypt certificate
 (CLP-1343): the same redirects, then the site; the IP and unknown names fail the handshake. The
 certificate is issued by hand (DNS-01) and renewed by certbot (HTTP-01, from
 `/var/www/letsencrypt`; step 2). This config sets no HSTS (CLP-1414).
+
+The site (`snippets/codeboxx-site.conf`) serves each page at one address, with its trailing slash:
+`/academy` is a 301 to `/academy/`, query kept, as a relative `Location` (`absolute_redirect off`).
+It used to serve the page at both, and Search Console reported `/academy` as a duplicate.
 
 The site itself, `codeboxx.ai`, has its own 443 server block (`codeboxx-ai.conf`, a copy of the
 droplet's file): `codeboxx.ai` and `www.codeboxx.ai`, with a Cloudflare Origin Certificate, since
@@ -118,7 +123,8 @@ on codeboxx.ai (over http its gone posts too: port 80 sends every apex path ther
 when `--base` is an IP, else from `https://codeboxx.ai` (`--site <url>` to choose). Over http the
 IP and an unknown host must get the site.
 On both, the homepage must come gzipped with `Cache-Control: no-cache`, and its `/_astro/`
-stylesheet gzipped and cached for a year (`immutable`). Over https, every request checks the certificate against its host name (`--ca`: a test CA
+stylesheet gzipped and cached for a year (`immutable`), and `/academy?gclid=x&utm_source=y` must
+be one 301 to `/academy/` with the same query. Over https, every request checks the certificate against its host name (`--ca`: a test CA
 instead of the system's), and the IP and an unknown name must fail the handshake. With a name as
 `--base` (after the swap), `https://www.codeboxx.ai` must also be one 301 to the same path on
 codeboxx.ai, query kept: that's the Cloudflare rule, so it isn't checked through the IP. It prints the failures and a summary, and exits 1 on any failure.

@@ -99,12 +99,18 @@ export function match({ hosts, rules }, host, path) {
   );
 }
 
+/**
+ * The path a "=" target keeps: a page's gets its trailing slash (no file extension, not under
+ * /api/), since codeboxx.ai answers /blog with a 301 to /blog/; one hop instead of two.
+ */
+export const samePath = (path) => (/^(?!\/api\/).*\/[^/.]+$/.test(path) ? `${path}/` : path);
+
 /** The Location nginx answers for this request, or null when it doesn't redirect. */
 export function resolve(table, host, path, query = '') {
   const rule = match(table, host, path);
   if (!rule || rule.to === GONE) return null;
   const search = query ? `?${query}` : '';
-  if (rule.to === '=') return SITE + path + search;
+  if (rule.to === '=') return SITE + samePath(path) + search;
   const [target, fragment] = rule.to.split('#');
   return SITE + target + search + (fragment ? `#${fragment}` : '');
 }
@@ -159,11 +165,17 @@ export function render({ hosts, rules }) {
     ...entries(rest),
     '}',
     '',
-    '# The target path, the query string (ads: gclid, utm_*), then the fragment; "=" keeps the path.',
-    '# $request_uri, not the decoded $uri, so an encoded CR/LF cannot split the response.',
+    '# "=" keeps the path, a page\'s with its trailing slash (samePath in redirects.js), and the',
+    '# query string. $request_uri, not the decoded $uri, so an encoded CR/LF cannot split the response.',
+    'map $request_uri $legacy_same_path {',
+    `    default ${SITE}$request_uri;`,
+    `    "~^(?!/api/)([^?]*/[^/?.]+)(\\?.*)?$" ${SITE}$1/$2;`,
+    '}',
+    '',
+    '# The target path, the query string (ads: gclid, utm_*), then the fragment.',
     'map $legacy_target $legacy_location {',
     '    default "";',
-    `    "=" ${SITE}$request_uri;`,
+    '    "=" $legacy_same_path;',
     `    "~^([^#]+)(#.*)?$" ${SITE}$1$is_args$args$2;`,
     '}',
     '',
