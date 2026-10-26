@@ -54,7 +54,8 @@ export function videoSchemas({ post }) {
     name: i ? `${post.title} (${i + 1})` : post.title,
     description: post.excerpt || post.title,
     thumbnailUrl: [`https://i.ytimg.com/vi/${id}/hqdefault.jpg`],
-    uploadDate: post.date,
+    // With its time and timezone: a bare date is a Search Console warning ("missing a timezone").
+    uploadDate: post.publishedAt || `${post.date}T00:00:00Z`,
     embedUrl: `https://www.youtube.com/embed/${id}`,
   }));
 }
