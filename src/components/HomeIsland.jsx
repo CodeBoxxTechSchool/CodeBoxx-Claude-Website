@@ -1544,10 +1544,10 @@ function Gateway() {
           <article className="gw-card gw-forge">
             <img
               className="gw-forge-img"
-              src="/assets/crewkit-forge-poster.webp"
+              src="/assets/crewkit-forge-20.webp"
               alt={g.forge.imageAlt}
-              width={1248}
-              height={736}
+              width={1628}
+              height={960}
               loading="lazy"
             />
             <div className="gw-card-body">
@@ -1633,11 +1633,11 @@ function ForgeTeaser() {
         loop
         playsInline
         preload="none"
-        poster="/assets/crewkit-forge-poster.webp"
+        poster="/assets/crewkit-forge-20.webp"
         aria-hidden="true"
       >
-        <source src="/assets/crewkit-forge.webm" type="video/webm" />
-        <source src="/assets/crewkit-forge.mp4" type="video/mp4" />
+        <source src="/assets/crewkit-forge-20.webm" type="video/webm" />
+        <source src="/assets/crewkit-forge-20.mp4" type="video/mp4" />
       </video>
       <div
         className="hero-video-scrim"
