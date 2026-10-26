@@ -243,10 +243,12 @@ test('videoSchemas: one VideoObject per YouTube video in the body, none without 
       name: "Let's talk about Vibe Coding",
       description: 'Our CEO speaks on CBS News Detroit.',
       thumbnailUrl: ['https://i.ytimg.com/vi/zppfYWmf36w/hqdefault.jpg'],
-      uploadDate: '2025-11-25',
+      uploadDate: '2025-11-25T00:00:00Z',
       embedUrl: 'https://www.youtube.com/embed/zppfYWmf36w',
     },
   ]);
+  const published = { ...post, publishedAt: '2025-11-25T14:27:22.653Z' };
+  assert.equal(videoSchemas({ post: published })[0].uploadDate, '2025-11-25T14:27:22.653Z');
   assert.deepEqual(videoSchemas({ post: { ...post, date: '' } }), []);
   assert.deepEqual(videoSchemas({ post: { ...post, content: [] } }), []);
 });
