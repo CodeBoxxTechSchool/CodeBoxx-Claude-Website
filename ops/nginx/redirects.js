@@ -1,4 +1,5 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { SITE_REDIRECTS } from '../../src/lib/siteRedirects.js';
 
 export const SITE = 'https://codeboxx.ai';
 export const DATA_FILE = new URL('redirects.tsv', import.meta.url);
@@ -179,7 +180,26 @@ export function render({ hosts, rules }) {
     `    "~^([^#]+)(#.*)?$" ${SITE}$1$is_args$args$2;`,
     '}',
     '',
+    "# The site's own redirects (src/lib/siteRedirects.js), on every host: one 301, returned by",
+    "# snippets/codeboxx-site.conf, instead of Astro's meta-refresh page. With or without the",
+    '# trailing slash; the query string, then the fragment.',
+    'map $legacy_path $site_target {',
+    '    default "";',
+    ...Object.entries(SITE_REDIRECTS).map(([from, to]) => `    ${quote(from)} ${quote(to)};`),
+    '}',
+    '',
+    'map $site_target $site_location {',
+    '    default "";',
+    '    "~^([^#]+)(#.*)?$" $1$is_args$args$2;',
+    '}',
+    '',
   ].join('\n');
+}
+
+/** The Location nginx answers for a site redirect's target (SITE_REDIRECTS) and query string. */
+export function siteLocation(to, query = '') {
+  const [target, fragment] = to.split('#');
+  return target + (query ? `?${query}` : '') + (fragment ? `#${fragment}` : '');
 }
 
 const xmlEscape = (text) =>

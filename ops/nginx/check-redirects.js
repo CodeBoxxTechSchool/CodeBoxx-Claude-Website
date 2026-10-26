@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs';
 import http from 'node:http';
 import https from 'node:https';
 import { isIP } from 'node:net';
-import { GONE, load, match, oldUrls, resolve } from './redirects.js';
+import { SITE_REDIRECTS } from '../../src/lib/siteRedirects.js';
+import { GONE, load, match, oldUrls, resolve, siteLocation } from './redirects.js';
 
 const USAGE =
   'usage: node ops/nginx/check-redirects.js --base http://159.223.145.47 [--relay]\n' +
@@ -285,6 +286,22 @@ export async function main(args, { out = console.log, err = console.error } = {}
       bare.message ?? describe(bare)
     );
 
+  // The site's own redirects: one 301 each, with or without the trailing slash, query kept.
+  let siteRedirects = 0;
+  await runAll(
+    Object.entries(SITE_REDIRECTS).flatMap(([from, to]) => [
+      [from, to],
+      [`${from}/?${QUERY}`, to],
+    ]),
+    async ([path, to]) => {
+      const want = siteLocation(to, path.split('?')[1]);
+      const res = await send(siteBase, siteHost, path, 'HEAD', ca).catch((error) => error);
+      if (res instanceof Error || res.status !== 301 || res.location !== want)
+        return fail(`${siteHost}${path} (want 301 -> ${want})`, res.message ?? describe(res));
+      siteRedirects++;
+    }
+  );
+
   if (args.includes('--relay')) {
     const res = await send(siteBase, siteHost, '/api/health', 'GET', ca).catch((error) => error);
     if (res instanceof Error || res.status !== 200)
@@ -304,7 +321,7 @@ export async function main(args, { out = console.log, err = console.error } = {}
       `${wwwChecked ? `${www} ${WWW_HOST} redirects, ` : ''}` +
       `${targets.size} targets (${reached} answered 200), ` +
       `${unchanged} unredirected requests${secure ? `, ${rejected} rejected handshakes` : ''}, ` +
-      `compression and caching ${headers}, /academy to /academy/` +
+      `compression and caching ${headers}, /academy to /academy/, ${siteRedirects} site redirects` +
       `${args.includes('--relay') ? ', relay health and cohorts' : ''}; ` +
       `${failures.length} failure(s)`
   );

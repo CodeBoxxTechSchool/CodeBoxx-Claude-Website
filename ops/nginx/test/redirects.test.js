@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { localizedHref } from '../../../src/lib/i18nRoutes.js';
+import { SITE_REDIRECTS } from '../../../src/lib/siteRedirects.js';
 import { cohortsList, headerProblems, plan, stylesheet } from '../check-redirects.js';
 import {
   CONF_FILE,
@@ -17,6 +18,7 @@ import {
   parse,
   render,
   resolve,
+  siteLocation,
 } from '../redirects.js';
 
 const table = load();
@@ -358,6 +360,21 @@ test('the site answers a page without its trailing slash with a 301 to it, as "=
     resolve(table, 'codeboxx.com', '/blog', 'gclid=x'),
     'https://codeboxx.ai/blog/?gclid=x'
   );
+});
+
+test("the site's own redirects are one 301 from nginx, from no page, to a page of the site", () => {
+  const conf = render(table);
+  for (const [from, to] of Object.entries(SITE_REDIRECTS)) {
+    assert.ok(conf.includes(`    "${from}" "${to}";`), from);
+    assert.ok(!from.endsWith('/') && !servedPath(from), `${from} is a page`);
+    assert.ok(onSite(to.split('#')[0]), to);
+  }
+  assert.match(
+    read('snippets/codeboxx-site.conf'),
+    /^if \(\$site_location\) \{\n {4}return 301 \$site_location;\n\}$/m
+  );
+  assert.equal(siteLocation('/#contact', 'gclid=x'), '/?gclid=x#contact');
+  assert.equal(siteLocation('/academy/'), '/academy/');
 });
 
 test('rejects malformed lines', () => {
