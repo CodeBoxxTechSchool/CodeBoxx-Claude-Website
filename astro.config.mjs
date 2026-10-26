@@ -5,6 +5,7 @@ import { loadEnv } from 'vite';
 import { fetchPostIndex, makeSerialize, makeFilter } from './src/lib/sitemap.js';
 import { frTypographyPlugin } from './src/lib/frTypography.js';
 import { stripNulBytes } from './src/lib/stripNul.js';
+import { SITE_REDIRECTS } from './src/lib/siteRedirects.js';
 
 // Blog post dates for the sitemap's <lastmod>, and which posts are translated (their French page
 // is listed and paired with hreflang; see src/lib/sitemap.js). Same
@@ -29,25 +30,9 @@ export default defineConfig({
     stripNulBytes(),
   ],
   build: { format: 'directory' },
-  // The French Academy's accented spelling, as people type it. Static output makes
-  // these tiny redirect pages; the real page is /fr/academie (ASCII, like every FR slug).
-  redirects: {
-    '/académie': '/fr/academie/',
-    '/fr/académie': '/fr/academie/',
-    // Posts merged or retired (Search Console coverage, Oct 2026): the teaser now points to the
-    // full episode post, and the 2024 "coming soon" announcement to the Academy it announced.
-    '/blog/building-people-not-just-tech':
-      '/blog/building-people-not-just-tech-nicolas-genest-on-ai-talent-and-the-future-of-work-ep-1146/',
-    '/fr/blogue/building-people-not-just-tech':
-      '/fr/blogue/building-people-not-just-tech-nicolas-genest-on-ai-talent-and-the-future-of-work-ep-1146/',
-    '/blog/coming-soon-at-codeboxx': '/academy/',
-    '/fr/blogue/coming-soon-at-codeboxx': '/fr/academie/',
-    // Short links that open the homepage's enroll drawer (ENROLL_HASHES in HomeIsland.jsx).
-    '/contact': '/#contact',
-    '/launch': '/#launch',
-    '/fr/contact': '/fr/#contact',
-    '/fr/launch': '/fr/#launch',
-  },
+  // Retired pages and short links (src/lib/siteRedirects.js): static output makes a meta-refresh
+  // page for each, the fallback for nginx's 301.
+  redirects: SITE_REDIRECTS,
   // Local dev only: the forms' relay (relay/server.js); nginx does this in production.
   // French spacing (non-breaking space before : ; ! ?, before $ and %) on all FR
   // content — see src/lib/frTypography.js.

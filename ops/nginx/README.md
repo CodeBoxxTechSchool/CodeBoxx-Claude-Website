@@ -31,7 +31,11 @@ certificate is issued by hand (DNS-01) and renewed by certbot (HTTP-01, from
 
 The site (`snippets/codeboxx-site.conf`) serves each page at one address, with its trailing slash:
 `/academy` is a 301 to `/academy/`, query kept, as a relative `Location` (`absolute_redirect off`).
-It used to serve the page at both, and Search Console reported `/academy` as a duplicate.
+It used to serve the page at both, and Search Console reported `/academy` as a duplicate. The
+site's own redirects (`src/lib/siteRedirects.js`: retired posts, `/académie`, the `/contact` and
+`/launch` short links) are one 301 too, from a map `redirects.js` writes with the old URLs' maps;
+Astro's meta-refresh page for each, which Search Console listed as "Excluded by 'noindex' tag",
+stays only as a fallback.
 
 The site itself, `codeboxx.ai`, has its own 443 server block (`codeboxx-ai.conf`, a copy of the
 droplet's file): `codeboxx.ai` and `www.codeboxx.ai`, with a Cloudflare Origin Certificate, since
@@ -124,7 +128,8 @@ when `--base` is an IP, else from `https://codeboxx.ai` (`--site <url>` to choos
 IP and an unknown host must get the site.
 On both, the homepage must come gzipped with `Cache-Control: no-cache`, and its `/_astro/`
 stylesheet gzipped and cached for a year (`immutable`), and `/academy?gclid=x&utm_source=y` must
-be one 301 to `/academy/` with the same query. Over https, every request checks the certificate against its host name (`--ca`: a test CA
+be one 301 to `/academy/` with the same query, as must each of the site's own redirects, with and
+without its trailing slash. Over https, every request checks the certificate against its host name (`--ca`: a test CA
 instead of the system's), and the IP and an unknown name must fail the handshake. With a name as
 `--base` (after the swap), `https://www.codeboxx.ai` must also be one 301 to the same path on
 codeboxx.ai, query kept: that's the Cloudflare rule, so it isn't checked through the IP. It prints the failures and a summary, and exits 1 on any failure.
