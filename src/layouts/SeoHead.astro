@@ -8,7 +8,7 @@
 // SPA set them client-side with react-helmet-async).
 import { localizedHref } from '../lib/i18nRoutes';
 import { LOGO_URL, breadcrumbSchema } from '../lib/schemaOrg';
-import { CAMPUSES } from '../lib/academyPrograms';
+import { OFFICES } from '../lib/academyPrograms';
 import { pageTitle, SITE_NAME } from '../lib/pageTitle';
 import Tracking from '../components/Tracking.astro';
 
@@ -69,8 +69,8 @@ const organizationSchema = {
     availableLanguage: ['English', 'French'],
     areaServed: ['US', 'CA'],
   },
-  // St. Petersburg and Quebec City (src/lib/academyPrograms.js CAMPUSES).
-  address: CAMPUSES.map((c) => c.address),
+  // St. Petersburg and Quebec City (src/lib/academyPrograms.js OFFICES).
+  address: OFFICES.map((c) => c.address),
   // The old Wix sites' footer links (www, academy, solutions).
   sameAs: [
     'https://www.linkedin.com/school/codeboxx',

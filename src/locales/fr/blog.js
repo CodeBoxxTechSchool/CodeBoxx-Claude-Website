@@ -50,7 +50,7 @@ export default {
     backToCodeBlog: 'Retour au CodeBlog',
     externalReference: 'Référence externe',
     next: {
-      academy: 'CodeBoxx Académie : un bootcamp en IA, sur le campus ou en ligne',
+      academy: 'CodeBoxx Académie : un bootcamp en IA, en ligne, sur le campus ou hybride',
       corporate: 'Formation en IA pour vos équipes : CodeBoxx pour les entreprises',
       solutions: 'Des logiciels natifs IA, conçus par CodeBoxx Solutions',
     },

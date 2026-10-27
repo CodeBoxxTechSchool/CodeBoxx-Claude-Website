@@ -56,7 +56,7 @@ export default {
     // PostFooterLinks.astro: the page the post leads to (postTopic in src/lib/postLinks.js),
     // then the related posts.
     next: {
-      academy: 'CodeBoxx Academy: an AI bootcamp, on campus or online',
+      academy: 'CodeBoxx Academy: an AI bootcamp, online, on campus or hybrid',
       corporate: 'AI training for your teams: CodeBoxx for Businesses',
       solutions: 'AI-native software, built by CodeBoxx Solutions',
     },

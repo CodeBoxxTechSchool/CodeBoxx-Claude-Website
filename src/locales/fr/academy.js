@@ -8,7 +8,7 @@ export default {
     titleWithDate: 'Bootcamp en IA CodeBoxx St. Pete : Full-Stack dès le {date}',
     // Au plus 160 caractères : les résultats de recherche coupent les descriptions plus longues.
     description:
-      'Bootcamp en IA agréé à St. Petersburg (Floride), sur le campus ou en ligne : plus de 340 diplômés placés en techno. Full-stack en 16 semaines ou parcours IA.',
+      'Bootcamp en IA agréé à St. Petersburg (Floride), sur place, en ligne ou hybride. Plus de 340 diplômés placés en techno. Full-stack en 16 semaines ou volet IA.',
   },
   pill: 'CodeBoxx Académie · Bootcamp en IA',
   title:
@@ -63,9 +63,9 @@ export default {
         title: 'Développeur full-stack natif en IA',
         who: 'Les personnes qui partent de zéro. Aucune expérience en programmation requise.',
         schedule: [
-          'Temps plein : 16 semaines, 35 à 40 heures par semaine.',
+          'Temps plein : 16 semaines, 40 heures par semaine.',
           'Temps partiel : 32 semaines.',
-          'Sur le campus ou en ligne.',
+          'En ligne, sur le campus de St. Pete ou en mode hybride.',
         ],
         noDates: 'Prochaines dates de départ à venir.',
         tuition: '12 000 $',
@@ -78,7 +78,7 @@ export default {
         schedule: [
           'Temps plein : 12 semaines.',
           'Temps partiel : 24 semaines.',
-          'Sur le campus ou en ligne.',
+          'En ligne, sur le campus de St. Pete ou en mode hybride.',
         ],
         startsText: 'Sur demande',
         tuition: '9 800 $',
@@ -90,14 +90,15 @@ export default {
       lines: [
         ['Développeur full-stack natif en IA', '12 000 $'],
         ['Technologue IA avancé', '9 800 $'],
+        ['Dépôt, pour l’un ou l’autre programme', '2 000 $'],
       ],
-      body: 'Renseignez-vous auprès des admissions sur le dépôt et le calendrier de paiement avant de vous engager.',
+      body: 'Renseignez-vous auprès des admissions sur le calendrier de paiement avant de vous engager.',
       cta: 'Planifier un appel',
       href: 'https://calendly.com/raina-dejute-codeboxx/30min',
     },
     riskFree: {
       title: 'Période sans risque',
-      body: 'Les premiers 12 % du programme sont sans risque : si vous partez pendant cette période, votre dépôt vous est remboursé.',
+      body: 'Les deux premiers modules de chaque programme sont sans risque. Si vous partez pendant cette période, votre dépôt vous est remboursé.',
     },
   },
   apply: {
@@ -218,14 +219,14 @@ export default {
       {
         q: 'Combien de temps durent les programmes?',
         a: [
-          'Full-stack : 16 semaines à temps plein, à raison de 35 à 40 heures par semaine, ou 32 semaines à temps partiel.',
+          'Full-stack : 16 semaines à temps plein, à raison de 40 heures par semaine, ou 32 semaines à temps partiel.',
           'Technologue IA avancé : 12 semaines à temps plein ou 24 semaines à temps partiel.',
         ],
       },
       {
         q: 'Combien ça coûte?',
         a: [
-          'Développeur full-stack natif en IA : 12 000 $. Technologue IA avancé : 9 800 $.',
+          'Développeur full-stack natif en IA : 12 000 $. Technologue IA avancé : 9 800 $. Le dépôt est de 2 000 $ pour l’un ou l’autre programme.',
           [
             'Des paiements échelonnés et du financement local peuvent couvrir tout ou partie de ces frais; voir ',
             { label: 'Financement', href: '/fr/academie/#funding' },
@@ -256,7 +257,7 @@ export default {
       {
         q: 'Y a-t-il une période sans risque?',
         a: [
-          'Oui. Les premiers 12 % du programme sont sans risque : si vous partez pendant cette période, votre dépôt vous est remboursé.',
+          'Oui. Les deux premiers modules de chaque programme sont sans risque. Si vous partez pendant cette période, votre dépôt vous est remboursé.',
         ],
       },
       {
@@ -273,18 +274,16 @@ export default {
     title: 'Comment le financer',
     items: [
       {
-        title: 'MiaShare',
-        body: 'Paiements échelonnés à 0 % d’intérêt, sans effet sur votre cote de crédit. Étudiants établis aux États-Unis seulement.',
-        href: 'https://codeboxxtechnology.mia-share.com/apply/programs',
-        cta: 'Faire une demande avec MiaShare',
+        title: 'Paiements échelonnés',
+        body: 'Payez au fil du temps grâce à un partenaire externe. Renseignez-vous auprès des admissions sur les modalités.',
       },
       {
-        title: 'Desjardins',
-        body: 'Financement pour les résidents du Canada.',
+        title: 'Résidents du Canada',
+        body: 'Mêmes frais de scolarité et même dépôt de 2 000 $ qu’aux États-Unis. Choisissez les frais de scolarité différés, remboursés à raison de 20 % de votre salaire une fois embauché, ou le paiement complet avec Desjardins.',
       },
       {
-        title: 'Microcrédits Windmill',
-        body: 'Prêts de carrière abordables pour les nouveaux arrivants admissibles.',
+        title: 'Subvention de la Fondation CodeBoxx',
+        body: 'Offerte aux résidents de la Floride. Renseignez-vous auprès des admissions pour en savoir plus.',
       },
       {
         title: 'CareerSource Pinellas',

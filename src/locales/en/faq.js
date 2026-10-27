@@ -41,8 +41,8 @@ export default {
     {
       q: 'How much does it cost?',
       a: [
-        'Whether you choose online, on campus, full-time, or part-time, our AI Native Full-Stack Developer program is $12,000, and the Advanced AI Technologist program is $9,800. Our simulation-based programs give you the skills and knowledge necessary to launch your new, higher-paying career in a fraction of the time and cost of a traditional college degree.',
-        "And we want to make sure we're a good fit for you before you commit financially. That's why we are the only coding academy that will let you begin our program and evaluate us for two weeks (full-time) or four weeks (part-time) before your tuition is due.",
+        'Whether you choose online, on campus in St. Pete, or hybrid, full-time or part-time, our AI Native Full-Stack Developer program is $12,000, and the Advanced AI Technologist program is $9,800. Our simulation-based programs give you the skills and knowledge necessary to launch your new, higher-paying career in a fraction of the time and cost of a traditional college degree.',
+        "And we want to make sure we're a good fit for you before you commit financially. That's why the first two modules of either program are risk-free. If you leave during them, we fully refund your $2,000 deposit.",
       ],
     },
     {
