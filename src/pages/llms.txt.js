@@ -4,7 +4,7 @@
 // (src/lib/cohorts.js, as on the Academy page), roles from the locales.
 import academy from '../locales/en/academy.js';
 import home from '../locales/en/home.js';
-import { CAMPUSES, PROGRAM_FACTS, upcomingStarts } from '../lib/academyPrograms.js';
+import { CAMPUSES, OFFICES, PROGRAM_FACTS, upcomingStarts } from '../lib/academyPrograms.js';
 import { buildStarts } from '../lib/cohorts.js';
 
 // Leadership, in the homepage's team order (names: HomeIsland.jsx ABOUT_META; roles:
@@ -37,30 +37,32 @@ function programLine(p, starts) {
       ? `starts ${p.startsText.toLowerCase()}`
       : 'next start dates to be announced';
   return (
-    `- ${p.title}: $${facts.price.toLocaleString('en-US')} tuition; ` +
+    `- ${p.title}: $${facts.price.toLocaleString('en-US')} tuition, ` +
+    `$${facts.deposit.toLocaleString('en-US')} deposit; ` +
     `${facts.weeks.fullTime} weeks full-time or ${facts.weeks.partTime} weeks part-time, ` +
-    `on campus or online; ${when}. ${p.who}`
+    `online, on campus in St. Pete or hybrid; ${when}. ${p.who}`
   );
 }
 
 export async function GET() {
   const starts = await buildStarts();
   const people = home.about.team.people;
-  const campuses = CAMPUSES.map(
-    ({ address: a }) =>
-      `${a.addressLocality}, ${a.addressRegion} (${a.streetAddress}, ${a.addressLocality}, ${a.addressRegion} ${a.postalCode}, ${a.addressCountry === 'US' ? 'USA' : 'Canada'})`
-  ).join(' and ');
+  const place = ({ address: a }) =>
+    `${a.addressLocality}, ${a.addressRegion} (${a.streetAddress}, ${a.addressLocality}, ${a.addressRegion} ${a.postalCode}, ${a.addressCountry === 'US' ? 'USA' : 'Canada'})`;
+  const campuses = CAMPUSES.map(place).join(' and ');
+  const offices = OFFICES.map(place).join(' and ');
   const body = `# CodeBoxx
 
 > CodeBoxx builds AI-native software and teams, trains developers through CodeBoxx Academy, and launches ventures with CrewKit: AI-native, for humans, by humans.
 
-CodeBoxx is one AI-native company in three divisions: CodeBoxx Solutions (AI-native software delivery for clients: fractional CTO, agentic AI, tailor-made software, developers as a service, corporate training), CodeBoxx Academy (an AI bootcamp: AI Native Full-Stack Developer and Advanced AI Technologist programs, on campus or online), and CodeBoxx Ventures (CodeBoxx invests in promising startups when it can take on their technology, building the product for equity, cash or both; CrewKit is its own venture).
+CodeBoxx is one AI-native company in three divisions: CodeBoxx Solutions (AI-native software delivery for clients: fractional CTO, agentic AI, tailor-made software, developers as a service, corporate training), CodeBoxx Academy (an AI bootcamp: AI Native Full-Stack Developer and Advanced AI Technologist programs, online, on campus in St. Pete or hybrid), and CodeBoxx Ventures (CodeBoxx invests in promising startups when it can take on their technology, building the product for equity, cash or both; CrewKit is its own venture).
 
 ## Key facts
 
-- Founded in 2018. Two campuses: ${campuses}.
+- Founded in 2018. Academy campus: ${campuses}. Offices: ${offices}.
 - CodeBoxx Academy is licensed by the Florida Commission for Independent Education, License No. 9103.
 ${academy.programs.items.map((p) => programLine(p, starts)).join('\n')}
+- Risk-free period: the first two modules of either program. A student who leaves during it gets the deposit back.
 - Graduate outcomes: over 340 graduates placed into technology jobs. VideoAmp hired seven CodeBoxx graduates full-time at $60,000 with benefits (Tampa Bay Business Journal Inno, week of January 30, 2026). Graduates have been hired by eBay, Lucky Brand, Coveo and TD SYNNEX, among others.
 - Award: RetailTech Breakthrough 2025, Chatbot Solution of the Year, for the GEM chatbot CodeBoxx built for GoodwillFinds.
 - Leadership: ${LEADERS.map(([id, name]) => `${name} (${people[id].role})`).join(', ')}.
@@ -72,7 +74,7 @@ ${academy.programs.items.map((p) => programLine(p, starts)).join('\n')}
 - [CodeBoxx Academy](https://codeboxx.ai/academy/): Programs, tuition, schedules, start dates, funding and how to apply. French: https://codeboxx.ai/fr/academie/.
 - [Academy FAQ](https://codeboxx.ai/faq/): Who the programs are for, prior experience, tuition, the risk-free period, financing, and what graduates do next. French: https://codeboxx.ai/fr/faq/.
 - [Academy Financing](https://codeboxx.ai/financing/): Payment plans and financing options for Academy students. French: https://codeboxx.ai/fr/financement/.
-- [Support for Pinellas Residents](https://codeboxx.ai/pinellas-residents/): How Pinellas County, Florida residents can fund the Academy through CareerSource Pinellas (WIOA tuition assistance up to $7,500 and the Paid Work Experience program). French: https://codeboxx.ai/fr/residents-pinellas/.
+- [Support for Pinellas Residents](https://codeboxx.ai/pinellas-residents/): How Pinellas County, Florida residents can fund the Academy through CareerSource Pinellas (WIOA tuition assistance and the Paid Work Experience program). French: https://codeboxx.ai/fr/residents-pinellas/.
 - [Corporate Training](https://codeboxx.ai/corporate-training/): CodeBoxx for Businesses, tailor-made AI-native technology training for company teams (enterprise cohorts, intensive workshops, fractional CTO and advisory, hiring from the Academy), on-site or online. French: https://codeboxx.ai/fr/formation-entreprise/.
 - [CodeBoxx Solutions](https://codeboxx.ai/solutions/): The Studio's services: fractional CTO, agentic AI, tailor-made software and developers as a service, built with Claude Code, Codex, Cursor and Antigravity; leadership, clients and Vibe Coaching. Replaces solutions.codeboxx.com. French: https://codeboxx.ai/fr/solutions/.
 - [Case Studies](https://codeboxx.ai/case-studies/): Partner success stories (eBay, Lucky Brand, Amsale, Humania Assurance, Full Harvest and more), from MVP to production, with the teams and technology behind each. French: https://codeboxx.ai/fr/etudes-de-cas/.

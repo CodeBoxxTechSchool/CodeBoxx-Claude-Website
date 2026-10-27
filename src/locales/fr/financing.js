@@ -1,10 +1,11 @@
-// FR twin of src/locales/en/financing.js — see that file for the paragraph shape.
+// FR twin of src/locales/en/financing.js — see that file for the paragraph shape and
+// the facts' source.
 // The Wix source has no published French version, so this is a translation.
 export default {
   seo: {
     title: "Options de financement de l'école de programmation",
     description:
-      "Découvrez les options de financement de CodeBoxx Academy : paiements échelonnés à 0 % d'intérêt, paiement complet, options canadiennes et période sans risque pour investir dans une carrière en technologie.",
+      'Découvrez les options de financement de CodeBoxx Academy : paiements échelonnés, paiement complet, options canadiennes et période sans risque pour investir dans une carrière en technologie.',
   },
   pill: 'Options de financement',
   band: {
@@ -19,54 +20,49 @@ export default {
   paths: {
     eyebrow: 'LES OPTIONS',
     title: 'Plusieurs options de paiement pour investir dans votre avenir',
-    lede: "Tous les plans de paiement exigent un dépôt, entièrement remboursable si vous changez d'avis pendant notre période sans risque. Les frais de scolarité et les dates de début de cohorte se trouvent sur la page du programme.",
+    lede: "Tous les plans de paiement exigent un dépôt de 2 000 $, entièrement remboursable si vous changez d'avis pendant notre période sans risque. Les frais de scolarité et les dates de début de cohorte se trouvent sur la page du programme.",
     items: [
       {
         title: 'Plan de paiement échelonné',
         subtitle:
           'Tirez le meilleur de votre formation grâce à un plan de paiement échelonné simple',
         body: [
-          "Vous ne voulez pas tout payer d'un coup, mais vous pouvez faire des paiements pendant votre formation? Demandez un plan de paiement échelonné auprès de notre partenaire MiaShare pour commencer à apprendre sans payer la totalité des frais de scolarité à l'avance. Ces plans varient selon le programme et le besoin financier de l'étudiant, sont à 0 % d'intérêt, n'affectent pas votre cote de crédit et offrent différentes options de paiement.",
-          "Pour plus d'information et de détails, veuillez communiquer avec MiaShare. Les modalités varient selon l'étudiant et vous traiterez directement avec notre partenaire externe, MiaShare.",
+          "Vous ne voulez pas tout payer d'un coup, mais vous pouvez faire des paiements pendant votre formation? Un plan de paiement échelonné offert par notre partenaire externe vous permet de commencer à apprendre sans payer la totalité des frais de scolarité à l'avance. Ces plans varient selon le programme et le besoin financier de l'étudiant, et offrent différentes options de paiement.",
+          "Les modalités varient selon l'étudiant. Renseignez-vous auprès des admissions pour plus d'information et de détails.",
         ],
         bullets: [
-          "0 % d'intérêt",
-          "N'affecte pas votre cote de crédit",
+          'Offert par un partenaire externe',
           'Plusieurs options de paiement au choix',
           'Réservé aux étudiants basés aux États-Unis',
         ],
-        cta: {
-          label: 'Soumettre votre demande MiaShare',
-          href: 'https://codeboxxtechnology.mia-share.com/apply/programs',
-        },
-        note: "Des conditions supplémentaires peuvent s'appliquer; consultez la demande pour plus de détails.",
+        note: "Des conditions supplémentaires peuvent s'appliquer. Renseignez-vous auprès des admissions pour plus de détails.",
       },
       {
         title: 'Paiement complet',
         subtitle: 'Simplifiez votre paiement avec notre option de paiement complet',
         body: [
-          "Avec notre option de paiement unique, vous payez le dépôt pendant la période d'inscription et le solde est exigible après la période sans risque.* Vous pouvez ainsi commencer le programme en toute confiance, en sachant que vous avez le temps d'évaluer s'il vous convient avant de vous engager financièrement.",
-          "Après la période sans risque, notre option de paiement complet vous offre la tranquillité d'esprit de savoir que tous vos frais de scolarité sont couverts, pour que vous puissiez vous concentrer pleinement sur votre apprentissage.",
+          "Avec notre option de paiement unique, vous payez le dépôt pendant la période d'inscription et le reste de vos frais de scolarité en un seul paiement. Vous pouvez ainsi commencer le programme en toute confiance, en sachant que votre dépôt vous est remboursé si vous partez pendant la période sans risque.",
+          "Notre option de paiement complet vous offre la tranquillité d'esprit de savoir que tous vos frais de scolarité sont couverts, pour que vous puissiez vous concentrer pleinement sur votre apprentissage.",
         ],
         bullets: [
           "Dépôt payé pendant l'inscription",
-          'Solde exigible après la période sans risque',
+          'Solde réglé en un seul paiement',
           'Frais de scolarité entièrement couverts, rien à gérer',
         ],
-        note: '*La période sans risque correspond à 12 % du programme. Elle couvre les 2 premières semaines du programme de 16 semaines ou les 4 premières semaines de notre programme de 32 semaines.',
+        note: 'La période sans risque correspond aux deux premiers modules de votre programme.',
       },
       {
-        title: 'Desjardins',
+        title: 'Canada',
         subtitle: 'Pour les résidents du Canada',
         body: [
-          'MiaShare est offert uniquement aux étudiants basés aux États-Unis. Pour les résidents du Canada, notre partenaire financier Desjardins offre des options de financement vraiment avantageuses.',
+          "Les étudiants au Canada paient les mêmes frais de scolarité et le même dépôt de 2 000 $ qu'aux États-Unis. Choisissez les frais de scolarité différés, remboursés à raison de 20 % de votre salaire une fois embauché, ou le paiement complet avec notre partenaire financier Desjardins.",
         ],
       },
       {
-        title: 'Windmill Microcredits',
-        subtitle: 'Pour les nouveaux arrivants admissibles',
+        title: 'Subvention de la Fondation CodeBoxx',
+        subtitle: 'Pour les résidents de la Floride',
         body: [
-          'Windmill Microcredits offre des prêts de carrière abordables aux nouveaux arrivants admissibles.',
+          'Une subvention de la Fondation CodeBoxx est offerte aux résidents de la Floride. Renseignez-vous auprès des admissions pour plus de détails.',
         ],
       },
     ],
@@ -79,9 +75,9 @@ export default {
     eyebrow: 'PÉRIODE SANS RISQUE',
     title: 'Plongez dans la technologie pendant quelques semaines. Sans engagement.',
     body: [
-      "Nous comprenons qu'apprendre à programmer est un engagement important. C'est pourquoi nous sommes la seule académie de programmation à offrir les premiers 12 % de notre programme sans risque.",
-      "Notre période sans risque couvre les 2 premières semaines du programme de 16 semaines ou les 4 premières semaines de notre programme de 32 semaines. Peu importe le parcours que vous choisissez, il est important pour nous que vous preniez la meilleure décision pour vous. Nous voulons que vous soyez convaincu que c'est le bon choix de carrière avant de vous engager financièrement.",
-      "Si vous choisissez de ne pas continuer après la période sans risque, vous pouvez vous retirer sans conséquence. Nous vous remboursons entièrement votre dépôt, et vous repartez avec une compréhension fondamentale de la technologie moderne que vous garderez pour le reste de votre vie, peu importe ce que l'avenir vous réserve.",
+      "Nous comprenons qu'apprendre à programmer est un engagement important. C'est pourquoi les deux premiers modules de nos deux programmes sont sans risque.",
+      "Peu importe le parcours que vous choisissez, il est important pour nous que vous preniez la meilleure décision pour vous. Nous voulons que vous soyez convaincu que c'est le bon choix de carrière avant de vous engager financièrement.",
+      "Si vous décidez de partir pendant la période sans risque, vous pouvez le faire sans conséquence. Nous vous remboursons entièrement votre dépôt, et vous repartez avec une compréhension fondamentale de la technologie moderne que vous garderez pour le reste de votre vie, peu importe ce que l'avenir vous réserve.",
     ],
   },
   beyond: {

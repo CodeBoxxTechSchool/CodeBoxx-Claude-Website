@@ -5,7 +5,7 @@ export default {
   seo: {
     title: 'Local Support for Pinellas Residents — CodeBoxx Academy',
     description:
-      'Pinellas County residents can fund CodeBoxx Academy through CareerSource: WIOA tuition assistance up to $7,500 and the Paid Work Experience program.',
+      'Pinellas County residents can fund CodeBoxx Academy through CareerSource, with WIOA tuition assistance and the Paid Work Experience program.',
   },
   pill: 'Pinellas Residents',
   band: {
@@ -28,7 +28,7 @@ export default {
               label: 'Workforce Innovation and Opportunity Act (WIOA) program',
               href: 'https://careersourcepinellas.com/wioa/',
             },
-            ' helps Tampa Bay residents upskill or return to the workforce by providing tuition assistance up to $7,500 as well as one-on-one assistance for resume writing, interviewing, job searches, and career planning.',
+            ' helps Tampa Bay residents upskill or return to the workforce by providing tuition assistance as well as one-on-one assistance for resume writing, interviewing, job searches, and career planning.',
           ],
         ],
       },

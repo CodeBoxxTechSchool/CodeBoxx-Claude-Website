@@ -67,7 +67,7 @@ const AREA_SERVED = [
 
 // One Course per Academy program (src/locales/{en,fr}/academy.js programs.items), for
 // Google's course info results and for AI assistants quoting tuition, length and dates.
-// Each program is offered on campus (both campuses) or online, full-time or part-time:
+// Each program is offered online, on campus in St. Pete or hybrid, full-time or part-time:
 // one CourseInstance per mode and pace, per upcoming start date when the program has any.
 // `starts`: the portal's start dates by program key (src/lib/cohorts.js).
 export function courseSchemas({ programs, lang, starts, pageUrl }) {
@@ -90,7 +90,7 @@ export function courseSchemas({ programs, lang, starts, pageUrl }) {
             name: `${p.title} (${paceLabel(pace, fr)}, ${modeLabel(courseMode, fr)})`,
             courseMode,
             courseWorkload: `P${facts.weeks[pace]}W`,
-            ...(courseMode === 'Onsite' ? { location: CAMPUSES } : {}),
+            ...(courseMode === 'Online' ? {} : { location: CAMPUSES }),
           };
           if (dates.length)
             dates.forEach((startDate) => instances.push({ ...instance, startDate }));
@@ -128,7 +128,8 @@ function paceLabel(pace, fr) {
 }
 
 function modeLabel(mode, fr) {
-  if (mode === 'Onsite') return fr ? 'sur le campus' : 'on campus';
+  if (mode === 'Onsite') return fr ? 'campus de St. Pete' : 'St. Pete campus';
+  if (mode === 'Blended') return fr ? 'hybride' : 'hybrid';
   return fr ? 'en ligne' : 'online';
 }
 

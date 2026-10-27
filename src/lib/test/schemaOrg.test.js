@@ -103,36 +103,43 @@ test('courseSchemas gives each program its tuition, provider and instances', () 
   });
 });
 
-test('courseSchemas lists on-campus and online, full-time and part-time, for each upcoming start', () => {
+test('courseSchemas lists online, on campus and hybrid, full-time and part-time, for each upcoming start', () => {
   const [fsd, ai] = courseSchemas({
     programs: PROGRAMS,
     lang: 'en',
     starts: STARTS,
     pageUrl: ACADEMY,
   });
-  // Each start date in 2 modes x 2 paces.
-  assert.equal(fsd.hasCourseInstance.length, 8);
+  // Each start date in 3 modes x 2 paces.
+  assert.equal(fsd.hasCourseInstance.length, 12);
   assert.deepEqual(
     fsd.hasCourseInstance.map((i) => i.startDate),
-    Array(4).fill(['2026-11-09', '2027-01-11']).flat()
+    Array(6).fill(['2026-11-09', '2027-01-11']).flat()
   );
   const byKey = Object.fromEntries(
     fsd.hasCourseInstance.map((i) => [i.courseMode + ' ' + i.courseWorkload, i])
   );
   assert.deepEqual(Object.keys(byKey).sort(), [
+    'Blended P16W',
+    'Blended P32W',
     'Online P16W',
     'Online P32W',
     'Onsite P16W',
     'Onsite P32W',
   ]);
-  assert.equal(byKey['Onsite P16W'].location.length, 2, 'both campuses');
+  // St. Pete is the only campus: Quebec City is an office.
+  const towns = (i) => i.location.map((place) => place.address.addressLocality);
+  assert.deepEqual(towns(byKey['Onsite P16W']), ['St. Petersburg']);
+  assert.deepEqual(towns(byKey['Blended P32W']), ['St. Petersburg']);
   assert.equal(byKey['Online P16W'].location, undefined);
   // On demand: no dates, one instance per mode and pace.
-  assert.equal(ai.hasCourseInstance.length, 4);
+  assert.equal(ai.hasCourseInstance.length, 6);
   assert.ok(ai.hasCourseInstance.every((i) => !('startDate' in i)));
   assert.deepEqual(ai.hasCourseInstance.map((i) => i.courseWorkload).sort(), [
     'P12W',
     'P12W',
+    'P12W',
+    'P24W',
     'P24W',
     'P24W',
   ]);
@@ -146,7 +153,7 @@ test('courseSchemas: no start in the window, or on demand, gives instances witho
     pageUrl: ACADEMY,
   });
   for (const course of [fsd, ai]) {
-    assert.equal(course.hasCourseInstance.length, 4);
+    assert.equal(course.hasCourseInstance.length, 6);
     assert.ok(course.hasCourseInstance.every((i) => !('startDate' in i)));
   }
 });
@@ -159,7 +166,19 @@ test('courseSchemas names the French provider and labels in French', () => {
     pageUrl: 'https://codeboxx.ai/fr/academie/',
   });
   assert.equal(fsd.provider.name, 'CodeBoxx Académie');
-  assert.match(fsd.hasCourseInstance[0].name, /temps plein, sur le campus/);
+  assert.deepEqual(
+    fsd.hasCourseInstance
+      .filter((i) => !i.startDate || i.startDate === '2026-11-09')
+      .map((i) => i.name),
+    [
+      'AI Native Full-Stack Developer (temps plein, en ligne)',
+      'AI Native Full-Stack Developer (temps partiel, en ligne)',
+      'AI Native Full-Stack Developer (temps plein, campus de St. Pete)',
+      'AI Native Full-Stack Developer (temps partiel, campus de St. Pete)',
+      'AI Native Full-Stack Developer (temps plein, hybride)',
+      'AI Native Full-Stack Developer (temps partiel, hybride)',
+    ]
+  );
   assert.match(fsd.financialAidEligible, /\/fr\/financement\/$/);
 });
 

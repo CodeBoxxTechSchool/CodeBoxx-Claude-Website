@@ -1,8 +1,9 @@
 // /academy: the one CodeBoxx Academy page (academy.codeboxx.com 301s here, see
-// ops/nginx/redirects.tsv). Every fact below comes from academy.codeboxx.com (its
-// copies in this repo: faq.js, financing.js, pinellas.js) or from the cutover brief,
-// with the source named next to it. Where two old pages disagree, the fact is left
-// out and a TODO says which sources conflict: pick one source before publishing it.
+// ops/nginx/redirects.tsv). Formats, lengths, tuition, deposit, the risk-free period
+// and funding are the confirmed program facts (Oct 2026, CLP-1313), which override
+// academy.codeboxx.com. Other facts come from academy.codeboxx.com (its copies in this
+// repo: faq.js, financing.js, pinellas.js) or from the cutover brief, with the source
+// named next to it.
 //
 // Not on this page on purpose: "The best kept secret in North America", the
 // +100 / +55K stats (the graduate count is in the title, updated to 340+), any placement rate, "no upfront costs", ISAs, the Wall
@@ -18,7 +19,7 @@ export default {
     titleWithDate: 'CodeBoxx AI Bootcamp St. Pete: Full-Stack starts {date}',
     // At most 160 characters: search results cut longer descriptions.
     description:
-      'A licensed AI bootcamp in St. Petersburg, FL, on campus or online, with 340+ graduates placed in tech jobs. Full-stack from zero in 16 weeks, or an AI track.',
+      'A licensed AI bootcamp in St. Petersburg, FL, on campus, online or hybrid. 340+ graduates placed in tech jobs. Full-stack from zero in 16 weeks, or an AI track.',
   },
   pill: 'CodeBoxx Academy · AI Bootcamp',
   // 1. One sentence.
@@ -85,11 +86,12 @@ export default {
         title: 'AI Native Full-Stack Developer',
         // academy.codeboxx.com/full-stack-development: no prior experience.
         who: 'People starting from no experience. No prior programming required.',
-        // Both programs: on campus or online (FAQ, "How much does it cost?").
+        // Both programs, both paces: online, on campus in St. Pete or hybrid. Full-time is
+        // 40 hours a week (confirmed program facts, Oct 2026, CLP-1313).
         schedule: [
-          'Full-time: 16 weeks, 35–40 hours a week.',
+          'Full-time: 16 weeks, 40 hours a week.',
           'Part-time: 32 weeks.',
-          'On campus or online.',
+          'Online, on campus in St. Pete, or hybrid.',
         ],
         // Start dates come from the portal (src/lib/cohorts.js); this shows when none is
         // within the next 90 days.
@@ -103,8 +105,11 @@ export default {
         // academy.codeboxx.com/artificial-intelligence. Not "we accept everyone":
         // this track has prerequisites.
         who: 'People who already program. Requires prior programming experience and SQL.',
-        // The AI page also says "six weeks", which conflicts with 12 / 24: dropped.
-        schedule: ['Full-time: 12 weeks.', 'Part-time: 24 weeks.', 'On campus or online.'],
+        schedule: [
+          'Full-time: 12 weeks.',
+          'Part-time: 24 weeks.',
+          'Online, on campus in St. Pete, or hybrid.',
+        ],
         startsText: 'On Demand',
         tuition: '$9,800',
         apply: 'Apply to AI Technologist',
@@ -112,24 +117,22 @@ export default {
     ],
     price: {
       title: 'Tuition and deposit',
-      // Tuition confirmed by CodeBoxx leadership (Oct 2026): $12,000 for AI Native
-      // Full-Stack, $9,800 for Advanced AI. The deposit amount is still unconfirmed
-      // (academy.codeboxx.com said $1,000), so it isn't published.
+      // Confirmed program facts, Oct 2026 (CLP-1313): $12,000 for AI Native Full-Stack,
+      // $9,800 for Advanced AI, a $2,000 deposit for either. When the balance is billed is
+      // for admissions to explain, so the page states no timing.
       lines: [
         ['AI Native Full-Stack Developer', '$12,000'],
         ['Advanced AI Technologist', '$9,800'],
+        ['Deposit, either program', '$2,000'],
       ],
-      body: 'Ask admissions about the deposit and payment schedule before you commit.',
+      body: 'Ask admissions about the payment schedule before you commit.',
       cta: 'Schedule a call',
       href: 'https://calendly.com/raina-dejute-codeboxx/30min',
     },
     riskFree: {
       title: 'Risk-free period',
-      // TODO(academy-cutover): the duration conflicts. /full-stack-development (and
-      // /coding-school-financing-options) say 2 weeks of the 16-week program and 4
-      // of the 32-week one; /artificial-intelligence says 1 / 2 weeks in its table
-      // and 2 / 4 in its prose. Publish no duration until one source is chosen.
-      body: 'The first 12% of the program is risk-free: if you leave during it, your deposit is refunded.',
+      // The first two modules, both programs (confirmed program facts, Oct 2026, CLP-1313).
+      body: 'The first two modules of either program are risk-free. If you leave during them, your deposit is refunded.',
     },
   },
   apply: {
@@ -257,14 +260,14 @@ export default {
       {
         q: 'How long are the programs?',
         a: [
-          'Full-Stack: 16 weeks full-time, at 35–40 hours a week, or 32 weeks part-time.',
+          'Full-Stack: 16 weeks full-time, at 40 hours a week, or 32 weeks part-time.',
           'Advanced AI Technologist: 12 weeks full-time or 24 weeks part-time.',
         ],
       },
       {
         q: 'How much does it cost?',
         a: [
-          'AI Native Full-Stack Developer: $12,000. Advanced AI Technologist: $9,800.',
+          'AI Native Full-Stack Developer: $12,000. Advanced AI Technologist: $9,800. The deposit is $2,000 for either program.',
           [
             'Installment plans and local funding can cover all or part of it; see ',
             { label: 'Funding', href: '/academy/#funding' },
@@ -295,7 +298,7 @@ export default {
       {
         q: 'Is there a risk-free period?',
         a: [
-          'Yes. The first 12% of the program is risk-free: if you leave during it, your deposit is refunded.',
+          'Yes. The first two modules of either program are risk-free. If you leave during them, your deposit is refunded.',
         ],
       },
       {
@@ -308,25 +311,23 @@ export default {
       },
     ],
   },
-  // Only what academy.codeboxx.com/coding-school-financing-options lists (financing.js
-  // and pinellas.js), with a link to the full page.
+  // The confirmed funding options (program facts, Oct 2026, CLP-1313), with a link to the
+  // full page. Installment plans name no provider.
   funding: {
     eyebrow: 'Funding',
     title: 'Ways to pay for it',
     items: [
       {
-        title: 'MiaShare',
-        body: 'Installment plans at 0% interest that do not affect your credit score. US-based students only.',
-        href: 'https://codeboxxtechnology.mia-share.com/apply/programs',
-        cta: 'Apply with MiaShare',
+        title: 'Installment plans',
+        body: 'Pay over time through a third-party partner. Ask admissions for the terms.',
       },
       {
-        title: 'Desjardins',
-        body: 'Financing for residents of Canada.',
+        title: 'Residents of Canada',
+        body: 'Same tuition and $2,000 deposit as in the US. Choose deferred tuition, repaid as 20% of your salary once you are hired, or pay in full through Desjardins.',
       },
       {
-        title: 'Windmill Microcredits',
-        body: 'Affordable career loans for qualified newcomers.',
+        title: 'CodeBoxx Foundation grant',
+        body: 'Available to Florida residents. Ask admissions for details.',
       },
       {
         title: 'CareerSource Pinellas',
@@ -335,9 +336,7 @@ export default {
         cta: 'Pinellas residents',
       },
     ],
-    // TODO(academy-cutover): the brief also lists Florida grants and laptop loans;
-    // neither is in this repo's copy of the financing page, and that page couldn't be
-    // re-read from here. Add them once confirmed on it.
+    // Laptop loans (cutover brief) are not among the confirmed facts, so not listed.
     more: 'See every financing option',
     moreHref: '/financing/',
   },

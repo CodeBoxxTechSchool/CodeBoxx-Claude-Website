@@ -4,7 +4,7 @@ export default {
   seo: {
     title: 'Soutien local pour les résidents de Pinellas — CodeBoxx Académie',
     description:
-      "Les résidents du comté de Pinellas peuvent financer leur formation à CodeBoxx Academy grâce à CareerSource : aide aux frais de scolarité WIOA jusqu'à 7 500 $ et programme d'expérience de travail rémunérée.",
+      "Les résidents du comté de Pinellas peuvent financer CodeBoxx Academy grâce à CareerSource, avec l'aide WIOA aux frais de scolarité et le programme d'expérience de travail rémunérée.",
   },
   pill: 'Résidents de Pinellas',
   band: {
@@ -27,7 +27,7 @@ export default {
               label: 'programme Workforce Innovation and Opportunity Act (WIOA)',
               href: 'https://careersourcepinellas.com/wioa/',
             },
-            " aide les résidents de la région de Tampa Bay à se perfectionner ou à réintégrer le marché du travail en offrant une aide aux frais de scolarité pouvant atteindre 7 500 $, ainsi qu'un accompagnement individuel pour la rédaction de CV, les entrevues, la recherche d'emploi et la planification de carrière.",
+            " aide les résidents de la région de Tampa Bay à se perfectionner ou à réintégrer le marché du travail en offrant une aide aux frais de scolarité, ainsi qu'un accompagnement individuel pour la rédaction de CV, les entrevues, la recherche d'emploi et la planification de carrière.",
           ],
         ],
       },

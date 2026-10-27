@@ -1,4 +1,8 @@
-// Content from https://academy.codeboxx.com/coding-school-financing-options.
+// Content from https://academy.codeboxx.com/coding-school-financing-options, updated to
+// the confirmed program facts (Oct 2026, CLP-1313): a $2,000 deposit, the first two
+// modules risk-free, installment plans through an unnamed third-party partner, and for
+// Canada deferred tuition or Desjardins. When the balance is billed is for admissions to
+// explain, so the page states no timing.
 // Paragraphs (`body`, `note`) use the same shape as faq.js: a plain string, or an
 // array of segments where a { label, href } segment renders as a link (see
 // src/components/RichParagraph.astro).
@@ -6,7 +10,7 @@ export default {
   seo: {
     title: 'Coding Bootcamp Financing Options & Payment Plans',
     description:
-      'Explore CodeBoxx Academy financing: 0% interest installment plans, pay in full, Canadian options, and a risk-free period to help you invest in a career in tech.',
+      'Explore CodeBoxx Academy financing: installment plans, pay in full, Canadian options, and a risk-free period to help you invest in a career in tech.',
   },
   pill: 'Financing Options',
   band: {
@@ -21,52 +25,49 @@ export default {
   paths: {
     eyebrow: 'THE PATHS',
     title: 'Multiple Payment Options to Help You Invest in Your Future',
-    lede: 'All payment plans require a deposit, which is fully refundable if you change your mind during our risk-free period. Tuition costs and cohort start dates are located on the program page.',
+    lede: 'All payment plans require a $2,000 deposit, which is fully refundable if you change your mind during our risk-free period. Tuition costs and cohort start dates are located on the program page.',
     items: [
       {
         title: 'Installment Plan',
         subtitle: 'Get More Out of Your Education with a Hassle-Free Installment Plan',
         body: [
-          'Don’t want to pay all at once, but are able to make payments while enrolled? Apply for an installment plan through our partner, MiaShare, to begin learning without having to pay the full tuition upfront. These plans vary by program and student financial need, carry 0% interest, do not affect your credit score, and have different payment options for you to choose from.',
-          'For more information and details, please speak with MiaShare. Terms will vary by student and you will work directly with our third-party partner, MiaShare.',
+          'Don’t want to pay all at once, but are able to make payments while enrolled? An installment plan through our third-party partner lets you begin learning without having to pay the full tuition upfront. These plans vary by program and student financial need, and have different payment options for you to choose from.',
+          'Terms will vary by student. Ask admissions for more information and details.',
         ],
         bullets: [
-          '0% interest',
-          'Does not affect your credit score',
+          'Through a third-party partner',
           'Multiple payment options to choose from',
           'Available to US-based students only',
         ],
-        cta: {
-          label: 'Submit your MiaShare application',
-          href: 'https://codeboxxtechnology.mia-share.com/apply/programs',
-        },
-        note: 'Additional terms may apply; see the application for more details.',
+        note: 'Additional terms may apply. Ask admissions for details.',
       },
       {
         title: 'Pay in Full',
         subtitle: 'Simplify Your Payment Process with Our Pay in Full Option',
         body: [
-          'With our single, lump-sum payment option, you will pay the deposit during the enrollment period and the remainder of your payment is due after the risk-free period.* This means that you can start the program with confidence, knowing that you have time to assess whether it’s the right fit for you before committing financially.',
-          'After the risk-free period, our Pay in Full option provides you with the peace of mind of knowing that you have covered all your tuition costs, freeing you to concentrate fully on your learning.',
+          'With our single, lump-sum payment option, you pay the deposit during the enrollment period and the rest of your tuition in one payment. You can start the program with confidence, knowing that your deposit is refunded if you leave during the risk-free period.',
+          'Our Pay in Full option provides you with the peace of mind of knowing that you have covered all your tuition costs, freeing you to concentrate fully on your learning.',
         ],
         bullets: [
           'Deposit paid during enrollment',
-          'Balance due after the risk-free period',
+          'Balance paid in one payment',
           'All tuition covered, nothing left to manage',
         ],
-        note: '*The risk-free period is 12% of the program. It spans the initial 2 weeks of the 16-week program or the initial 4 weeks of our 32-week program.',
+        note: 'The risk-free period is the first two modules of your program.',
       },
       {
-        title: 'Desjardins',
+        title: 'Canada',
         subtitle: 'For residents of Canada',
         body: [
-          'MiaShare is only available for US-based students. For residents of Canada, our financial partner Desjardins offers truly advantageous financing options.',
+          'Students in Canada pay the same tuition and $2,000 deposit as in the US. Choose deferred tuition, repaid as 20% of your salary once you are hired, or pay in full through our financial partner Desjardins.',
         ],
       },
       {
-        title: 'Windmill Microcredits',
-        subtitle: 'For qualified newcomers',
-        body: ['Windmill Microcredits offers affordable career loans for qualified newcomers.'],
+        title: 'CodeBoxx Foundation Grant',
+        subtitle: 'For Florida residents',
+        body: [
+          'A CodeBoxx Foundation grant is available to Florida residents. Ask admissions for details.',
+        ],
       },
     ],
   },
@@ -78,9 +79,9 @@ export default {
     eyebrow: 'RISK-FREE PERIOD',
     title: 'Jump into tech for a few weeks. No strings attached.',
     body: [
-      'We get it, learning to code is a huge commitment. That’s why we are the only coding academy to provide the initial 12% of our program risk-free.',
-      'Our risk-free period spans the initial 2 weeks of the 16-week program or the initial 4 weeks of our 32-week program. Regardless of the program track that you choose, it is important to us that you make the best decision for you. We want you to feel confident that this is the right career path for you before committing yourself financially.',
-      'If you choose not to continue after the risk-free period, you can drop out without consequences. We’ll fully refund your deposit and you can walk away with a fundamental understanding of modern technology that you can take with you for the rest of your life, regardless of what your future holds.',
+      'We get it, learning to code is a huge commitment. That’s why the first two modules of both of our programs are risk-free.',
+      'Regardless of the program track that you choose, it is important to us that you make the best decision for you. We want you to feel confident that this is the right career path for you before committing yourself financially.',
+      'If you decide to leave during the risk-free period, you can do so without consequences. We’ll fully refund your deposit and you can walk away with a fundamental understanding of modern technology that you can take with you for the rest of your life, regardless of what your future holds.',
     ],
   },
   beyond: {

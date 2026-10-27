@@ -63,8 +63,8 @@ const academySchema = {
   url: pageUrl,
   address: CAMPUSES.map((c) => c.address),
 };
-// The two programs as Course structured data: tuition, length, on campus or online, and
-// the upcoming start dates (src/lib/academyPrograms.js has the numbers).
+// The two programs as Course structured data: tuition, length, format (online, St. Pete or
+// hybrid) and the upcoming start dates (src/lib/academyPrograms.js has the numbers).
 const programSchemas = courseSchemas({ programs: a.programs.items, lang, starts, pageUrl });
 ---
 
