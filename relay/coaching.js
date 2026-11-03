@@ -19,6 +19,8 @@ const STRIPE_API = 'https://api.stripe.com/v1';
 // A signed webhook older than this is refused (Stripe's own default).
 const SIGNATURE_TOLERANCE_S = 300;
 const SESSION_ID = /^cs_(test|live)_[A-Za-z0-9]{10,200}$/;
+// A Checkout Session that bought a session: paid, or free with a 100% promotion code.
+const SETTLED = new Set(['paid', 'no_payment_required']);
 // The portal's availability is served for a minute, then for 10 more when the portal is down.
 const AVAILABILITY_FRESH_MS = 60 * 1000;
 const AVAILABILITY_STALE_MS = 10 * 60 * 1000;
@@ -99,7 +101,7 @@ export async function checkIn(query, config) {
   if (session.metadata?.product !== PRODUCT) {
     return { status: 404, note: 'not-coaching', body: { errors: ['session_id'] } };
   }
-  if (session.payment_status !== 'paid') {
+  if (!SETTLED.has(session.payment_status)) {
     return { status: 409, note: `payment=${session.payment_status}`, body: { errors: ['unpaid'] } };
   }
   const { status, checkInUrl } = await registerPurchase(session, config);
@@ -128,7 +130,7 @@ export async function handleWebhook({ raw, headers }, config) {
   if (
     !paidTypes.includes(event?.type) ||
     session?.metadata?.product !== PRODUCT ||
-    session.payment_status !== 'paid'
+    !SETTLED.has(session.payment_status)
   ) {
     return { status: 200, note: `ignored=${event?.type}` };
   }

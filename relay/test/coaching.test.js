@@ -149,6 +149,24 @@ test('check-in refuses a bad id, an unpaid or other session, and reports a porta
 const sign = (raw, t = NOW / 1000, secret = SECRET) =>
   `t=${t},v1=${createHmac('sha256', secret).update(`${t}.${raw}`).digest('hex')}`;
 
+test('a session free with a 100% promotion code is queued like a paid one', async () => {
+  const free = { ...PAID, payment_status: 'no_payment_required', amount_total: 0 };
+  const { fetch, calls } = fakeFetch({
+    [`${STRIPE}/checkout/sessions/${SESSION}`]: [200, free],
+    [REGISTER]: [200, { checkInUrl: '/livecoaching/abc123' }],
+  });
+  const result = await checkIn(new URLSearchParams({ session_id: SESSION }), config(fetch));
+  assert.deepEqual(result.body, { checkInUrl: 'https://portal.test/livecoaching/abc123' });
+
+  const event = JSON.stringify({ type: 'checkout.session.completed', data: { object: free } });
+  const hook = await handleWebhook(
+    { raw: event, headers: { 'stripe-signature': sign(event) } },
+    config(fetch)
+  );
+  assert.equal(hook.status, 200);
+  assert.equal(calls.filter((c) => c.url === REGISTER).length, 2);
+});
+
 test('verifySignature takes Stripe signatures only: right secret, recent, unaltered', () => {
   const raw = '{"id":"evt_1"}';
   assert.ok(verifySignature(raw, sign(raw), SECRET, NOW));
