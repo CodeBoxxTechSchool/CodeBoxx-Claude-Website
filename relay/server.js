@@ -1,5 +1,6 @@
 import http from 'node:http';
 import { join } from 'node:path';
+import { coachingRoutes } from './coaching.js';
 import { cohortsHandler } from './cohorts.js';
 import { toLead, validateEnroll } from './enroll.js';
 import { isHoneypot } from './fields.js';
@@ -15,12 +16,14 @@ import { dequeue, enqueue, queueStats, startResending } from './outbox.js';
 import { isRetryable, sendToPortal } from './portal.js';
 
 const MAX_BODY_BYTES = 16 * 1024;
-// A 5 MB CV is about 7 MB in base64, plus the form's fields.
-const BODY_LIMITS = { '/api/careers': 8 * 1024 * 1024 };
+// A 5 MB CV is about 7 MB in base64, plus the form's fields. A Stripe event is a few KB.
+const BODY_LIMITS = { '/api/careers': 8 * 1024 * 1024, '/api/coaching/stripe-webhook': 64 * 1024 };
 
 // Handlers get the parsed JSON body (POST) or the query's URLSearchParams (GET) and the config, and
 // resolve to { status, note?, headers?, body? }; body is added to the answer's JSON; note goes to
-// the log, so it must never carry personal data. /api/cohorts is added by createServer.
+// the log, so it must never carry personal data. A handler marked .raw gets { raw, headers } instead
+// of a parsed body (Stripe's webhook signs the exact bytes). /api/cohorts and the coaching routes
+// (coaching.js) are added by createServer.
 const routes = {
   '/api/health': { GET: health },
   '/api/enroll': { POST: submission('enroll', validateEnroll, toLead) },
@@ -78,7 +81,8 @@ async function forward(kind, body, id, config) {
 }
 
 /**
- * config: { portalUrl, apiKey, timeoutMs?, fetch?, log?, outboxDir?, cohortsFile?, now? }; without
+ * config: { portalUrl, apiKey, timeoutMs?, fetch?, log?, outboxDir?, cohortsFile?, now?,
+ * stripeSecretKey?, stripeWebhookSecret?, siteUrl? }; without
  * outboxDir, nothing is queued; without cohortsFile, the cohorts are cached in memory only. Call
  * .listen() on the result.
  */
@@ -86,7 +90,11 @@ export function createServer(config) {
   const log = config.log ?? console.log;
   // The cohorts route keeps a cache, one per server.
   const cohorts = cohortsHandler(config);
-  const table = { ...routes, '/api/cohorts': { GET: cohorts, HEAD: cohorts } };
+  const table = {
+    ...routes,
+    '/api/cohorts': { GET: cohorts, HEAD: cohorts },
+    ...coachingRoutes(config),
+  };
   return http.createServer(async (req, res) => {
     const started = performance.now();
     const path = req.url.split('?')[0];
@@ -112,6 +120,10 @@ async function handle(req, path, config, table) {
   if (!handler) return { status: 405, allow: Object.keys(route).join(', ') };
   if (req.method !== 'POST') {
     return handler(new URLSearchParams(req.url.slice(path.length)), config);
+  }
+  if (handler.raw) {
+    const raw = await readBody(req, BODY_LIMITS[path] ?? MAX_BODY_BYTES);
+    return raw === null ? { status: 413 } : handler({ raw, headers: req.headers }, config);
   }
 
   const type = (req.headers['content-type'] ?? '').split(';')[0].trim().toLowerCase();
@@ -168,7 +180,23 @@ if (import.meta.main) {
   const cohortsFile = STATE_DIRECTORY ? join(STATE_DIRECTORY, 'cohorts.json') : COHORTS_FILE;
   if (!cohortsFile)
     console.warn('website-relay: no STATE_DIRECTORY or COHORTS_FILE, cohorts not saved');
-  const config = { portalUrl: PORTAL_URL, apiKey: WEBSITE_LEADS_API_KEY, outboxDir, cohortsFile };
+  // Vibe Coaching's Stripe Checkout (coaching.js): without both keys its routes answer 503.
+  const {
+    STRIPE_SECRET_KEY,
+    STRIPE_WEBHOOK_SECRET,
+    SITE_URL = 'https://codeboxx.ai',
+  } = process.env;
+  if (!STRIPE_SECRET_KEY || !STRIPE_WEBHOOK_SECRET)
+    console.warn('website-relay: no STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET, coaching disabled');
+  const config = {
+    portalUrl: PORTAL_URL,
+    apiKey: WEBSITE_LEADS_API_KEY,
+    outboxDir,
+    cohortsFile,
+    stripeSecretKey: STRIPE_SECRET_KEY,
+    stripeWebhookSecret: STRIPE_WEBHOOK_SECRET,
+    siteUrl: SITE_URL,
+  };
   const server = createServer(config);
   server.listen(Number(PORT), '127.0.0.1', () => {
     console.log(`website-relay listening on 127.0.0.1:${PORT}`);

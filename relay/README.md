@@ -23,9 +23,13 @@ npm run test:relay
 | `STATE_DIRECTORY`       | Set by systemd; the queue is its `outbox/` folder        |
 | `OUTBOX_DIR`            | The queue folder when `STATE_DIRECTORY` is not set       |
 | `COHORTS_FILE`          | The cohorts copy when `STATE_DIRECTORY` is not set       |
+| `STRIPE_SECRET_KEY`     | Vibe Coaching's Stripe secret key (`sk_live_…`)          |
+| `STRIPE_WEBHOOK_SECRET` | The signing secret of the codeboxx.ai webhook (`whsec_`) |
+| `SITE_URL`              | Where Stripe sends the buyer back, default codeboxx.ai   |
 
 With neither `STATE_DIRECTORY` nor `OUTBOX_DIR`, nothing is queued; with neither `STATE_DIRECTORY`
-nor `COHORTS_FILE`, the cohorts are kept in memory only (one warning at startup each).
+nor `COHORTS_FILE`, the cohorts are kept in memory only; without both Stripe keys, the coaching
+checkout, check-in and webhook answer 503 (one warning at startup each).
 
 ## Routes
 
@@ -116,6 +120,36 @@ private bucket, and answers 503 when it could not, which is queued like any 5xx.
 
 To add a form, add a route to `routes` in `server.js` and its portal path to `KINDS` in
 `portal.js`, which the queue uses to resend it.
+
+### Vibe Coaching (`coaching.js`, CLP-1499)
+
+A 30-minute live session with the coach on duty, $200 USD, paid with Stripe Checkout; the portal
+queues the buyer (LiveHelp) and refunds are owed when no coaching happens. The relay holds the
+Stripe secret key and calls Stripe's REST API (no npm dependency). Nothing personal is logged.
+
+- `POST /api/coaching/checkout` (JSON): `name` (200 max), `email` (255 max), optional `phone`
+  (50 max), `lang` (`en`/`fr`), `website` (honeypot). Opens a Checkout Session (one line item at
+  `PRICE_CENTS`, promotion codes allowed, the page's language, `metadata.product` `vibe-coaching`
+  with the name and phone) and answers `{url}`, Stripe's page. Back to `/vibe-coaching/` (or
+  `/fr/vibe-coaching/`) with `?session_id={CHECKOUT_SESSION_ID}`, or `?canceled=1`.
+- `GET /api/coaching/check-in?session_id=cs_…`: what the coaching page calls back from Stripe.
+  Confirms the session is a paid coaching purchase (404 otherwise, 409 while unpaid), registers it
+  with the portal's `POST /api/v1/live-help/sessions/register` (website key; the portal stores an
+  order once) and answers `{checkInUrl}`: the portal's one-time `/livecoaching/{token}`, or its
+  name-and-email `/livecoaching` page when the portal gives no link. 502 when the portal fails.
+- `POST /api/coaching/stripe-webhook` (64 KB max, the body kept as sent): checks the
+  `Stripe-Signature` (HMAC-SHA256 of `<t>.<body>` with `STRIPE_WEBHOOK_SECRET`, at most 5 minutes
+  old; 400 otherwise). A paid coaching `checkout.session.completed` (or
+  `checkout.session.async_payment_succeeded`) is registered with the portal, so a buyer who closes
+  the tab is still queued; a portal failure answers 502 and Stripe sends the event again. Any other
+  event answers 200 and is ignored.
+- `GET /api/coaching/availability`: the portal's `GET /api/v1/live-help/availability`
+  (`{availableNow, untilUtc, nextStartUtc, nextEndUtc}`, UTC ISO times), kept a minute, served 10
+  more when the portal fails, `Cache-Control: public, max-age=60`; 503 when there is none.
+
+In the Stripe dashboard (the Forge 20 deposit's account): a webhook endpoint
+`https://codeboxx.ai/api/coaching/stripe-webhook` for `checkout.session.completed` and
+`checkout.session.async_payment_succeeded`; its signing secret is `STRIPE_WEBHOOK_SECRET`.
 
 ### Queue
 
