@@ -1,6 +1,6 @@
 import http from 'node:http';
 import { join } from 'node:path';
-import { coachingRoutes } from './coaching.js';
+import { coachingRoutes, startRefunding } from './coaching.js';
 import { cohortsHandler } from './cohorts.js';
 import { toLead, validateEnroll } from './enroll.js';
 import { isHoneypot } from './fields.js';
@@ -202,5 +202,7 @@ if (import.meta.main) {
     console.log(`website-relay listening on 127.0.0.1:${PORT}`);
   });
   if (outboxDir) startResending(config);
+  // Vibe Coaching purchases owed a refund, every hour (coaching.js).
+  if (STRIPE_SECRET_KEY) startRefunding(config);
   process.on('SIGTERM', () => server.close(() => process.exit(0)));
 }

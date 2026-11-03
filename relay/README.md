@@ -147,6 +147,15 @@ Stripe secret key and calls Stripe's REST API (no npm dependency). Nothing perso
   (`{availableNow, untilUtc, nextStartUtc, nextEndUtc}`, UTC ISO times), kept a minute, served 10
   more when the portal fails, `Cache-Control: public, max-age=60`; 503 when there is none.
 
+Refunds (CLP-1505): at startup and an hour after each pass ends, with the Stripe key set, the
+relay asks the portal's `GET /api/v1/live-help/refunds/due` (website key) for the purchases owed a
+full refund (a coach cancelled before the session started, or 24 hours passed and none started).
+Each is refunded in full in Stripe (`POST /v1/refunds` on the session's payment, idempotency key
+`vibe-coaching-refund-<order>`, so one refund per order however many passes try it), then marked
+on the portal (`POST /api/v1/live-help/refunds/<order>`), which stops listing it. A Stripe failure
+isn't marked and is tried again next pass; an order already refunded in Stripe, or paid $0 with a
+promotion code, is just marked. Logs order IDs and statuses only.
+
 In the Stripe dashboard (the Forge 20 deposit's account): a webhook endpoint
 `https://codeboxx.ai/api/coaching/stripe-webhook` for `checkout.session.completed` and
 `checkout.session.async_payment_succeeded`; its signing secret is `STRIPE_WEBHOOK_SECRET`.

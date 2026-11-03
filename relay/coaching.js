@@ -265,3 +265,115 @@ export async function stripe(method, path, config, params, { idempotencyKey } = 
     return { status: err.name === 'TimeoutError' ? 'timeout' : 'error', body: null };
   }
 }
+
+// Refunds (CLP-1505): every hour, the purchases the portal says are owed a full refund (a coach
+// cancelled before the session started, or 24 hours passed and none started) are refunded in
+// Stripe, then marked refunded on the portal, which stops listing them.
+const REFUND_EVERY_MS = 60 * 60 * 1000;
+
+/**
+ * One refund pass. Resolves to { due, refunded, failed }; never rejects. A refund is keyed by its
+ * order in Stripe (one refund per order, however many passes try it), and only marked on the
+ * portal once Stripe took it, so a failure is tried again next pass. Logs order IDs (Stripe
+ * Checkout Session IDs) and statuses only.
+ */
+export async function refundDue(config) {
+  const {
+    portalUrl,
+    apiKey,
+    timeoutMs = 10000,
+    fetch = globalThis.fetch,
+    log = console.log,
+  } = config;
+  const portal = portalUrl.replace(/\/+$/, '');
+  const summary = { due: 0, refunded: 0, failed: 0 };
+  if (!config.stripeSecretKey) return summary;
+  let due;
+  try {
+    const res = await fetch(`${portal}/api/v1/live-help/refunds/due`, {
+      headers: { accept: 'application/json', 'api-key': apiKey },
+      redirect: 'manual',
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+    if (res.status !== 200) {
+      await res.body?.cancel();
+      log(`refunds portal=${res.status}`);
+      return summary;
+    }
+    due = await res.json();
+  } catch (err) {
+    log(`refunds portal=${err.name === 'TimeoutError' ? 'timeout' : 'error'}`);
+    return summary;
+  }
+  if (!Array.isArray(due)) {
+    log('refunds portal=invalid');
+    return summary;
+  }
+  summary.due = due.length;
+  for (const item of due) {
+    const orderId = item?.orderId;
+    if (typeof orderId !== 'string' || !SESSION_ID.test(orderId)) continue;
+    const outcome = await refund(orderId, item.reason, config);
+    if (outcome === 'refunded' || outcome === 'nothing-paid') {
+      const marked = await markRefunded(portal, orderId, config);
+      if (marked) summary.refunded++;
+      else summary.failed++;
+      log(`refund ${orderId} ${outcome} portal=${marked ? 204 : 'failed'}`);
+    } else {
+      summary.failed++;
+      log(`refund ${orderId} ${outcome}`);
+    }
+  }
+  if (due.length)
+    log(`refunds due=${summary.due} refunded=${summary.refunded} failed=${summary.failed}`);
+  return summary;
+}
+
+// Refunds an order's payment in full. Resolves to 'refunded', 'nothing-paid' (a 100% promotion
+// code) or what stopped it.
+async function refund(orderId, reason, config) {
+  const session = await stripe('GET', `/checkout/sessions/${orderId}`, config);
+  if (session.status !== 200) return `stripe-session=${session.status}`;
+  if (session.body?.metadata?.product !== PRODUCT) return 'not-coaching';
+  if (session.body.amount_total === 0) return 'nothing-paid';
+  const paymentIntent = session.body.payment_intent;
+  if (typeof paymentIntent !== 'string') return 'no-payment';
+  const params = new URLSearchParams({
+    payment_intent: paymentIntent,
+    'metadata[product]': PRODUCT,
+    'metadata[order]': orderId,
+    'metadata[reason]': String(reason ?? ''),
+  });
+  const res = await stripe('POST', '/refunds', config, params, {
+    idempotencyKey: `${PRODUCT}-refund-${orderId}`,
+  });
+  if (res.status === 200) return 'refunded';
+  // Refunded already (by staff in the dashboard, say): the buyer has their money back.
+  if (res.body?.error?.code === 'charge_already_refunded') return 'refunded';
+  return `stripe-refund=${res.status}`;
+}
+
+async function markRefunded(
+  portal,
+  orderId,
+  { apiKey, timeoutMs = 10000, fetch = globalThis.fetch }
+) {
+  try {
+    const res = await fetch(`${portal}/api/v1/live-help/refunds/${orderId}`, {
+      method: 'POST',
+      headers: { 'api-key': apiKey },
+      redirect: 'manual',
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+    await res.body?.cancel();
+    return res.status === 204;
+  } catch {
+    return false;
+  }
+}
+
+/** Refunds now, then an hour after each pass ends, so passes never overlap. */
+export async function startRefunding(config) {
+  await refundDue(config);
+  setTimeout(() => startRefunding(config), REFUND_EVERY_MS).unref();
+}
