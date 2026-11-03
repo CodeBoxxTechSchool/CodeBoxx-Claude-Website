@@ -26,6 +26,7 @@ export const ROUTE_TABLE = [
   { en: '/academy', fr: '/fr/academie' },
   { en: '/corporate-training', fr: '/fr/formation-entreprise' },
   { en: '/solutions', fr: '/fr/solutions' },
+  { en: '/vibe-coaching', fr: '/fr/vibe-coaching' },
   { en: '/crewkit-forge-20/dive-deeper', fr: '/fr/crewkit-forge-20/approfondir' },
 ];
 

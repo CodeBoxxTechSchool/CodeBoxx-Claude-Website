@@ -221,8 +221,10 @@
 /fr/residents-pinellas/
 /fr/solutions/
 /fr/ventures/
+/fr/vibe-coaching/
 /pinellas-residents/
 /privacy-policy/
 /solutions/
 /terms-conditions/
 /ventures/
+/vibe-coaching/

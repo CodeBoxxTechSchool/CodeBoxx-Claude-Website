@@ -1,0 +1,54 @@
+---
+// /vibe-coaching and /fr/vibe-coaching: Vibe Coaching, a 30-minute live session with the coach on
+// duty, paid with Stripe through the relay (relay/coaching.js), then straight into the portal's
+// queue (CLP-1499). Content: src/locales/{en,fr}/coaching.js. Only the booking card is an island.
+import Layout from '../layouts/Layout.astro';
+import HeroVideo from './HeroVideo.astro';
+import CoachingBooking from './CoachingBooking';
+import { localizedHref } from '../lib/i18nRoutes';
+
+const { t, common, lang } = Astro.props;
+const contactHref = localizedHref('#contactus', lang, '');
+---
+
+<Layout lang={lang} title={t.seo.title} description={t.seo.description} strings={common}>
+  <section class="band-dark sol-coaching coach-hero">
+    <HeroVideo
+      webm="/assets/solutions/vibe-coaching.webm"
+      mp4="/assets/solutions/vibe-coaching.mp4"
+      poster="/assets/solutions/vibe-coaching-poster.webp"
+      overlay="linear-gradient(90deg, rgba(0, 14, 20, 0.95) 0%, rgba(0, 14, 20, 0.75) 50%, rgba(0, 14, 20, 0.2) 100%)"
+    />
+    <div class="wrap sol-coaching-inner">
+      <p class="eyebrow eyebrow-brand">{t.hero.eyebrow}</p>
+      <h1 class="band-title">{t.hero.title}</h1>
+      <p class="band-lede">{t.hero.lede}</p>
+    </div>
+  </section>
+
+  <section class="sect">
+    <div class="wrap coach-grid">
+      <div class="coach-info">
+        <div class="coach-price">
+          <span class="coach-price-amount">{t.offer.price}</span>
+          <span class="coach-price-unit">{t.offer.unit}</span>
+        </div>
+        <ul class="coach-includes">
+          {t.offer.items.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+        <h2 class="h3 coach-steps-title">{t.steps.title}</h2>
+        <ol class="coach-steps">
+          {t.steps.items.map(([title, text]) => (
+            <li>
+              <strong>{title}</strong>
+              <span>{text}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <CoachingBooking client:load t={t} lang={lang} contactHref={contactHref} />
+    </div>
+  </section>
+</Layout>

@@ -266,10 +266,12 @@ solutions	/for-partners	/solutions/#clients
 solutions	/academy-for-business	/corporate-training/
 solutions	/academy-for-buisness	/corporate-training/
 solutions	/portfolio	/case-studies/
-solutions	/vibe-coaching	/solutions/#vibe-coaching
+solutions	/vibe-coaching	/vibe-coaching/
 solutions	/vibe-coding-workshop	/solutions/#vibe-coaching
 solutions	/thank-you	/solutions/
 solutions	/build-your-own-conversational-agent	/assets/agentic-ai-blueprint.pdf
+# The Vibe Coaching store product, now booked on its own page (CLP-1499).
+solutions	/product-page/live-coaching-session	/vibe-coaching/
 solutions	/product-page/*	/solutions/
 solutions	/category/*	/solutions/
 solutions	*	/solutions/
