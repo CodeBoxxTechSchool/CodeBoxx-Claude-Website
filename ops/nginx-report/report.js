@@ -1,16 +1,34 @@
+import { readFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
+import { resolve, sep } from 'node:path';
 
 const DEFAULT_LOG = '/var/log/nginx/access.log.1';
+// Where nginx serves the built site from: a referrer on our own site is checked against it.
+const DEFAULT_SITE_ROOT = '/var/www/codeboxx';
 const SENDGRID_URL = 'https://api.sendgrid.com/v3/mail/send';
 const MAX_ROWS = 50;
-// A 404 with no referrer and no crawler is reported only from this many hits in the day.
-const MIN_HITS = 3;
 const MONTHS = 'JanFebMarAprMayJunJulAugSepOctNovDec';
 
-/** Referrer hosts that make a 404 a broken link on our own site. */
-export const OWN_HOSTS = ['codeboxx.com', 'www.codeboxx.com', '159.223.145.47'];
+/**
+ * Our hosts: a referrer on one of them is a broken link on our own site only when the built page
+ * really links there (scanners fake our homepage as referrer). codeboxx.com and codeboxx.biz 301 to
+ * codeboxx.ai, so a scanner following that redirect sends them as referrer too.
+ */
+export const OWN_HOSTS = [
+  'codeboxx.ai',
+  'www.codeboxx.ai',
+  'codeboxx.com',
+  'www.codeboxx.com',
+  'codeboxx.biz',
+  'www.codeboxx.biz',
+  '159.223.145.47',
+];
 
-/** Search engine crawlers, by user agent: a URL they recrawl keeps costing us. */
+/**
+ * Search engine crawlers, by user agent: a URL they recrawl keeps costing us. Scanners fake these
+ * user agents too, and we can't check the crawler's IP (nginx sees Cloudflare's), so this only
+ * counts for page-like paths.
+ */
 export const CRAWLERS = /Googlebot|bingbot|DuckDuckBot|YandexBot|Applebot|Baiduspider/i;
 
 /**
@@ -30,6 +48,11 @@ export const PROBES = [
   /\/wp-/i,
   /\/(cgi-bin|vendor|phpunit)(\/|$)/i,
   /^\/(SDK|containers|actuator|boaform|HNAP1|webui)(\/|$)/i,
+  // Admin panels, debug pages and APIs of other stacks; our site has none of these routes (our
+  // /api/ is the forms relay, no page of its own).
+  /^\/(wordpress|wp|admin(istrator)?|phpinfo|_profiler|_?debug|_environment|telescope|horizon)(\/|$)/i,
+  /^\/(nova|filament|backpack|graphql|mcp|sse|api)(\/|$)/i,
+  /^\/\{/, // Wix image settings as JSON, /{"containerId":...}, which Bytespider still asks for
   // Sitemap name guesses (/sitemap_index.xml, /sitemap1.xml, /sitemap.txt, ...); ours are
   // /sitemap.xml, /sitemap-index.xml and /sitemap-0.xml, so a 404 on those still shows.
   /^\/sitemap(?!(-index|-0)?\.xml$)[\w-]*\.(xml|xml\.gz|txt)$/i,
@@ -57,25 +80,91 @@ export function parseLine(line) {
   };
 }
 
-export function isProbe(path) {
-  let decoded = path;
+function decode(path) {
   try {
-    decoded = decodeURIComponent(path);
+    return decodeURIComponent(path);
   } catch {
-    // Not valid percent-encoding: matched as is.
+    return path; // Not valid percent-encoding: used as is.
   }
+}
+
+const trimSlash = (path) => path.replace(/\/+$/, '') || '/';
+
+/** Whether the path is a scanner probe, percent-decoded and with repeated slashes collapsed. */
+export function isProbe(path) {
+  const decoded = decode(path).replace(/\/{2,}/g, '/');
   return PROBES.some((pattern) => pattern.test(decoded));
 }
 
 export const isOwnReferrer = (referrer) => OWN_HOSTS.includes(URL.parse(referrer)?.hostname);
 
 /**
- * The day's { day, total, errors, missing, ignored }: 5xx by status and path, and 404s of GET and
- * HEAD by path, both sorted for the email. A 404 path is kept only when a hit had a referrer or
- * came from a crawler, or it got MIN_HITS hits: one-off scanner requests, probes and other methods
- * are only counted in ignored.
+ * Whether the referrer can be a page linking to path. A browser sends a full http(s) URL (scanners
+ * send bare names such as www.google.com), and a referrer that is the requested URL itself
+ * (trailing slash ignored), on any host, is a redirect hop such as codeboxx.com/x to codeboxx.ai/x.
  */
-export function summarize(text) {
+export function isLink(referrer, path) {
+  const url = URL.parse(referrer);
+  return (
+    ['http:', 'https:'].includes(url?.protocol) &&
+    trimSlash(decode(url.pathname)) !== trimSlash(decode(path))
+  );
+}
+
+/**
+ * Whether the path looks like a page (no extension, or .html): scanners fake referrers and crawler
+ * user agents to ask for /config.js, /env.json, /terraform.tfstate and the like.
+ */
+export const isPageLike = (path) => !/\.[a-z\d]+$/i.test(path) || /\.html?$/i.test(path);
+
+/**
+ * A function from a page's path on our site to the set of paths its built HTML links to (href or
+ * src, root-relative or on one of our hosts, trailing slash trimmed), or null when there is no such
+ * page. Each page is read at most once.
+ */
+export function siteLinks(siteRoot) {
+  const root = resolve(siteRoot);
+  const cache = new Map();
+  return (pagePath) => {
+    const page = decode(pagePath);
+    if (!cache.has(page)) cache.set(page, readLinks(root, page));
+    return cache.get(page);
+  };
+}
+
+// Astro's static output: /solutions/ is solutions/index.html, /solutions also solutions.html.
+function readLinks(root, page) {
+  const files = page.endsWith('/') ? [`${page}index.html`] : [`${page}/index.html`, `${page}.html`];
+  if (/\.html?$/i.test(page)) files.push(page);
+  for (const file of files) {
+    const full = resolve(root, `.${file}`);
+    // A referrer is whatever the client sent: never read outside the site.
+    if (!full.startsWith(root + sep)) continue;
+    let html;
+    try {
+      html = readFileSync(full, 'utf8');
+    } catch {
+      continue;
+    }
+    const links = new Set();
+    for (const [, value] of html.matchAll(/\b(?:href|src)\s*=\s*["']?([^"'\s>]+)/gi)) {
+      const ours = (value.startsWith('/') && !value.startsWith('//')) || isOwnReferrer(value);
+      const url = ours && URL.parse(value, 'https://codeboxx.ai/');
+      if (url) links.add(trimSlash(decode(url.pathname)));
+    }
+    return links;
+  }
+  return null;
+}
+
+/**
+ * The day's { day, total, errors, missing, ignored }: 5xx by status and path, and 404s of GET and
+ * HEAD by path, both sorted for the email. A 404 path is kept only when a hit came from a page of
+ * our site that links there (read from siteRoot), or, for a page-like path, from another site's
+ * link or a crawler. Redirect hops, probes, other methods and the rest are only counted in ignored.
+ */
+export function summarize(text, { siteRoot = DEFAULT_SITE_ROOT } = {}) {
+  const linksOf = siteLinks(siteRoot);
   const days = new Map();
   const errors = new Map();
   const missing = new Map();
@@ -108,16 +197,23 @@ export function summarize(text) {
         external: false,
         crawled: false,
       };
+      const linked = isLink(hit.referrer, hit.path);
+      const own = isOwnReferrer(hit.referrer);
+      const pageLike = isPageLike(decode(hit.path));
+      const ownLink =
+        linked &&
+        own &&
+        linksOf(URL.parse(hit.referrer).pathname)?.has(trimSlash(decode(hit.path)));
       row.count++;
-      row.internal ||= isOwnReferrer(hit.referrer);
-      row.external ||= Boolean(hit.referrer) && !isOwnReferrer(hit.referrer);
-      row.crawled ||= CRAWLERS.test(hit.userAgent);
+      row.internal ||= Boolean(ownLink);
+      row.external ||= linked && !own && pageLike;
+      row.crawled ||= pageLike && CRAWLERS.test(hit.userAgent);
       missing.set(hit.path, row);
     }
   }
   const kept = [];
   for (const row of missing.values()) {
-    if (row.internal || row.external || row.crawled || row.count >= MIN_HITS) kept.push(row);
+    if (row.internal || row.external || row.crawled) kept.push(row);
     else ignored += row.count;
   }
   // The file can start or end with a few lines from around midnight: the day is the most common.
@@ -154,7 +250,7 @@ export function formatEmail({ day, total, errors, missing, ignored }) {
     errorHits && plural(errorHits, 'server error', 'server errors'),
     missing.length && plural(missing.length, 'page not found', 'pages not found'),
   ].filter(Boolean);
-  const lines = [`nginx access log of the codeboxx.com website droplet for ${day} (UTC).`, ''];
+  const lines = [`nginx access log of the codeboxx.ai website droplet for ${day} (UTC).`, ''];
   if (errors.length) {
     lines.push(`Server errors (5xx): ${plural(errorHits, 'hit', 'hits')}`);
     lines.push(...table(errors, (row) => `${row.status}  ${row.path}`), '');
@@ -168,11 +264,11 @@ export function formatEmail({ day, total, errors, missing, ignored }) {
     lines.push(...table(missing, (row) => `${row.path}${mark(row)}`), '');
   }
   lines.push(
-    `${plural(ignored, '404 hit', '404 hits')} ignored (scanner probes, our redirect checks and one-off requests).`
+    `${plural(ignored, '404 hit', '404 hits')} ignored (scanner probes, our redirect checks and hits with no real link or crawler behind them).`
   );
   lines.push(`${plural(total, 'request', 'requests')} in total.`);
   return {
-    subject: `codeboxx.com website: ${counts.join(', ')} (${day})`,
+    subject: `codeboxx.ai website: ${counts.join(', ')} (${day})`,
     text: lines.join('\n') + '\n',
   };
 }
@@ -236,7 +332,7 @@ export async function main(
     err(`nginx-report: cannot read ${path} (${error.code ?? error.name})`);
     return 1;
   }
-  const summary = summarize(text);
+  const summary = summarize(text, { siteRoot: env.SITE_ROOT || DEFAULT_SITE_ROOT });
   const email = formatEmail(summary);
   if (!email) {
     out(`nginx-report ${summary.day ?? path}: nothing to report`);
