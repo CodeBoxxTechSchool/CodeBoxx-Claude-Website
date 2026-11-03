@@ -7,16 +7,25 @@ Eastern), reads `/var/log/nginx/access.log.1` (logrotate's copy of the previous 
 when there is something to report, sends a plain-text email through SendGrid.
 
 - Every 5xx, grouped by status and path (without the query string).
-- The 404s of GET and HEAD requests, by path, that look like they came from a real link or will
-  keep costing us: a hit had a referrer (our own site, `OWN_HOSTS`: a broken internal link, listed
-  first; or another site, such as Google or a site linking to an old Wix URL), or came from a
-  search engine crawler (`CRAWLERS`), or the path got at least 3 hits that day. Scanner probes
-  (`PROBES` in `report.js`, matched on the percent-decoded path: dotfiles, `.php` and similar
-  extensions, `wp-`, `cgi-bin`, `vendor/`, …) never count, whatever their referrer or hits.
+- The 404s of GET and HEAD requests, by path, that came from a real link or will keep costing us.
+  Scanners fake referrers and crawler user agents, so each reason is checked:
+  - Linked from our own site (listed first): the referrer is one of our hosts (`OWN_HOSTS`:
+    codeboxx.ai, codeboxx.com, codeboxx.biz, with or without `www`, and the droplet's IP) and the
+    built page it names, read from the site root, has an `href` or `src` to that path.
+  - Linked from another site: the referrer is a full http(s) URL on another host.
+  - Crawled by a search engine: the user agent is a crawler (`CRAWLERS`).
+
+  The last two count only for a page-like path (no extension, or `.html`), not for `/config.js`
+  or `/env.json`. A referrer that is the requested URL itself, on any host, is a redirect hop
+  (codeboxx.com and codeboxx.biz 301 to codeboxx.ai), not a link. Scanner probes (`PROBES` in
+  `report.js`, matched on the percent-decoded path: dotfiles, `.php` and similar extensions,
+  `wp-`, `/wordpress`, `/admin`, `/graphql`, `/api/`, Wix's `/{...}` image JSON, …) never count.
+  Old Wix pages (`/post/...`, `/fr/blogue/...`, `/en/testimonial/...`) are what the report is for.
+
 - The 404s that `ops/nginx/check-redirects.js` asks for on purpose (user agent
   `codeboxx-check-redirects`) never count either, nor do sitemap name guesses such as
   `/sitemap_index.xml`.
-- How many 404 hits were ignored (probes, one-off requests with no referrer, and methods other
+- How many 404 hits were ignored (probes, hits with none of the reasons above, and methods other
   than GET and HEAD), and the day's request count.
 
 At most 50 rows per table. The email never holds an IP address or a user agent (read only to spot crawlers). On a day with
@@ -34,6 +43,7 @@ npm run test:ops
 | `SENDGRID_API_KEY` | SendGrid key with Mail Send access (not needed with `--dry-run`) |
 | `REPORT_TO`        | Recipient address(es), separated by `;` or `,`                   |
 | `REPORT_FROM`      | A verified SendGrid sender, default `portal@codeboxx.com`        |
+| `SITE_ROOT`        | The built site nginx serves, default `/var/www/codeboxx`         |
 
 It exits 1, which marks the systemd run failed, when the log cannot be read or SendGrid refuses
 the email (its status and error messages are printed, never the key).
@@ -53,7 +63,8 @@ systemctl daemon-reload && systemctl enable --now nginx-report.timer
 ```
 
 The service runs as a dynamic user in the `adm` group (to read nginx's logs, `www-data:adm 0640`),
-with a read-only file system; systemd reads the env file as root before dropping privileges.
+with a read-only file system; systemd reads the env file as root before dropping privileges. It
+reads the site's pages under `/var/www/codeboxx`, which must stay world-readable.
 
 Check it:
 
