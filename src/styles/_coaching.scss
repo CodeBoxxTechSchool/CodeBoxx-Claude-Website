@@ -1,0 +1,129 @@
+@use 'variables' as v;
+
+// /vibe-coaching (CoachingPage.astro, CoachingBooking.jsx): the offer beside the booking card.
+
+.coach-hero {
+  padding: 120px 0;
+}
+.coach-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: 56px;
+  align-items: start;
+
+  @media (max-width: v.$breakpoint-md) {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+.coach-info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.coach-price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.coach-price-amount {
+  font-size: clamp(40px, 5vw, 56px);
+  font-weight: v.$weight-black;
+  line-height: 1;
+  color: v.$ui-slate-900;
+}
+.coach-price-unit {
+  font-size: v.$text-body;
+  color: v.$color-text-secondary;
+}
+.coach-includes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    position: relative;
+    padding-left: 28px;
+    color: v.$ui-slate-900;
+
+    &::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: v.$blue-text;
+      font-weight: v.$weight-black;
+    }
+  }
+}
+.coach-steps-title {
+  margin: 16px 0 0;
+  font-size: 24px;
+  font-weight: v.$weight-bold;
+}
+.coach-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding-left: 24px;
+
+  li {
+    padding-left: 4px;
+  }
+  strong {
+    display: block;
+    color: v.$ui-slate-900;
+  }
+  span {
+    color: v.$color-text-secondary;
+  }
+}
+.coach-card {
+  gap: 16px;
+  padding: 32px;
+  box-shadow:
+    inset 0 0 0 1px v.$ui-slate-200,
+    v.$shadow-card;
+
+  .btn-lg {
+    width: 100%;
+  }
+}
+.coach-card-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: v.$weight-black;
+}
+.coach-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: v.$color-text-secondary;
+
+  &.is-live {
+    color: v.$ui-slate-900;
+    font-weight: v.$weight-bold;
+  }
+}
+.coach-status-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #1f9d55;
+  box-shadow: 0 0 0 4px rgba(31, 157, 85, 0.18);
+}
+.coach-note {
+  margin: 0;
+  font-size: 14px;
+  color: v.$color-text-secondary;
+
+  &.error {
+    color: v.$red-600;
+  }
+}
