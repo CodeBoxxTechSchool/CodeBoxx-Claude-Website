@@ -107,8 +107,11 @@ const schemas = [
 <title>{fullTitle}</title>
 <meta name="description" content={desc} />
 <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
-<link rel="canonical" href={canonical} />
-{translated && (
+{/* A noindex page (the 404, served at any unknown address) names no URL of its own: its
+     canonical and hreflang pointed at /404/, an address that 404s, which Search Console then
+     reported as a page not found. */}
+{!noindex && <link rel="canonical" href={canonical} />}
+{translated && !noindex && (
   <>
     <link rel="alternate" hreflang="en" href={enHref} />
     <link rel="alternate" hreflang="fr" href={frHref} />
@@ -118,7 +121,7 @@ const schemas = [
 
 <meta property="og:site_name" content={SITE_NAME} />
 <meta property="og:type" content={type} />
-<meta property="og:url" content={canonical} />
+{!noindex && <meta property="og:url" content={canonical} />}
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={desc} />
 <meta property="og:image" content={image} />
