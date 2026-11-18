@@ -3,7 +3,17 @@ import http from 'node:http';
 import https from 'node:https';
 import { isIP } from 'node:net';
 import { SITE_REDIRECTS } from '../../src/lib/siteRedirects.js';
-import { GONE, load, match, oldUrls, resolve, siteLocation } from './redirects.js';
+import {
+  GONE,
+  MISSING,
+  load,
+  match,
+  matchMissing,
+  oldUrls,
+  resolve,
+  resolveMissing,
+  siteLocation,
+} from './redirects.js';
 
 const USAGE =
   'usage: node ops/nginx/check-redirects.js --base http://159.223.145.47 [--relay]\n' +
@@ -106,6 +116,24 @@ export function cohortsList(body) {
 const oldPaths = (group) => oldUrls(group).map((url) => new URL(url).pathname);
 
 /**
+ * codeboxx.ai's paths with no page: { path, location } for one of redirects.tsv's "missing" rules
+ * (or www's old Wix paths), else { path, unchanged }: 410 when gone, 404.
+ */
+export function missingChecks(table) {
+  const paths = new Set(['/post/unknown', '/EN/Article/1485', '/no-such-page']);
+  for (const rule of table.rules.filter((rule) => rule.groups.includes(MISSING)))
+    paths.add(rule.kind === 'prefix' ? `${rule.path}/sample` : rule.path);
+  const checks = [...paths].map((path) => {
+    const location = resolveMissing(table, path);
+    if (location) return { path, location };
+    return { path, unchanged: matchMissing(table, path)?.to === GONE ? 410 : 404 };
+  });
+  for (const path of ['/en', '/en/testimonials/'])
+    checks.push({ path: `${path}?${QUERY}`, location: resolveMissing(table, path, QUERY) });
+  return checks;
+}
+
+/**
  * Every request to make: { host, path, location } (a 301 there, gone: true when its target is a
  * gone page), { host, path, unchanged }, or { host, path, rejected } (no handshake); with a base,
  * sent there instead of to --base. The apex serves no page: every path of it is a 301 to
@@ -182,6 +210,12 @@ export function plan(table, baseHost, secure = false) {
         path,
         location: `https://${SITE_HOST}${path}`,
       });
+  // codeboxx.ai's paths with no page. Through the IP its Cloudflare Origin Certificate can't be
+  // verified, so there only over http; with a name as --base, at https://codeboxx.ai itself.
+  if (!(secure && isIP(baseHost))) {
+    const via = isIP(baseHost) ? {} : { base: `https://${SITE_HOST}` };
+    for (const check of missingChecks(table)) checks.push({ ...via, host: SITE_HOST, ...check });
+  }
   return checks;
 }
 

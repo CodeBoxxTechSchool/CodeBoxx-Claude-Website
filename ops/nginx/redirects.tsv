@@ -12,6 +12,9 @@
 # ignoring case. /.well-known/acme-challenge/ is never redirected.
 # codeboxx.ai is the one live origin: www and the apex (codeboxx.com) send every path there, the
 # old Wix paths to their page and everything else to the same path.
+# The group "missing" has no host: its rules apply on codeboxx.ai to a path with no page or file,
+# before the 404, then www's old Wix paths do. No catch-all and no "=" there; its gone pages
+# answer 410. See the end of this file.
 
 [hosts]
 codeboxx.com	apex
@@ -278,3 +281,64 @@ solutions	*	/solutions/
 
 # The site icon browsers still ask the old hosts for (www keeps the path already).
 academy,academie,solutions	/favicon.ico	/favicon.ico
+
+# codeboxx.ai, a path with no page: mostly the old codeboxx.biz site (/en/..., /fr/..., numbered
+# articles and press releases), since Cloudflare sends codeboxx.biz/<path> to the same path on
+# codeboxx.ai (2026-10-07). Found in the nginx 404 report, Nov 2026 (old-urls/codeboxx.biz.txt).
+# The program pages land on their Academy section; news on the blog.
+missing	/en	/
+missing	/en/the-program	/academy/#programs
+missing	/en/our-program	/academy/#programs
+missing	/en/registrations	/academy/#apply
+missing	/en/placement	/academy/#employers
+missing	/en/partner	/academy/#employers
+missing	/en/testimonials	/academy/#stories
+missing	/en/faq	/faq/
+missing	/fr/the-program	/fr/academie/#programs
+missing	/fr/ai-program	/fr/academie/#programs
+missing	/fr/registrations	/fr/academie/#apply
+missing	/fr/placement	/fr/academie/#employers
+missing	/fr/temoignages	/fr/academie/#stories
+missing	/fr/terms-conditions	/fr/conditions-generales/
+missing	/fr/blog-articles	/fr/blogue/
+missing	/fr/press	/fr/blogue/
+missing	/fr/tampa-bay	/fr/academie/
+missing	/fr/privacy	/fr/politique-de-confidentialite/
+missing	/fr/privacy-policy	/fr/politique-de-confidentialite/
+missing	/registrations	/academy/#apply
+missing	/placement	/academy/#employers
+missing	/online	/academy/#programs
+missing	/thanks	/academy/
+missing	/tampa-bay	/academy/
+missing	/location-st-pete	/academy/
+missing	/tuition-financing	/financing/
+missing	/technology-training-for-businesses	/corporate-training/
+missing	/temoignages	/fr/academie/#stories
+missing	/press	/blog/
+missing	/posts	/blog/
+missing	/en/testimonial/*	/academy/#stories
+missing	/en/article/*	/blog/
+missing	/en/press-release/*	/blog/
+missing	/en/press-releases/*	/blog/
+missing	/en/media/*	/blog/
+missing	/media/*	/blog/
+missing	/en/pages/media/*	/blog/
+missing	/en/about-us/*	/
+missing	/en/*	/academy/
+missing	/fr/testimonial/*	/fr/academie/#stories
+missing	/fr/article/*	/fr/blogue/
+missing	/fr/press-release/*	/fr/blogue/
+missing	/fr/media/*	/fr/blogue/
+missing	/fr/pages/media/*	/fr/blogue/
+missing	/fr/pages/*	/fr/academie/
+missing	/fr/about-us/*	/fr/
+missing	/article/*	/blog/
+missing	/press-release/*	/blog/
+missing	/pages/media/*	/blog/
+missing	/pages/*	/academy/
+missing	/blog/tags/*	/blog/
+missing	/category/*	/blog/
+missing	/workshop/*	/academy/
+# Retired on the new blog (PR #138): gone.
+missing	/blog/q-a-about-ethics-by-design	-
+missing	/fr/blogue/q-a-about-ethics-by-design	-

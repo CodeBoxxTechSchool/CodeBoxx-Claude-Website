@@ -52,6 +52,9 @@ export const PROBES = [
   // /api/ is the forms relay, no page of its own).
   /^\/(wordpress|wp|admin(istrator)?|phpinfo|_profiler|_?debug|_environment|telescope|horizon)(\/|$)/i,
   /^\/(nova|filament|backpack|graphql|mcp|sse|api)(\/|$)/i,
+  // Build files, secrets and system paths, asked for under a search engine's user agent.
+  /^\/(Dockerfile|Jenkinsfile|_debugbar|litellm|manage|env|credentials|proc|var)(\/|$)/i,
+  /^\/kmonbase/i,
   /^\/\{/, // Wix image settings as JSON, /{"containerId":...}, which Bytespider still asks for
   // Sitemap name guesses (/sitemap_index.xml, /sitemap1.xml, /sitemap.txt, ...); ours are
   // /sitemap.xml, /sitemap-index.xml and /sitemap-0.xml, so a 404 on those still shows.

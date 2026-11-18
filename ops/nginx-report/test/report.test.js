@@ -123,6 +123,16 @@ test('ignores scanner probes, never a normal-looking path', () => {
     '/sse',
     '/api/v1/users',
     '/%7B%22containerId%22:%22comp-liw1z07a%22%7D',
+    '/Dockerfile',
+    '/Jenkinsfile',
+    '/_debugbar/open',
+    '/litellm/key/info',
+    '/manage/env',
+    '/env',
+    '/credentials',
+    '/proc/self/cgroup',
+    '/var/run/secrets/kubernetes.io/serviceaccount/token',
+    '/kmonbaseqt3e24fc1b',
   ]) {
     assert.ok(isProbe(path), path);
   }
@@ -147,6 +157,8 @@ test('ignores scanner probes, never a normal-looking path', () => {
     '/acad%C3%A9mie/',
     '/wordpress-tips',
     '/administration-course',
+    '/environment-and-ai',
+    '/manager-training',
   ]) {
     assert.ok(!isProbe(path), path);
   }
