@@ -3,18 +3,28 @@ import { existsSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { localizedHref } from '../../../src/lib/i18nRoutes.js';
 import { SITE_REDIRECTS } from '../../../src/lib/siteRedirects.js';
-import { cohortsList, headerProblems, plan, stylesheet } from '../check-redirects.js';
+import {
+  cohortsList,
+  headerProblems,
+  missingChecks,
+  plan,
+  stylesheet,
+} from '../check-redirects.js';
 import {
   CONF_FILE,
   GONE,
+  MISSING,
+  MISSING_HOSTS,
   OLD_URLS,
   SITE,
   load,
   match,
+  matchMissing,
   oldUrls,
   parse,
   render,
   resolve,
+  resolveMissing,
   siteLocation,
 } from '../redirects.js';
 
@@ -64,7 +74,7 @@ test('every old URL redirects or is gone, on every old host', () => {
 });
 
 test('a gone page is not redirected, and is no page of the new site, so it answers 404', () => {
-  const gone = table.rules.filter((rule) => rule.to === GONE);
+  const gone = table.rules.filter((rule) => rule.to === GONE && !rule.groups.includes(MISSING));
   assert.equal(gone.length, 13);
   for (const rule of gone) {
     assert.equal(rule.kind, 'exact', `redirects.tsv:${rule.line}`);
@@ -331,7 +341,7 @@ test('check plan: www.codeboxx.ai is one 301 to the same path on codeboxx.ai, ov
 test('the site answers a page without its trailing slash with a 301 to it, as "=" does', () => {
   const site = read('snippets/codeboxx-site.conf');
   assert.match(site, /^absolute_redirect off;$/m);
-  assert.match(site, /location \/ \{[^}]*try_files \$uri \$uri\/ =404;/);
+  assert.match(site, /location \/ \{[^}]*try_files \$uri \$uri\/ @missing;/);
   // nginx's map and samePath agree: the same paths get a slash, the query string after it.
   const conf = render(table);
   assert.ok(conf.includes('"~^(?!/api/)([^?]*/[^/?.]+)(\\?.*)?$" https://codeboxx.ai$1/$2;'));
@@ -368,6 +378,77 @@ test('rejects malformed lines', () => {
   assert.throws(() => parse(`${head}a /x /blog/`), /unexpected line/);
   assert.throws(() => parse(`${head}a\t/x/*\t-`), /only an exact old path can be gone/);
   assert.equal(parse(`${head}a\t/x\t-`).rules[0].to, GONE);
+  assert.throws(() => parse(`${head}missing\t*\t/blog/`), /no catch-all/);
+  assert.throws(() => parse(`${head}missing\t/x\t=`), /no catch-all/);
+  assert.throws(() => parse(`${head}a,missing\t/x\t/blog/`), /a line of its own/);
+  assert.equal(parse(`${head}missing\t/x/*\t/blog/`).rules[0].kind, 'prefix');
+});
+
+const missing = table.rules.filter((rule) => rule.groups.includes(MISSING));
+
+test('codeboxx.ai: an old address with no page lands on its page, a retired one is gone', () => {
+  assert.equal(resolveMissing(table, '/en'), `${SITE}/`);
+  assert.equal(resolveMissing(table, '/en/'), `${SITE}/`);
+  assert.equal(resolveMissing(table, '/en/article/1485'), `${SITE}/blog/`);
+  assert.equal(resolveMissing(table, '/EN/Testimonial/2517'), `${SITE}/academy/#stories`);
+  assert.equal(resolveMissing(table, '/fr/registrations'), `${SITE}/fr/academie/#apply`);
+  assert.equal(resolveMissing(table, '/fr/pages/media/Article/1225'), `${SITE}/fr/blogue/`);
+  assert.equal(resolveMissing(table, '/en/garneau'), `${SITE}/academy/`);
+  assert.equal(
+    resolveMissing(table, '/en', 'utm_source=careerkarma&utm_campaign=careerkarma'),
+    `${SITE}/?utm_source=careerkarma&utm_campaign=careerkarma`
+  );
+  assert.equal(
+    resolveMissing(table, '/en/testimonials', 'utm_source=x'),
+    `${SITE}/academy/?utm_source=x#stories`
+  );
+  // www's old Wix paths too: a post on the new blog, and the others to the blog.
+  assert.equal(
+    resolveMissing(table, '/post/top-tech-opportunities-for-developers-in-tampa-st-pete'),
+    resolve(
+      table,
+      'www.codeboxx.com',
+      '/post/top-tech-opportunities-for-developers-in-tampa-st-pete'
+    )
+  );
+  assert.equal(resolveMissing(table, '/post/unknown'), `${SITE}/blog/`);
+  assert.equal(resolveMissing(table, '/resources/'), `${SITE}/blog/`);
+  // Retired: the post dropped from the new blog (PR #138) and www's gone posts answer 410.
+  for (const path of [
+    '/blog/q-a-about-ethics-by-design/',
+    '/fr/blogue/q-a-about-ethics-by-design',
+    '/post/kntv-press-here',
+  ]) {
+    assert.equal(matchMissing(table, path)?.to, GONE, path);
+    assert.equal(resolveMissing(table, path), null, path);
+  }
+  // Anything else keeps its 404: no catch-all, and www's "=" isn't taken (it would loop).
+  for (const path of ['/no-such-page', '/blog/no-such-post/', '/fr/no-such-page', '/about'])
+    assert.equal(matchMissing(table, path), null, path);
+});
+
+test('codeboxx.ai: every old codeboxx.biz address seen in the logs has a target', () => {
+  const urls = lines(read('old-urls/codeboxx.biz.txt'));
+  assert.ok(urls.length > 300);
+  for (const url of urls) {
+    const { pathname } = new URL(url);
+    assert.ok(resolveMissing(table, pathname), pathname);
+  }
+});
+
+test('codeboxx.ai: the missing rules are no page of the site, and their targets are', () => {
+  for (const rule of missing) {
+    assert.ok(!servedPath(rule.path), `redirects.tsv:${rule.line}: ${rule.path} is a page`);
+    if (rule.kind === 'prefix')
+      for (const page of PAGES)
+        assert.ok(!page.startsWith(`${rule.path}/`), `redirects.tsv:${rule.line}: ${page}`);
+  }
+  const conf = render(table);
+  for (const host of MISSING_HOSTS) assert.ok(conf.includes(`    ${host} site;`), host);
+  assert.ok(conf.includes('"site:/en" "/";'));
+  assert.ok(conf.includes('"site:/blog/q-a-about-ethics-by-design" "-";'));
+  assert.ok(!conf.includes('"missing:'), "no missing rule in the old hosts' maps");
+  assert.match(read('snippets/codeboxx-site.conf'), /^error_page 404 410 \/404\.html;$/m);
 });
 
 test('finds the page stylesheet and checks compression and caching', () => {
@@ -395,4 +476,27 @@ test("recognizes the relay's cohorts answer", () => {
   assert.equal(cohortsList(JSON.stringify(answer)), true);
   for (const body of ['', '<html>', '{"ok":false,"error":"cohorts unavailable"}', '[]'])
     assert.equal(cohortsList(body), false, body);
+});
+
+test('check plan: codeboxx.ai paths with no page, over http through the IP or at codeboxx.ai', () => {
+  const checks = missingChecks(table);
+  const at = (path) => checks.find((check) => check.path === path);
+  assert.deepEqual(at('/en/article/sample'), {
+    path: '/en/article/sample',
+    location: `${SITE}/blog/`,
+  });
+  assert.equal(at('/EN/Article/1485').location, `${SITE}/blog/`);
+  assert.equal(at('/post/unknown').location, `${SITE}/blog/`);
+  assert.equal(at('/blog/q-a-about-ethics-by-design').unchanged, 410);
+  assert.equal(at('/no-such-page').unchanged, 404);
+  assert.equal(at('/en?gclid=x&utm_source=y').location, `${SITE}/?gclid=x&utm_source=y`);
+  assert.equal(checks.length, missing.length + 5);
+  const ofSite = (list) => list.filter((check) => check.host === 'codeboxx.ai');
+  const http = ofSite(plan(table, '159.223.145.47'));
+  assert.equal(http.length, checks.length);
+  assert.ok(http.every((check) => !check.base));
+  assert.equal(ofSite(plan(table, '159.223.145.47', true)).length, 0);
+  const named = ofSite(plan(table, 'codeboxx.com', true));
+  assert.equal(named.length, checks.length);
+  assert.ok(named.every((check) => check.base === 'https://codeboxx.ai'));
 });

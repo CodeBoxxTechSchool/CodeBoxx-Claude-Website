@@ -19,8 +19,11 @@ when there is something to report, sends a plain-text email through SendGrid.
   or `/env.json`. A referrer that is the requested URL itself, on any host, is a redirect hop
   (codeboxx.com and codeboxx.biz 301 to codeboxx.ai), not a link. Scanner probes (`PROBES` in
   `report.js`, matched on the percent-decoded path: dotfiles, `.php` and similar extensions,
-  `wp-`, `/wordpress`, `/admin`, `/graphql`, `/api/`, Wix's `/{...}` image JSON, …) never count.
-  Old Wix pages (`/post/...`, `/fr/blogue/...`, `/en/testimonial/...`) are what the report is for.
+  `wp-`, `/wordpress`, `/admin`, `/graphql`, `/api/`, `/Dockerfile`, `/proc/`, Wix's `/{...}`
+  image JSON, …) never count.
+  Old pages without a redirect are what the report is for. On codeboxx.ai, the old addresses
+  already handled (`missing` rules in `ops/nginx/redirects.tsv`) are a 301, and retired pages a
+  410, so neither shows up: a new one gets a rule there.
 
 - The 404s that `ops/nginx/check-redirects.js` asks for on purpose (user agent
   `codeboxx-check-redirects`) never count either, nor do sitemap name guesses such as

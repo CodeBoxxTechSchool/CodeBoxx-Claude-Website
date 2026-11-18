@@ -23,6 +23,15 @@ Port 443 answers the eight names with one Let's Encrypt certificate
 certificate is issued by hand (DNS-01) and renewed by certbot (HTTP-01, from
 `/var/www/letsencrypt`; step 2). This config sets no HSTS (CLP-1414).
 
+codeboxx.ai itself: a path with no page or file (location `@missing` in `snippets/codeboxx-site.conf`)
+goes through the `missing` rules of `redirects.tsv`, then www's old Wix paths, before its 404.
+Cloudflare sends `codeboxx.biz/<path>` to the same path on codeboxx.ai, so the old codeboxx.biz site
+(`/en/article/1485`, `/fr/registrations`, ...) lands there: one 301 to its page or Academy section. A
+gone one (`-`) answers 410 with the 404 page, so search engines drop it and the nginx report leaves it
+out. There is no catch-all: anything else keeps its 404, and the IP and the old codeboxx.com names are
+unchanged. `old-urls/codeboxx.biz.txt` lists the old addresses seen in the nginx logs (Nov 2026); the
+tests check that each has a target.
+
 The site (`snippets/codeboxx-site.conf`) serves each page at one address, with its trailing slash:
 `/academy` is a 301 to `/academy/`, query kept, as a relative `Location` (`absolute_redirect off`).
 It used to serve the page at both, and Search Console reported `/academy` as a duplicate. The
@@ -135,7 +144,8 @@ Nothing in `ops/` is deployed by the GitHub Action. As root, from a copy of this
 `ls -l /etc/nginx/sites-enabled/` and copy over the real file if it isn't). The redirects
 (`conf.d/codeboxx-redirects.conf`, `snippets/codeboxx-redirects.conf`) are installed since
 CLP-1342; to update them, copy `conf.d/codeboxx-redirects.conf` again, `nginx -t && systemctl
-reload nginx`. Before the DNS swap, the checks reach the droplet by its IP (and the `Host:`
+reload nginx`. `snippets/codeboxx-site.conf` uses the `missing` maps of that file: install both
+together. Before the DNS swap, the checks reach the droplet by its IP (and the `Host:`
 header or SNI), so the http→https redirect is harmless while DNS still points at Wix.
 
 **1. Port 80** (any time before the certificate):

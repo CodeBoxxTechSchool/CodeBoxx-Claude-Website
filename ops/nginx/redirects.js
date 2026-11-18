@@ -33,8 +33,17 @@ export function oldUrls(group) {
 const ACME = /^\/\.well-known\/acme-challenge(\/|$)/;
 const FROM = /^(\*|\/[a-z0-9._-]+(\/[a-z0-9._-]+)*(\/\*)?)$/;
 const TO = /^(=|-|\/([a-z0-9._-]+\/?)*(#[a-z0-9-]+)?)$/;
-// A "-" target: the page is gone. nginx doesn't redirect it, so the site answers 404.
+// A "-" target: the page is gone. nginx doesn't redirect it, so the site answers 404 (410 for a
+// "missing" rule).
 export const GONE = '-';
+
+/**
+ * The group of a path with no page or file on codeboxx.ai itself (location @missing in
+ * snippets/codeboxx-site.conf), checked before the 404. It has no host of its own: Cloudflare sends
+ * codeboxx.biz/<path> to codeboxx.ai/<path>, so the old codeboxx.biz pages land there.
+ */
+export const MISSING = 'missing';
+export const MISSING_HOSTS = ['codeboxx.ai', 'www.codeboxx.ai'];
 
 /** { hosts: { hostname: group }, rules: [{ groups, from, to, kind, path, line }] } of redirects.tsv. */
 export function parse(text) {
@@ -62,8 +71,14 @@ export function parse(text) {
     const groups = groupList.split(',');
     if (!FROM.test(from) || ACME.test(from)) fail(`bad old path ${from}`);
     if (!TO.test(to)) fail(`bad target ${to}`);
+    if (groups.includes(MISSING)) {
+      if (groups.length > 1) fail(`${MISSING} goes on a line of its own`);
+      // The page is missing on the site, so keeping its path would loop.
+      if (from === '*' || to === '=') fail(`${MISSING} takes no catch-all and no "="`);
+    }
     for (const group of groups) {
-      if (!Object.values(hosts).includes(group)) fail(`unknown group ${group}`);
+      if (group !== MISSING && !Object.values(hosts).includes(group))
+        fail(`unknown group ${group}`);
       if (seen.has(`${group} ${from}`)) fail(`${from} repeated in ${group}`);
       seen.add(`${group} ${from}`);
     }
@@ -108,11 +123,51 @@ export function resolve(table, host, path, query = '') {
   return SITE + target + search + (fragment ? `#${fragment}` : '');
 }
 
+/**
+ * The rules a path missing on codeboxx.ai goes through: the "missing" ones, then www's old Wix
+ * paths (a /post/ slug reached through codeboxx.biz), without www's "=" catch-all. An exact path
+ * of both is the "missing" rule's.
+ */
+export function missingRules(rules) {
+  const own = rules.filter((rule) => rule.groups.includes(MISSING));
+  const taken = new Set(own.map((rule) => `${rule.kind} ${rule.path}`));
+  const www = rules.filter(
+    (rule) =>
+      rule.groups.includes('www') &&
+      rule.kind !== 'rest' &&
+      rule.to !== '=' &&
+      !taken.has(`${rule.kind} ${rule.path}`)
+  );
+  return [...own, ...www];
+}
+
+/** The rule nginx applies to a path missing on codeboxx.ai (as sent), or null: its 404. */
+export function matchMissing({ rules }, path) {
+  const trimmed = path.replace(/(.)\/+$/, '$1').toLowerCase();
+  const mine = missingRules(rules);
+  const under = (rule) => trimmed === rule.path || trimmed.startsWith(rule.path + '/');
+  return (
+    mine.find((rule) => rule.kind === 'exact' && rule.path === trimmed) ??
+    mine.find((rule) => rule.kind === 'prefix' && under(rule)) ??
+    null
+  );
+}
+
+/** The Location for a path missing on codeboxx.ai, or null when it answers 404 or 410 (gone). */
+export function resolveMissing(table, path, query = '') {
+  const rule = matchMissing(table, path);
+  if (!rule || rule.to === GONE) return null;
+  const [target, fragment] = rule.to.split('#');
+  return SITE + target + (query ? `?${query}` : '') + (fragment ? `#${fragment}` : '');
+}
+
 const quote = (text) => `"${text}"`;
 const escape = (path) => path.replace(/[.]/g, '\\.');
 
 /** The http-level nginx include (conf.d/codeboxx-redirects.conf) for the table. */
-export function render({ hosts, rules }) {
+export function render({ hosts, rules: allRules }) {
+  const rules = allRules.filter((rule) => !rule.groups.includes(MISSING));
+  const missing = missingRules(allRules);
   const alternatives = (groups) => (groups.length > 1 ? `(${groups.join('|')})` : groups[0]);
   const exact = rules
     .filter((rule) => rule.kind === 'exact')
@@ -181,6 +236,32 @@ export function render({ hosts, rules }) {
     'map $site_target $site_location {',
     '    default "";',
     '    "~^([^#]+)(#.*)?$" $1$is_args$args$2;',
+    '}',
+    '',
+    '# A path with no page or file on codeboxx.ai (location @missing in snippets/codeboxx-site.conf),',
+    '# before its 404: redirects.tsv\'s "missing" rules, then www\'s old Wix paths. Only on',
+    '# codeboxx.ai: the IP and unknown hosts keep their 404. "-" is a gone page: nginx answers 410.',
+    'map $host $missing_host {',
+    '    default "";',
+    ...MISSING_HOSTS.map((host) => `    ${host} site;`),
+    '}',
+    '',
+    'map "$missing_host:$legacy_path" $missing_target {',
+    '    default "";',
+    ...entries(
+      missing.filter((rule) => rule.kind === 'exact').map((rule) => [`site:${rule.path}`, rule.to])
+    ),
+    ...entries(
+      missing
+        .filter((rule) => rule.kind === 'prefix')
+        .map((rule) => [`~*^site:${escape(rule.path)}(/.*)?$`, rule.to])
+    ),
+    '}',
+    '',
+    'map $missing_target $missing_location {',
+    '    default "";',
+    `    "${GONE}" "";`,
+    `    "~^([^#]+)(#.*)?$" ${SITE}$1$is_args$args$2;`,
     '}',
     '',
   ].join('\n');
