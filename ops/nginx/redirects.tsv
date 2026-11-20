@@ -7,7 +7,7 @@
 #   old path: /path (with or without a trailing slash), /path/* (the path and everything under
 #             it, tried in file order after the exact paths) or * (the rest of the group's paths).
 #   target:   a path on https://codeboxx.ai with an optional #fragment, = for the same path, or
-#             - for none: the page is gone, the old URL answers 404 (exact old paths only).
+#             - for none: the page is gone, the old URL answers 410 (exact old paths only).
 # The request's query string (gclid, utm_*) is kept, before the fragment. Old paths match
 # ignoring case. /.well-known/acme-challenge/ is never redirected.
 # codeboxx.ai is the one live origin: www and the apex (codeboxx.com) send every path there, the
@@ -114,7 +114,7 @@ www,apex	/post/codeboxx-powers-ai-collaboration-as-founding-sponsor-of-ai-salon-
 www,apex	/post/the-ai-tools-you-need-to-stay-ahead-of-the-curve	/blog/the-ai-tools-you-need-to-stay-ahead-of-the-curve/
 www,apex	/post/the-edtech-evolution-of-codeboxx	/blog/the-edtech-evolution-of-codeboxx/
 # Obsolete, left off the new blog on purpose (CLP-1378, Oct 2026): gone, so the old URL answers
-# 404 and search engines drop it, instead of landing on the blog page.
+# 410 and search engines drop it, instead of landing on the blog page.
 www,apex	/post/5-reasons-to-dive-into-the-world-of-artificial-intelligence	-
 www,apex	/post/beyond-the-code-how-soft-skills-boost-success	-
 www,apex	/post/codeboxx-cohort-uses-tech-skills-for-good	-
@@ -342,3 +342,10 @@ missing	/workshop/*	/academy/
 # Retired on the new blog (PR #138): gone.
 missing	/blog/q-a-about-ethics-by-design	-
 missing	/fr/blogue/q-a-about-ethics-by-design	-
+# Asked by search crawlers only, nothing links to them (nginx report, Nov 2026). Short forms of
+# the old program and registration pages; /cybersecurity was never a program here, and /404 is
+# the 404 page's old address (its canonical, before PR #165): gone.
+missing	/our-program	/academy/#programs
+missing	/reg	/academy/#apply
+missing	/cybersecurity	-
+missing	/404	-
