@@ -33,8 +33,7 @@ export function oldUrls(group) {
 const ACME = /^\/\.well-known\/acme-challenge(\/|$)/;
 const FROM = /^(\*|\/[a-z0-9._-]+(\/[a-z0-9._-]+)*(\/\*)?)$/;
 const TO = /^(=|-|\/([a-z0-9._-]+\/?)*(#[a-z0-9-]+)?)$/;
-// A "-" target: the page is gone. nginx doesn't redirect it, so the site answers 404 (410 for a
-// "missing" rule).
+// A "-" target: the page is gone. nginx doesn't redirect it but answers 410, with the 404 page.
 export const GONE = '-';
 
 /**
@@ -171,9 +170,7 @@ export function render({ hosts, rules: allRules }) {
   const alternatives = (groups) => (groups.length > 1 ? `(${groups.join('|')})` : groups[0]);
   const exact = rules
     .filter((rule) => rule.kind === 'exact')
-    .flatMap((rule) =>
-      rule.groups.map((group) => [`${group}:${rule.path}`, rule.to === GONE ? '' : rule.to])
-    );
+    .flatMap((rule) => rule.groups.map((group) => [`${group}:${rule.path}`, rule.to]));
   const prefix = rules
     .filter((rule) => rule.kind === 'prefix')
     .map((rule) => [`~*^${alternatives(rule.groups)}:${escape(rule.path)}(/.*)?$`, rule.to]);
@@ -200,8 +197,8 @@ export function render({ hosts, rules: allRules }) {
     '    "~^(.+?)/+$" $1;',
     '}',
     '',
-    '# Exact paths first; then the regexes, in this order. "" does not redirect: a gone page',
-    '# (redirects.tsv\'s "-") then gets the site\'s 404.',
+    '# Exact paths first; then the regexes, in this order. "" does not redirect. "-" is a gone page:',
+    '# location @missing in snippets/codeboxx-site.conf answers it 410.',
     'map "$legacy_group:$legacy_path" $legacy_target {',
     '    default "";',
     ...entries(exact),
@@ -221,6 +218,7 @@ export function render({ hosts, rules: allRules }) {
     '# The target path, the query string (ads: gclid, utm_*), then the fragment.',
     'map $legacy_target $legacy_location {',
     '    default "";',
+    `    "${GONE}" "";`,
     '    "=" $legacy_same_path;',
     `    "~^([^#]+)(#.*)?$" ${SITE}$1$is_args$args$2;`,
     '}',

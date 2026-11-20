@@ -34,7 +34,8 @@ const PARALLEL = 8;
 export const USER_AGENT = 'codeboxx-check-redirects';
 
 /**
- * { status, location } of one request to base with this Host header; redirects not followed.
+ * { status, location, length } of one request to base with this Host header; redirects not
+ * followed. length: the Content-Length header, or null.
  * Over https the certificate is verified for that host (ca: a test CA instead of the system's).
  */
 export function send(base, host, path, method = 'HEAD', ca = undefined) {
@@ -49,7 +50,13 @@ export function send(base, host, path, method = 'HEAD', ca = undefined) {
   return new Promise((done, fail) => {
     const req = client.request(url, { ...options, timeout: 10_000 }, (res) => {
       res.resume();
-      res.on('end', () => done({ status: res.statusCode, location: res.headers.location ?? null }));
+      res.on('end', () =>
+        done({
+          status: res.statusCode,
+          location: res.headers.location ?? null,
+          length: res.headers['content-length'] ?? null,
+        })
+      );
     });
     req.on('timeout', () => req.destroy(new Error('timeout')));
     req.on('error', fail);
@@ -153,9 +160,9 @@ export function plan(table, baseHost, secure = false) {
     }
     for (const path of paths) {
       const location = resolve(table, host, path);
-      // A gone page isn't redirected: the site answers it with its 404. Over http the apex sends
-      // every path to https://codeboxx.ai in one hop first, so its 404 comes from there (a gone
-      // target, not a page to expect 200 from).
+      // A gone page isn't redirected: nginx answers it 410. Over http the apex sends every path to
+      // https://codeboxx.ai in one hop first, so its 410 comes from there (a gone target, not a
+      // page to expect 200 from).
       const gone = match(table, host, path)?.to === GONE;
       checks.push(
         location
@@ -163,7 +170,7 @@ export function plan(table, baseHost, secure = false) {
           : gone
             ? host === APEX && !secure
               ? { host, path, location: `https://${SITE_HOST}${path}`, gone: true }
-              : { host, path, unchanged: 404 }
+              : { host, path, unchanged: 410 }
             : page(host, path)
       );
     }
@@ -259,6 +266,10 @@ export async function main(args, { out = console.log, err = console.error } = {}
   const wwwChecked = checks.some((check) => check.host === WWW_HOST);
   let unchanged = 0;
   let rejected = 0;
+  // A 404 or 410 must carry the site's 404 page, not nginx's own (a few hundred bytes): the same
+  // length as /404.html. Only straight from nginx: Cloudflare drops Content-Length.
+  const notFound = await send(siteBase, siteHost, '/404.html', 'HEAD', ca).catch(() => ({}));
+  const notFoundLength = notFound.status === 200 ? notFound.length : null;
 
   await runAll(checks, async (check) => {
     const what = `${check.host}${check.path}`;
@@ -284,6 +295,8 @@ export async function main(args, { out = console.log, err = console.error } = {}
     } else {
       if (res.status !== check.unchanged || res.location)
         return fail(`${what} (want ${check.unchanged}, no redirect)`, describe(res));
+      if (check.unchanged !== 200 && notFoundLength && !check.base && res.length !== notFoundLength)
+        return fail(`${what} (want the site's 404 page)`, `${res.length ?? 'no'} bytes`);
       unchanged++;
     }
   });

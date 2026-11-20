@@ -7,8 +7,9 @@ single 301 to its page on `https://codeboxx.ai`, the main domain (`SITE` in `red
 - `www.codeboxx.com` and `codeboxx.com` (the apex): blog posts to `/blog/<slug>/`, a few old pages
   to their new page, anything else to the same path on `https://codeboxx.ai` (a page's path with
   its trailing slash, `/blog` to `/blog/`, so it lands in one hop). Obsolete posts left off
-  the new blog (`-` in `redirects.tsv`) are gone: not redirected, the site answers them 404. The apex serves no
-  page itself: codeboxx.ai is the one live origin.
+  the new blog (`-` in `redirects.tsv`) are gone: not redirected, they answer 410 with the site's 404
+  page (from location `@missing`), so search engines drop them and the nginx report leaves them out.
+  The apex serves no page itself: codeboxx.ai is the one live origin.
 - academy, academie (in French) and solutions: old pages to their page or homepage section, anything
   else to the Academy page (`/academy/`, `/fr/academie/`); corporate-training pages to
   `/corporate-training/` (`/fr/formation-entreprise/`) or Solutions (`/#solutions`) section.
@@ -28,9 +29,11 @@ goes through the `missing` rules of `redirects.tsv`, then www's old Wix paths, b
 Cloudflare sends `codeboxx.biz/<path>` to the same path on codeboxx.ai, so the old codeboxx.biz site
 (`/en/article/1485`, `/fr/registrations`, ...) lands there: one 301 to its page or Academy section. A
 gone one (`-`) answers 410 with the 404 page, so search engines drop it and the nginx report leaves it
-out. There is no catch-all: anything else keeps its 404, and the IP and the old codeboxx.com names are
-unchanged. `old-urls/codeboxx.biz.txt` lists the old addresses seen in the nginx logs (Nov 2026); the
-tests check that each has a target.
+out. A few short paths only crawlers ask for are there too: `/our-program` and `/reg` to their Academy
+section, `/cybersecurity` and `/404` (the 404 page's old address) gone. There is no catch-all:
+anything else keeps its 404, and the IP and the old codeboxx.com names are unchanged.
+`old-urls/codeboxx.biz.txt` lists the old addresses seen in the nginx logs (Nov 2026); the tests check
+that each has a target.
 
 The site (`snippets/codeboxx-site.conf`) serves each page at one address, with its trailing slash:
 `/academy` is a 301 to `/academy/`, query kept, as a relative `Location` (`absolute_redirect off`).
@@ -125,7 +128,8 @@ Without the `codeboxx-https.conf` and `codeboxx-ai.conf` mounts it's step 1 belo
 `check-redirects.js` sends each old URL (with and without its trailing slash, plus samples with a
 query string, in capitals and under each prefix) with its old `Host:` header, expects one 301 to the
 `redirects.tsv` target, then expects 200 from each target. It also checks that certificate
-challenges aren't redirected. The new site's pages on the apex must be one 301 to the same path
+challenges aren't redirected. A 404 or 410 straight from nginx (not through Cloudflare, which drops
+`Content-Length`) must carry the site's 404 page, the same length as `/404.html`, not nginx's own. The new site's pages on the apex must be one 301 to the same path
 on codeboxx.ai (over http its gone posts too: port 80 sends every apex path there first). The targets, headers and relay are fetched from the site: through the IP over http
 when `--base` is an IP, else from `https://codeboxx.ai` (`--site <url>` to choose). Over http the
 IP and an unknown host must get the site.

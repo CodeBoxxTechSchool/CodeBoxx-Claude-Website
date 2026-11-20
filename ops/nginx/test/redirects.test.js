@@ -73,7 +73,7 @@ test('every old URL redirects or is gone, on every old host', () => {
   }
 });
 
-test('a gone page is not redirected, and is no page of the new site, so it answers 404', () => {
+test('a gone page is not redirected, is no page of the new site, and answers 410', () => {
   const gone = table.rules.filter((rule) => rule.to === GONE && !rule.groups.includes(MISSING));
   assert.equal(gone.length, 13);
   for (const rule of gone) {
@@ -84,7 +84,14 @@ test('a gone page is not redirected, and is no page of the new site, so it answe
       assert.equal(resolve(table, host, rule.path + '/', 'utm_source=x'), null, host + rule.path);
     }
   }
-  assert.ok(render(table).includes('"apex:/post/kntv-press-here" "";'));
+  const conf = render(table);
+  assert.ok(conf.includes('"apex:/post/kntv-press-here" "-";'));
+  // "-" gets no Location, and the site's @missing answers it 410: not at server level, where the
+  // error page's internal redirect would answer 410 again and lose the site's 404 page.
+  assert.match(conf, /map \$legacy_target \$legacy_location \{\n {4}default "";\n {4}"-" "";\n/);
+  const missingBlock = read('snippets/codeboxx-site.conf').split('location @missing {')[1];
+  assert.ok(missingBlock.includes('    if ($legacy_target = "-") {\n        return 410;\n    }'));
+  assert.doesNotMatch(read('snippets/codeboxx-redirects.conf'), /410/);
   // Another old post still lands on the blog.
   assert.equal(resolve(table, 'codeboxx.com', '/post/unknown'), `${SITE}/blog/`);
 });
@@ -278,10 +285,12 @@ test('check plan: the apex goes to codeboxx.ai over both; the IP fails the hands
   const apexGone = (c) => c.host === 'codeboxx.com' && gone.includes(c.path);
   const oldHosts = (checks) => checks.filter((c) => table.hosts[c.host] && !apexGone(c));
   assert.deepEqual(oldHosts(http), oldHosts(https));
-  // Over https the apex's gone posts get the site's 404; over http the apex sends every path to
-  // codeboxx.ai in one hop, so they're 301s to the same path there.
+  // The gone posts answer 410 on www over both, and on the apex over https; over http the apex
+  // sends every path to codeboxx.ai in one hop, so they're 301s to the same path there (its 410).
   for (const path of gone) {
-    assert.equal(find(https, 'codeboxx.com', path).unchanged, 404, path);
+    for (const checks of [http, https])
+      assert.equal(find(checks, 'www.codeboxx.com', path).unchanged, 410, path);
+    assert.equal(find(https, 'codeboxx.com', path).unchanged, 410, path);
     assert.equal(find(http, 'codeboxx.com', path).location, `https://codeboxx.ai${path}`, path);
     assert.ok(find(http, 'codeboxx.com', path).gone, path);
   }
@@ -300,7 +309,6 @@ test('check plan: the apex goes to codeboxx.ai over both; the IP fails the hands
       .sort(),
     ['/.well-known/acme-challenge/test', ...gone].sort()
   );
-  assert.ok(unchanged(https).every((c) => c.unchanged === 404));
   assert.equal(find(http, 'codeboxx.com', '/faq/').location, 'https://codeboxx.ai/faq/');
   assert.equal(find(https, 'codeboxx.com', '/').location, 'https://codeboxx.ai/');
   for (const host of SWAP_HOSTS)
@@ -413,11 +421,18 @@ test('codeboxx.ai: an old address with no page lands on its page, a retired one 
   );
   assert.equal(resolveMissing(table, '/post/unknown'), `${SITE}/blog/`);
   assert.equal(resolveMissing(table, '/resources/'), `${SITE}/blog/`);
-  // Retired: the post dropped from the new blog (PR #138) and www's gone posts answer 410.
+  // Short forms only crawlers ask for (nginx report, Nov 2026).
+  assert.equal(resolveMissing(table, '/our-program/'), `${SITE}/academy/#programs`);
+  assert.equal(resolveMissing(table, '/reg/'), `${SITE}/academy/#apply`);
+  // Retired: the post dropped from the new blog (PR #138), www's gone posts, the 404 page's old
+  // address and a page we never had answer 410.
   for (const path of [
     '/blog/q-a-about-ethics-by-design/',
     '/fr/blogue/q-a-about-ethics-by-design',
     '/post/kntv-press-here',
+    '/404/',
+    '/404',
+    '/cybersecurity/',
   ]) {
     assert.equal(matchMissing(table, path)?.to, GONE, path);
     assert.equal(resolveMissing(table, path), null, path);
