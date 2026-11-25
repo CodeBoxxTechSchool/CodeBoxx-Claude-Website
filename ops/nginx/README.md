@@ -30,7 +30,7 @@ Cloudflare sends `codeboxx.biz/<path>` to the same path on codeboxx.ai, so the o
 (`/en/article/1485`, `/fr/registrations`, ...) lands there: one 301 to its page or Academy section. A
 gone one (`-`) answers 410 with the 404 page, so search engines drop it and the nginx report leaves it
 out. A few short paths only crawlers ask for are there too: `/our-program` and `/reg` to their Academy
-section, `/cybersecurity` and `/404` (the 404 page's old address) gone. There is no catch-all:
+section, `/pricing` to the Academy's programs (the tuition), `/cybersecurity` and `/404` (the 404 page's old address) gone. There is no catch-all:
 anything else keeps its 404, and the IP and the old codeboxx.com names are unchanged.
 `old-urls/codeboxx.biz.txt` lists the old addresses seen in the nginx logs (Nov 2026); the tests check
 that each has a target.
