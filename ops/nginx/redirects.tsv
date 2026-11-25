@@ -349,3 +349,6 @@ missing	/our-program	/academy/#programs
 missing	/reg	/academy/#apply
 missing	/cybersecurity	-
 missing	/404	-
+# /pricing was never a page here, but it's asked for every day, mostly through codeboxx.com
+# (nginx report, Nov 2026): the Academy's programs section, where the tuition is.
+missing	/pricing	/academy/#programs
